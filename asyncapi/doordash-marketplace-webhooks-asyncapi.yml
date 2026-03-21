@@ -1,0 +1,351 @@
+asyncapi: 2.6.0
+info:
+  title: DoorDash Marketplace Webhooks
+  description: >-
+    DoorDash Marketplace sends webhook notifications for order events, menu
+    processing status, delivery status updates, and store onboarding events.
+    Each environment (Sandbox and Production) supports only one webhook
+    endpoint. Production access must be requested before configuring a
+    production webhook endpoint. Partners confirm order receipt by returning
+    a 200 status code; non-2xx responses are treated as order failures.
+  version: '1.0'
+  contact:
+    name: DoorDash Developer Support
+    url: https://developer.doordash.com/en-US/
+servers:
+  partnerWebhook:
+    url: '{webhook_url}'
+    protocol: https
+    description: >-
+      The partner-provided HTTPS webhook endpoint for receiving marketplace
+      events. Each environment supports only one webhook endpoint.
+    security:
+      - basicAuth: []
+    variables:
+      webhook_url:
+        description: >-
+          The HTTPS URL of the partner's webhook endpoint.
+channels:
+  /orders:
+    description: >-
+      DoorDash sends new order notifications to this channel when customers
+      place orders through the marketplace.
+    publish:
+      operationId: receiveOrderWebhook
+      summary: Receive new order webhooks
+      description: >-
+        Receives webhook notifications for new orders placed through DoorDash.
+        Partners must return 200 to confirm the order. Non-2xx responses are
+        treated as order failures.
+      message:
+        $ref: '#/components/messages/NewOrder'
+  /menus:
+    description: >-
+      DoorDash sends menu processing status notifications after a menu
+      creation or update request is processed.
+    publish:
+      operationId: receiveMenuWebhook
+      summary: Receive menu status webhooks
+      description: >-
+        Receives webhook notifications about menu creation or update
+        processing results. Sent when the menu processing pipeline
+        completes or encounters an error.
+      message:
+        $ref: '#/components/messages/MenuStatus'
+  /deliveries:
+    description: >-
+      DoorDash sends delivery status updates for marketplace orders
+      including Dasher assignment, pickup, and dropoff events.
+    publish:
+      operationId: receiveDeliveryStatusWebhook
+      summary: Receive delivery status webhooks
+      description: >-
+        Receives webhook notifications about delivery status changes for
+        marketplace orders, including Dasher tracking information.
+      message:
+        $ref: '#/components/messages/DeliveryStatus'
+  /onboarding:
+    description: >-
+      DoorDash sends store onboarding status notifications during the
+      partner integration setup process.
+    publish:
+      operationId: receiveOnboardingWebhook
+      summary: Receive store onboarding webhooks
+      description: >-
+        Receives webhook notifications about store onboarding status
+        changes during the integration setup process.
+      message:
+        $ref: '#/components/messages/StoreOnboarding'
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: >-
+        Basic authentication for webhook endpoint security.
+  messages:
+    NewOrder:
+      name: NewOrder
+      title: New Order Event
+      summary: >-
+        A new order has been placed through the DoorDash marketplace and
+        needs to be confirmed by the partner.
+      payload:
+        $ref: '#/components/schemas/OrderWebhookPayload'
+    MenuStatus:
+      name: MenuStatus
+      title: Menu Processing Status Event
+      summary: >-
+        A menu creation or update has completed processing or encountered
+        an error.
+      payload:
+        $ref: '#/components/schemas/MenuWebhookPayload'
+    DeliveryStatus:
+      name: DeliveryStatus
+      title: Delivery Status Update Event
+      summary: >-
+        A delivery status update for a marketplace order including Dasher
+        location and status.
+      payload:
+        $ref: '#/components/schemas/MarketplaceDeliveryWebhookPayload'
+    StoreOnboarding:
+      name: StoreOnboarding
+      title: Store Onboarding Event
+      summary: >-
+        A store onboarding status change during the integration setup
+        process.
+      payload:
+        $ref: '#/components/schemas/OnboardingWebhookPayload'
+  schemas:
+    OrderWebhookPayload:
+      type: object
+      properties:
+        event_type:
+          type: string
+          description: >-
+            The type of order event.
+          enum:
+            - new_order
+            - order_cancelled
+        order_id:
+          type: string
+          description: >-
+            The unique DoorDash order identifier.
+        store_id:
+          type: string
+          description: >-
+            The merchant-supplied store identifier.
+        status:
+          type: string
+          description: >-
+            The order status.
+        subtotal:
+          type: integer
+          description: >-
+            The order subtotal in cents.
+        tax:
+          type: integer
+          description: >-
+            The tax amount in cents.
+        tip:
+          type: integer
+          description: >-
+            The tip amount in cents.
+        items:
+          type: array
+          description: >-
+            The items in the order.
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        customer:
+          $ref: '#/components/schemas/Customer'
+        delivery_address:
+          type: string
+          description: >-
+            The delivery address.
+        special_instructions:
+          type: string
+          description: >-
+            Special instructions from the customer.
+        estimated_pickup_time:
+          type: string
+          format: date-time
+          description: >-
+            The estimated time the Dasher will arrive for pickup.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            When the order was created.
+    OrderItem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique item identifier.
+        name:
+          type: string
+          description: >-
+            The item name.
+        quantity:
+          type: integer
+          description: >-
+            The quantity ordered.
+        price:
+          type: integer
+          description: >-
+            The item price in cents.
+        special_instructions:
+          type: string
+          description: >-
+            Special instructions for this item.
+        options:
+          type: array
+          description: >-
+            Selected options for the item.
+          items:
+            $ref: '#/components/schemas/ItemOption'
+    ItemOption:
+      type: object
+      properties:
+        id:
+          type: string
+          description: >-
+            The option identifier.
+        name:
+          type: string
+          description: >-
+            The option name.
+        quantity:
+          type: integer
+          description: >-
+            The quantity of this option.
+        price:
+          type: integer
+          description: >-
+            The option price in cents.
+    Customer:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: >-
+            The customer's first name.
+        last_name:
+          type: string
+          description: >-
+            The customer's last name.
+        phone_number:
+          type: string
+          description: >-
+            The customer's phone number.
+    MenuWebhookPayload:
+      type: object
+      properties:
+        event_type:
+          type: string
+          description: >-
+            The type of menu event.
+          enum:
+            - menu_created
+            - menu_updated
+            - menu_failed
+        menu_id:
+          type: string
+          description: >-
+            The unique menu identifier.
+        store_id:
+          type: string
+          description: >-
+            The merchant-supplied store identifier.
+        status:
+          type: string
+          description: >-
+            The menu processing status.
+          enum:
+            - completed
+            - failed
+        error_message:
+          type: string
+          description: >-
+            Error details if the menu processing failed.
+        processed_at:
+          type: string
+          format: date-time
+          description: >-
+            When the menu processing completed.
+    MarketplaceDeliveryWebhookPayload:
+      type: object
+      properties:
+        event_type:
+          type: string
+          description: >-
+            The type of delivery event.
+          enum:
+            - dasher_confirmed
+            - dasher_at_store
+            - dasher_picked_up
+            - dasher_at_customer
+            - dasher_delivered
+        order_id:
+          type: string
+          description: >-
+            The DoorDash order identifier.
+        dasher_name:
+          type: string
+          description: >-
+            The Dasher's first name.
+        dasher_phone_number:
+          type: string
+          description: >-
+            The Dasher's phone number.
+        dasher_location_lat:
+          type: number
+          format: double
+          description: >-
+            The Dasher's current latitude.
+        dasher_location_lng:
+          type: number
+          format: double
+          description: >-
+            The Dasher's current longitude.
+        estimated_delivery_time:
+          type: string
+          format: date-time
+          description: >-
+            The estimated delivery time.
+        tracking_url:
+          type: string
+          format: uri
+          description: >-
+            A URL for tracking the delivery.
+    OnboardingWebhookPayload:
+      type: object
+      properties:
+        event_type:
+          type: string
+          description: >-
+            The type of onboarding event.
+          enum:
+            - store_activated
+            - store_deactivated
+            - onboarding_completed
+            - onboarding_failed
+        store_id:
+          type: string
+          description: >-
+            The merchant-supplied store identifier.
+        status:
+          type: string
+          description: >-
+            The onboarding status.
+        message:
+          type: string
+          description: >-
+            Additional details about the onboarding event.
+        timestamp:
+          type: string
+          format: date-time
+          description: >-
+            When the onboarding event occurred.

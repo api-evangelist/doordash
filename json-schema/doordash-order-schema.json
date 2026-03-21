@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://developer.doordash.com/schemas/doordash/order.json",
+  "title": "DoorDash Marketplace Order",
+  "description": "Represents an order placed through the DoorDash marketplace, including items, customer details, delivery information, and order status.",
+  "type": "object",
+  "required": [
+    "id",
+    "store_id",
+    "items"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique DoorDash order identifier."
+    },
+    "external_reference_id": {
+      "type": "string",
+      "description": "An external reference ID for the order provided by the partner."
+    },
+    "status": {
+      "type": "string",
+      "description": "The current status of the order.",
+      "enum": [
+        "pending",
+        "confirmed",
+        "being_prepared",
+        "ready_for_pickup",
+        "picked_up",
+        "delivered",
+        "cancelled"
+      ]
+    },
+    "store_id": {
+      "type": "string",
+      "description": "The merchant-supplied store identifier."
+    },
+    "subtotal": {
+      "type": "integer",
+      "description": "The order subtotal in cents.",
+      "minimum": 0
+    },
+    "tax": {
+      "type": "integer",
+      "description": "The tax amount in cents.",
+      "minimum": 0
+    },
+    "delivery_fee": {
+      "type": "integer",
+      "description": "The delivery fee in cents.",
+      "minimum": 0
+    },
+    "tip": {
+      "type": "integer",
+      "description": "The tip amount in cents.",
+      "minimum": 0
+    },
+    "items": {
+      "type": "array",
+      "description": "The items in the order.",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/OrderItem"
+      }
+    },
+    "customer": {
+      "$ref": "#/$defs/Customer"
+    },
+    "delivery_address": {
+      "type": "string",
+      "description": "The delivery address for the order."
+    },
+    "special_instructions": {
+      "type": "string",
+      "description": "Special instructions from the customer.",
+      "maxLength": 500
+    },
+    "estimated_pickup_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The estimated time the Dasher will arrive to pick up the order."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the order was created."
+    }
+  },
+  "$defs": {
+    "OrderItem": {
+      "type": "object",
+      "description": "An item within a marketplace order.",
+      "required": [
+        "id",
+        "name",
+        "quantity",
+        "price"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique item identifier within the order."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the item."
+        },
+        "quantity": {
+          "type": "integer",
+          "description": "The quantity ordered.",
+          "minimum": 1
+        },
+        "price": {
+          "type": "integer",
+          "description": "The item price in cents.",
+          "minimum": 0
+        },
+        "special_instructions": {
+          "type": "string",
+          "description": "Special instructions for this item.",
+          "maxLength": 500
+        },
+        "options": {
+          "type": "array",
+          "description": "Selected options or modifiers for the item.",
+          "items": {
+            "$ref": "#/$defs/ItemOption"
+          }
+        }
+      }
+    },
+    "ItemOption": {
+      "type": "object",
+      "description": "A selected option or modifier for an order item.",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique option identifier."
+        },
+        "name": {
+          "type": "string",
+          "description": "The option name."
+        },
+        "quantity": {
+          "type": "integer",
+          "description": "The quantity of this option.",
+          "minimum": 1
+        },
+        "price": {
+          "type": "integer",
+          "description": "The option price in cents.",
+          "minimum": 0
+        }
+      }
+    },
+    "Customer": {
+      "type": "object",
+      "description": "Customer information for the order.",
+      "properties": {
+        "first_name": {
+          "type": "string",
+          "description": "The customer's first name."
+        },
+        "last_name": {
+          "type": "string",
+          "description": "The customer's last name."
+        },
+        "phone_number": {
+          "type": "string",
+          "description": "The customer's phone number."
+        }
+      }
+    }
+  }
+}

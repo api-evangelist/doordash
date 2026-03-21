@@ -1,0 +1,518 @@
+openapi: 3.1.0
+info:
+  title: DoorDash Item Management API
+  description: >-
+    The DoorDash Item Management API enables merchants and integration partners
+    to programmatically manage their item catalogs, inventory levels, pricing,
+    and promotions on the DoorDash platform. It provides endpoints for creating
+    and updating item data across stores, with separate endpoints for catalog
+    management, inventory and pricing updates, and promotion management. This
+    API is particularly useful for retail and grocery partners who need to keep
+    large catalogs synchronized between their own systems and DoorDash.
+  version: '2.0'
+  contact:
+    name: DoorDash Developer Support
+    url: https://developer.doordash.com/en-US/
+  termsOfService: https://www.doordash.com/terms/
+externalDocs:
+  description: DoorDash Item Management API Documentation
+  url: https://developer.doordash.com/en-US/api/marketplace_v2/
+servers:
+  - url: https://openapi.doordash.com/marketplace/api/v2
+    description: Production Server
+tags:
+  - name: Catalog
+    description: >-
+      Manage the item catalog including adding new items and updating existing
+      item information such as names, descriptions, images, and attributes.
+  - name: Inventory
+    description: >-
+      Manage store-level inventory, pricing, and other in-store attributes
+      for items on the DoorDash platform.
+  - name: Promotions
+    description: >-
+      Manage item-level promotions at the store level, including adding and
+      updating promotional pricing.
+security:
+  - bearerAuth: []
+paths:
+  /items:
+    post:
+      operationId: createItems
+      summary: Add items to catalog
+      description: >-
+        Adds new items to the DoorDash item catalog. Each item is identified
+        by a unique Merchant Supplied Item ID (MSID). Items added through this
+        endpoint become available for inventory and pricing management at
+        individual stores.
+      tags:
+        - Catalog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CatalogItemsRequest'
+      responses:
+        '200':
+          description: Items added to catalog successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogItemsResponse'
+        '400':
+          description: Invalid item data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      operationId: updateItems
+      summary: Update items in catalog
+      description: >-
+        Updates information about existing items in the catalog. Uses the same
+        validation as the create endpoint. Items are matched by their Merchant
+        Supplied Item ID.
+      tags:
+        - Catalog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CatalogItemsRequest'
+      responses:
+        '200':
+          description: Items updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogItemsResponse'
+        '400':
+          description: Invalid item data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /stores/{store_location_id}/items:
+    post:
+      operationId: createStoreInventory
+      summary: Add inventory and pricing for items at a store
+      description: >-
+        Adds inventory, pricing, and other in-store attributes for items at a
+        specific store location. Items must already exist in the catalog before
+        inventory can be set at the store level.
+      tags:
+        - Inventory
+      parameters:
+        - $ref: '#/components/parameters/StoreLocationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreItemsRequest'
+      responses:
+        '200':
+          description: Store inventory created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreItemsResponse'
+        '400':
+          description: Invalid inventory data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Store not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      operationId: updateStoreInventory
+      summary: Update inventory and pricing for items at a store
+      description: >-
+        Updates inventory, pricing, and other in-store attributes for existing
+        items at a specific store location. Changes are typically reflected
+        within minutes.
+      tags:
+        - Inventory
+      parameters:
+        - $ref: '#/components/parameters/StoreLocationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreItemsRequest'
+      responses:
+        '200':
+          description: Store inventory updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreItemsResponse'
+        '400':
+          description: Invalid inventory data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Store not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /promotions/stores/{store_location_id}:
+    post:
+      operationId: createStorePromotions
+      summary: Add promotions for items at a store
+      description: >-
+        Adds item-level promotions for items at a specific store location.
+        Promotions allow partners to set promotional pricing for their items
+        on the DoorDash platform.
+      tags:
+        - Promotions
+      parameters:
+        - $ref: '#/components/parameters/StoreLocationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromotionsRequest'
+      responses:
+        '200':
+          description: Promotions created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionsResponse'
+        '400':
+          description: Invalid promotion data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Store not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      operationId: updateStorePromotions
+      summary: Update promotions for items at a store
+      description: >-
+        Updates existing item-level promotions at a specific store location.
+      tags:
+        - Promotions
+      parameters:
+        - $ref: '#/components/parameters/StoreLocationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromotionsRequest'
+      responses:
+        '200':
+          description: Promotions updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionsResponse'
+        '400':
+          description: Invalid promotion data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Store not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >-
+        JWT Bearer token for authenticating with the DoorDash Item Management API.
+  parameters:
+    StoreLocationId:
+      name: store_location_id
+      in: path
+      required: true
+      description: >-
+        The unique identifier for the store location.
+      schema:
+        type: string
+  schemas:
+    CatalogItemsRequest:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          description: >-
+            The items to add or update in the catalog.
+          items:
+            $ref: '#/components/schemas/CatalogItem'
+    CatalogItem:
+      type: object
+      required:
+        - merchant_supplied_id
+        - name
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: >-
+            The unique merchant-supplied item identifier (MSID).
+        name:
+          type: string
+          description: >-
+            The display name of the item.
+        description:
+          type: string
+          description: >-
+            A description of the item.
+        image_url:
+          type: string
+          format: uri
+          description: >-
+            A URL to an image of the item.
+        brand:
+          type: string
+          description: >-
+            The brand name of the item.
+        upc:
+          type: string
+          description: >-
+            The Universal Product Code for the item.
+        category:
+          type: string
+          description: >-
+            The category the item belongs to.
+        subcategory:
+          type: string
+          description: >-
+            The subcategory the item belongs to.
+        weight:
+          type: number
+          description: >-
+            The weight of the item.
+        weight_unit:
+          type: string
+          description: >-
+            The unit of weight measurement.
+          enum:
+            - oz
+            - lb
+            - g
+            - kg
+        is_alcohol:
+          type: boolean
+          description: >-
+            Whether the item contains alcohol.
+    CatalogItemsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: >-
+            The processing status of the request.
+        items_processed:
+          type: integer
+          description: >-
+            The number of items processed.
+        errors:
+          type: array
+          description: >-
+            Any errors encountered during processing.
+          items:
+            $ref: '#/components/schemas/ItemError'
+    StoreItemsRequest:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          description: >-
+            The store-level item inventory and pricing data.
+          items:
+            $ref: '#/components/schemas/StoreItem'
+    StoreItem:
+      type: object
+      required:
+        - merchant_supplied_id
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: >-
+            The unique merchant-supplied item identifier.
+        price:
+          type: integer
+          description: >-
+            The item price in cents at this store.
+        in_stock:
+          type: boolean
+          description: >-
+            Whether the item is currently in stock at this store.
+        quantity_on_hand:
+          type: integer
+          description: >-
+            The current quantity available at this store.
+          minimum: 0
+        aisle:
+          type: string
+          description: >-
+            The aisle location of the item in the store.
+        shelf:
+          type: string
+          description: >-
+            The shelf location of the item in the store.
+    StoreItemsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: >-
+            The processing status of the request.
+        items_processed:
+          type: integer
+          description: >-
+            The number of items processed.
+        errors:
+          type: array
+          description: >-
+            Any errors encountered during processing.
+          items:
+            $ref: '#/components/schemas/ItemError'
+    PromotionsRequest:
+      type: object
+      required:
+        - promotions
+      properties:
+        promotions:
+          type: array
+          description: >-
+            The promotions to add or update.
+          items:
+            $ref: '#/components/schemas/Promotion'
+    Promotion:
+      type: object
+      required:
+        - merchant_supplied_id
+        - promotional_price
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: >-
+            The merchant-supplied item identifier for the promoted item.
+        promotional_price:
+          type: integer
+          description: >-
+            The promotional price in cents.
+        start_date:
+          type: string
+          format: date-time
+          description: >-
+            The start date of the promotion in UTC ISO-8601 format.
+        end_date:
+          type: string
+          format: date-time
+          description: >-
+            The end date of the promotion in UTC ISO-8601 format.
+        description:
+          type: string
+          description: >-
+            A description of the promotion.
+    PromotionsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: >-
+            The processing status of the request.
+        promotions_processed:
+          type: integer
+          description: >-
+            The number of promotions processed.
+        errors:
+          type: array
+          description: >-
+            Any errors encountered during processing.
+          items:
+            $ref: '#/components/schemas/ItemError'
+    ItemError:
+      type: object
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: >-
+            The item identifier that had an error.
+        message:
+          type: string
+          description: >-
+            The error message.
+        code:
+          type: string
+          description: >-
+            A machine-readable error code.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: >-
+            A human-readable error message.
+        code:
+          type: string
+          description: >-
+            A machine-readable error code.

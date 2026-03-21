@@ -1,0 +1,175 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "dd": "https://developer.doordash.com/schemas/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+
+    "Delivery": {
+      "@id": "dd:Delivery",
+      "@context": {
+        "external_delivery_id": "schema:identifier",
+        "delivery_status": "dd:deliveryStatus",
+        "fee": "schema:price",
+        "currency": "schema:priceCurrency",
+        "tip": "dd:tipAmount",
+        "order_value": "dd:orderValue",
+        "pickup_address": {
+          "@id": "dd:pickupAddress",
+          "@type": "schema:PostalAddress"
+        },
+        "pickup_business_name": "dd:pickupBusinessName",
+        "pickup_phone_number": "dd:pickupPhoneNumber",
+        "pickup_instructions": "dd:pickupInstructions",
+        "pickup_time_estimated": {
+          "@id": "dd:pickupTimeEstimated",
+          "@type": "xsd:dateTime"
+        },
+        "pickup_time_actual": {
+          "@id": "dd:pickupTimeActual",
+          "@type": "xsd:dateTime"
+        },
+        "dropoff_address": {
+          "@id": "dd:dropoffAddress",
+          "@type": "schema:PostalAddress"
+        },
+        "dropoff_business_name": "dd:dropoffBusinessName",
+        "dropoff_phone_number": "dd:dropoffPhoneNumber",
+        "dropoff_instructions": "dd:dropoffInstructions",
+        "dropoff_time_estimated": {
+          "@id": "dd:dropoffTimeEstimated",
+          "@type": "xsd:dateTime"
+        },
+        "dropoff_time_actual": {
+          "@id": "dd:dropoffTimeActual",
+          "@type": "xsd:dateTime"
+        },
+        "tracking_url": {
+          "@id": "schema:url",
+          "@type": "@id"
+        },
+        "contains_alcohol": "dd:containsAlcohol",
+        "created_at": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "updated_at": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "Dasher": {
+      "@id": "dd:Dasher",
+      "@context": {
+        "id": "schema:identifier",
+        "name": "schema:givenName",
+        "phone_number": "schema:telephone",
+        "location": "schema:GeoCoordinates"
+      }
+    },
+
+    "Order": {
+      "@id": "dd:Order",
+      "@context": {
+        "id": "schema:identifier",
+        "status": "schema:orderStatus",
+        "store_id": "dd:storeId",
+        "subtotal": "dd:subtotal",
+        "tax": "dd:taxAmount",
+        "delivery_fee": "dd:deliveryFee",
+        "tip": "dd:tipAmount",
+        "items": {
+          "@id": "schema:orderedItem",
+          "@container": "@set"
+        },
+        "customer": "schema:customer",
+        "delivery_address": {
+          "@id": "schema:deliveryAddress",
+          "@type": "schema:PostalAddress"
+        },
+        "special_instructions": "dd:specialInstructions",
+        "estimated_pickup_time": {
+          "@id": "dd:estimatedPickupTime",
+          "@type": "xsd:dateTime"
+        },
+        "created_at": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "MenuItem": {
+      "@id": "dd:MenuItem",
+      "@context": {
+        "id": "schema:identifier",
+        "name": "schema:name",
+        "description": "schema:description",
+        "price": "schema:price",
+        "image_url": {
+          "@id": "schema:image",
+          "@type": "@id"
+        },
+        "is_active": "dd:isActive",
+        "option_groups": {
+          "@id": "dd:optionGroups",
+          "@container": "@set"
+        }
+      }
+    },
+
+    "Business": {
+      "@id": "dd:Business",
+      "@context": {
+        "external_business_id": "schema:identifier",
+        "name": "schema:name",
+        "description": "schema:description"
+      }
+    },
+
+    "Store": {
+      "@id": "dd:Store",
+      "@context": {
+        "external_store_id": "schema:identifier",
+        "name": "schema:name",
+        "phone_number": "schema:telephone",
+        "address": {
+          "@id": "schema:address",
+          "@type": "schema:PostalAddress"
+        }
+      }
+    },
+
+    "Report": {
+      "@id": "dd:Report",
+      "@context": {
+        "report_id": "schema:identifier",
+        "report_type": "dd:reportType",
+        "start_date": {
+          "@id": "dd:startDate",
+          "@type": "xsd:date"
+        },
+        "end_date": {
+          "@id": "dd:endDate",
+          "@type": "xsd:date"
+        },
+        "status": "dd:reportStatus",
+        "download_url": {
+          "@id": "schema:contentUrl",
+          "@type": "@id"
+        },
+        "created_at": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "completed_at": {
+          "@id": "dd:completedAt",
+          "@type": "xsd:dateTime"
+        }
+      }
+    }
+  }
+}

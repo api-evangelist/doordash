@@ -1,0 +1,239 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://developer.doordash.com/schemas/doordash/delivery.json",
+  "title": "DoorDash Delivery",
+  "description": "Represents a delivery fulfilled by DoorDash's fleet of Dashers, including pickup and dropoff details, status tracking, and Dasher assignment information.",
+  "type": "object",
+  "required": [
+    "external_delivery_id",
+    "pickup_address",
+    "dropoff_address"
+  ],
+  "properties": {
+    "external_delivery_id": {
+      "type": "string",
+      "description": "A unique identifier for this delivery, provided by the caller.",
+      "minLength": 1
+    },
+    "delivery_status": {
+      "type": "string",
+      "description": "The current status of the delivery as it progresses through the lifecycle.",
+      "enum": [
+        "created",
+        "confirmed",
+        "enroute_to_pickup",
+        "arrived_at_pickup",
+        "picked_up",
+        "enroute_to_dropoff",
+        "arrived_at_dropoff",
+        "delivered",
+        "cancelled",
+        "returned"
+      ]
+    },
+    "fee": {
+      "type": "integer",
+      "description": "The delivery fee in cents.",
+      "minimum": 0
+    },
+    "currency": {
+      "type": "string",
+      "description": "The ISO 4217 currency code for monetary amounts.",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "tip": {
+      "type": "integer",
+      "description": "The tip amount in cents.",
+      "minimum": 0
+    },
+    "order_value": {
+      "type": "integer",
+      "description": "The total value of the order in cents.",
+      "minimum": 0
+    },
+    "pickup_address": {
+      "type": "string",
+      "description": "The full street address for the pickup location."
+    },
+    "pickup_business_name": {
+      "type": "string",
+      "description": "The business name at the pickup location."
+    },
+    "pickup_phone_number": {
+      "type": "string",
+      "description": "The phone number at the pickup location."
+    },
+    "pickup_instructions": {
+      "type": "string",
+      "description": "Special instructions for the Dasher at the pickup location."
+    },
+    "pickup_reference_tag": {
+      "type": "string",
+      "description": "A reference tag for the pickup, such as an order number."
+    },
+    "pickup_time_estimated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The estimated pickup time in UTC ISO-8601 format."
+    },
+    "pickup_time_actual": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The actual pickup time in UTC ISO-8601 format."
+    },
+    "dropoff_address": {
+      "type": "string",
+      "description": "The full street address for the dropoff location."
+    },
+    "dropoff_business_name": {
+      "type": "string",
+      "description": "The business name at the dropoff location."
+    },
+    "dropoff_phone_number": {
+      "type": "string",
+      "description": "The phone number of the recipient at the dropoff location."
+    },
+    "dropoff_instructions": {
+      "type": "string",
+      "description": "Special instructions for the Dasher at the dropoff location."
+    },
+    "dropoff_contact_given_name": {
+      "type": "string",
+      "description": "The first name of the dropoff contact."
+    },
+    "dropoff_contact_family_name": {
+      "type": "string",
+      "description": "The last name of the dropoff contact."
+    },
+    "dropoff_time_estimated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The estimated dropoff time in UTC ISO-8601 format."
+    },
+    "dropoff_time_actual": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The actual dropoff time in UTC ISO-8601 format."
+    },
+    "contains_alcohol": {
+      "type": "boolean",
+      "description": "Whether the order contains alcohol, requiring age verification."
+    },
+    "force_batch_id": {
+      "type": "string",
+      "description": "An identifier to group deliveries for batch assignment to the same Dasher."
+    },
+    "dasher": {
+      "$ref": "#/$defs/Dasher"
+    },
+    "tracking_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "A URL for tracking the delivery in real time."
+    },
+    "items": {
+      "type": "array",
+      "description": "List of items included in the delivery.",
+      "items": {
+        "$ref": "#/$defs/DeliveryItem"
+      }
+    },
+    "external_business_id": {
+      "type": "string",
+      "description": "The external business ID associated with this delivery."
+    },
+    "external_store_id": {
+      "type": "string",
+      "description": "The external store ID associated with this delivery."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the delivery was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the delivery was last updated."
+    }
+  },
+  "$defs": {
+    "Dasher": {
+      "type": "object",
+      "description": "Information about the Dasher assigned to fulfill the delivery.",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "The unique identifier for the Dasher."
+        },
+        "name": {
+          "type": "string",
+          "description": "The first name of the Dasher."
+        },
+        "phone_number": {
+          "type": "string",
+          "description": "The phone number of the Dasher."
+        },
+        "location": {
+          "$ref": "#/$defs/Location"
+        }
+      }
+    },
+    "Location": {
+      "type": "object",
+      "description": "A geographic coordinate point.",
+      "properties": {
+        "lat": {
+          "type": "number",
+          "format": "double",
+          "description": "Latitude coordinate.",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "lng": {
+          "type": "number",
+          "format": "double",
+          "description": "Longitude coordinate.",
+          "minimum": -180,
+          "maximum": 180
+        }
+      },
+      "required": [
+        "lat",
+        "lng"
+      ]
+    },
+    "DeliveryItem": {
+      "type": "object",
+      "description": "An item included in a delivery.",
+      "required": [
+        "name",
+        "quantity"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the item."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the item."
+        },
+        "quantity": {
+          "type": "integer",
+          "description": "The quantity of this item.",
+          "minimum": 1
+        },
+        "external_id": {
+          "type": "string",
+          "description": "An external identifier for the item."
+        },
+        "price": {
+          "type": "integer",
+          "description": "The price of the item in cents.",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

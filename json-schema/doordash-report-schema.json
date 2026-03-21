@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://developer.doordash.com/schemas/doordash/report.json",
+  "title": "DoorDash Report",
+  "description": "Represents a reporting request and its result in the DoorDash Reporting API, including report type, date range, processing status, and download information.",
+  "type": "object",
+  "required": [
+    "report_type",
+    "start_date",
+    "end_date"
+  ],
+  "properties": {
+    "report_id": {
+      "type": "string",
+      "description": "The unique identifier for the report, assigned by DoorDash upon creation."
+    },
+    "report_type": {
+      "type": "string",
+      "description": "The type of report to generate or that was generated.",
+      "enum": [
+        "financial",
+        "operations",
+        "menu",
+        "feedback"
+      ]
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date",
+      "description": "The start date for the report period in YYYY-MM-DD format."
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date",
+      "description": "The end date for the report period in YYYY-MM-DD format."
+    },
+    "store_ids": {
+      "type": "array",
+      "description": "Optional list of store IDs to filter the report by specific stores.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "description": "The current processing status of the report.",
+      "enum": [
+        "PENDING",
+        "PROCESSING",
+        "SUCCEEDED",
+        "FAILED"
+      ]
+    },
+    "download_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "A temporary URL to download the completed report. Only present when status is SUCCEEDED."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the report request was created."
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the report generation completed. Only present when status is SUCCEEDED or FAILED."
+    }
+  }
+}

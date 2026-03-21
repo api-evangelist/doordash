@@ -1,0 +1,1133 @@
+openapi: 3.1.0
+info:
+  title: DoorDash Drive API
+  description: >-
+    The DoorDash Drive API enables businesses to request on-demand deliveries
+    fulfilled by DoorDash's fleet of Dashers. It provides endpoints for
+    checking delivery serviceability, getting delivery quotes, creating and
+    managing deliveries, and tracking delivery status in real time. The API
+    uses JWT-based authentication and is designed for businesses that want to
+    offer delivery from their own ordering experience while leveraging
+    DoorDash's logistics network.
+  version: '2.0'
+  contact:
+    name: DoorDash Developer Support
+    url: https://developer.doordash.com/en-US/
+  termsOfService: https://www.doordash.com/terms/
+externalDocs:
+  description: DoorDash Drive API Documentation
+  url: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+servers:
+  - url: https://openapi.doordash.com/drive/v2
+    description: Production Server
+tags:
+  - name: Quotes
+    description: >-
+      Validate delivery serviceability and get pricing quotes before creating
+      a delivery.
+  - name: Deliveries
+    description: >-
+      Create, retrieve, update, and cancel on-demand deliveries fulfilled by
+      DoorDash Dashers.
+  - name: Businesses
+    description: >-
+      Manage business entities that represent legal entities or owners on the
+      DoorDash Drive platform.
+  - name: Stores
+    description: >-
+      Manage store locations that represent individual pickup points associated
+      with a business.
+  - name: Addresses
+    description: >-
+      Get address auto-completion suggestions based on partial input.
+security:
+  - bearerAuth: []
+paths:
+  /quotes:
+    post:
+      operationId: createDeliveryQuote
+      summary: Create a delivery quote
+      description: >-
+        Creates a delivery quote to confirm that a delivery is serviceable by
+        DoorDash and returns the estimated fee and delivery time. Quotes are
+        valid for 5 minutes after creation.
+      tags:
+        - Quotes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuoteRequest'
+      responses:
+        '200':
+          description: Delivery quote created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /quotes/{external_delivery_id}/accept:
+    post:
+      operationId: acceptDeliveryQuote
+      summary: Accept a delivery quote
+      description: >-
+        Accepts a previously created delivery quote and initiates the delivery
+        process. The quote must be accepted within 5 minutes of being created.
+        You can optionally edit the tip amount when accepting.
+      tags:
+        - Quotes
+      parameters:
+        - $ref: '#/components/parameters/ExternalDeliveryId'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcceptQuoteRequest'
+      responses:
+        '200':
+          description: Quote accepted and delivery initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delivery'
+        '400':
+          description: Quote expired or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Quote not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /deliveries:
+    post:
+      operationId: createDelivery
+      summary: Create a delivery
+      description: >-
+        Creates a new delivery request directly without first creating a quote.
+        DoorDash will assign a Dasher to fulfill the delivery. This is an
+        alternative to the quote-then-accept workflow.
+      tags:
+        - Deliveries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryRequest'
+      responses:
+        '200':
+          description: Delivery created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delivery'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /deliveries/{external_delivery_id}:
+    get:
+      operationId: getDelivery
+      summary: Get delivery details
+      description: >-
+        Retrieves the current details and status of a delivery using the
+        external delivery ID provided during creation.
+      tags:
+        - Deliveries
+      parameters:
+        - $ref: '#/components/parameters/ExternalDeliveryId'
+      responses:
+        '200':
+          description: Delivery details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delivery'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Delivery not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      operationId: updateDelivery
+      summary: Update a delivery
+      description: >-
+        Updates specified attributes of an existing delivery. Not all fields
+        can be updated after creation, and updates may be restricted based on
+        the current delivery status.
+      tags:
+        - Deliveries
+      parameters:
+        - $ref: '#/components/parameters/ExternalDeliveryId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryUpdateRequest'
+      responses:
+        '200':
+          description: Delivery updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delivery'
+        '400':
+          description: Invalid update parameters or delivery state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Delivery not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /deliveries/{external_delivery_id}/cancel:
+    put:
+      operationId: cancelDelivery
+      summary: Cancel a delivery
+      description: >-
+        Cancels an active delivery. Deliveries cannot be cancelled after a
+        Dasher has been assigned. Cancellation may incur fees depending on
+        the delivery state.
+      tags:
+        - Deliveries
+      parameters:
+        - $ref: '#/components/parameters/ExternalDeliveryId'
+      responses:
+        '200':
+          description: Delivery cancelled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delivery'
+        '400':
+          description: Delivery cannot be cancelled in current state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Delivery not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /businesses:
+    get:
+      operationId: listBusinesses
+      summary: List businesses
+      description: >-
+        Lists all businesses owned by the authenticated developer account.
+      tags:
+        - Businesses
+      responses:
+        '200':
+          description: List of businesses retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Business'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createBusiness
+      summary: Create a business
+      description: >-
+        Creates a new Drive business entity representing a legal entity or
+        owner on the DoorDash platform.
+      tags:
+        - Businesses
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusinessRequest'
+      responses:
+        '200':
+          description: Business created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /businesses/{external_business_id}:
+    get:
+      operationId: getBusiness
+      summary: Get business details
+      description: >-
+        Retrieves the details of a specific business by its external business ID.
+      tags:
+        - Businesses
+      parameters:
+        - $ref: '#/components/parameters/ExternalBusinessId'
+      responses:
+        '200':
+          description: Business details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Business not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      operationId: updateBusiness
+      summary: Update a business
+      description: >-
+        Updates the attributes of an existing business entity.
+      tags:
+        - Businesses
+      parameters:
+        - $ref: '#/components/parameters/ExternalBusinessId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusinessRequest'
+      responses:
+        '200':
+          description: Business updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Business not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /businesses/{external_business_id}/stores:
+    post:
+      operationId: createStore
+      summary: Create a store
+      description: >-
+        Creates a new store location associated with a business. Stores
+        represent individual pickup points that make deliveries.
+      tags:
+        - Stores
+      parameters:
+        - $ref: '#/components/parameters/ExternalBusinessId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreRequest'
+      responses:
+        '200':
+          description: Store created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Store'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Business not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /businesses/{external_business_id}/stores/{external_store_id}:
+    get:
+      operationId: getStore
+      summary: Get store details
+      description: >-
+        Retrieves the details of a specific store by its external store ID
+        within a given business.
+      tags:
+        - Stores
+      parameters:
+        - $ref: '#/components/parameters/ExternalBusinessId'
+        - $ref: '#/components/parameters/ExternalStoreId'
+      responses:
+        '200':
+          description: Store details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Store'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Store or business not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      operationId: updateStore
+      summary: Update a store
+      description: >-
+        Updates the attributes of an existing store location.
+      tags:
+        - Stores
+      parameters:
+        - $ref: '#/components/parameters/ExternalBusinessId'
+        - $ref: '#/components/parameters/ExternalStoreId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreRequest'
+      responses:
+        '200':
+          description: Store updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Store'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Store or business not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /addresses:
+    get:
+      operationId: getAddressSuggestions
+      summary: Get address suggestions
+      description: >-
+        Returns address auto-completion suggestions based on partial address
+        input and optional location coordinates.
+      tags:
+        - Addresses
+      parameters:
+        - name: query
+          in: query
+          required: true
+          description: >-
+            Partial address string to get suggestions for.
+          schema:
+            type: string
+        - name: latitude
+          in: query
+          required: false
+          description: >-
+            Latitude coordinate to bias results toward a location.
+          schema:
+            type: number
+            format: double
+        - name: longitude
+          in: query
+          required: false
+          description: >-
+            Longitude coordinate to bias results toward a location.
+          schema:
+            type: number
+            format: double
+      responses:
+        '200':
+          description: Address suggestions retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AddressSuggestion'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /checkout_audit_signal:
+    post:
+      operationId: sendCheckoutAuditSignal
+      summary: Send checkout audit signal
+      description: >-
+        Sends a checkout audit signal to DoorDash for tracking and analytics
+        purposes related to the delivery checkout flow.
+      tags:
+        - Deliveries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutAuditSignal'
+      responses:
+        '200':
+          description: Checkout audit signal accepted
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >-
+        JWT token signed with your DoorDash developer credentials. The token
+        must include developer_id, key_id, and aud claims.
+  parameters:
+    ExternalDeliveryId:
+      name: external_delivery_id
+      in: path
+      required: true
+      description: >-
+        The unique external delivery ID provided when creating the delivery
+        or quote.
+      schema:
+        type: string
+    ExternalBusinessId:
+      name: external_business_id
+      in: path
+      required: true
+      description: >-
+        The unique external identifier for the business.
+      schema:
+        type: string
+    ExternalStoreId:
+      name: external_store_id
+      in: path
+      required: true
+      description: >-
+        The unique external identifier for the store.
+      schema:
+        type: string
+  schemas:
+    QuoteRequest:
+      type: object
+      required:
+        - external_delivery_id
+        - pickup_address
+        - dropoff_address
+      properties:
+        external_delivery_id:
+          type: string
+          description: >-
+            A unique identifier for this delivery, provided by the caller.
+        pickup_address:
+          type: string
+          description: >-
+            The full street address for the pickup location.
+        pickup_business_name:
+          type: string
+          description: >-
+            The business name at the pickup location.
+        pickup_phone_number:
+          type: string
+          description: >-
+            The phone number at the pickup location.
+        dropoff_address:
+          type: string
+          description: >-
+            The full street address for the dropoff location.
+        dropoff_business_name:
+          type: string
+          description: >-
+            The business name at the dropoff location.
+        dropoff_phone_number:
+          type: string
+          description: >-
+            The phone number at the dropoff location.
+        order_value:
+          type: integer
+          description: >-
+            The total value of the order in cents.
+        pickup_time:
+          type: string
+          format: date-time
+          description: >-
+            The requested pickup time in UTC ISO-8601 format.
+        dropoff_time:
+          type: string
+          format: date-time
+          description: >-
+            The requested dropoff time in UTC ISO-8601 format.
+    Quote:
+      type: object
+      properties:
+        external_delivery_id:
+          type: string
+          description: >-
+            The unique external delivery ID for this quote.
+        fee:
+          type: integer
+          description: >-
+            The delivery fee in cents.
+        currency:
+          type: string
+          description: >-
+            The currency code for the fee amount.
+        delivery_time:
+          type: string
+          format: date-time
+          description: >-
+            The estimated delivery time in UTC ISO-8601 format.
+        pickup_time:
+          type: string
+          format: date-time
+          description: >-
+            The estimated pickup time in UTC ISO-8601 format.
+        expires_at:
+          type: string
+          format: date-time
+          description: >-
+            The time at which this quote expires, typically 5 minutes after
+            creation.
+    AcceptQuoteRequest:
+      type: object
+      properties:
+        tip:
+          type: integer
+          description: >-
+            Optional tip amount in cents to include with the delivery.
+    DeliveryRequest:
+      type: object
+      required:
+        - external_delivery_id
+        - pickup_address
+        - dropoff_address
+      properties:
+        external_delivery_id:
+          type: string
+          description: >-
+            A unique identifier for this delivery, provided by the caller.
+        pickup_address:
+          type: string
+          description: >-
+            The full street address for the pickup location.
+        pickup_business_name:
+          type: string
+          description: >-
+            The business name at the pickup location.
+        pickup_phone_number:
+          type: string
+          description: >-
+            The phone number at the pickup location.
+        pickup_instructions:
+          type: string
+          description: >-
+            Special instructions for the Dasher at the pickup location.
+        pickup_reference_tag:
+          type: string
+          description: >-
+            A reference tag for the pickup, such as an order number.
+        dropoff_address:
+          type: string
+          description: >-
+            The full street address for the dropoff location.
+        dropoff_business_name:
+          type: string
+          description: >-
+            The business name at the dropoff location.
+        dropoff_phone_number:
+          type: string
+          description: >-
+            The phone number of the recipient at the dropoff location.
+        dropoff_instructions:
+          type: string
+          description: >-
+            Special instructions for the Dasher at the dropoff location.
+        dropoff_contact_given_name:
+          type: string
+          description: >-
+            The first name of the dropoff contact.
+        dropoff_contact_family_name:
+          type: string
+          description: >-
+            The last name of the dropoff contact.
+        order_value:
+          type: integer
+          description: >-
+            The total value of the order in cents.
+        tip:
+          type: integer
+          description: >-
+            The tip amount in cents.
+        pickup_time:
+          type: string
+          format: date-time
+          description: >-
+            The requested pickup time in UTC ISO-8601 format.
+        dropoff_time:
+          type: string
+          format: date-time
+          description: >-
+            The requested dropoff time in UTC ISO-8601 format.
+        contains_alcohol:
+          type: boolean
+          description: >-
+            Whether the order contains alcohol, which requires age verification.
+        force_batch_id:
+          type: string
+          description: >-
+            An identifier to group deliveries together for batch assignment
+            to the same Dasher.
+        external_business_id:
+          type: string
+          description: >-
+            The external business ID to associate with this delivery.
+        external_store_id:
+          type: string
+          description: >-
+            The external store ID to associate with this delivery.
+        items:
+          type: array
+          description: >-
+            List of items included in the delivery.
+          items:
+            $ref: '#/components/schemas/DeliveryItem'
+    DeliveryUpdateRequest:
+      type: object
+      properties:
+        tip:
+          type: integer
+          description: >-
+            Updated tip amount in cents.
+        dropoff_instructions:
+          type: string
+          description: >-
+            Updated dropoff instructions for the Dasher.
+        dropoff_phone_number:
+          type: string
+          description: >-
+            Updated phone number for the dropoff contact.
+    Delivery:
+      type: object
+      properties:
+        external_delivery_id:
+          type: string
+          description: >-
+            The unique external delivery ID.
+        delivery_status:
+          type: string
+          description: >-
+            The current status of the delivery.
+          enum:
+            - created
+            - confirmed
+            - enroute_to_pickup
+            - arrived_at_pickup
+            - picked_up
+            - enroute_to_dropoff
+            - arrived_at_dropoff
+            - delivered
+            - cancelled
+            - returned
+        fee:
+          type: integer
+          description: >-
+            The delivery fee in cents.
+        currency:
+          type: string
+          description: >-
+            The currency code for monetary amounts.
+        tip:
+          type: integer
+          description: >-
+            The tip amount in cents.
+        order_value:
+          type: integer
+          description: >-
+            The total value of the order in cents.
+        pickup_address:
+          type: string
+          description: >-
+            The full street address for the pickup location.
+        pickup_business_name:
+          type: string
+          description: >-
+            The business name at the pickup location.
+        pickup_phone_number:
+          type: string
+          description: >-
+            The phone number at the pickup location.
+        pickup_instructions:
+          type: string
+          description: >-
+            Special instructions for pickup.
+        pickup_time_estimated:
+          type: string
+          format: date-time
+          description: >-
+            The estimated pickup time in UTC ISO-8601 format.
+        pickup_time_actual:
+          type: string
+          format: date-time
+          description: >-
+            The actual pickup time in UTC ISO-8601 format.
+        dropoff_address:
+          type: string
+          description: >-
+            The full street address for the dropoff location.
+        dropoff_business_name:
+          type: string
+          description: >-
+            The business name at the dropoff location.
+        dropoff_phone_number:
+          type: string
+          description: >-
+            The phone number at the dropoff location.
+        dropoff_instructions:
+          type: string
+          description: >-
+            Special instructions for dropoff.
+        dropoff_time_estimated:
+          type: string
+          format: date-time
+          description: >-
+            The estimated dropoff time in UTC ISO-8601 format.
+        dropoff_time_actual:
+          type: string
+          format: date-time
+          description: >-
+            The actual dropoff time in UTC ISO-8601 format.
+        dropoff_contact_given_name:
+          type: string
+          description: >-
+            The first name of the dropoff contact.
+        dropoff_contact_family_name:
+          type: string
+          description: >-
+            The last name of the dropoff contact.
+        dasher_id:
+          type: integer
+          description: >-
+            The unique identifier for the assigned Dasher.
+        dasher_name:
+          type: string
+          description: >-
+            The first name of the assigned Dasher.
+        dasher_phone_number:
+          type: string
+          description: >-
+            The phone number of the assigned Dasher.
+        dasher_location:
+          $ref: '#/components/schemas/Location'
+        tracking_url:
+          type: string
+          format: uri
+          description: >-
+            A URL for tracking the delivery in real time.
+        contains_alcohol:
+          type: boolean
+          description: >-
+            Whether the order contains alcohol.
+        force_batch_id:
+          type: string
+          description: >-
+            The batch identifier for grouped deliveries.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the delivery was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the delivery was last updated.
+    DeliveryItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: >-
+            The name of the item.
+        description:
+          type: string
+          description: >-
+            A description of the item.
+        quantity:
+          type: integer
+          description: >-
+            The quantity of this item.
+          minimum: 1
+        external_id:
+          type: string
+          description: >-
+            An external identifier for the item.
+        price:
+          type: integer
+          description: >-
+            The price of the item in cents.
+    Location:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: double
+          description: >-
+            Latitude coordinate.
+        lng:
+          type: number
+          format: double
+          description: >-
+            Longitude coordinate.
+    Business:
+      type: object
+      properties:
+        external_business_id:
+          type: string
+          description: >-
+            The unique external identifier for the business.
+        name:
+          type: string
+          description: >-
+            The name of the business.
+        description:
+          type: string
+          description: >-
+            A description of the business.
+    BusinessRequest:
+      type: object
+      required:
+        - external_business_id
+        - name
+      properties:
+        external_business_id:
+          type: string
+          description: >-
+            A unique external identifier for the business.
+        name:
+          type: string
+          description: >-
+            The name of the business.
+        description:
+          type: string
+          description: >-
+            A description of the business.
+    Store:
+      type: object
+      properties:
+        external_business_id:
+          type: string
+          description: >-
+            The external business ID this store belongs to.
+        external_store_id:
+          type: string
+          description: >-
+            The unique external identifier for the store.
+        name:
+          type: string
+          description: >-
+            The name of the store.
+        phone_number:
+          type: string
+          description: >-
+            The phone number for the store.
+        address:
+          type: string
+          description: >-
+            The full street address of the store.
+    StoreRequest:
+      type: object
+      required:
+        - external_store_id
+        - name
+        - address
+      properties:
+        external_store_id:
+          type: string
+          description: >-
+            A unique external identifier for the store.
+        name:
+          type: string
+          description: >-
+            The name of the store.
+        phone_number:
+          type: string
+          description: >-
+            The phone number for the store.
+        address:
+          type: string
+          description: >-
+            The full street address of the store.
+    AddressSuggestion:
+      type: object
+      properties:
+        full_address:
+          type: string
+          description: >-
+            The complete suggested address string.
+        street:
+          type: string
+          description: >-
+            The street portion of the address.
+        city:
+          type: string
+          description: >-
+            The city name.
+        state:
+          type: string
+          description: >-
+            The state or province.
+        zip_code:
+          type: string
+          description: >-
+            The postal or ZIP code.
+        country:
+          type: string
+          description: >-
+            The country code.
+    CheckoutAuditSignal:
+      type: object
+      properties:
+        external_delivery_id:
+          type: string
+          description: >-
+            The external delivery ID associated with this checkout event.
+        event_type:
+          type: string
+          description: >-
+            The type of checkout audit event.
+    Error:
+      type: object
+      properties:
+        field_errors:
+          type: array
+          description: >-
+            A list of field-level validation errors.
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: >-
+                  The name of the field with the error.
+              error:
+                type: string
+                description: >-
+                  The error message for the field.
+        message:
+          type: string
+          description: >-
+            A human-readable error message.
+        code:
+          type: string
+          description: >-
+            A machine-readable error code.

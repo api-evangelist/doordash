@@ -1,0 +1,98 @@
+asyncapi: 2.6.0
+info:
+  title: DoorDash Reporting Webhooks
+  description: >-
+    DoorDash Reporting API sends webhook notifications when report generation
+    is complete and the report is ready for download. Partners configure a
+    webhook endpoint to receive these notifications instead of polling the
+    report status endpoint.
+  version: '1.0'
+  contact:
+    name: DoorDash Developer Support
+    url: https://developer.doordash.com/en-US/
+servers:
+  partnerWebhook:
+    url: '{webhook_url}'
+    protocol: https
+    description: >-
+      The partner-provided HTTPS webhook endpoint for receiving report
+      ready notifications.
+    security:
+      - basicAuth: []
+    variables:
+      webhook_url:
+        description: >-
+          The HTTPS URL of the partner's webhook endpoint.
+channels:
+  /reports:
+    description: >-
+      DoorDash sends report ready notifications to this channel when a
+      requested report has been generated and is available for download.
+    publish:
+      operationId: receiveReportReadyWebhook
+      summary: Receive report ready webhooks
+      description: >-
+        Receives webhook notifications from DoorDash when a report has
+        been generated and is ready for download.
+      message:
+        $ref: '#/components/messages/ReportReady'
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: >-
+        Basic authentication for webhook endpoint security.
+  messages:
+    ReportReady:
+      name: ReportReady
+      title: Report Ready Event
+      summary: >-
+        A report has been generated and is ready for download.
+      payload:
+        $ref: '#/components/schemas/ReportReadyPayload'
+  schemas:
+    ReportReadyPayload:
+      type: object
+      properties:
+        report_id:
+          type: string
+          description: >-
+            The unique identifier for the report.
+        report_type:
+          type: string
+          description: >-
+            The type of report that was generated.
+          enum:
+            - financial
+            - operations
+            - menu
+            - feedback
+        status:
+          type: string
+          description: >-
+            The report processing status.
+          enum:
+            - SUCCEEDED
+            - FAILED
+        download_url:
+          type: string
+          format: uri
+          description: >-
+            A temporary URL to download the report. Only present when
+            status is SUCCEEDED.
+        error_message:
+          type: string
+          description: >-
+            Error details if report generation failed. Only present when
+            status is FAILED.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            When the report request was originally created.
+        completed_at:
+          type: string
+          format: date-time
+          description: >-
+            When the report generation completed.

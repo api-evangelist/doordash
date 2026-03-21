@@ -1,0 +1,217 @@
+openapi: 3.1.0
+info:
+  title: DoorDash Reporting API
+  description: >-
+    The DoorDash Reporting API provides approved partners with access to
+    standardized financial, operations, menu, and feedback reporting data.
+    It offers a POST endpoint for creating report requests and a GET endpoint
+    for retrieving report download links. Reports are generated asynchronously
+    and partners are notified via webhook when reports are ready for download.
+  version: '1.0'
+  contact:
+    name: DoorDash Developer Support
+    url: https://developer.doordash.com/en-US/
+  termsOfService: https://www.doordash.com/terms/
+externalDocs:
+  description: DoorDash Reporting API Documentation
+  url: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
+servers:
+  - url: https://openapi.doordash.com/dataexchange/v1
+    description: Production Server
+tags:
+  - name: Reports
+    description: >-
+      Create report requests and retrieve report download links for financial,
+      operations, menu, and feedback data.
+security:
+  - bearerAuth: []
+paths:
+  /reports:
+    post:
+      operationId: createReport
+      summary: Create a report request
+      description: >-
+        Submits a request to generate a report. Reports are processed
+        asynchronously. A successful response returns a report ID that can
+        be used to check the status and retrieve the download link. A webhook
+        notification is sent when the report is ready.
+      tags:
+        - Reports
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportRequest'
+      responses:
+        '202':
+          description: Report request accepted for processing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportRequestResponse'
+        '400':
+          description: Invalid report parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /reports/{report_id}/reportlink:
+    get:
+      operationId: getReportLink
+      summary: Get report download link
+      description: >-
+        Retrieves the status and download link for a previously requested
+        report. When the report generation is complete, the status will be
+        SUCCEEDED and a download link will be provided. The download link
+        is temporary and should be used promptly.
+      tags:
+        - Reports
+      parameters:
+        - $ref: '#/components/parameters/ReportId'
+      responses:
+        '200':
+          description: Report status and link retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportLinkResponse'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Report not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >-
+        JWT Bearer token for authenticating with the DoorDash Reporting API.
+  parameters:
+    ReportId:
+      name: report_id
+      in: path
+      required: true
+      description: >-
+        The unique identifier for the report, returned when the report
+        request was created.
+      schema:
+        type: string
+  schemas:
+    ReportRequest:
+      type: object
+      required:
+        - report_type
+        - start_date
+        - end_date
+      properties:
+        report_type:
+          type: string
+          description: >-
+            The type of report to generate.
+          enum:
+            - financial
+            - operations
+            - menu
+            - feedback
+        start_date:
+          type: string
+          format: date
+          description: >-
+            The start date for the report period in YYYY-MM-DD format.
+        end_date:
+          type: string
+          format: date
+          description: >-
+            The end date for the report period in YYYY-MM-DD format.
+        store_ids:
+          type: array
+          description: >-
+            Optional list of store IDs to filter the report by specific stores.
+          items:
+            type: string
+    ReportRequestResponse:
+      type: object
+      properties:
+        report_id:
+          type: string
+          description: >-
+            The unique identifier for the report request. Use this to check
+            status and retrieve the download link.
+        status:
+          type: string
+          description: >-
+            The current processing status of the report.
+          enum:
+            - PENDING
+            - PROCESSING
+            - SUCCEEDED
+            - FAILED
+    ReportLinkResponse:
+      type: object
+      properties:
+        report_id:
+          type: string
+          description: >-
+            The unique identifier for the report.
+        status:
+          type: string
+          description: >-
+            The current processing status of the report.
+          enum:
+            - PENDING
+            - PROCESSING
+            - SUCCEEDED
+            - FAILED
+        download_url:
+          type: string
+          format: uri
+          description: >-
+            A temporary URL to download the report. Only present when status
+            is SUCCEEDED.
+        report_type:
+          type: string
+          description: >-
+            The type of report that was generated.
+          enum:
+            - financial
+            - operations
+            - menu
+            - feedback
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            When the report request was created.
+        completed_at:
+          type: string
+          format: date-time
+          description: >-
+            When the report generation was completed. Only present when
+            status is SUCCEEDED.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: >-
+            A human-readable error message.
+        code:
+          type: string
+          description: >-
+            A machine-readable error code.

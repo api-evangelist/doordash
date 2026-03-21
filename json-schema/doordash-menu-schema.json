@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://developer.doordash.com/schemas/doordash/menu.json",
+  "title": "DoorDash Menu",
+  "description": "Represents a store menu on the DoorDash marketplace, including categories, items, option groups, and modifiers.",
+  "type": "object",
+  "required": [
+    "store_id",
+    "categories"
+  ],
+  "properties": {
+    "store_id": {
+      "type": "string",
+      "description": "The merchant-supplied store identifier."
+    },
+    "menu_id": {
+      "type": "string",
+      "description": "The unique identifier for the menu assigned by DoorDash."
+    },
+    "categories": {
+      "type": "array",
+      "description": "The menu categories containing items.",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/Category"
+      }
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the menu was last updated."
+    }
+  },
+  "$defs": {
+    "Category": {
+      "type": "object",
+      "description": "A category grouping related menu items.",
+      "required": [
+        "id",
+        "name",
+        "items"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier for this category."
+        },
+        "name": {
+          "type": "string",
+          "description": "The display name of the category."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the category."
+        },
+        "sort_id": {
+          "type": "integer",
+          "description": "The sort order for this category.",
+          "minimum": 0
+        },
+        "items": {
+          "type": "array",
+          "description": "The items in this category.",
+          "items": {
+            "$ref": "#/$defs/MenuItem"
+          }
+        }
+      }
+    },
+    "MenuItem": {
+      "type": "object",
+      "description": "A menu item available for ordering.",
+      "required": [
+        "id",
+        "name",
+        "price"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The merchant-supplied item identifier."
+        },
+        "name": {
+          "type": "string",
+          "description": "The display name of the item."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the item."
+        },
+        "price": {
+          "type": "integer",
+          "description": "The item price in cents.",
+          "minimum": 0
+        },
+        "image_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "A URL to an image of the item."
+        },
+        "is_active": {
+          "type": "boolean",
+          "description": "Whether the item is currently available for ordering."
+        },
+        "sort_id": {
+          "type": "integer",
+          "description": "The sort order for this item within its category.",
+          "minimum": 0
+        },
+        "option_groups": {
+          "type": "array",
+          "description": "Option groups (modifiers) for this item.",
+          "items": {
+            "$ref": "#/$defs/OptionGroup"
+          }
+        }
+      }
+    },
+    "OptionGroup": {
+      "type": "object",
+      "description": "A group of selectable options or modifiers for a menu item.",
+      "required": [
+        "id",
+        "name",
+        "options"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier for this option group."
+        },
+        "name": {
+          "type": "string",
+          "description": "The display name of the option group."
+        },
+        "min_selections": {
+          "type": "integer",
+          "description": "The minimum number of options that must be selected.",
+          "minimum": 0
+        },
+        "max_selections": {
+          "type": "integer",
+          "description": "The maximum number of options that can be selected.",
+          "minimum": 1
+        },
+        "options": {
+          "type": "array",
+          "description": "The available options in this group.",
+          "items": {
+            "$ref": "#/$defs/MenuOption"
+          }
+        }
+      }
+    },
+    "MenuOption": {
+      "type": "object",
+      "description": "An individual option or modifier within an option group.",
+      "required": [
+        "id",
+        "name",
+        "price"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier for this option."
+        },
+        "name": {
+          "type": "string",
+          "description": "The display name of the option."
+        },
+        "price": {
+          "type": "integer",
+          "description": "The additional price for this option in cents.",
+          "minimum": 0
+        },
+        "is_active": {
+          "type": "boolean",
+          "description": "Whether the option is currently available."
+        }
+      }
+    }
+  }
+}
