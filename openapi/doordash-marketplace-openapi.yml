@@ -19,20 +19,20 @@ servers:
   - url: https://openapi.doordash.com/marketplace/api/v1
     description: Production Server
 tags:
-  - name: Orders
-    description: >-
-      Receive, confirm, update, and manage orders placed through the DoorDash
-      marketplace.
-  - name: Menus
-    description: >-
-      Create, update, and manage menus for stores on the DoorDash marketplace.
-  - name: Stores
-    description: >-
-      Retrieve store details and manage store status on the marketplace.
   - name: Items
     description: >-
       Manage item availability and 86ing (marking items as unavailable) in
       real time.
+  - name: Menus
+    description: >-
+      Create, update, and manage menus for stores on the DoorDash marketplace.
+  - name: Orders
+    description: >-
+      Receive, confirm, update, and manage orders placed through the DoorDash
+      marketplace.
+  - name: Stores
+    description: >-
+      Retrieve store details and manage store status on the marketplace.
 security:
   - bearerAuth: []
 paths:

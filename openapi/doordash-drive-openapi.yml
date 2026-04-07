@@ -21,25 +21,25 @@ servers:
   - url: https://openapi.doordash.com/drive/v2
     description: Production Server
 tags:
-  - name: Quotes
+  - name: Addresses
     description: >-
-      Validate delivery serviceability and get pricing quotes before creating
-      a delivery.
-  - name: Deliveries
-    description: >-
-      Create, retrieve, update, and cancel on-demand deliveries fulfilled by
-      DoorDash Dashers.
+      Get address auto-completion suggestions based on partial input.
   - name: Businesses
     description: >-
       Manage business entities that represent legal entities or owners on the
       DoorDash Drive platform.
+  - name: Deliveries
+    description: >-
+      Create, retrieve, update, and cancel on-demand deliveries fulfilled by
+      DoorDash Dashers.
+  - name: Quotes
+    description: >-
+      Validate delivery serviceability and get pricing quotes before creating
+      a delivery.
   - name: Stores
     description: >-
       Manage store locations that represent individual pickup points associated
       with a business.
-  - name: Addresses
-    description: >-
-      Get address auto-completion suggestions based on partial input.
 security:
   - bearerAuth: []
 paths:

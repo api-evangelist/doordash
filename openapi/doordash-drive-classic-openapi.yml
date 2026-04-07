@@ -21,13 +21,13 @@ servers:
   - url: https://openapi.doordash.com/drive/v1
     description: Production Server
 tags:
+  - name: Businesses
+    description: >-
+      Manage business entities that represent legal entities or owners.
   - name: Deliveries
     description: >-
       Create, retrieve, update, cancel, and estimate deliveries using the
       classic API endpoints.
-  - name: Businesses
-    description: >-
-      Manage business entities that represent legal entities or owners.
   - name: Stores
     description: >-
       Manage store locations associated with businesses.

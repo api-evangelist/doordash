@@ -1,23 +1,19 @@
 aid: doordash
-url: 
-  https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/apis.yml
+url: https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/apis.yml
 apis:
   - aid: doordash:drive-api
     name: DoorDash Drive API
     tags:
       - Delivery
-      - Logistics
       - Food Delivery
-      - On-Demand
       - Last Mile
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+      - Logistics
+      - On-Demand
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://openapi.doordash.com/drive/v2
-    humanURL: 
-      https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+    humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
     properties:
-      - url: 
-          https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+      - url: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
         type: Documentation
       - type: OpenAPI
         url: openapi/doordash-drive-openapi.yml
@@ -35,18 +31,15 @@ apis:
     name: DoorDash Drive Classic API
     tags:
       - Delivery
-      - Logistics
-      - Food Delivery
       - Enterprise
+      - Food Delivery
       - Last Mile
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+      - Logistics
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://openapi.doordash.com/drive/v1
-    humanURL: 
-      https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+    humanURL: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
     properties:
-      - url: 
-          https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+      - url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
         type: Documentation
       - type: OpenAPI
         url: openapi/doordash-drive-classic-openapi.yml
@@ -60,19 +53,16 @@ apis:
   - aid: doordash:marketplace-api
     name: DoorDash Marketplace API
     tags:
+      - Food Delivery
       - Marketplace
       - Orders
       - Restaurants
-      - Food Delivery
       - Retail
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://openapi.doordash.com/marketplace
-    humanURL: 
-      https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
+    humanURL: https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
     properties:
-      - url: 
-          https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
+      - url: https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
         type: Documentation
       - type: OpenAPI
         url: openapi/doordash-marketplace-openapi.yml
@@ -89,13 +79,12 @@ apis:
   - aid: doordash:marketplace-item-management-api
     name: DoorDash Item Management API
     tags:
-      - Menus
-      - Inventory
-      - Pricing
       - Catalog
+      - Inventory
+      - Menus
+      - Pricing
       - Retail
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://openapi.doordash.com/marketplace
     humanURL: https://developer.doordash.com/en-US/api/marketplace_v2/
     properties:
@@ -114,19 +103,16 @@ apis:
   - aid: doordash:reporting-api
     name: DoorDash Reporting API
     tags:
-      - Reporting
       - Analytics
+      - Data
       - Financial
       - Operations
-      - Data
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+      - Reporting
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://openapi.doordash.com/dataexchange/v1
-    humanURL: 
-      https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
+    humanURL: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
     properties:
-      - url: 
-          https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
+      - url: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
         type: Documentation
       - type: OpenAPI
         url: openapi/doordash-reporting-openapi.yml
