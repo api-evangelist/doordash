@@ -134,7 +134,7 @@ common:
     url: json-schema/doordash-menu-schema.json
   - type: JSONSchema
     url: json-schema/doordash-report-schema.json
-modified: '2026-03-20'
+modified: '2026-04-28'
 description: >-
   Production access to the Drive API is currently restricted, and we cannot provide
   a timeline for certification following development. If you have not completed development
