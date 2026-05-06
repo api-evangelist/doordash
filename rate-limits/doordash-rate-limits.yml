@@ -4,99 +4,37 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: doordash
 providerId: doordash
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: true
 tags:
+  - Delivery
+  - Logistics
+  - Last Mile
   - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the doordash API surface. Captures per-tier quotas,
-  burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to be replaced
-  with published provider limits.
-headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+description: DoorDash Drive enforces a default platform rate limit of approximately 300 requests per 60-second
+  window per developer access key. The same limit applies to sandbox and production. For load or resiliency
+  tests, DoorDash requires advance notice (at least 3 days) via the Support page so they can adjust the
+  limit.
+sources:
+  - https://developer.doordash.com/en-US/docs/drive/overview/faqs/
+  - https://developer.doordash.com/en-US/blog/FAQ/
 responseCodes:
   throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
+  - name: Drive API default
+    scope: access-key
     metric: requests_per_minute
-    limit: 10
-    burst: 20
+    limit: 300
     timeFrame: minute
-    applies:
-      - DoorDash Drive API
-      - DoorDash Drive Classic API
-      - DoorDash Marketplace API
-      - DoorDash Item Management API
-      - DoorDash Reporting API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - DoorDash Drive API
-      - DoorDash Drive Classic API
-      - DoorDash Marketplace API
-      - DoorDash Item Management API
-      - DoorDash Reporting API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - DoorDash Drive API
-      - DoorDash Drive Classic API
-      - DoorDash Marketplace API
-      - DoorDash Item Management API
-      - DoorDash Reporting API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - DoorDash Drive API
-      - DoorDash Drive Classic API
-      - DoorDash Marketplace API
-      - DoorDash Item Management API
-      - DoorDash Reporting API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - DoorDash Drive API
-      - DoorDash Drive Classic API
-      - DoorDash Marketplace API
-      - DoorDash Item Management API
-      - DoorDash Reporting API
+    notes: Documented as ~300 requests in any 60-second window. Same limit applies to sandbox and production.
 policies:
   - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
-maintainers: []
+    description: Clients should implement exponential backoff with jitter on 429 responses.
+  - name: Load Testing Coordination
+    description: Notify DoorDash via the Support page at least 3 days before any load or resiliency testing
+      so the rate limit can be adjusted.
+  - name: Sandbox Parity
+    description: Sandbox and production share the same throttle; sandbox keys are free for experimentation.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
