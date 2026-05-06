@@ -1,0 +1,398 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DoorDash Drive Classic API
+  description: The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware
+    providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints
+    for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash
+    recommends new integrations use the newer Drive API (v2) instead.
+  tags:
+  - Doordash
+  - API
+  created: '2026-05-06'
+  modified: '2026-05-06'
+capability:
+  consumes:
+  - type: http
+    namespace: doordash
+    baseUri: https://openapi.doordash.com/drive/v1
+    description: DoorDash Drive Classic API HTTP API.
+    authentication:
+      type: bearer
+      token: '{{DOORDASH_TOKEN}}'
+    resources:
+    - name: estimates
+      path: /estimates
+      operations:
+      - name: createdeliveryestimate
+        method: POST
+        description: Create a delivery estimate
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deliveries
+      path: /deliveries
+      operations:
+      - name: createdelivery
+        method: POST
+        description: Create a delivery
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deliveries-external-delivery-id
+      path: /deliveries/{external_delivery_id}
+      operations:
+      - name: getdelivery
+        method: GET
+        description: Get delivery details
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatedelivery
+        method: PATCH
+        description: Update a delivery
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deliveries-external-delivery-id-cancel
+      path: /deliveries/{external_delivery_id}/cancel
+      operations:
+      - name: canceldelivery
+        method: PUT
+        description: Cancel a delivery
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: businesses
+      path: /businesses
+      operations:
+      - name: listbusinesses
+        method: GET
+        description: List businesses
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createbusiness
+        method: POST
+        description: Create a business
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: businesses-external-business-id
+      path: /businesses/{external_business_id}
+      operations:
+      - name: getbusiness
+        method: GET
+        description: Get business details
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatebusiness
+        method: PATCH
+        description: Update a business
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: businesses-external-business-id-stores
+      path: /businesses/{external_business_id}/stores
+      operations:
+      - name: createstore
+        method: POST
+        description: Create a store
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: businesses-external-business-id-stores-external-
+      path: /businesses/{external_business_id}/stores/{external_store_id}
+      operations:
+      - name: getstore
+        method: GET
+        description: Get store details
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updatestore
+        method: PATCH
+        description: Update a store
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    port: 8080
+    namespace: doordash-rest
+    description: REST adapter for DoorDash Drive Classic API.
+    resources:
+    - path: /estimates
+      name: createdeliveryestimate
+      operations:
+      - method: POST
+        name: createdeliveryestimate
+        description: Create a delivery estimate
+        call: doordash.createdeliveryestimate
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /deliveries
+      name: createdelivery
+      operations:
+      - method: POST
+        name: createdelivery
+        description: Create a delivery
+        call: doordash.createdelivery
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /deliveries/{external_delivery_id}
+      name: getdelivery
+      operations:
+      - method: GET
+        name: getdelivery
+        description: Get delivery details
+        call: doordash.getdelivery
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /deliveries/{external_delivery_id}
+      name: updatedelivery
+      operations:
+      - method: PATCH
+        name: updatedelivery
+        description: Update a delivery
+        call: doordash.updatedelivery
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /deliveries/{external_delivery_id}/cancel
+      name: canceldelivery
+      operations:
+      - method: PUT
+        name: canceldelivery
+        description: Cancel a delivery
+        call: doordash.canceldelivery
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /businesses
+      name: listbusinesses
+      operations:
+      - method: GET
+        name: listbusinesses
+        description: List businesses
+        call: doordash.listbusinesses
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /businesses
+      name: createbusiness
+      operations:
+      - method: POST
+        name: createbusiness
+        description: Create a business
+        call: doordash.createbusiness
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /businesses/{external_business_id}
+      name: getbusiness
+      operations:
+      - method: GET
+        name: getbusiness
+        description: Get business details
+        call: doordash.getbusiness
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /businesses/{external_business_id}
+      name: updatebusiness
+      operations:
+      - method: PATCH
+        name: updatebusiness
+        description: Update a business
+        call: doordash.updatebusiness
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /businesses/{external_business_id}/stores
+      name: createstore
+      operations:
+      - method: POST
+        name: createstore
+        description: Create a store
+        call: doordash.createstore
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /businesses/{external_business_id}/stores/{external_store_id}
+      name: getstore
+      operations:
+      - method: GET
+        name: getstore
+        description: Get store details
+        call: doordash.getstore
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /businesses/{external_business_id}/stores/{external_store_id}
+      name: updatestore
+      operations:
+      - method: PATCH
+        name: updatestore
+        description: Update a store
+        call: doordash.updatestore
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: doordash-mcp
+    transport: http
+    description: MCP adapter for DoorDash Drive Classic API for AI agent use.
+    tools:
+    - name: createdeliveryestimate
+      description: Create a delivery estimate
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: doordash.createdeliveryestimate
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createdelivery
+      description: Create a delivery
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: doordash.createdelivery
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getdelivery
+      description: Get delivery details
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: doordash.getdelivery
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatedelivery
+      description: Update a delivery
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: doordash.updatedelivery
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: canceldelivery
+      description: Cancel a delivery
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: doordash.canceldelivery
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: listbusinesses
+      description: List businesses
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: doordash.listbusinesses
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createbusiness
+      description: Create a business
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: doordash.createbusiness
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getbusiness
+      description: Get business details
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: doordash.getbusiness
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatebusiness
+      description: Update a business
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: doordash.updatebusiness
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: createstore
+      description: Create a store
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: doordash.createstore
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: getstore
+      description: Get store details
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: doordash.getstore
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: updatestore
+      description: Update a store
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: doordash.updatestore
+      outputParameters:
+      - type: object
+        mapping: $.
+binds:
+- namespace: env
+  keys:
+    DOORDASH_TOKEN: DOORDASH_TOKEN
