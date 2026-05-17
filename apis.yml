@@ -124,7 +124,7 @@ apis:
       creating report requests and a GET endpoint for retrieving report download links,
       along with webhook notifications when reports are ready.
 common:
-  - type: JSON-LD
+  - type: JSONLD
     url: json-ld/doordash-context.jsonld
   - type: JSONSchema
     url: json-schema/doordash-delivery-schema.json
