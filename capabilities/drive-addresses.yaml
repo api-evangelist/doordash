@@ -1,0 +1,92 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DoorDash Drive API — Addresses
+  description: 'DoorDash Drive API — Addresses. 1 operations. Lead operation: Get address suggestions. Self-contained Naftiko
+    capability covering one Doordash business surface.'
+  tags:
+  - Doordash
+  - Addresses
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    DOORDASH_API_KEY: DOORDASH_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: drive-addresses
+    baseUri: https://openapi.doordash.com/drive/v2
+    description: DoorDash Drive API — Addresses business capability. Self-contained, no shared references.
+    resources:
+    - name: addresses
+      path: /addresses
+      operations:
+      - name: getaddresssuggestions
+        method: GET
+        description: Get address suggestions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: query
+          in: query
+          type: string
+          description: Partial address string to get suggestions for.
+          required: true
+        - name: latitude
+          in: query
+          type: number
+          description: Latitude coordinate to bias results toward a location.
+        - name: longitude
+          in: query
+          type: number
+          description: Longitude coordinate to bias results toward a location.
+    authentication:
+      type: bearer
+      token: '{{env.DOORDASH_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: drive-addresses-rest
+    port: 8080
+    description: REST adapter for DoorDash Drive API — Addresses. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/addresses
+      name: addresses
+      description: REST surface for addresses.
+      operations:
+      - method: GET
+        name: getaddresssuggestions
+        description: Get address suggestions
+        call: drive-addresses.getaddresssuggestions
+        with:
+          query: rest.query
+          latitude: rest.latitude
+          longitude: rest.longitude
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: drive-addresses-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DoorDash Drive API — Addresses. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: get-address-suggestions
+      description: Get address suggestions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: drive-addresses.getaddresssuggestions
+      with:
+        query: tools.query
+        latitude: tools.latitude
+        longitude: tools.longitude
+      outputParameters:
+      - type: object
+        mapping: $.
