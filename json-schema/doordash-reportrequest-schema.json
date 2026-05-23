@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ReportRequest",
+  "title": "ReportRequest",
+  "type": "object",
+  "required": [
+    "report_type",
+    "start_date",
+    "end_date"
+  ],
+  "properties": {
+    "report_type": {
+      "type": "string",
+      "description": "The type of report to generate.",
+      "enum": [
+        "financial",
+        "operations",
+        "menu",
+        "feedback"
+      ]
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date",
+      "description": "The start date for the report period in YYYY-MM-DD format."
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date",
+      "description": "The end date for the report period in YYYY-MM-DD format."
+    },
+    "store_ids": {
+      "type": "array",
+      "description": "Optional list of store IDs to filter the report by specific stores.",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

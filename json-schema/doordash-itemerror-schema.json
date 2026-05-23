@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ItemError",
+  "title": "ItemError",
+  "type": "object",
+  "properties": {
+    "merchant_supplied_id": {
+      "type": "string",
+      "description": "The item identifier that had an error."
+    },
+    "message": {
+      "type": "string",
+      "description": "The error message."
+    },
+    "code": {
+      "type": "string",
+      "description": "A machine-readable error code."
+    }
+  }
+}

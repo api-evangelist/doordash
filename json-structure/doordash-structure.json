@@ -1,0 +1,252 @@
+{
+  "provider": "Doordash",
+  "providerId": "doordash",
+  "kind": "json-structure",
+  "description": "Structural overview of the Doordash API surface; extracted from openapi/.",
+  "schemaCount": 15,
+  "operationCount": 15,
+  "schemas": [
+    {
+      "name": "QuoteRequest",
+      "type": "object",
+      "propertyCount": 10,
+      "required": [
+        "external_delivery_id",
+        "pickup_address",
+        "dropoff_address"
+      ]
+    },
+    {
+      "name": "Quote",
+      "type": "object",
+      "propertyCount": 6,
+      "required": []
+    },
+    {
+      "name": "AcceptQuoteRequest",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    },
+    {
+      "name": "DeliveryRequest",
+      "type": "object",
+      "propertyCount": 21,
+      "required": [
+        "external_delivery_id",
+        "pickup_address",
+        "dropoff_address"
+      ]
+    },
+    {
+      "name": "DeliveryUpdateRequest",
+      "type": "object",
+      "propertyCount": 3,
+      "required": []
+    },
+    {
+      "name": "Delivery",
+      "type": "object",
+      "propertyCount": 29,
+      "required": []
+    },
+    {
+      "name": "DeliveryItem",
+      "type": "object",
+      "propertyCount": 5,
+      "required": []
+    },
+    {
+      "name": "Location",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "Business",
+      "type": "object",
+      "propertyCount": 3,
+      "required": []
+    },
+    {
+      "name": "BusinessRequest",
+      "type": "object",
+      "propertyCount": 3,
+      "required": [
+        "external_business_id",
+        "name"
+      ]
+    },
+    {
+      "name": "Store",
+      "type": "object",
+      "propertyCount": 5,
+      "required": []
+    },
+    {
+      "name": "StoreRequest",
+      "type": "object",
+      "propertyCount": 4,
+      "required": [
+        "external_store_id",
+        "name",
+        "address"
+      ]
+    },
+    {
+      "name": "AddressSuggestion",
+      "type": "object",
+      "propertyCount": 6,
+      "required": []
+    },
+    {
+      "name": "CheckoutAuditSignal",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "Error",
+      "type": "object",
+      "propertyCount": 3,
+      "required": []
+    }
+  ],
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/quotes",
+      "operationId": "createDeliveryQuote",
+      "summary": "Create a delivery quote",
+      "tags": [
+        "Quotes"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/quotes/{external_delivery_id}/accept",
+      "operationId": "acceptDeliveryQuote",
+      "summary": "Accept a delivery quote",
+      "tags": [
+        "Quotes"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/deliveries",
+      "operationId": "createDelivery",
+      "summary": "Create a delivery",
+      "tags": [
+        "Deliveries"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/deliveries/{external_delivery_id}",
+      "operationId": "getDelivery",
+      "summary": "Get delivery details",
+      "tags": [
+        "Deliveries"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/deliveries/{external_delivery_id}",
+      "operationId": "updateDelivery",
+      "summary": "Update a delivery",
+      "tags": [
+        "Deliveries"
+      ]
+    },
+    {
+      "method": "PUT",
+      "path": "/deliveries/{external_delivery_id}/cancel",
+      "operationId": "cancelDelivery",
+      "summary": "Cancel a delivery",
+      "tags": [
+        "Deliveries"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/businesses",
+      "operationId": "listBusinesses",
+      "summary": "List businesses",
+      "tags": [
+        "Businesses"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/businesses",
+      "operationId": "createBusiness",
+      "summary": "Create a business",
+      "tags": [
+        "Businesses"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/businesses/{external_business_id}",
+      "operationId": "getBusiness",
+      "summary": "Get business details",
+      "tags": [
+        "Businesses"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/businesses/{external_business_id}",
+      "operationId": "updateBusiness",
+      "summary": "Update a business",
+      "tags": [
+        "Businesses"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/businesses/{external_business_id}/stores",
+      "operationId": "createStore",
+      "summary": "Create a store",
+      "tags": [
+        "Stores"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/businesses/{external_business_id}/stores/{external_store_id}",
+      "operationId": "getStore",
+      "summary": "Get store details",
+      "tags": [
+        "Stores"
+      ]
+    },
+    {
+      "method": "PATCH",
+      "path": "/businesses/{external_business_id}/stores/{external_store_id}",
+      "operationId": "updateStore",
+      "summary": "Update a store",
+      "tags": [
+        "Stores"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/addresses",
+      "operationId": "getAddressSuggestions",
+      "summary": "Get address suggestions",
+      "tags": [
+        "Addresses"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/checkout_audit_signal",
+      "operationId": "sendCheckoutAuditSignal",
+      "summary": "Send checkout audit signal",
+      "tags": [
+        "Deliveries"
+      ]
+    }
+  ]
+}

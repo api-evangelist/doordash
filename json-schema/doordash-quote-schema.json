@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Quote",
+  "title": "Quote",
+  "type": "object",
+  "properties": {
+    "external_delivery_id": {
+      "type": "string",
+      "description": "The unique external delivery ID for this quote."
+    },
+    "fee": {
+      "type": "integer",
+      "description": "The delivery fee in cents."
+    },
+    "currency": {
+      "type": "string",
+      "description": "The currency code for the fee amount."
+    },
+    "delivery_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The estimated delivery time in UTC ISO-8601 format."
+    },
+    "pickup_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The estimated pickup time in UTC ISO-8601 format."
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The time at which this quote expires, typically 5 minutes after creation."
+    }
+  }
+}

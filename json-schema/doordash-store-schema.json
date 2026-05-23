@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Store",
+  "title": "Store",
+  "type": "object",
+  "properties": {
+    "external_business_id": {
+      "type": "string",
+      "description": "The external business ID this store belongs to."
+    },
+    "external_store_id": {
+      "type": "string",
+      "description": "The unique external identifier for the store."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the store."
+    },
+    "phone_number": {
+      "type": "string",
+      "description": "The phone number for the store."
+    },
+    "address": {
+      "type": "string",
+      "description": "The full street address of the store."
+    }
+  }
+}

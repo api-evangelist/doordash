@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Error",
+  "title": "Error",
+  "type": "object",
+  "properties": {
+    "message": {
+      "type": "string",
+      "description": "A human-readable error message."
+    },
+    "code": {
+      "type": "string",
+      "description": "A machine-readable error code."
+    },
+    "field_errors": {
+      "type": "array",
+      "description": "A list of field-level validation errors.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "The field with the error."
+          },
+          "error": {
+            "type": "string",
+            "description": "The error message."
+          }
+        }
+      }
+    }
+  }
+}

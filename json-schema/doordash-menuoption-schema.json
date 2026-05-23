@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/MenuOption",
+  "title": "MenuOption",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "price"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for this option."
+    },
+    "name": {
+      "type": "string",
+      "description": "The display name of the option."
+    },
+    "price": {
+      "type": "integer",
+      "description": "The additional price for this option in cents."
+    },
+    "is_active": {
+      "type": "boolean",
+      "description": "Whether the option is currently available."
+    }
+  }
+}

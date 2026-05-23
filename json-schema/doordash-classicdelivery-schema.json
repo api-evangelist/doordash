@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ClassicDelivery",
+  "title": "ClassicDelivery",
+  "type": "object",
+  "properties": {
+    "external_delivery_id": {
+      "type": "string",
+      "description": "The unique external delivery ID."
+    },
+    "delivery_status": {
+      "type": "string",
+      "description": "The current status of the delivery.",
+      "enum": [
+        "created",
+        "confirmed",
+        "enroute_to_pickup",
+        "arrived_at_pickup",
+        "picked_up",
+        "enroute_to_dropoff",
+        "arrived_at_dropoff",
+        "delivered",
+        "cancelled",
+        "returned"
+      ]
+    },
+    "fee": {
+      "type": "integer",
+      "description": "The delivery fee in cents."
+    },
+    "currency": {
+      "type": "string",
+      "description": "The currency code."
+    },
+    "tip": {
+      "type": "integer",
+      "description": "The tip amount in cents."
+    },
+    "pickup_address": {
+      "type": "string",
+      "description": "The pickup address."
+    },
+    "dropoff_address": {
+      "type": "string",
+      "description": "The dropoff address."
+    },
+    "pickup_time_estimated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The estimated pickup time."
+    },
+    "pickup_time_actual": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The actual pickup time."
+    },
+    "dropoff_time_estimated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The estimated dropoff time."
+    },
+    "dropoff_time_actual": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The actual dropoff time."
+    },
+    "dasher_id": {
+      "type": "integer",
+      "description": "The assigned Dasher's ID."
+    },
+    "dasher_name": {
+      "type": "string",
+      "description": "The assigned Dasher's first name."
+    },
+    "tracking_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "A URL for tracking the delivery."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the delivery was created."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the delivery was last updated."
+    }
+  }
+}

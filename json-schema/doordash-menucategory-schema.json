@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/MenuCategory",
+  "title": "MenuCategory",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "items"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for this category."
+    },
+    "name": {
+      "type": "string",
+      "description": "The display name of the category."
+    },
+    "description": {
+      "type": "string",
+      "description": "A description of the category."
+    },
+    "sort_id": {
+      "type": "integer",
+      "description": "The sort order for this category."
+    },
+    "items": {
+      "type": "array",
+      "description": "The items in this category.",
+      "items": {
+        "$ref": "#/components/schemas/MenuItem"
+      }
+    }
+  }
+}

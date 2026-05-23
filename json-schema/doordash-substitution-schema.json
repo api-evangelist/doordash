@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Substitution",
+  "title": "Substitution",
+  "type": "object",
+  "properties": {
+    "original_item_id": {
+      "type": "string",
+      "description": "The ID of the original item to substitute."
+    },
+    "substitute_item_id": {
+      "type": "string",
+      "description": "The ID of the substitute item."
+    },
+    "substitute_item_name": {
+      "type": "string",
+      "description": "The name of the substitute item."
+    },
+    "substitute_item_price": {
+      "type": "integer",
+      "description": "The price of the substitute item in cents."
+    }
+  }
+}

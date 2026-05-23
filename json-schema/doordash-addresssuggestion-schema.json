@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/AddressSuggestion",
+  "title": "AddressSuggestion",
+  "type": "object",
+  "properties": {
+    "full_address": {
+      "type": "string",
+      "description": "The complete suggested address string."
+    },
+    "street": {
+      "type": "string",
+      "description": "The street portion of the address."
+    },
+    "city": {
+      "type": "string",
+      "description": "The city name."
+    },
+    "state": {
+      "type": "string",
+      "description": "The state or province."
+    },
+    "zip_code": {
+      "type": "string",
+      "description": "The postal or ZIP code."
+    },
+    "country": {
+      "type": "string",
+      "description": "The country code."
+    }
+  }
+}

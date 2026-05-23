@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/StoreItemsRequest",
+  "title": "StoreItemsRequest",
+  "type": "object",
+  "required": [
+    "items"
+  ],
+  "properties": {
+    "items": {
+      "type": "array",
+      "description": "The store-level item inventory and pricing data.",
+      "items": {
+        "$ref": "#/components/schemas/StoreItem"
+      }
+    }
+  }
+}

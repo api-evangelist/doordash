@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ItemStatusUpdate",
+  "title": "ItemStatusUpdate",
+  "type": "object",
+  "required": [
+    "items"
+  ],
+  "properties": {
+    "items": {
+      "type": "array",
+      "description": "The items to update availability for.",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "is_available"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The merchant-supplied item identifier."
+          },
+          "is_available": {
+            "type": "boolean",
+            "description": "Whether the item is available for ordering."
+          }
+        }
+      }
+    }
+  }
+}

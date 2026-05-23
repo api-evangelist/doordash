@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/StoreStatusUpdate",
+  "title": "StoreStatusUpdate",
+  "type": "object",
+  "required": [
+    "status"
+  ],
+  "properties": {
+    "status": {
+      "type": "string",
+      "description": "The new store status.",
+      "enum": [
+        "open",
+        "closed",
+        "temporarily_closed"
+      ]
+    },
+    "reason": {
+      "type": "string",
+      "description": "The reason for the status change."
+    }
+  }
+}

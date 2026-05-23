@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/MenuResponse",
+  "title": "MenuResponse",
+  "type": "object",
+  "properties": {
+    "menu_id": {
+      "type": "string",
+      "description": "The unique identifier for the menu request."
+    },
+    "status": {
+      "type": "string",
+      "description": "The processing status of the menu request.",
+      "enum": [
+        "received",
+        "processing",
+        "completed",
+        "failed"
+      ]
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/CheckoutAuditSignal",
+  "title": "CheckoutAuditSignal",
+  "type": "object",
+  "properties": {
+    "external_delivery_id": {
+      "type": "string",
+      "description": "The external delivery ID associated with this checkout event."
+    },
+    "event_type": {
+      "type": "string",
+      "description": "The type of checkout audit event."
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/CancelledItem",
+  "title": "CancelledItem",
+  "type": "object",
+  "properties": {
+    "item_id": {
+      "type": "string",
+      "description": "The ID of the item to cancel."
+    },
+    "reason": {
+      "type": "string",
+      "description": "The reason for cancellation."
+    }
+  }
+}

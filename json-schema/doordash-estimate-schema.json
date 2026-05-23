@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Estimate",
+  "title": "Estimate",
+  "type": "object",
+  "properties": {
+    "fee": {
+      "type": "integer",
+      "description": "The estimated delivery fee in cents."
+    },
+    "currency": {
+      "type": "string",
+      "description": "The currency code for the fee amount."
+    },
+    "pickup_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The estimated pickup time."
+    },
+    "dropoff_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The estimated dropoff time."
+    },
+    "delivery_duration": {
+      "type": "integer",
+      "description": "The estimated delivery duration in seconds."
+    }
+  }
+}

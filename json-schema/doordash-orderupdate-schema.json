@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/OrderUpdate",
+  "title": "OrderUpdate",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "description": "The updated order status.",
+      "enum": [
+        "confirmed",
+        "being_prepared",
+        "ready_for_pickup",
+        "cancelled"
+      ]
+    },
+    "cancelled_items": {
+      "type": "array",
+      "description": "Items to cancel from the order.",
+      "items": {
+        "$ref": "#/components/schemas/CancelledItem"
+      }
+    },
+    "substitutions": {
+      "type": "array",
+      "description": "Item substitutions for the order.",
+      "items": {
+        "$ref": "#/components/schemas/Substitution"
+      }
+    }
+  }
+}
