@@ -1,0 +1,12 @@
+{
+  "external_delivery_id": "D-12345",
+  "pickup_address": "901 Market St, San Francisco, CA 94105",
+  "pickup_business_name": "Acme Pickup Store",
+  "pickup_phone_number": "+15555551234",
+  "dropoff_address": "901 Market St, San Francisco, CA 94105",
+  "dropoff_business_name": "Acme Pickup Store",
+  "dropoff_phone_number": "+15555551234",
+  "order_value": 42,
+  "pickup_time": "2026-06-02T14:30:00Z",
+  "dropoff_time": "2026-06-02T14:30:00Z"
+}

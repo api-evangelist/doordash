@@ -1,0 +1,187 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DoorDash Drive API — Businesses
+  description: 'DoorDash Drive API — Businesses. 4 operation(s). Lead operation: List Businesses. Self-contained Naftiko capability covering one DoorDash business surface.'
+  tags:
+  - DoorDash
+  - Drive
+  - Businesses
+  created: '2026-06-02'
+  modified: '2026-06-02'
+binds:
+- namespace: env
+  keys:
+    DOORDASH_JWT: DOORDASH_JWT
+capability:
+  consumes:
+  - type: http
+    namespace: drive-businesses
+    baseUri: https://openapi.doordash.com/drive/v2
+    description: DoorDash Drive API — Businesses business capability. Self-contained, no shared references.
+    authentication:
+      type: bearer
+      token: '{{env.DOORDASH_JWT}}'
+    resources:
+    - name: businesses
+      path: /businesses
+      operations:
+      - name: listBusinesses
+        method: GET
+        description: List Businesses
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: createBusiness
+        method: POST
+        description: Create a Business
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request payload.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: businesses-external-business-id
+      path: /businesses/{external_business_id}
+      operations:
+      - name: getBusiness
+        method: GET
+        description: Get Business Details
+        inputParameters:
+        - name: external_business_id
+          in: path
+          type: string
+          required: true
+          description: The unique external identifier for the business.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateBusiness
+        method: PATCH
+        description: Update a Business
+        inputParameters:
+        - name: external_business_id
+          in: path
+          type: string
+          required: true
+          description: The unique external identifier for the business.
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request payload.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: drive-businesses-rest
+    port: 8080
+    description: REST adapter for DoorDash Drive API — Businesses. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/businesses
+      name: businesses
+      description: REST surface for /v1/businesses.
+      operations:
+      - method: GET
+        name: listBusinesses
+        description: List Businesses
+        call: drive-businesses.listBusinesses
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: createBusiness
+        description: Create a Business
+        call: drive-businesses.createBusiness
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/businesses/{external-business-id}
+      name: businesses-external-business-id
+      description: REST surface for /v1/businesses/{external-business-id}.
+      operations:
+      - method: GET
+        name: getBusiness
+        description: Get Business Details
+        call: drive-businesses.getBusiness
+        with:
+          external_business_id: rest.external_business_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updateBusiness
+        description: Update a Business
+        call: drive-businesses.updateBusiness
+        with:
+          external_business_id: rest.external_business_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: drive-businesses-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DoorDash Drive API — Businesses. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: list-businesses
+      description: List Businesses
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: drive-businesses.listBusinesses
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-business
+      description: Create a Business
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: drive-businesses.createBusiness
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-business-details
+      description: Get Business Details
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: drive-businesses.getBusiness
+      with:
+        external_business_id: tools.external_business_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-business
+      description: Update a Business
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: drive-businesses.updateBusiness
+      with:
+        external_business_id: tools.external_business_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

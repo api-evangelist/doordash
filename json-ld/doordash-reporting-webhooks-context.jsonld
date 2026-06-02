@@ -1,0 +1,35 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "dd": "https://developer.doordash.com/schemas/",
+    "schema": "https://schema.org/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "ReportReadyPayload": "dd:ReportReadyPayload",
+    "reportId": {
+      "@id": "dd:report_id",
+      "@type": "xsd:string"
+    },
+    "reportType": {
+      "@id": "dd:report_type",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "dd:status",
+      "@type": "xsd:string"
+    },
+    "downloadUrl": {
+      "@id": "dd:download_url",
+      "@type": "@id"
+    },
+    "errorMessage": {
+      "@id": "dd:error_message",
+      "@type": "xsd:string"
+    },
+    "createdAt": "schema:dateCreated",
+    "completedAt": {
+      "@id": "dd:completed_at",
+      "@type": "xsd:dateTime"
+    }
+  }
+}

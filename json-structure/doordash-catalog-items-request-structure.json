@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-catalog-items-request-structure.json",
+  "name": "CatalogItemsRequest",
+  "description": "CatalogItemsRequest structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "description": "The items to add or update in the catalog.",
+      "items": {
+        "$ref": "#/components/schemas/CatalogItem"
+      }
+    }
+  },
+  "required": [
+    "items"
+  ]
+}

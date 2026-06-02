@@ -1,0 +1,8 @@
+{
+  "event_type": "menu_created",
+  "menu_id": "D-12345",
+  "store_id": "D-12345",
+  "status": "completed",
+  "error_message": "example",
+  "processed_at": "2026-06-02T14:30:00Z"
+}

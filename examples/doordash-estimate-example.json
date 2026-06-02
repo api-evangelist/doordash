@@ -1,0 +1,7 @@
+{
+  "fee": 42,
+  "currency": "USD",
+  "pickup_time": "2026-06-02T14:30:00Z",
+  "dropoff_time": "2026-06-02T14:30:00Z",
+  "delivery_duration": 42
+}

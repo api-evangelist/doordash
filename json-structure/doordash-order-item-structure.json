@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-order-item-structure.json",
+  "name": "OrderItem",
+  "description": "OrderItem structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique item identifier within the order.",
+      "example": "D-12345"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the item.",
+      "example": "Acme Pickup Store"
+    },
+    "quantity": {
+      "type": "int32",
+      "description": "The quantity ordered.",
+      "minimum": 1,
+      "example": 1
+    },
+    "price": {
+      "type": "int32",
+      "description": "The item price in cents.",
+      "example": 42
+    },
+    "special_instructions": {
+      "type": "string",
+      "description": "Special instructions for this item.",
+      "example": "Leave at the front desk."
+    },
+    "options": {
+      "type": "array",
+      "description": "Selected options for the item.",
+      "items": {
+        "$ref": "#/components/schemas/OrderItemOption"
+      }
+    }
+  }
+}

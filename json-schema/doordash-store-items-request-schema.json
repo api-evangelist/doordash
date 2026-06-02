@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-schema/doordash-store-items-request-schema.json",
+  "title": "StoreItemsRequest",
+  "description": "StoreItemsRequest schema from DoorDash API",
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "description": "The store-level item inventory and pricing data.",
+      "items": {
+        "$ref": "#/components/schemas/StoreItem"
+      }
+    }
+  },
+  "required": [
+    "items"
+  ]
+}

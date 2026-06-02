@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-order-webhook-payload-structure.json",
+  "name": "OrderWebhookPayload",
+  "description": "OrderWebhookPayload structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "event_type": {
+      "type": "string",
+      "description": "The type of order event.",
+      "enum": [
+        "new_order",
+        "order_cancelled"
+      ],
+      "example": "new_order"
+    },
+    "order_id": {
+      "type": "string",
+      "description": "The unique DoorDash order identifier.",
+      "example": "D-12345"
+    },
+    "store_id": {
+      "type": "string",
+      "description": "The merchant-supplied store identifier.",
+      "example": "D-12345"
+    },
+    "status": {
+      "type": "string",
+      "description": "The order status.",
+      "example": "active"
+    },
+    "subtotal": {
+      "type": "int32",
+      "description": "The order subtotal in cents.",
+      "example": 42
+    },
+    "tax": {
+      "type": "int32",
+      "description": "The tax amount in cents.",
+      "example": 42
+    },
+    "tip": {
+      "type": "int32",
+      "description": "The tip amount in cents.",
+      "example": 42
+    },
+    "items": {
+      "type": "array",
+      "description": "The items in the order.",
+      "items": {
+        "$ref": "#/components/schemas/OrderItem"
+      }
+    },
+    "customer": {
+      "$ref": "#/components/schemas/Customer"
+    },
+    "delivery_address": {
+      "type": "string",
+      "description": "The delivery address.",
+      "example": "901 Market St, San Francisco, CA 94105"
+    },
+    "special_instructions": {
+      "type": "string",
+      "description": "Special instructions from the customer.",
+      "example": "Leave at the front desk."
+    },
+    "estimated_pickup_time": {
+      "type": "datetime",
+      "description": "The estimated time the Dasher will arrive for pickup.",
+      "example": "2026-06-02T14:30:00Z"
+    },
+    "created_at": {
+      "type": "datetime",
+      "description": "When the order was created.",
+      "example": "2026-06-02T14:30:00Z"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-schema/doordash-delivery-item-schema.json",
+  "title": "DeliveryItem",
+  "description": "DeliveryItem schema from DoorDash API",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the item.",
+      "example": "Acme Pickup Store"
+    },
+    "description": {
+      "type": "string",
+      "description": "A description of the item.",
+      "example": "Leave at the front desk."
+    },
+    "quantity": {
+      "type": "integer",
+      "description": "The quantity of this item.",
+      "minimum": 1,
+      "example": 1
+    },
+    "external_id": {
+      "type": "string",
+      "description": "An external identifier for the item.",
+      "example": "D-12345"
+    },
+    "price": {
+      "type": "integer",
+      "description": "The price of the item in cents.",
+      "example": 42
+    }
+  }
+}

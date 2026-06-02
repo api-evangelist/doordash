@@ -1,0 +1,85 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DoorDash Marketplace API — Orders
+  description: 'DoorDash Marketplace API — Orders. 1 operation(s). Lead operation: Update an Order. Self-contained Naftiko capability covering one DoorDash business surface.'
+  tags:
+  - DoorDash
+  - Marketplace
+  - Orders
+  created: '2026-06-02'
+  modified: '2026-06-02'
+binds:
+- namespace: env
+  keys:
+    DOORDASH_JWT: DOORDASH_JWT
+capability:
+  consumes:
+  - type: http
+    namespace: marketplace-orders
+    baseUri: https://openapi.doordash.com/marketplace/api/v1
+    description: DoorDash Marketplace API — Orders business capability. Self-contained, no shared references.
+    authentication:
+      type: bearer
+      token: '{{env.DOORDASH_JWT}}'
+    resources:
+    - name: orders-order-id
+      path: /orders/{order_id}
+      operations:
+      - name: updateOrder
+        method: PATCH
+        description: Update an Order
+        inputParameters:
+        - name: order_id
+          in: path
+          type: string
+          required: true
+          description: The unique DoorDash order identifier.
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request payload.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: marketplace-orders-rest
+    port: 8080
+    description: REST adapter for DoorDash Marketplace API — Orders. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/orders/{order-id}
+      name: orders-order-id
+      description: REST surface for /v1/orders/{order-id}.
+      operations:
+      - method: PATCH
+        name: updateOrder
+        description: Update an Order
+        call: marketplace-orders.updateOrder
+        with:
+          order_id: rest.order_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: marketplace-orders-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DoorDash Marketplace API — Orders. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: update-order
+      description: Update an Order
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: marketplace-orders.updateOrder
+      with:
+        order_id: tools.order_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

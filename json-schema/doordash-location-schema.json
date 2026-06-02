@@ -1,18 +1,21 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "#/components/schemas/Location",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-schema/doordash-location-schema.json",
   "title": "Location",
+  "description": "Location schema from DoorDash API",
   "type": "object",
   "properties": {
     "lat": {
       "type": "number",
       "format": "double",
-      "description": "Latitude coordinate."
+      "description": "Latitude coordinate.",
+      "example": 37.422
     },
     "lng": {
       "type": "number",
       "format": "double",
-      "description": "Longitude coordinate."
+      "description": "Longitude coordinate.",
+      "example": -122.084
     }
   }
 }

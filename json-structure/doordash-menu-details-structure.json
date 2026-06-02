@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-menu-details-structure.json",
+  "name": "MenuDetails",
+  "description": "MenuDetails structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "store_id": {
+      "type": "string",
+      "description": "The merchant-supplied store identifier.",
+      "example": "D-12345"
+    },
+    "categories": {
+      "type": "array",
+      "description": "The menu categories.",
+      "items": {
+        "$ref": "#/components/schemas/MenuCategory"
+      }
+    },
+    "last_updated": {
+      "type": "datetime",
+      "description": "When the menu was last updated.",
+      "example": "2026-06-02T14:30:00Z"
+    }
+  }
+}

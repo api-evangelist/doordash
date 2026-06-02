@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-schema/doordash-delivery-request-schema.json",
+  "title": "DeliveryRequest",
+  "description": "DeliveryRequest schema from DoorDash API",
+  "type": "object",
+  "properties": {
+    "external_delivery_id": {
+      "type": "string",
+      "description": "A unique identifier for this delivery, provided by the caller.",
+      "example": "D-12345"
+    },
+    "pickup_address": {
+      "type": "string",
+      "description": "The full street address for the pickup location.",
+      "example": "901 Market St, San Francisco, CA 94105"
+    },
+    "pickup_business_name": {
+      "type": "string",
+      "description": "The business name at the pickup location.",
+      "example": "Acme Pickup Store"
+    },
+    "pickup_phone_number": {
+      "type": "string",
+      "description": "The phone number at the pickup location.",
+      "example": "+15555551234"
+    },
+    "pickup_instructions": {
+      "type": "string",
+      "description": "Special instructions for the Dasher at the pickup location.",
+      "example": "Leave at the front desk."
+    },
+    "pickup_reference_tag": {
+      "type": "string",
+      "description": "A reference tag for the pickup, such as an order number.",
+      "example": "example"
+    },
+    "dropoff_address": {
+      "type": "string",
+      "description": "The full street address for the dropoff location.",
+      "example": "901 Market St, San Francisco, CA 94105"
+    },
+    "dropoff_business_name": {
+      "type": "string",
+      "description": "The business name at the dropoff location.",
+      "example": "Acme Pickup Store"
+    },
+    "dropoff_phone_number": {
+      "type": "string",
+      "description": "The phone number of the recipient at the dropoff location.",
+      "example": "+15555551234"
+    },
+    "dropoff_instructions": {
+      "type": "string",
+      "description": "Special instructions for the Dasher at the dropoff location.",
+      "example": "Leave at the front desk."
+    },
+    "dropoff_contact_given_name": {
+      "type": "string",
+      "description": "The first name of the dropoff contact.",
+      "example": "Acme Pickup Store"
+    },
+    "dropoff_contact_family_name": {
+      "type": "string",
+      "description": "The last name of the dropoff contact.",
+      "example": "Acme Pickup Store"
+    },
+    "order_value": {
+      "type": "integer",
+      "description": "The total value of the order in cents.",
+      "example": 42
+    },
+    "tip": {
+      "type": "integer",
+      "description": "The tip amount in cents.",
+      "example": 42
+    },
+    "pickup_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The requested pickup time in UTC ISO-8601 format.",
+      "example": "2026-06-02T14:30:00Z"
+    },
+    "dropoff_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The requested dropoff time in UTC ISO-8601 format.",
+      "example": "2026-06-02T14:30:00Z"
+    },
+    "contains_alcohol": {
+      "type": "boolean",
+      "description": "Whether the order contains alcohol, which requires age verification.",
+      "example": true
+    },
+    "force_batch_id": {
+      "type": "string",
+      "description": "An identifier to group deliveries together for batch assignment to the same Dasher.",
+      "example": "D-12345"
+    },
+    "external_business_id": {
+      "type": "string",
+      "description": "The external business ID to associate with this delivery.",
+      "example": "D-12345"
+    },
+    "external_store_id": {
+      "type": "string",
+      "description": "The external store ID to associate with this delivery.",
+      "example": "D-12345"
+    },
+    "items": {
+      "type": "array",
+      "description": "List of items included in the delivery.",
+      "items": {
+        "$ref": "#/components/schemas/DeliveryItem"
+      }
+    }
+  },
+  "required": [
+    "external_delivery_id",
+    "pickup_address",
+    "dropoff_address"
+  ]
+}

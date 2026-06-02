@@ -1,0 +1,17 @@
+{
+  "status": "confirmed",
+  "cancelled_items": [
+    {
+      "item_id": "D-12345",
+      "reason": "example"
+    }
+  ],
+  "substitutions": [
+    {
+      "original_item_id": "D-12345",
+      "substitute_item_id": "D-12345",
+      "substitute_item_name": "Acme Pickup Store",
+      "substitute_item_price": 42
+    }
+  ]
+}

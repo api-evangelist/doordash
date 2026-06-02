@@ -1,0 +1,322 @@
+# DoorDash API Spectral Ruleset
+# Enforces the conventions observed across the DoorDash Drive, Drive Classic,
+# Marketplace, Item Management, and Reporting OpenAPI specifications.
+#
+# Conventions enforced:
+#   - Title format: "DoorDash ..." ; operation summaries prefixed with "DoorDash"
+#   - OpenAPI 3.1.0
+#   - HTTPS servers only
+#   - snake_case path segments and parameters, plural collection nouns
+#   - camelCase operationIds with verb prefixes
+#   - Title Case tags
+#   - Bearer JWT security
+#   - snake_case schema properties
+extends: []
+rules:
+
+  # ── INFO / METADATA ──────────────────────────────────────────────
+  info-title-doordash-prefix:
+    description: API title should start with "DoorDash".
+    severity: warn
+    given: $.info.title
+    then:
+      function: pattern
+      functionOptions:
+        match: "^DoorDash"
+  info-description-required:
+    description: A meaningful info.description is required (min 40 chars).
+    severity: warn
+    given: $.info
+    then:
+      field: description
+      function: defined
+  info-description-length:
+    description: info.description should be substantive.
+    severity: warn
+    given: $.info.description
+    then:
+      function: length
+      functionOptions:
+        min: 40
+  info-version-required:
+    description: info.version is required.
+    severity: error
+    given: $.info
+    then:
+      field: version
+      function: defined
+  info-contact-required:
+    description: info.contact should be present.
+    severity: info
+    given: $.info
+    then:
+      field: contact
+      function: defined
+
+  # ── OPENAPI VERSION ──────────────────────────────────────────────
+  openapi-version-3-1:
+    description: DoorDash specs target OpenAPI 3.1.0.
+    severity: warn
+    given: $.openapi
+    then:
+      function: pattern
+      functionOptions:
+        match: "^3\\.1\\."
+
+  # ── SERVERS ──────────────────────────────────────────────────────
+  servers-defined:
+    description: At least one server must be defined.
+    severity: error
+    given: $
+    then:
+      field: servers
+      function: defined
+  servers-https-only:
+    description: Server URLs must use HTTPS.
+    severity: error
+    given: $.servers[*].url
+    then:
+      function: pattern
+      functionOptions:
+        match: "^https://"
+  server-description-required:
+    description: Each server should have a description.
+    severity: info
+    given: $.servers[*]
+    then:
+      field: description
+      function: defined
+
+  # ── PATHS — NAMING CONVENTIONS ───────────────────────────────────
+  path-no-trailing-slash:
+    description: Paths must not end with a trailing slash.
+    severity: warn
+    given: $.paths[*]~
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: ".+/$"
+  path-segments-snake-case:
+    description: Static path segments should be snake_case (lowercase letters, digits, underscores).
+    severity: warn
+    given: $.paths[*]~
+    then:
+      function: pattern
+      functionOptions:
+        match: "^(/([a-z0-9_]+|\\{[a-z0-9_]+\\}))+$"
+  path-no-query-string:
+    description: Path keys must not contain query strings.
+    severity: error
+    given: $.paths[*]~
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: "\\?"
+
+  # ── OPERATIONS ───────────────────────────────────────────────────
+  operation-operationId-required:
+    description: Every operation must have an operationId.
+    severity: error
+    given: $.paths[*][get,post,put,patch,delete]
+    then:
+      field: operationId
+      function: defined
+  operation-operationId-camel-case:
+    description: operationId should be camelCase with a verb prefix.
+    severity: warn
+    given: $.paths[*][get,post,put,patch,delete].operationId
+    then:
+      function: pattern
+      functionOptions:
+        match: "^(get|list|create|update|delete|cancel|accept|send|check)[A-Za-z0-9]*$"
+  operation-summary-required:
+    description: Every operation must have a summary.
+    severity: warn
+    given: $.paths[*][get,post,put,patch,delete]
+    then:
+      field: summary
+      function: defined
+  operation-summary-doordash-prefix:
+    description: Operation summaries should start with "DoorDash".
+    severity: warn
+    given: $.paths[*][get,post,put,patch,delete].summary
+    then:
+      function: pattern
+      functionOptions:
+        match: "^DoorDash "
+  operation-description-required:
+    description: Every operation must have a description.
+    severity: warn
+    given: $.paths[*][get,post,put,patch,delete]
+    then:
+      field: description
+      function: defined
+  operation-tags-required:
+    description: Every operation must be tagged.
+    severity: warn
+    given: $.paths[*][get,post,put,patch,delete]
+    then:
+      field: tags
+      function: truthy
+  operation-microcks-extension:
+    description: Each operation should declare an x-microcks-operation block for mock compatibility.
+    severity: info
+    given: $.paths[*][get,post,put,patch,delete]
+    then:
+      field: x-microcks-operation
+      function: defined
+
+  # ── TAGS ─────────────────────────────────────────────────────────
+  global-tags-defined:
+    description: A global tags array should be defined.
+    severity: info
+    given: $
+    then:
+      field: tags
+      function: defined
+  tag-description-required:
+    description: Each global tag should have a description.
+    severity: info
+    given: $.tags[*]
+    then:
+      field: description
+      function: defined
+  tag-name-title-case:
+    description: Tag names should be Title Case (e.g. "Deliveries", "Item Management").
+    severity: warn
+    given: $.tags[*].name
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[A-Z][A-Za-z0-9]*( [A-Z][A-Za-z0-9]*)*$"
+
+  # ── PARAMETERS ───────────────────────────────────────────────────
+  parameter-description-required:
+    description: Parameters must have a description.
+    severity: warn
+    given: $.paths[*][*].parameters[*]
+    then:
+      field: description
+      function: defined
+  parameter-name-snake-case:
+    description: Parameter names should be snake_case.
+    severity: warn
+    given: $.paths[*][*].parameters[*].name
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-z0-9_]*$"
+  parameter-schema-typed:
+    description: Each parameter must declare a schema with a type.
+    severity: warn
+    given: $.paths[*][*].parameters[*].schema
+    then:
+      field: type
+      function: defined
+
+  # ── REQUEST BODIES ───────────────────────────────────────────────
+  request-body-json:
+    description: Request bodies should offer application/json content.
+    severity: warn
+    given: $.paths[*][post,put,patch].requestBody.content
+    then:
+      field: application/json
+      function: defined
+
+  # ── RESPONSES ────────────────────────────────────────────────────
+  response-success-defined:
+    description: Each operation must define at least one 2xx response.
+    severity: error
+    given: $.paths[*][get,post,put,patch,delete].responses
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          anyOf:
+            - required: ['200']
+            - required: ['201']
+            - required: ['202']
+            - required: ['204']
+  response-auth-defined:
+    description: Operations should document a 401 unauthorized response.
+    severity: info
+    given: $.paths[*][get,post,put,patch,delete].responses
+    then:
+      field: '401'
+      function: defined
+  response-description-required:
+    description: Every response must have a description.
+    severity: warn
+    given: $.paths[*][*].responses[*]
+    then:
+      field: description
+      function: defined
+
+  # ── SCHEMAS — PROPERTY NAMING ────────────────────────────────────
+  schema-property-snake-case:
+    description: Schema property names should be snake_case.
+    severity: warn
+    given: $.components.schemas[*].properties[*]~
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-z0-9_]*$"
+  schema-property-typed:
+    description: Schema properties should declare a type or $ref.
+    severity: info
+    given: $.components.schemas[*].properties[*]
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          anyOf:
+            - required: [type]
+            - required: ['$ref']
+            - required: [allOf]
+            - required: [oneOf]
+            - required: [anyOf]
+
+  # ── SECURITY ─────────────────────────────────────────────────────
+  security-global-defined:
+    description: A global security requirement should be declared.
+    severity: warn
+    given: $
+    then:
+      field: security
+      function: defined
+  security-scheme-bearer-jwt:
+    description: DoorDash APIs authenticate with a Bearer JWT security scheme.
+    severity: warn
+    given: $.components.securitySchemes[*]
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          properties:
+            type: { const: http }
+            scheme: { const: bearer }
+  security-scheme-described:
+    description: Security schemes should be described.
+    severity: info
+    given: $.components.securitySchemes[*]
+    then:
+      field: description
+      function: defined
+
+  # ── HTTP METHOD CONVENTIONS ──────────────────────────────────────
+  get-no-request-body:
+    description: GET operations must not declare a request body.
+    severity: error
+    given: $.paths[*].get
+    then:
+      field: requestBody
+      function: undefined
+  delete-no-request-body:
+    description: DELETE operations should not declare a request body.
+    severity: warn
+    given: $.paths[*].delete
+    then:
+      field: requestBody
+      function: undefined

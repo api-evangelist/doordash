@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-estimate-structure.json",
+  "name": "Estimate",
+  "description": "Estimate structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "fee": {
+      "type": "int32",
+      "description": "The estimated delivery fee in cents.",
+      "example": 42
+    },
+    "currency": {
+      "type": "string",
+      "description": "The currency code for the fee amount.",
+      "example": "USD"
+    },
+    "pickup_time": {
+      "type": "datetime",
+      "description": "The estimated pickup time.",
+      "example": "2026-06-02T14:30:00Z"
+    },
+    "dropoff_time": {
+      "type": "datetime",
+      "description": "The estimated dropoff time.",
+      "example": "2026-06-02T14:30:00Z"
+    },
+    "delivery_duration": {
+      "type": "int32",
+      "description": "The estimated delivery duration in seconds.",
+      "example": 42
+    }
+  }
+}

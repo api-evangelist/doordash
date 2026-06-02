@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-schema/doordash-menu-category-schema.json",
+  "title": "MenuCategory",
+  "description": "MenuCategory schema from DoorDash API",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for this category.",
+      "example": "D-12345"
+    },
+    "name": {
+      "type": "string",
+      "description": "The display name of the category.",
+      "example": "Acme Pickup Store"
+    },
+    "description": {
+      "type": "string",
+      "description": "A description of the category.",
+      "example": "Leave at the front desk."
+    },
+    "sort_id": {
+      "type": "integer",
+      "description": "The sort order for this category.",
+      "example": 42
+    },
+    "items": {
+      "type": "array",
+      "description": "The items in this category.",
+      "items": {
+        "$ref": "#/components/schemas/MenuItem"
+      }
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "items"
+  ]
+}

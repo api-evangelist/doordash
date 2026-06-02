@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-report-link-response-structure.json",
+  "name": "ReportLinkResponse",
+  "description": "ReportLinkResponse structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "report_id": {
+      "type": "string",
+      "description": "The unique identifier for the report.",
+      "example": "D-12345"
+    },
+    "status": {
+      "type": "string",
+      "description": "The current processing status of the report.",
+      "enum": [
+        "PENDING",
+        "PROCESSING",
+        "SUCCEEDED",
+        "FAILED"
+      ],
+      "example": "PENDING"
+    },
+    "download_url": {
+      "type": "uri",
+      "description": "A temporary URL to download the report. Only present when status is SUCCEEDED.",
+      "example": "https://example.com/path/abc123"
+    },
+    "report_type": {
+      "type": "string",
+      "description": "The type of report that was generated.",
+      "enum": [
+        "financial",
+        "operations",
+        "menu",
+        "feedback"
+      ],
+      "example": "financial"
+    },
+    "created_at": {
+      "type": "datetime",
+      "description": "When the report request was created.",
+      "example": "2026-06-02T14:30:00Z"
+    },
+    "completed_at": {
+      "type": "datetime",
+      "description": "When the report generation was completed. Only present when status is SUCCEEDED.",
+      "example": "2026-06-02T14:30:00Z"
+    }
+  }
+}

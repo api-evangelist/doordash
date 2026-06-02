@@ -1,0 +1,181 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "dd": "https://developer.doordash.com/schemas/",
+    "schema": "https://schema.org/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "Order": "dd:Order",
+    "OrderUpdate": "dd:OrderUpdate",
+    "OrderItem": "dd:OrderItem",
+    "OrderItemOption": "dd:OrderItemOption",
+    "CancelledItem": "dd:CancelledItem",
+    "Substitution": "dd:Substitution",
+    "Customer": "dd:Customer",
+    "MenuRequest": "dd:MenuRequest",
+    "MenuCategory": "dd:MenuCategory",
+    "MenuItem": "dd:MenuItem",
+    "OptionGroup": "dd:OptionGroup",
+    "MenuOption": "dd:MenuOption",
+    "MenuResponse": "dd:MenuResponse",
+    "MenuDetails": "dd:MenuDetails",
+    "StoreDetails": "dd:StoreDetails",
+    "StoreStatusUpdate": "dd:StoreStatusUpdate",
+    "ItemStatusUpdate": "dd:ItemStatusUpdate",
+    "id": {
+      "@id": "dd:id",
+      "@type": "xsd:string"
+    },
+    "externalReferenceId": {
+      "@id": "dd:external_reference_id",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "dd:status",
+      "@type": "xsd:string"
+    },
+    "storeId": {
+      "@id": "dd:store_id",
+      "@type": "xsd:string"
+    },
+    "subtotal": {
+      "@id": "dd:subtotal",
+      "@type": "xsd:integer"
+    },
+    "tax": {
+      "@id": "dd:tax",
+      "@type": "xsd:integer"
+    },
+    "deliveryFee": {
+      "@id": "dd:delivery_fee",
+      "@type": "xsd:integer"
+    },
+    "tip": {
+      "@id": "dd:tip",
+      "@type": "xsd:integer"
+    },
+    "items": {
+      "@id": "dd:items",
+      "@container": "@set"
+    },
+    "customer": {
+      "@id": "dd:customer",
+      "@type": "@id"
+    },
+    "deliveryAddress": {
+      "@id": "dd:delivery_address",
+      "@type": "xsd:string"
+    },
+    "specialInstructions": {
+      "@id": "dd:special_instructions",
+      "@type": "xsd:string"
+    },
+    "createdAt": "schema:dateCreated",
+    "estimatedPickupTime": {
+      "@id": "dd:estimated_pickup_time",
+      "@type": "xsd:dateTime"
+    },
+    "cancelledItems": {
+      "@id": "dd:cancelled_items",
+      "@container": "@set"
+    },
+    "substitutions": {
+      "@id": "dd:substitutions",
+      "@container": "@set"
+    },
+    "name": "schema:name",
+    "quantity": {
+      "@id": "dd:quantity",
+      "@type": "xsd:integer"
+    },
+    "price": {
+      "@id": "dd:price",
+      "@type": "xsd:integer"
+    },
+    "options": {
+      "@id": "dd:options",
+      "@container": "@set"
+    },
+    "itemId": {
+      "@id": "dd:item_id",
+      "@type": "xsd:string"
+    },
+    "reason": {
+      "@id": "dd:reason",
+      "@type": "xsd:string"
+    },
+    "originalItemId": {
+      "@id": "dd:original_item_id",
+      "@type": "xsd:string"
+    },
+    "substituteItemId": {
+      "@id": "dd:substitute_item_id",
+      "@type": "xsd:string"
+    },
+    "substituteItemName": {
+      "@id": "dd:substitute_item_name",
+      "@type": "xsd:string"
+    },
+    "substituteItemPrice": {
+      "@id": "dd:substitute_item_price",
+      "@type": "xsd:integer"
+    },
+    "firstName": {
+      "@id": "dd:first_name",
+      "@type": "xsd:string"
+    },
+    "lastName": {
+      "@id": "dd:last_name",
+      "@type": "xsd:string"
+    },
+    "phoneNumber": {
+      "@id": "dd:phone_number",
+      "@type": "xsd:string"
+    },
+    "categories": {
+      "@id": "dd:categories",
+      "@container": "@set"
+    },
+    "description": "schema:description",
+    "sortId": {
+      "@id": "dd:sort_id",
+      "@type": "xsd:integer"
+    },
+    "imageUrl": {
+      "@id": "dd:image_url",
+      "@type": "@id"
+    },
+    "isActive": {
+      "@id": "dd:is_active",
+      "@type": "xsd:boolean"
+    },
+    "optionGroups": {
+      "@id": "dd:option_groups",
+      "@container": "@set"
+    },
+    "minSelections": {
+      "@id": "dd:min_selections",
+      "@type": "xsd:integer"
+    },
+    "maxSelections": {
+      "@id": "dd:max_selections",
+      "@type": "xsd:integer"
+    },
+    "menuId": {
+      "@id": "dd:menu_id",
+      "@type": "xsd:string"
+    },
+    "lastUpdated": {
+      "@id": "dd:last_updated",
+      "@type": "xsd:dateTime"
+    },
+    "merchantSuppliedId": {
+      "@id": "dd:merchant_supplied_id",
+      "@type": "xsd:string"
+    },
+    "address": {
+      "@id": "dd:address",
+      "@type": "xsd:string"
+    }
+  }
+}

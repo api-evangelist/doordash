@@ -1,0 +1,9 @@
+{
+  "report_id": "D-12345",
+  "report_type": "financial",
+  "status": "SUCCEEDED",
+  "download_url": "https://example.com/path/abc123",
+  "error_message": "example",
+  "created_at": "2026-06-02T14:30:00Z",
+  "completed_at": "2026-06-02T14:30:00Z"
+}

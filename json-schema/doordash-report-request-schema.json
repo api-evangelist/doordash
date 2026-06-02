@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-schema/doordash-report-request-schema.json",
+  "title": "ReportRequest",
+  "description": "ReportRequest schema from DoorDash API",
+  "type": "object",
+  "properties": {
+    "report_type": {
+      "type": "string",
+      "description": "The type of report to generate.",
+      "enum": [
+        "financial",
+        "operations",
+        "menu",
+        "feedback"
+      ],
+      "example": "financial"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date",
+      "description": "The start date for the report period in YYYY-MM-DD format.",
+      "example": "2026-06-02"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date",
+      "description": "The end date for the report period in YYYY-MM-DD format.",
+      "example": "2026-06-02"
+    },
+    "store_ids": {
+      "type": "array",
+      "description": "Optional list of store IDs to filter the report by specific stores.",
+      "items": {
+        "type": "string"
+      },
+      "example": [
+        "example"
+      ]
+    }
+  },
+  "required": [
+    "report_type",
+    "start_date",
+    "end_date"
+  ]
+}

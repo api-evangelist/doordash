@@ -18,7 +18,7 @@ servers:
       The partner-provided HTTPS webhook endpoint for receiving report
       ready notifications.
     security:
-      - basicAuth: []
+    - basicAuth: []
     variables:
       webhook_url:
         description: >-
@@ -51,6 +51,18 @@ components:
         A report has been generated and is ready for download.
       payload:
         $ref: '#/components/schemas/ReportReadyPayload'
+      examples:
+      - name: ReportReadyDefaultExample
+        summary: Default ReportReady example payload
+        x-microcks-default: true
+        payload:
+          report_id: D-12345
+          report_type: financial
+          status: SUCCEEDED
+          download_url: https://example.com/path/abc123
+          error_message: example
+          created_at: '2026-06-02T14:30:00Z'
+          completed_at: '2026-06-02T14:30:00Z'
   schemas:
     ReportReadyPayload:
       type: object
@@ -59,40 +71,47 @@ components:
           type: string
           description: >-
             The unique identifier for the report.
+          example: D-12345
         report_type:
           type: string
           description: >-
             The type of report that was generated.
           enum:
-            - financial
-            - operations
-            - menu
-            - feedback
+          - financial
+          - operations
+          - menu
+          - feedback
+          example: financial
         status:
           type: string
           description: >-
             The report processing status.
           enum:
-            - SUCCEEDED
-            - FAILED
+          - SUCCEEDED
+          - FAILED
+          example: SUCCEEDED
         download_url:
           type: string
           format: uri
           description: >-
             A temporary URL to download the report. Only present when
             status is SUCCEEDED.
+          example: https://example.com/path/abc123
         error_message:
           type: string
           description: >-
             Error details if report generation failed. Only present when
             status is FAILED.
+          example: example
         created_at:
           type: string
           format: date-time
           description: >-
             When the report request was originally created.
+          example: '2026-06-02T14:30:00Z'
         completed_at:
           type: string
           format: date-time
           description: >-
             When the report generation completed.
+          example: '2026-06-02T14:30:00Z'

@@ -1,0 +1,127 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DoorDash Drive API — Quotes
+  description: 'DoorDash Drive API — Quotes. 2 operation(s). Lead operation: Create a Delivery Quote. Self-contained Naftiko capability covering one DoorDash business surface.'
+  tags:
+  - DoorDash
+  - Drive
+  - Quotes
+  created: '2026-06-02'
+  modified: '2026-06-02'
+binds:
+- namespace: env
+  keys:
+    DOORDASH_JWT: DOORDASH_JWT
+capability:
+  consumes:
+  - type: http
+    namespace: drive-quotes
+    baseUri: https://openapi.doordash.com/drive/v2
+    description: DoorDash Drive API — Quotes business capability. Self-contained, no shared references.
+    authentication:
+      type: bearer
+      token: '{{env.DOORDASH_JWT}}'
+    resources:
+    - name: quotes
+      path: /quotes
+      operations:
+      - name: createDeliveryQuote
+        method: POST
+        description: Create a Delivery Quote
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request payload.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: quotes-external-delivery-id-accept
+      path: /quotes/{external_delivery_id}/accept
+      operations:
+      - name: acceptDeliveryQuote
+        method: POST
+        description: Accept a Delivery Quote
+        inputParameters:
+        - name: external_delivery_id
+          in: path
+          type: string
+          required: true
+          description: The unique external delivery ID provided when creating the delivery or quote.
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request payload.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: drive-quotes-rest
+    port: 8080
+    description: REST adapter for DoorDash Drive API — Quotes. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/quotes
+      name: quotes
+      description: REST surface for /v1/quotes.
+      operations:
+      - method: POST
+        name: createDeliveryQuote
+        description: Create a Delivery Quote
+        call: drive-quotes.createDeliveryQuote
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/quotes/{external-delivery-id}/accept
+      name: quotes-external-delivery-id-accept
+      description: REST surface for /v1/quotes/{external-delivery-id}/accept.
+      operations:
+      - method: POST
+        name: acceptDeliveryQuote
+        description: Accept a Delivery Quote
+        call: drive-quotes.acceptDeliveryQuote
+        with:
+          external_delivery_id: rest.external_delivery_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: drive-quotes-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DoorDash Drive API — Quotes. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: create-delivery-quote
+      description: Create a Delivery Quote
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: drive-quotes.createDeliveryQuote
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: accept-delivery-quote
+      description: Accept a Delivery Quote
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: drive-quotes.acceptDeliveryQuote
+      with:
+        external_delivery_id: tools.external_delivery_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

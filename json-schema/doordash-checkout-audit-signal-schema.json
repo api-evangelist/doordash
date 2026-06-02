@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-schema/doordash-checkout-audit-signal-schema.json",
+  "title": "CheckoutAuditSignal",
+  "description": "CheckoutAuditSignal schema from DoorDash API",
+  "type": "object",
+  "properties": {
+    "external_delivery_id": {
+      "type": "string",
+      "description": "The external delivery ID associated with this checkout event.",
+      "example": "D-12345"
+    },
+    "event_type": {
+      "type": "string",
+      "description": "The type of checkout audit event.",
+      "example": "example"
+    }
+  }
+}

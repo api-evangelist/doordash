@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-order-structure.json",
+  "name": "Order",
+  "description": "Order structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique DoorDash order identifier.",
+      "example": "D-12345"
+    },
+    "external_reference_id": {
+      "type": "string",
+      "description": "An external reference ID for the order.",
+      "example": "D-12345"
+    },
+    "status": {
+      "type": "string",
+      "description": "The current status of the order.",
+      "enum": [
+        "pending",
+        "confirmed",
+        "being_prepared",
+        "ready_for_pickup",
+        "picked_up",
+        "delivered",
+        "cancelled"
+      ],
+      "example": "pending"
+    },
+    "store_id": {
+      "type": "string",
+      "description": "The merchant-supplied store identifier.",
+      "example": "D-12345"
+    },
+    "subtotal": {
+      "type": "int32",
+      "description": "The order subtotal in cents.",
+      "example": 42
+    },
+    "tax": {
+      "type": "int32",
+      "description": "The tax amount in cents.",
+      "example": 42
+    },
+    "delivery_fee": {
+      "type": "int32",
+      "description": "The delivery fee in cents.",
+      "example": 42
+    },
+    "tip": {
+      "type": "int32",
+      "description": "The tip amount in cents.",
+      "example": 42
+    },
+    "items": {
+      "type": "array",
+      "description": "The items in the order.",
+      "items": {
+        "$ref": "#/components/schemas/OrderItem"
+      }
+    },
+    "customer": {
+      "$ref": "#/components/schemas/Customer"
+    },
+    "delivery_address": {
+      "type": "string",
+      "description": "The delivery address for the order.",
+      "example": "901 Market St, San Francisco, CA 94105"
+    },
+    "special_instructions": {
+      "type": "string",
+      "description": "Special instructions from the customer.",
+      "example": "Leave at the front desk."
+    },
+    "created_at": {
+      "type": "datetime",
+      "description": "When the order was created.",
+      "example": "2026-06-02T14:30:00Z"
+    },
+    "estimated_pickup_time": {
+      "type": "datetime",
+      "description": "The estimated time the Dasher will arrive to pick up the order.",
+      "example": "2026-06-02T14:30:00Z"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "items": [
+    {
+      "merchant_supplied_id": "D-12345",
+      "price": 42,
+      "in_stock": true,
+      "quantity_on_hand": 0,
+      "aisle": "example",
+      "shelf": "example"
+    }
+  ]
+}

@@ -1,22 +1,19 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://developer.doordash.com/schemas/doordash/order.json",
-  "title": "DoorDash Marketplace Order",
-  "description": "Represents an order placed through the DoorDash marketplace, including items, customer details, delivery information, and order status.",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-schema/doordash-order-schema.json",
+  "title": "Order",
+  "description": "Order schema from DoorDash API",
   "type": "object",
-  "required": [
-    "id",
-    "store_id",
-    "items"
-  ],
   "properties": {
     "id": {
       "type": "string",
-      "description": "The unique DoorDash order identifier."
+      "description": "The unique DoorDash order identifier.",
+      "example": "D-12345"
     },
     "external_reference_id": {
       "type": "string",
-      "description": "An external reference ID for the order provided by the partner."
+      "description": "An external reference ID for the order.",
+      "example": "D-12345"
     },
     "status": {
       "type": "string",
@@ -29,151 +26,65 @@
         "picked_up",
         "delivered",
         "cancelled"
-      ]
+      ],
+      "example": "pending"
     },
     "store_id": {
       "type": "string",
-      "description": "The merchant-supplied store identifier."
+      "description": "The merchant-supplied store identifier.",
+      "example": "D-12345"
     },
     "subtotal": {
       "type": "integer",
       "description": "The order subtotal in cents.",
-      "minimum": 0
+      "example": 42
     },
     "tax": {
       "type": "integer",
       "description": "The tax amount in cents.",
-      "minimum": 0
+      "example": 42
     },
     "delivery_fee": {
       "type": "integer",
       "description": "The delivery fee in cents.",
-      "minimum": 0
+      "example": 42
     },
     "tip": {
       "type": "integer",
       "description": "The tip amount in cents.",
-      "minimum": 0
+      "example": 42
     },
     "items": {
       "type": "array",
       "description": "The items in the order.",
-      "minItems": 1,
       "items": {
-        "$ref": "#/$defs/OrderItem"
+        "$ref": "#/components/schemas/OrderItem"
       }
     },
     "customer": {
-      "$ref": "#/$defs/Customer"
+      "$ref": "#/components/schemas/Customer"
     },
     "delivery_address": {
       "type": "string",
-      "description": "The delivery address for the order."
+      "description": "The delivery address for the order.",
+      "example": "901 Market St, San Francisco, CA 94105"
     },
     "special_instructions": {
       "type": "string",
       "description": "Special instructions from the customer.",
-      "maxLength": 500
-    },
-    "estimated_pickup_time": {
-      "type": "string",
-      "format": "date-time",
-      "description": "The estimated time the Dasher will arrive to pick up the order."
+      "example": "Leave at the front desk."
     },
     "created_at": {
       "type": "string",
       "format": "date-time",
-      "description": "When the order was created."
-    }
-  },
-  "$defs": {
-    "OrderItem": {
-      "type": "object",
-      "description": "An item within a marketplace order.",
-      "required": [
-        "id",
-        "name",
-        "quantity",
-        "price"
-      ],
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "The unique item identifier within the order."
-        },
-        "name": {
-          "type": "string",
-          "description": "The name of the item."
-        },
-        "quantity": {
-          "type": "integer",
-          "description": "The quantity ordered.",
-          "minimum": 1
-        },
-        "price": {
-          "type": "integer",
-          "description": "The item price in cents.",
-          "minimum": 0
-        },
-        "special_instructions": {
-          "type": "string",
-          "description": "Special instructions for this item.",
-          "maxLength": 500
-        },
-        "options": {
-          "type": "array",
-          "description": "Selected options or modifiers for the item.",
-          "items": {
-            "$ref": "#/$defs/ItemOption"
-          }
-        }
-      }
+      "description": "When the order was created.",
+      "example": "2026-06-02T14:30:00Z"
     },
-    "ItemOption": {
-      "type": "object",
-      "description": "A selected option or modifier for an order item.",
-      "required": [
-        "id",
-        "name"
-      ],
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "The unique option identifier."
-        },
-        "name": {
-          "type": "string",
-          "description": "The option name."
-        },
-        "quantity": {
-          "type": "integer",
-          "description": "The quantity of this option.",
-          "minimum": 1
-        },
-        "price": {
-          "type": "integer",
-          "description": "The option price in cents.",
-          "minimum": 0
-        }
-      }
-    },
-    "Customer": {
-      "type": "object",
-      "description": "Customer information for the order.",
-      "properties": {
-        "first_name": {
-          "type": "string",
-          "description": "The customer's first name."
-        },
-        "last_name": {
-          "type": "string",
-          "description": "The customer's last name."
-        },
-        "phone_number": {
-          "type": "string",
-          "description": "The customer's phone number."
-        }
-      }
+    "estimated_pickup_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The estimated time the Dasher will arrive to pick up the order.",
+      "example": "2026-06-02T14:30:00Z"
     }
   }
 }

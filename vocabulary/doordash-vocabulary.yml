@@ -1,15 +1,375 @@
-name: Doordash Domain Vocabulary
-provider: Doordash
-providerId: doordash
-description: Tag-derived vocabulary for the Doordash API surface; sourced from openapi/ tags.
-terms:
-- term: Addresses
-  description: Get address auto-completion suggestions based on partial input.
-- term: Businesses
-  description: Manage business entities that represent legal entities or owners on the DoorDash Drive platform.
-- term: Deliveries
-  description: Create, retrieve, update, and cancel on-demand deliveries fulfilled by DoorDash Dashers.
-- term: Quotes
-  description: Validate delivery serviceability and get pricing quotes before creating a delivery.
-- term: Stores
-  description: Manage store locations that represent individual pickup points associated with a business.
+vocabulary: 1.0.0
+info:
+  provider: DoorDash
+  description: Unified vocabulary for the DoorDash developer platform, mapping the operational OpenAPI surface (Drive, Drive Classic, Marketplace, Item Management, Reporting) to the capability surface exposed as Naftiko REST and MCP adapters.
+  created: '2026-06-02'
+  modified: '2026-06-02'
+operational:
+  apis:
+  - name: DoorDash Drive Classic API
+    namespace: drive-classic
+    version: '1.0'
+    baseUrl: https://openapi.doordash.com/drive/v1
+    status: active
+  - name: DoorDash Drive API
+    namespace: drive
+    version: '2.0'
+    baseUrl: https://openapi.doordash.com/drive/v2
+    status: active
+  - name: DoorDash Item Management API
+    namespace: item-management
+    version: '2.0'
+    baseUrl: https://openapi.doordash.com/marketplace/api/v2
+    status: active
+  - name: DoorDash Marketplace API
+    namespace: marketplace
+    version: '1.0'
+    baseUrl: https://openapi.doordash.com/marketplace/api/v1
+    status: active
+  - name: DoorDash Reporting API
+    namespace: reporting
+    version: '1.0'
+    baseUrl: https://openapi.doordash.com/dataexchange/v1
+    status: active
+  resources:
+  - name: addresses
+    apis:
+    - drive
+    actions:
+    - get
+  - name: businesses
+    apis:
+    - drive
+    - drive-classic
+    actions:
+    - create
+    - get
+    - list
+    - update
+  - name: checkout_audit_signal
+    apis:
+    - drive
+    actions:
+    - send
+  - name: deliveries
+    apis:
+    - drive
+    - drive-classic
+    actions:
+    - cancel
+    - create
+    - get
+    - update
+  - name: estimates
+    apis:
+    - drive-classic
+    actions:
+    - create
+  - name: items
+    apis:
+    - item-management
+    actions:
+    - create
+    - update
+  - name: menus
+    apis:
+    - marketplace
+    actions:
+    - create
+    - update
+  - name: orders
+    apis:
+    - marketplace
+    actions:
+    - update
+  - name: promotions
+    apis:
+    - item-management
+    actions:
+    - create
+    - update
+  - name: quotes
+    apis:
+    - drive
+    actions:
+    - accept
+    - create
+  - name: reports
+    apis:
+    - reporting
+    actions:
+    - create
+    - get
+  - name: stores
+    apis:
+    - item-management
+    - marketplace
+    actions:
+    - create
+    - get
+    - update
+  actions:
+  - verb: accept
+    httpMethods:
+    - POST
+    pattern: write
+  - verb: cancel
+    httpMethods:
+    - PUT
+    pattern: write
+  - verb: create
+    httpMethods:
+    - POST
+    pattern: write
+  - verb: get
+    httpMethods:
+    - GET
+    pattern: read
+  - verb: list
+    httpMethods:
+    - GET
+    pattern: read
+  - verb: send
+    httpMethods:
+    - POST
+    pattern: write
+  - verb: update
+    httpMethods:
+    - PATCH
+    pattern: write
+  schemas:
+    drive:
+    - EstimateRequest
+    - Estimate
+    - ClassicDeliveryRequest
+    - ClassicDeliveryUpdateRequest
+    - ClassicDelivery
+    - Business
+    - BusinessRequest
+    - Store
+    - StoreRequest
+    - Error
+    - QuoteRequest
+    - Quote
+    - AcceptQuoteRequest
+    - DeliveryRequest
+    - DeliveryUpdateRequest
+    - Delivery
+    - DeliveryItem
+    - Location
+    - AddressSuggestion
+    - CheckoutAuditSignal
+    item:
+    - CatalogItemsRequest
+    - CatalogItem
+    - CatalogItemsResponse
+    - StoreItemsRequest
+    - StoreItem
+    - StoreItemsResponse
+    - PromotionsRequest
+    - Promotion
+    - PromotionsResponse
+    - ItemError
+    - Error
+    marketplace:
+    - Order
+    - OrderUpdate
+    - OrderItem
+    - OrderItemOption
+    - CancelledItem
+    - Substitution
+    - Customer
+    - MenuRequest
+    - MenuCategory
+    - MenuItem
+    - OptionGroup
+    - MenuOption
+    - MenuResponse
+    - MenuDetails
+    - StoreDetails
+    - StoreStatusUpdate
+    - ItemStatusUpdate
+    - Error
+    reporting:
+    - ReportRequest
+    - ReportRequestResponse
+    - ReportLinkResponse
+    - Error
+  parameters:
+    filters:
+    - latitude
+    - longitude
+    - query
+  enums:
+    delivery_status:
+    - arrived_at_dropoff
+    - arrived_at_pickup
+    - cancelled
+    - confirmed
+    - created
+    - delivered
+    - enroute_to_dropoff
+    - enroute_to_pickup
+    - picked_up
+    - returned
+    report_type:
+    - feedback
+    - financial
+    - menu
+    - operations
+    status:
+    - being_prepared
+    - cancelled
+    - confirmed
+    - delivered
+    - pending
+    - picked_up
+    - ready_for_pickup
+    weight_unit:
+    - g
+    - kg
+    - lb
+    - oz
+  authentication:
+    schemes:
+    - bearer JWT
+    description: All DoorDash APIs use JWT Bearer tokens.
+capability:
+  workflows:
+  - name: DoorDash Drive API — Addresses
+    file: capabilities/drive-addresses.yaml
+    description: DoorDash Drive API — Addresses.
+    apis: DoorDash Drive API
+    toolCount: 1
+  - name: DoorDash Drive API — Businesses
+    file: capabilities/drive-businesses.yaml
+    description: DoorDash Drive API — Businesses.
+    apis: DoorDash Drive API
+    toolCount: 4
+  - name: DoorDash Drive Classic API — Businesses
+    file: capabilities/drive-classic-businesses.yaml
+    description: DoorDash Drive Classic API — Businesses.
+    apis: DoorDash Drive Classic API
+    toolCount: 4
+  - name: DoorDash Drive Classic API — Deliveries
+    file: capabilities/drive-classic-deliveries.yaml
+    description: DoorDash Drive Classic API — Deliveries.
+    apis: DoorDash Drive Classic API
+    toolCount: 5
+  - name: DoorDash Drive Classic API — Stores
+    file: capabilities/drive-classic-stores.yaml
+    description: DoorDash Drive Classic API — Stores.
+    apis: DoorDash Drive Classic API
+    toolCount: 3
+  - name: DoorDash Drive API — Deliveries
+    file: capabilities/drive-deliveries.yaml
+    description: DoorDash Drive API — Deliveries.
+    apis: DoorDash Drive API
+    toolCount: 5
+  - name: DoorDash Drive API — Quotes
+    file: capabilities/drive-quotes.yaml
+    description: DoorDash Drive API — Quotes.
+    apis: DoorDash Drive API
+    toolCount: 2
+  - name: DoorDash Drive API — Stores
+    file: capabilities/drive-stores.yaml
+    description: DoorDash Drive API — Stores.
+    apis: DoorDash Drive API
+    toolCount: 3
+  - name: DoorDash Item Management API — Catalog
+    file: capabilities/item-management-catalog.yaml
+    description: DoorDash Item Management API — Catalog.
+    apis: DoorDash Item Management API
+    toolCount: 2
+  - name: DoorDash Item Management API — Inventory
+    file: capabilities/item-management-inventory.yaml
+    description: DoorDash Item Management API — Inventory.
+    apis: DoorDash Item Management API
+    toolCount: 2
+  - name: DoorDash Item Management API — Promotions
+    file: capabilities/item-management-promotions.yaml
+    description: DoorDash Item Management API — Promotions.
+    apis: DoorDash Item Management API
+    toolCount: 2
+  - name: DoorDash Marketplace API — Items
+    file: capabilities/marketplace-items.yaml
+    description: DoorDash Marketplace API — Items.
+    apis: DoorDash Marketplace API
+    toolCount: 1
+  - name: DoorDash Marketplace API — Menus
+    file: capabilities/marketplace-menus.yaml
+    description: DoorDash Marketplace API — Menus.
+    apis: DoorDash Marketplace API
+    toolCount: 2
+  - name: DoorDash Marketplace API — Orders
+    file: capabilities/marketplace-orders.yaml
+    description: DoorDash Marketplace API — Orders.
+    apis: DoorDash Marketplace API
+    toolCount: 1
+  - name: DoorDash Marketplace API — Stores
+    file: capabilities/marketplace-stores.yaml
+    description: DoorDash Marketplace API — Stores.
+    apis: DoorDash Marketplace API
+    toolCount: 3
+  - name: DoorDash Reporting API — Reports
+    file: capabilities/reporting-reports.yaml
+    description: DoorDash Reporting API — Reports.
+    apis: DoorDash Reporting API
+    toolCount: 2
+  personas:
+  - id: logistics-integrator
+    name: Logistics Integrator
+    description: Builds on-demand delivery into a merchant ordering experience using Drive and Drive Classic.
+  - id: marketplace-operator
+    name: Marketplace Operator
+    description: Receives and fulfills DoorDash marketplace orders and keeps menus and store status in sync.
+  - id: catalog-manager
+    name: Catalog Manager
+    description: Manages large item catalogs, inventory, pricing, and promotions for retail and grocery partners.
+  - id: finance-analyst
+    name: Finance & Operations Analyst
+    description: Pulls standardized financial, operations, and menu reporting data from the Reporting API.
+  domains:
+  - Delivery Logistics
+  - Marketplace Orders
+  - Catalog & Inventory
+  - Reporting & Finance
+  binds:
+  - name: DOORDASH_JWT
+    description: JWT Bearer token used by every DoorDash capability.
+crossReference:
+- resource: deliveries
+  operations:
+  - cancel
+  - create
+  - get
+  - update
+  workflows:
+  - DoorDash Drive Classic API — Deliveries
+  - DoorDash Drive API — Deliveries
+  personas:
+  - logistics-integrator
+- resource: orders
+  operations:
+  - update
+  workflows:
+  - DoorDash Marketplace API — Orders
+  personas:
+  - marketplace-operator
+- resource: items
+  operations:
+  - create
+  - update
+  workflows:
+  - DoorDash Item Management API — Catalog
+  - DoorDash Marketplace API — Items
+  personas:
+  - catalog-manager
+- resource: reports
+  operations:
+  - create
+  - get
+  workflows:
+  - DoorDash Reporting API — Reports
+  personas:
+  - finance-analyst

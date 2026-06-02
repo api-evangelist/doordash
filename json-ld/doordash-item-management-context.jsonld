@@ -1,0 +1,112 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "dd": "https://developer.doordash.com/schemas/",
+    "schema": "https://schema.org/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "CatalogItemsRequest": "dd:CatalogItemsRequest",
+    "CatalogItem": "dd:CatalogItem",
+    "CatalogItemsResponse": "dd:CatalogItemsResponse",
+    "StoreItemsRequest": "dd:StoreItemsRequest",
+    "StoreItem": "dd:StoreItem",
+    "StoreItemsResponse": "dd:StoreItemsResponse",
+    "PromotionsRequest": "dd:PromotionsRequest",
+    "Promotion": "dd:Promotion",
+    "PromotionsResponse": "dd:PromotionsResponse",
+    "items": {
+      "@id": "dd:items",
+      "@container": "@set"
+    },
+    "merchantSuppliedId": {
+      "@id": "dd:merchant_supplied_id",
+      "@type": "xsd:string"
+    },
+    "name": "schema:name",
+    "description": "schema:description",
+    "imageUrl": {
+      "@id": "dd:image_url",
+      "@type": "@id"
+    },
+    "brand": {
+      "@id": "dd:brand",
+      "@type": "xsd:string"
+    },
+    "upc": {
+      "@id": "dd:upc",
+      "@type": "xsd:string"
+    },
+    "category": {
+      "@id": "dd:category",
+      "@type": "xsd:string"
+    },
+    "subcategory": {
+      "@id": "dd:subcategory",
+      "@type": "xsd:string"
+    },
+    "weight": {
+      "@id": "dd:weight",
+      "@type": "xsd:decimal"
+    },
+    "weightUnit": {
+      "@id": "dd:weight_unit",
+      "@type": "xsd:string"
+    },
+    "isAlcohol": {
+      "@id": "dd:is_alcohol",
+      "@type": "xsd:boolean"
+    },
+    "status": {
+      "@id": "dd:status",
+      "@type": "xsd:string"
+    },
+    "itemsProcessed": {
+      "@id": "dd:items_processed",
+      "@type": "xsd:integer"
+    },
+    "errors": {
+      "@id": "dd:errors",
+      "@container": "@set"
+    },
+    "price": {
+      "@id": "dd:price",
+      "@type": "xsd:integer"
+    },
+    "inStock": {
+      "@id": "dd:in_stock",
+      "@type": "xsd:boolean"
+    },
+    "quantityOnHand": {
+      "@id": "dd:quantity_on_hand",
+      "@type": "xsd:integer"
+    },
+    "aisle": {
+      "@id": "dd:aisle",
+      "@type": "xsd:string"
+    },
+    "shelf": {
+      "@id": "dd:shelf",
+      "@type": "xsd:string"
+    },
+    "promotions": {
+      "@id": "dd:promotions",
+      "@container": "@set"
+    },
+    "promotionalPrice": {
+      "@id": "dd:promotional_price",
+      "@type": "xsd:integer"
+    },
+    "startDate": {
+      "@id": "dd:start_date",
+      "@type": "xsd:dateTime"
+    },
+    "endDate": {
+      "@id": "dd:end_date",
+      "@type": "xsd:dateTime"
+    },
+    "promotionsProcessed": {
+      "@id": "dd:promotions_processed",
+      "@type": "xsd:integer"
+    }
+  }
+}

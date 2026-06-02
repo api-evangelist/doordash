@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-onboarding-webhook-payload-structure.json",
+  "name": "OnboardingWebhookPayload",
+  "description": "OnboardingWebhookPayload structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "event_type": {
+      "type": "string",
+      "description": "The type of onboarding event.",
+      "enum": [
+        "store_activated",
+        "store_deactivated",
+        "onboarding_completed",
+        "onboarding_failed"
+      ],
+      "example": "store_activated"
+    },
+    "store_id": {
+      "type": "string",
+      "description": "The merchant-supplied store identifier.",
+      "example": "D-12345"
+    },
+    "status": {
+      "type": "string",
+      "description": "The onboarding status.",
+      "example": "active"
+    },
+    "message": {
+      "type": "string",
+      "description": "Additional details about the onboarding event.",
+      "example": "example"
+    },
+    "timestamp": {
+      "type": "datetime",
+      "description": "When the onboarding event occurred.",
+      "example": "2026-06-02T14:30:00Z"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-schema/doordash-accept-quote-request-schema.json",
+  "title": "AcceptQuoteRequest",
+  "description": "AcceptQuoteRequest schema from DoorDash API",
+  "type": "object",
+  "properties": {
+    "tip": {
+      "type": "integer",
+      "description": "Optional tip amount in cents to include with the delivery.",
+      "example": 42
+    }
+  }
+}

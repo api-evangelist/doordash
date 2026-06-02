@@ -16,33 +16,43 @@ externalDocs:
   description: DoorDash Reporting API Documentation
   url: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
 servers:
-  - url: https://openapi.doordash.com/dataexchange/v1
-    description: Production Server
+- url: https://openapi.doordash.com/dataexchange/v1
+  description: Production Server
 tags:
-  - name: Reports
-    description: >-
-      Create report requests and retrieve report download links for financial,
-      operations, menu, and feedback data.
+- name: Reports
+  description: >-
+    Create report requests and retrieve report download links for financial,
+    operations, menu, and feedback data.
 security:
-  - bearerAuth: []
+- bearerAuth: []
 paths:
   /reports:
     post:
       operationId: createReport
-      summary: Create a report request
+      summary: DoorDash Create a Report Request
       description: >-
         Submits a request to generate a report. Reports are processed
         asynchronously. A successful response returns a report ID that can
         be used to check the status and retrieve the download link. A webhook
         notification is sent when the report is ready.
       tags:
-        - Reports
+      - Reports
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/ReportRequest'
+            examples:
+              CreateReportRequestExample:
+                summary: Default createReport request
+                x-microcks-default: true
+                value:
+                  report_type: financial
+                  start_date: '2026-06-02'
+                  end_date: '2026-06-02'
+                  store_ids: &id001
+                  - example
       responses:
         '202':
           description: Report request accepted for processing
@@ -50,31 +60,55 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ReportRequestResponse'
+              examples:
+                CreateReport202Example:
+                  summary: Default createReport 202 response
+                  x-microcks-default: true
+                  value:
+                    report_id: D-12345
+                    status: PENDING
         '400':
           description: Invalid report parameters
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+              examples:
+                CreateReport400Example:
+                  summary: Default createReport 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
         '401':
           description: Authentication failed
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+              examples:
+                CreateReport401Example:
+                  summary: Default createReport 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /reports/{report_id}/reportlink:
     get:
       operationId: getReportLink
-      summary: Get report download link
+      summary: DoorDash Get Report Download Link
       description: >-
         Retrieves the status and download link for a previously requested
         report. When the report generation is complete, the status will be
         SUCCEEDED and a download link will be provided. The download link
         is temporary and should be used promptly.
       tags:
-        - Reports
+      - Reports
       parameters:
-        - $ref: '#/components/parameters/ReportId'
+      - $ref: '#/components/parameters/ReportId'
       responses:
         '200':
           description: Report status and link retrieved
@@ -82,18 +116,46 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ReportLinkResponse'
+              examples:
+                GetReportLink200Example:
+                  summary: Default getReportLink 200 response
+                  x-microcks-default: true
+                  value:
+                    report_id: D-12345
+                    status: PENDING
+                    download_url: https://example.com/path/abc123
+                    report_type: financial
+                    created_at: '2026-06-02T14:30:00Z'
+                    completed_at: '2026-06-02T14:30:00Z'
         '401':
           description: Authentication failed
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+              examples:
+                GetReportLink401Example:
+                  summary: Default getReportLink 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
         '404':
           description: Report not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+              examples:
+                GetReportLink404Example:
+                  summary: Default getReportLink 404 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
 components:
   securitySchemes:
     bearerAuth:
@@ -116,35 +178,39 @@ components:
     ReportRequest:
       type: object
       required:
-        - report_type
-        - start_date
-        - end_date
+      - report_type
+      - start_date
+      - end_date
       properties:
         report_type:
           type: string
           description: >-
             The type of report to generate.
           enum:
-            - financial
-            - operations
-            - menu
-            - feedback
+          - financial
+          - operations
+          - menu
+          - feedback
+          example: financial
         start_date:
           type: string
           format: date
           description: >-
             The start date for the report period in YYYY-MM-DD format.
+          example: '2026-06-02'
         end_date:
           type: string
           format: date
           description: >-
             The end date for the report period in YYYY-MM-DD format.
+          example: '2026-06-02'
         store_ids:
           type: array
           description: >-
             Optional list of store IDs to filter the report by specific stores.
           items:
             type: string
+          example: *id001
     ReportRequestResponse:
       type: object
       properties:
@@ -153,15 +219,17 @@ components:
           description: >-
             The unique identifier for the report request. Use this to check
             status and retrieve the download link.
+          example: D-12345
         status:
           type: string
           description: >-
             The current processing status of the report.
           enum:
-            - PENDING
-            - PROCESSING
-            - SUCCEEDED
-            - FAILED
+          - PENDING
+          - PROCESSING
+          - SUCCEEDED
+          - FAILED
+          example: PENDING
     ReportLinkResponse:
       type: object
       properties:
@@ -169,41 +237,47 @@ components:
           type: string
           description: >-
             The unique identifier for the report.
+          example: D-12345
         status:
           type: string
           description: >-
             The current processing status of the report.
           enum:
-            - PENDING
-            - PROCESSING
-            - SUCCEEDED
-            - FAILED
+          - PENDING
+          - PROCESSING
+          - SUCCEEDED
+          - FAILED
+          example: PENDING
         download_url:
           type: string
           format: uri
           description: >-
             A temporary URL to download the report. Only present when status
             is SUCCEEDED.
+          example: https://example.com/path/abc123
         report_type:
           type: string
           description: >-
             The type of report that was generated.
           enum:
-            - financial
-            - operations
-            - menu
-            - feedback
+          - financial
+          - operations
+          - menu
+          - feedback
+          example: financial
         created_at:
           type: string
           format: date-time
           description: >-
             When the report request was created.
+          example: '2026-06-02T14:30:00Z'
         completed_at:
           type: string
           format: date-time
           description: >-
             When the report generation was completed. Only present when
             status is SUCCEEDED.
+          example: '2026-06-02T14:30:00Z'
     Error:
       type: object
       properties:
@@ -211,7 +285,9 @@ components:
           type: string
           description: >-
             A human-readable error message.
+          example: example
         code:
           type: string
           description: >-
             A machine-readable error code.
+          example: ABC123

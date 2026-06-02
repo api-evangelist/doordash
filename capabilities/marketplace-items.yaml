@@ -1,0 +1,85 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DoorDash Marketplace API — Items
+  description: 'DoorDash Marketplace API — Items. 1 operation(s). Lead operation: Update Item Availability. Self-contained Naftiko capability covering one DoorDash business surface.'
+  tags:
+  - DoorDash
+  - Marketplace
+  - Items
+  created: '2026-06-02'
+  modified: '2026-06-02'
+binds:
+- namespace: env
+  keys:
+    DOORDASH_JWT: DOORDASH_JWT
+capability:
+  consumes:
+  - type: http
+    namespace: marketplace-items
+    baseUri: https://openapi.doordash.com/marketplace/api/v1
+    description: DoorDash Marketplace API — Items business capability. Self-contained, no shared references.
+    authentication:
+      type: bearer
+      token: '{{env.DOORDASH_JWT}}'
+    resources:
+    - name: stores-merchant-supplied-id-item-status
+      path: /stores/{merchant_supplied_id}/item_status
+      operations:
+      - name: updateItemStatus
+        method: PATCH
+        description: Update Item Availability
+        inputParameters:
+        - name: merchant_supplied_id
+          in: path
+          type: string
+          required: true
+          description: The merchant-supplied identifier for the store.
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request payload.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: marketplace-items-rest
+    port: 8080
+    description: REST adapter for DoorDash Marketplace API — Items. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/stores/{merchant-supplied-id}/item-status
+      name: stores-merchant-supplied-id-item-status
+      description: REST surface for /v1/stores/{merchant-supplied-id}/item-status.
+      operations:
+      - method: PATCH
+        name: updateItemStatus
+        description: Update Item Availability
+        call: marketplace-items.updateItemStatus
+        with:
+          merchant_supplied_id: rest.merchant_supplied_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: marketplace-items-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DoorDash Marketplace API — Items. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: update-item-availability
+      description: Update Item Availability
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: marketplace-items.updateItemStatus
+      with:
+        merchant_supplied_id: tools.merchant_supplied_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

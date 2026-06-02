@@ -18,41 +18,58 @@ externalDocs:
   description: DoorDash Item Management API Documentation
   url: https://developer.doordash.com/en-US/api/marketplace_v2/
 servers:
-  - url: https://openapi.doordash.com/marketplace/api/v2
-    description: Production Server
+- url: https://openapi.doordash.com/marketplace/api/v2
+  description: Production Server
 tags:
-  - name: Catalog
-    description: >-
-      Manage the item catalog including adding new items and updating existing
-      item information such as names, descriptions, images, and attributes.
-  - name: Inventory
-    description: >-
-      Manage store-level inventory, pricing, and other in-store attributes
-      for items on the DoorDash platform.
-  - name: Promotions
-    description: >-
-      Manage item-level promotions at the store level, including adding and
-      updating promotional pricing.
+- name: Catalog
+  description: >-
+    Manage the item catalog including adding new items and updating existing
+    item information such as names, descriptions, images, and attributes.
+- name: Inventory
+  description: >-
+    Manage store-level inventory, pricing, and other in-store attributes
+    for items on the DoorDash platform.
+- name: Promotions
+  description: >-
+    Manage item-level promotions at the store level, including adding and
+    updating promotional pricing.
 security:
-  - bearerAuth: []
+- bearerAuth: []
 paths:
   /items:
     post:
       operationId: createItems
-      summary: Add items to catalog
+      summary: DoorDash Add Items to Catalog
       description: >-
         Adds new items to the DoorDash item catalog. Each item is identified
         by a unique Merchant Supplied Item ID (MSID). Items added through this
         endpoint become available for inventory and pricing management at
         individual stores.
       tags:
-        - Catalog
+      - Catalog
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/CatalogItemsRequest'
+            examples:
+              CreateItemsRequestExample:
+                summary: Default createItems request
+                x-microcks-default: true
+                value:
+                  items:
+                  - merchant_supplied_id: {}
+                    name: {}
+                    description: {}
+                    image_url: {}
+                    brand: {}
+                    upc: {}
+                    category: {}
+                    subcategory: {}
+                    weight: {}
+                    weight_unit: {}
+                    is_alcohol: {}
       responses:
         '200':
           description: Items added to catalog successfully
@@ -60,33 +77,78 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CatalogItemsResponse'
+              examples:
+                CreateItems200Example:
+                  summary: Default createItems 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    items_processed: 42
+                    errors:
+                    - merchant_supplied_id: {}
+                      message: {}
+                      code: {}
         '400':
           description: Invalid item data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+              examples:
+                CreateItems400Example:
+                  summary: Default createItems 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
         '401':
           description: Authentication failed
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+              examples:
+                CreateItems401Example:
+                  summary: Default createItems 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     patch:
       operationId: updateItems
-      summary: Update items in catalog
+      summary: DoorDash Update Items in Catalog
       description: >-
         Updates information about existing items in the catalog. Uses the same
         validation as the create endpoint. Items are matched by their Merchant
         Supplied Item ID.
       tags:
-        - Catalog
+      - Catalog
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/CatalogItemsRequest'
+            examples:
+              UpdateItemsRequestExample:
+                summary: Default updateItems request
+                x-microcks-default: true
+                value:
+                  items:
+                  - merchant_supplied_id: {}
+                    name: {}
+                    description: {}
+                    image_url: {}
+                    brand: {}
+                    upc: {}
+                    category: {}
+                    subcategory: {}
+                    weight: {}
+                    weight_unit: {}
+                    is_alcohol: {}
       responses:
         '200':
           description: Items updated successfully
@@ -94,36 +156,76 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CatalogItemsResponse'
+              examples:
+                UpdateItems200Example:
+                  summary: Default updateItems 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    items_processed: 42
+                    errors:
+                    - merchant_supplied_id: {}
+                      message: {}
+                      code: {}
         '400':
           description: Invalid item data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+              examples:
+                UpdateItems400Example:
+                  summary: Default updateItems 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
         '401':
           description: Authentication failed
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+              examples:
+                UpdateItems401Example:
+                  summary: Default updateItems 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /stores/{store_location_id}/items:
     post:
       operationId: createStoreInventory
-      summary: Add inventory and pricing for items at a store
+      summary: DoorDash Add Inventory and Pricing for Items at a Store
       description: >-
         Adds inventory, pricing, and other in-store attributes for items at a
         specific store location. Items must already exist in the catalog before
         inventory can be set at the store level.
       tags:
-        - Inventory
+      - Inventory
       parameters:
-        - $ref: '#/components/parameters/StoreLocationId'
+      - $ref: '#/components/parameters/StoreLocationId'
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/StoreItemsRequest'
+            examples:
+              CreateStoreInventoryRequestExample:
+                summary: Default createStoreInventory request
+                x-microcks-default: true
+                value:
+                  items:
+                  - merchant_supplied_id: {}
+                    price: {}
+                    in_stock: {}
+                    quantity_on_hand: {}
+                    aisle: {}
+                    shelf: {}
       responses:
         '200':
           description: Store inventory created successfully
@@ -131,41 +233,88 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StoreItemsResponse'
+              examples:
+                CreateStoreInventory200Example:
+                  summary: Default createStoreInventory 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    items_processed: 42
+                    errors:
+                    - merchant_supplied_id: {}
+                      message: {}
+                      code: {}
         '400':
           description: Invalid inventory data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+              examples:
+                CreateStoreInventory400Example:
+                  summary: Default createStoreInventory 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
         '401':
           description: Authentication failed
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+              examples:
+                CreateStoreInventory401Example:
+                  summary: Default createStoreInventory 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
         '404':
           description: Store not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+              examples:
+                CreateStoreInventory404Example:
+                  summary: Default createStoreInventory 404 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     patch:
       operationId: updateStoreInventory
-      summary: Update inventory and pricing for items at a store
+      summary: DoorDash Update Inventory and Pricing for Items at a Store
       description: >-
         Updates inventory, pricing, and other in-store attributes for existing
         items at a specific store location. Changes are typically reflected
         within minutes.
       tags:
-        - Inventory
+      - Inventory
       parameters:
-        - $ref: '#/components/parameters/StoreLocationId'
+      - $ref: '#/components/parameters/StoreLocationId'
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/StoreItemsRequest'
+            examples:
+              UpdateStoreInventoryRequestExample:
+                summary: Default updateStoreInventory request
+                x-microcks-default: true
+                value:
+                  items:
+                  - merchant_supplied_id: {}
+                    price: {}
+                    in_stock: {}
+                    quantity_on_hand: {}
+                    aisle: {}
+                    shelf: {}
       responses:
         '200':
           description: Store inventory updated successfully
@@ -173,42 +322,88 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StoreItemsResponse'
+              examples:
+                UpdateStoreInventory200Example:
+                  summary: Default updateStoreInventory 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    items_processed: 42
+                    errors:
+                    - merchant_supplied_id: {}
+                      message: {}
+                      code: {}
         '400':
           description: Invalid inventory data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+              examples:
+                UpdateStoreInventory400Example:
+                  summary: Default updateStoreInventory 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
         '401':
           description: Authentication failed
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+              examples:
+                UpdateStoreInventory401Example:
+                  summary: Default updateStoreInventory 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
         '404':
           description: Store not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+              examples:
+                UpdateStoreInventory404Example:
+                  summary: Default updateStoreInventory 404 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
   /promotions/stores/{store_location_id}:
     post:
       operationId: createStorePromotions
-      summary: Add promotions for items at a store
+      summary: DoorDash Add Promotions for Items at a Store
       description: >-
         Adds item-level promotions for items at a specific store location.
         Promotions allow partners to set promotional pricing for their items
         on the DoorDash platform.
       tags:
-        - Promotions
+      - Promotions
       parameters:
-        - $ref: '#/components/parameters/StoreLocationId'
+      - $ref: '#/components/parameters/StoreLocationId'
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/PromotionsRequest'
+            examples:
+              CreateStorePromotionsRequestExample:
+                summary: Default createStorePromotions request
+                x-microcks-default: true
+                value:
+                  promotions:
+                  - merchant_supplied_id: {}
+                    promotional_price: {}
+                    start_date: {}
+                    end_date: {}
+                    description: {}
       responses:
         '200':
           description: Promotions created successfully
@@ -216,39 +411,85 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PromotionsResponse'
+              examples:
+                CreateStorePromotions200Example:
+                  summary: Default createStorePromotions 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    promotions_processed: 42
+                    errors:
+                    - merchant_supplied_id: {}
+                      message: {}
+                      code: {}
         '400':
           description: Invalid promotion data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+              examples:
+                CreateStorePromotions400Example:
+                  summary: Default createStorePromotions 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
         '401':
           description: Authentication failed
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+              examples:
+                CreateStorePromotions401Example:
+                  summary: Default createStorePromotions 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
         '404':
           description: Store not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+              examples:
+                CreateStorePromotions404Example:
+                  summary: Default createStorePromotions 404 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
     patch:
       operationId: updateStorePromotions
-      summary: Update promotions for items at a store
+      summary: DoorDash Update Promotions for Items at a Store
       description: >-
         Updates existing item-level promotions at a specific store location.
       tags:
-        - Promotions
+      - Promotions
       parameters:
-        - $ref: '#/components/parameters/StoreLocationId'
+      - $ref: '#/components/parameters/StoreLocationId'
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/PromotionsRequest'
+            examples:
+              UpdateStorePromotionsRequestExample:
+                summary: Default updateStorePromotions request
+                x-microcks-default: true
+                value:
+                  promotions:
+                  - merchant_supplied_id: {}
+                    promotional_price: {}
+                    start_date: {}
+                    end_date: {}
+                    description: {}
       responses:
         '200':
           description: Promotions updated successfully
@@ -256,24 +497,59 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PromotionsResponse'
+              examples:
+                UpdateStorePromotions200Example:
+                  summary: Default updateStorePromotions 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    promotions_processed: 42
+                    errors:
+                    - merchant_supplied_id: {}
+                      message: {}
+                      code: {}
         '400':
           description: Invalid promotion data
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+              examples:
+                UpdateStorePromotions400Example:
+                  summary: Default updateStorePromotions 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
         '401':
           description: Authentication failed
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+              examples:
+                UpdateStorePromotions401Example:
+                  summary: Default updateStorePromotions 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
         '404':
           description: Store not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+              examples:
+                UpdateStorePromotions404Example:
+                  summary: Default updateStorePromotions 404 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
 components:
   securitySchemes:
     bearerAuth:
@@ -295,7 +571,7 @@ components:
     CatalogItemsRequest:
       type: object
       required:
-        - items
+      - items
       properties:
         items:
           type: array
@@ -306,59 +582,70 @@ components:
     CatalogItem:
       type: object
       required:
-        - merchant_supplied_id
-        - name
+      - merchant_supplied_id
+      - name
       properties:
         merchant_supplied_id:
           type: string
           description: >-
             The unique merchant-supplied item identifier (MSID).
+          example: D-12345
         name:
           type: string
           description: >-
             The display name of the item.
+          example: Acme Pickup Store
         description:
           type: string
           description: >-
             A description of the item.
+          example: Leave at the front desk.
         image_url:
           type: string
           format: uri
           description: >-
             A URL to an image of the item.
+          example: https://example.com/path/abc123
         brand:
           type: string
           description: >-
             The brand name of the item.
+          example: example
         upc:
           type: string
           description: >-
             The Universal Product Code for the item.
+          example: example
         category:
           type: string
           description: >-
             The category the item belongs to.
+          example: example
         subcategory:
           type: string
           description: >-
             The subcategory the item belongs to.
+          example: example
         weight:
           type: number
           description: >-
             The weight of the item.
+          example: 12.5
         weight_unit:
           type: string
           description: >-
             The unit of weight measurement.
           enum:
-            - oz
-            - lb
-            - g
-            - kg
+          - oz
+          - lb
+          - g
+          - kg
+          example: oz
         is_alcohol:
           type: boolean
           description: >-
             Whether the item contains alcohol.
+          example: true
     CatalogItemsResponse:
       type: object
       properties:
@@ -366,10 +653,12 @@ components:
           type: string
           description: >-
             The processing status of the request.
+          example: active
         items_processed:
           type: integer
           description: >-
             The number of items processed.
+          example: 42
         errors:
           type: array
           description: >-
@@ -379,7 +668,7 @@ components:
     StoreItemsRequest:
       type: object
       required:
-        - items
+      - items
       properties:
         items:
           type: array
@@ -390,33 +679,39 @@ components:
     StoreItem:
       type: object
       required:
-        - merchant_supplied_id
+      - merchant_supplied_id
       properties:
         merchant_supplied_id:
           type: string
           description: >-
             The unique merchant-supplied item identifier.
+          example: D-12345
         price:
           type: integer
           description: >-
             The item price in cents at this store.
+          example: 42
         in_stock:
           type: boolean
           description: >-
             Whether the item is currently in stock at this store.
+          example: true
         quantity_on_hand:
           type: integer
           description: >-
             The current quantity available at this store.
           minimum: 0
+          example: 0
         aisle:
           type: string
           description: >-
             The aisle location of the item in the store.
+          example: example
         shelf:
           type: string
           description: >-
             The shelf location of the item in the store.
+          example: example
     StoreItemsResponse:
       type: object
       properties:
@@ -424,10 +719,12 @@ components:
           type: string
           description: >-
             The processing status of the request.
+          example: active
         items_processed:
           type: integer
           description: >-
             The number of items processed.
+          example: 42
         errors:
           type: array
           description: >-
@@ -437,7 +734,7 @@ components:
     PromotionsRequest:
       type: object
       required:
-        - promotions
+      - promotions
       properties:
         promotions:
           type: array
@@ -448,31 +745,36 @@ components:
     Promotion:
       type: object
       required:
-        - merchant_supplied_id
-        - promotional_price
+      - merchant_supplied_id
+      - promotional_price
       properties:
         merchant_supplied_id:
           type: string
           description: >-
             The merchant-supplied item identifier for the promoted item.
+          example: D-12345
         promotional_price:
           type: integer
           description: >-
             The promotional price in cents.
+          example: 42
         start_date:
           type: string
           format: date-time
           description: >-
             The start date of the promotion in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
         end_date:
           type: string
           format: date-time
           description: >-
             The end date of the promotion in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
         description:
           type: string
           description: >-
             A description of the promotion.
+          example: Leave at the front desk.
     PromotionsResponse:
       type: object
       properties:
@@ -480,10 +782,12 @@ components:
           type: string
           description: >-
             The processing status of the request.
+          example: active
         promotions_processed:
           type: integer
           description: >-
             The number of promotions processed.
+          example: 42
         errors:
           type: array
           description: >-
@@ -497,14 +801,17 @@ components:
           type: string
           description: >-
             The item identifier that had an error.
+          example: D-12345
         message:
           type: string
           description: >-
             The error message.
+          example: example
         code:
           type: string
           description: >-
             A machine-readable error code.
+          example: ABC123
     Error:
       type: object
       properties:
@@ -512,7 +819,9 @@ components:
           type: string
           description: >-
             A human-readable error message.
+          example: example
         code:
           type: string
           description: >-
             A machine-readable error code.
+          example: ABC123

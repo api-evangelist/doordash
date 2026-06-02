@@ -1,30 +1,36 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "#/components/schemas/Estimate",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-schema/doordash-estimate-schema.json",
   "title": "Estimate",
+  "description": "Estimate schema from DoorDash API",
   "type": "object",
   "properties": {
     "fee": {
       "type": "integer",
-      "description": "The estimated delivery fee in cents."
+      "description": "The estimated delivery fee in cents.",
+      "example": 42
     },
     "currency": {
       "type": "string",
-      "description": "The currency code for the fee amount."
+      "description": "The currency code for the fee amount.",
+      "example": "USD"
     },
     "pickup_time": {
       "type": "string",
       "format": "date-time",
-      "description": "The estimated pickup time."
+      "description": "The estimated pickup time.",
+      "example": "2026-06-02T14:30:00Z"
     },
     "dropoff_time": {
       "type": "string",
       "format": "date-time",
-      "description": "The estimated dropoff time."
+      "description": "The estimated dropoff time.",
+      "example": "2026-06-02T14:30:00Z"
     },
     "delivery_duration": {
       "type": "integer",
-      "description": "The estimated delivery duration in seconds."
+      "description": "The estimated delivery duration in seconds.",
+      "example": 42
     }
   }
 }

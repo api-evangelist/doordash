@@ -1,0 +1,8 @@
+{
+  "merchant_supplied_id": "D-12345",
+  "name": "Acme Pickup Store",
+  "address": "901 Market St, San Francisco, CA 94105",
+  "phone_number": "+15555551234",
+  "is_active": true,
+  "status": "open"
+}

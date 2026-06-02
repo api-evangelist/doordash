@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-menu-webhook-payload-structure.json",
+  "name": "MenuWebhookPayload",
+  "description": "MenuWebhookPayload structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "event_type": {
+      "type": "string",
+      "description": "The type of menu event.",
+      "enum": [
+        "menu_created",
+        "menu_updated",
+        "menu_failed"
+      ],
+      "example": "menu_created"
+    },
+    "menu_id": {
+      "type": "string",
+      "description": "The unique menu identifier.",
+      "example": "D-12345"
+    },
+    "store_id": {
+      "type": "string",
+      "description": "The merchant-supplied store identifier.",
+      "example": "D-12345"
+    },
+    "status": {
+      "type": "string",
+      "description": "The menu processing status.",
+      "enum": [
+        "completed",
+        "failed"
+      ],
+      "example": "completed"
+    },
+    "error_message": {
+      "type": "string",
+      "description": "Error details if the menu processing failed.",
+      "example": "example"
+    },
+    "processed_at": {
+      "type": "datetime",
+      "description": "When the menu processing completed.",
+      "example": "2026-06-02T14:30:00Z"
+    }
+  }
+}

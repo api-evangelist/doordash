@@ -1,0 +1,14 @@
+{
+  "store_id": "D-12345",
+  "categories": [
+    {
+      "id": "D-12345",
+      "name": "Acme Pickup Store",
+      "description": "Leave at the front desk.",
+      "sort_id": 42,
+      "items": [
+        {}
+      ]
+    }
+  ]
+}

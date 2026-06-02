@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-promotion-structure.json",
+  "name": "Promotion",
+  "description": "Promotion structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "merchant_supplied_id": {
+      "type": "string",
+      "description": "The merchant-supplied item identifier for the promoted item.",
+      "example": "D-12345"
+    },
+    "promotional_price": {
+      "type": "int32",
+      "description": "The promotional price in cents.",
+      "example": 42
+    },
+    "start_date": {
+      "type": "datetime",
+      "description": "The start date of the promotion in UTC ISO-8601 format.",
+      "example": "2026-06-02T14:30:00Z"
+    },
+    "end_date": {
+      "type": "datetime",
+      "description": "The end date of the promotion in UTC ISO-8601 format.",
+      "example": "2026-06-02T14:30:00Z"
+    },
+    "description": {
+      "type": "string",
+      "description": "A description of the promotion.",
+      "example": "Leave at the front desk."
+    }
+  },
+  "required": [
+    "merchant_supplied_id",
+    "promotional_price"
+  ]
+}

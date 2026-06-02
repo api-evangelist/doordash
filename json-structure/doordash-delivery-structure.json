@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-delivery-structure.json",
+  "name": "Delivery",
+  "description": "Delivery structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "external_delivery_id": {
+      "type": "string",
+      "description": "The unique external delivery ID.",
+      "example": "D-12345"
+    },
+    "delivery_status": {
+      "type": "string",
+      "description": "The current status of the delivery.",
+      "enum": [
+        "created",
+        "confirmed",
+        "enroute_to_pickup",
+        "arrived_at_pickup",
+        "picked_up",
+        "enroute_to_dropoff",
+        "arrived_at_dropoff",
+        "delivered",
+        "cancelled",
+        "returned"
+      ],
+      "example": "created"
+    },
+    "fee": {
+      "type": "int32",
+      "description": "The delivery fee in cents.",
+      "example": 42
+    },
+    "currency": {
+      "type": "string",
+      "description": "The currency code for monetary amounts.",
+      "example": "USD"
+    },
+    "tip": {
+      "type": "int32",
+      "description": "The tip amount in cents.",
+      "example": 42
+    },
+    "order_value": {
+      "type": "int32",
+      "description": "The total value of the order in cents.",
+      "example": 42
+    },
+    "pickup_address": {
+      "type": "string",
+      "description": "The full street address for the pickup location.",
+      "example": "901 Market St, San Francisco, CA 94105"
+    },
+    "pickup_business_name": {
+      "type": "string",
+      "description": "The business name at the pickup location.",
+      "example": "Acme Pickup Store"
+    },
+    "pickup_phone_number": {
+      "type": "string",
+      "description": "The phone number at the pickup location.",
+      "example": "+15555551234"
+    },
+    "pickup_instructions": {
+      "type": "string",
+      "description": "Special instructions for pickup.",
+      "example": "Leave at the front desk."
+    },
+    "pickup_time_estimated": {
+      "type": "datetime",
+      "description": "The estimated pickup time in UTC ISO-8601 format.",
+      "example": "2026-06-02T14:30:00Z"
+    },
+    "pickup_time_actual": {
+      "type": "datetime",
+      "description": "The actual pickup time in UTC ISO-8601 format.",
+      "example": "2026-06-02T14:30:00Z"
+    },
+    "dropoff_address": {
+      "type": "string",
+      "description": "The full street address for the dropoff location.",
+      "example": "901 Market St, San Francisco, CA 94105"
+    },
+    "dropoff_business_name": {
+      "type": "string",
+      "description": "The business name at the dropoff location.",
+      "example": "Acme Pickup Store"
+    },
+    "dropoff_phone_number": {
+      "type": "string",
+      "description": "The phone number at the dropoff location.",
+      "example": "+15555551234"
+    },
+    "dropoff_instructions": {
+      "type": "string",
+      "description": "Special instructions for dropoff.",
+      "example": "Leave at the front desk."
+    },
+    "dropoff_time_estimated": {
+      "type": "datetime",
+      "description": "The estimated dropoff time in UTC ISO-8601 format.",
+      "example": "2026-06-02T14:30:00Z"
+    },
+    "dropoff_time_actual": {
+      "type": "datetime",
+      "description": "The actual dropoff time in UTC ISO-8601 format.",
+      "example": "2026-06-02T14:30:00Z"
+    },
+    "dropoff_contact_given_name": {
+      "type": "string",
+      "description": "The first name of the dropoff contact.",
+      "example": "Acme Pickup Store"
+    },
+    "dropoff_contact_family_name": {
+      "type": "string",
+      "description": "The last name of the dropoff contact.",
+      "example": "Acme Pickup Store"
+    },
+    "dasher_id": {
+      "type": "int32",
+      "description": "The unique identifier for the assigned Dasher.",
+      "example": 42
+    },
+    "dasher_name": {
+      "type": "string",
+      "description": "The first name of the assigned Dasher.",
+      "example": "Acme Pickup Store"
+    },
+    "dasher_phone_number": {
+      "type": "string",
+      "description": "The phone number of the assigned Dasher.",
+      "example": "+15555551234"
+    },
+    "dasher_location": {
+      "$ref": "#/components/schemas/Location"
+    },
+    "tracking_url": {
+      "type": "uri",
+      "description": "A URL for tracking the delivery in real time.",
+      "example": "https://example.com/path/abc123"
+    },
+    "contains_alcohol": {
+      "type": "boolean",
+      "description": "Whether the order contains alcohol.",
+      "example": true
+    },
+    "force_batch_id": {
+      "type": "string",
+      "description": "The batch identifier for grouped deliveries.",
+      "example": "D-12345"
+    },
+    "created_at": {
+      "type": "datetime",
+      "description": "The timestamp when the delivery was created.",
+      "example": "2026-06-02T14:30:00Z"
+    },
+    "updated_at": {
+      "type": "datetime",
+      "description": "The timestamp when the delivery was last updated.",
+      "example": "2026-06-02T14:30:00Z"
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-store-item-structure.json",
+  "name": "StoreItem",
+  "description": "StoreItem structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "merchant_supplied_id": {
+      "type": "string",
+      "description": "The unique merchant-supplied item identifier.",
+      "example": "D-12345"
+    },
+    "price": {
+      "type": "int32",
+      "description": "The item price in cents at this store.",
+      "example": 42
+    },
+    "in_stock": {
+      "type": "boolean",
+      "description": "Whether the item is currently in stock at this store.",
+      "example": true
+    },
+    "quantity_on_hand": {
+      "type": "int32",
+      "description": "The current quantity available at this store.",
+      "minimum": 0,
+      "example": 0
+    },
+    "aisle": {
+      "type": "string",
+      "description": "The aisle location of the item in the store.",
+      "example": "example"
+    },
+    "shelf": {
+      "type": "string",
+      "description": "The shelf location of the item in the store.",
+      "example": "example"
+    }
+  },
+  "required": [
+    "merchant_supplied_id"
+  ]
+}

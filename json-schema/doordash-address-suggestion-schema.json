@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-schema/doordash-address-suggestion-schema.json",
+  "title": "AddressSuggestion",
+  "description": "AddressSuggestion schema from DoorDash API",
+  "type": "object",
+  "properties": {
+    "full_address": {
+      "type": "string",
+      "description": "The complete suggested address string.",
+      "example": "901 Market St, San Francisco, CA 94105"
+    },
+    "street": {
+      "type": "string",
+      "description": "The street portion of the address.",
+      "example": "example"
+    },
+    "city": {
+      "type": "string",
+      "description": "The city name.",
+      "example": "San Francisco"
+    },
+    "state": {
+      "type": "string",
+      "description": "The state or province.",
+      "example": "CA"
+    },
+    "zip_code": {
+      "type": "string",
+      "description": "The postal or ZIP code.",
+      "example": "94105"
+    },
+    "country": {
+      "type": "string",
+      "description": "The country code.",
+      "example": "US"
+    }
+  }
+}

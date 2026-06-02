@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-substitution-structure.json",
+  "name": "Substitution",
+  "description": "Substitution structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "original_item_id": {
+      "type": "string",
+      "description": "The ID of the original item to substitute.",
+      "example": "D-12345"
+    },
+    "substitute_item_id": {
+      "type": "string",
+      "description": "The ID of the substitute item.",
+      "example": "D-12345"
+    },
+    "substitute_item_name": {
+      "type": "string",
+      "description": "The name of the substitute item.",
+      "example": "Acme Pickup Store"
+    },
+    "substitute_item_price": {
+      "type": "int32",
+      "description": "The price of the substitute item in cents.",
+      "example": 42
+    }
+  }
+}

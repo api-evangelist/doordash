@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-business-request-structure.json",
+  "name": "BusinessRequest",
+  "description": "BusinessRequest structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "external_business_id": {
+      "type": "string",
+      "description": "A unique external identifier for the business.",
+      "example": "D-12345"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the business.",
+      "example": "Acme Pickup Store"
+    },
+    "description": {
+      "type": "string",
+      "description": "A description of the business.",
+      "example": "Leave at the front desk."
+    }
+  },
+  "required": [
+    "external_business_id",
+    "name"
+  ]
+}

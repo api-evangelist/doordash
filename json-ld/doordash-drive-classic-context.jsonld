@@ -1,0 +1,146 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "dd": "https://developer.doordash.com/schemas/",
+    "schema": "https://schema.org/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "EstimateRequest": "dd:EstimateRequest",
+    "Estimate": "dd:Estimate",
+    "ClassicDeliveryRequest": "dd:ClassicDeliveryRequest",
+    "ClassicDeliveryUpdateRequest": "dd:ClassicDeliveryUpdateRequest",
+    "ClassicDelivery": "dd:ClassicDelivery",
+    "Business": "dd:Business",
+    "BusinessRequest": "dd:BusinessRequest",
+    "Store": "dd:Store",
+    "StoreRequest": "dd:StoreRequest",
+    "pickupAddress": {
+      "@id": "dd:pickup_address",
+      "@type": "xsd:string"
+    },
+    "dropoffAddress": {
+      "@id": "dd:dropoff_address",
+      "@type": "xsd:string"
+    },
+    "pickupTime": {
+      "@id": "dd:pickup_time",
+      "@type": "xsd:dateTime"
+    },
+    "orderValue": {
+      "@id": "dd:order_value",
+      "@type": "xsd:integer"
+    },
+    "fee": {
+      "@id": "dd:fee",
+      "@type": "xsd:integer"
+    },
+    "currency": {
+      "@id": "dd:currency",
+      "@type": "xsd:string"
+    },
+    "dropoffTime": {
+      "@id": "dd:dropoff_time",
+      "@type": "xsd:dateTime"
+    },
+    "deliveryDuration": {
+      "@id": "dd:delivery_duration",
+      "@type": "xsd:integer"
+    },
+    "externalDeliveryId": {
+      "@id": "dd:external_delivery_id",
+      "@type": "xsd:string"
+    },
+    "pickupBusinessName": {
+      "@id": "dd:pickup_business_name",
+      "@type": "xsd:string"
+    },
+    "pickupPhoneNumber": {
+      "@id": "dd:pickup_phone_number",
+      "@type": "xsd:string"
+    },
+    "pickupInstructions": {
+      "@id": "dd:pickup_instructions",
+      "@type": "xsd:string"
+    },
+    "dropoffBusinessName": {
+      "@id": "dd:dropoff_business_name",
+      "@type": "xsd:string"
+    },
+    "dropoffPhoneNumber": {
+      "@id": "dd:dropoff_phone_number",
+      "@type": "xsd:string"
+    },
+    "dropoffInstructions": {
+      "@id": "dd:dropoff_instructions",
+      "@type": "xsd:string"
+    },
+    "dropoffContactGivenName": {
+      "@id": "dd:dropoff_contact_given_name",
+      "@type": "xsd:string"
+    },
+    "dropoffContactFamilyName": {
+      "@id": "dd:dropoff_contact_family_name",
+      "@type": "xsd:string"
+    },
+    "tip": {
+      "@id": "dd:tip",
+      "@type": "xsd:integer"
+    },
+    "containsAlcohol": {
+      "@id": "dd:contains_alcohol",
+      "@type": "xsd:boolean"
+    },
+    "externalBusinessId": {
+      "@id": "dd:external_business_id",
+      "@type": "xsd:string"
+    },
+    "externalStoreId": {
+      "@id": "dd:external_store_id",
+      "@type": "xsd:string"
+    },
+    "deliveryStatus": {
+      "@id": "dd:delivery_status",
+      "@type": "xsd:string"
+    },
+    "pickupTimeEstimated": {
+      "@id": "dd:pickup_time_estimated",
+      "@type": "xsd:dateTime"
+    },
+    "pickupTimeActual": {
+      "@id": "dd:pickup_time_actual",
+      "@type": "xsd:dateTime"
+    },
+    "dropoffTimeEstimated": {
+      "@id": "dd:dropoff_time_estimated",
+      "@type": "xsd:dateTime"
+    },
+    "dropoffTimeActual": {
+      "@id": "dd:dropoff_time_actual",
+      "@type": "xsd:dateTime"
+    },
+    "dasherId": {
+      "@id": "dd:dasher_id",
+      "@type": "xsd:integer"
+    },
+    "dasherName": {
+      "@id": "dd:dasher_name",
+      "@type": "xsd:string"
+    },
+    "trackingUrl": {
+      "@id": "dd:tracking_url",
+      "@type": "@id"
+    },
+    "createdAt": "schema:dateCreated",
+    "updatedAt": "schema:dateModified",
+    "name": "schema:name",
+    "description": "schema:description",
+    "phoneNumber": {
+      "@id": "dd:phone_number",
+      "@type": "xsd:string"
+    },
+    "address": {
+      "@id": "dd:address",
+      "@type": "xsd:string"
+    }
+  }
+}

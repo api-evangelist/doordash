@@ -1,28 +1,34 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "#/components/schemas/Store",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-schema/doordash-store-schema.json",
   "title": "Store",
+  "description": "Store schema from DoorDash API",
   "type": "object",
   "properties": {
     "external_business_id": {
       "type": "string",
-      "description": "The external business ID this store belongs to."
+      "description": "The external business ID this store belongs to.",
+      "example": "D-12345"
     },
     "external_store_id": {
       "type": "string",
-      "description": "The unique external identifier for the store."
+      "description": "The unique external identifier for the store.",
+      "example": "D-12345"
     },
     "name": {
       "type": "string",
-      "description": "The name of the store."
+      "description": "The name of the store.",
+      "example": "Acme Pickup Store"
     },
     "phone_number": {
       "type": "string",
-      "description": "The phone number for the store."
+      "description": "The phone number for the store.",
+      "example": "+15555551234"
     },
     "address": {
       "type": "string",
-      "description": "The full street address of the store."
+      "description": "The full street address of the store.",
+      "example": "901 Market St, San Francisco, CA 94105"
     }
   }
 }

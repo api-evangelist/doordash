@@ -1,0 +1,211 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "dd": "https://developer.doordash.com/schemas/",
+    "schema": "https://schema.org/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "QuoteRequest": "dd:QuoteRequest",
+    "Quote": "dd:Quote",
+    "AcceptQuoteRequest": "dd:AcceptQuoteRequest",
+    "DeliveryRequest": "dd:DeliveryRequest",
+    "DeliveryUpdateRequest": "dd:DeliveryUpdateRequest",
+    "Delivery": "dd:Delivery",
+    "DeliveryItem": "dd:DeliveryItem",
+    "Location": "dd:Location",
+    "AddressSuggestion": "dd:AddressSuggestion",
+    "CheckoutAuditSignal": "dd:CheckoutAuditSignal",
+    "externalDeliveryId": {
+      "@id": "dd:external_delivery_id",
+      "@type": "xsd:string"
+    },
+    "pickupAddress": {
+      "@id": "dd:pickup_address",
+      "@type": "xsd:string"
+    },
+    "pickupBusinessName": {
+      "@id": "dd:pickup_business_name",
+      "@type": "xsd:string"
+    },
+    "pickupPhoneNumber": {
+      "@id": "dd:pickup_phone_number",
+      "@type": "xsd:string"
+    },
+    "dropoffAddress": {
+      "@id": "dd:dropoff_address",
+      "@type": "xsd:string"
+    },
+    "dropoffBusinessName": {
+      "@id": "dd:dropoff_business_name",
+      "@type": "xsd:string"
+    },
+    "dropoffPhoneNumber": {
+      "@id": "dd:dropoff_phone_number",
+      "@type": "xsd:string"
+    },
+    "orderValue": {
+      "@id": "dd:order_value",
+      "@type": "xsd:integer"
+    },
+    "pickupTime": {
+      "@id": "dd:pickup_time",
+      "@type": "xsd:dateTime"
+    },
+    "dropoffTime": {
+      "@id": "dd:dropoff_time",
+      "@type": "xsd:dateTime"
+    },
+    "fee": {
+      "@id": "dd:fee",
+      "@type": "xsd:integer"
+    },
+    "currency": {
+      "@id": "dd:currency",
+      "@type": "xsd:string"
+    },
+    "deliveryTime": {
+      "@id": "dd:delivery_time",
+      "@type": "xsd:dateTime"
+    },
+    "expiresAt": {
+      "@id": "dd:expires_at",
+      "@type": "xsd:dateTime"
+    },
+    "tip": {
+      "@id": "dd:tip",
+      "@type": "xsd:integer"
+    },
+    "pickupInstructions": {
+      "@id": "dd:pickup_instructions",
+      "@type": "xsd:string"
+    },
+    "pickupReferenceTag": {
+      "@id": "dd:pickup_reference_tag",
+      "@type": "xsd:string"
+    },
+    "dropoffInstructions": {
+      "@id": "dd:dropoff_instructions",
+      "@type": "xsd:string"
+    },
+    "dropoffContactGivenName": {
+      "@id": "dd:dropoff_contact_given_name",
+      "@type": "xsd:string"
+    },
+    "dropoffContactFamilyName": {
+      "@id": "dd:dropoff_contact_family_name",
+      "@type": "xsd:string"
+    },
+    "containsAlcohol": {
+      "@id": "dd:contains_alcohol",
+      "@type": "xsd:boolean"
+    },
+    "forceBatchId": {
+      "@id": "dd:force_batch_id",
+      "@type": "xsd:string"
+    },
+    "externalBusinessId": {
+      "@id": "dd:external_business_id",
+      "@type": "xsd:string"
+    },
+    "externalStoreId": {
+      "@id": "dd:external_store_id",
+      "@type": "xsd:string"
+    },
+    "items": {
+      "@id": "dd:items",
+      "@container": "@set"
+    },
+    "deliveryStatus": {
+      "@id": "dd:delivery_status",
+      "@type": "xsd:string"
+    },
+    "pickupTimeEstimated": {
+      "@id": "dd:pickup_time_estimated",
+      "@type": "xsd:dateTime"
+    },
+    "pickupTimeActual": {
+      "@id": "dd:pickup_time_actual",
+      "@type": "xsd:dateTime"
+    },
+    "dropoffTimeEstimated": {
+      "@id": "dd:dropoff_time_estimated",
+      "@type": "xsd:dateTime"
+    },
+    "dropoffTimeActual": {
+      "@id": "dd:dropoff_time_actual",
+      "@type": "xsd:dateTime"
+    },
+    "dasherId": {
+      "@id": "dd:dasher_id",
+      "@type": "xsd:integer"
+    },
+    "dasherName": {
+      "@id": "dd:dasher_name",
+      "@type": "xsd:string"
+    },
+    "dasherPhoneNumber": {
+      "@id": "dd:dasher_phone_number",
+      "@type": "xsd:string"
+    },
+    "dasherLocation": {
+      "@id": "dd:dasher_location",
+      "@type": "@id"
+    },
+    "trackingUrl": {
+      "@id": "dd:tracking_url",
+      "@type": "@id"
+    },
+    "createdAt": "schema:dateCreated",
+    "updatedAt": "schema:dateModified",
+    "name": "schema:name",
+    "description": "schema:description",
+    "quantity": {
+      "@id": "dd:quantity",
+      "@type": "xsd:integer"
+    },
+    "externalId": {
+      "@id": "dd:external_id",
+      "@type": "xsd:string"
+    },
+    "price": {
+      "@id": "dd:price",
+      "@type": "xsd:integer"
+    },
+    "lat": {
+      "@id": "dd:lat",
+      "@type": "xsd:double"
+    },
+    "lng": {
+      "@id": "dd:lng",
+      "@type": "xsd:double"
+    },
+    "fullAddress": {
+      "@id": "dd:full_address",
+      "@type": "xsd:string"
+    },
+    "street": {
+      "@id": "dd:street",
+      "@type": "xsd:string"
+    },
+    "city": {
+      "@id": "dd:city",
+      "@type": "xsd:string"
+    },
+    "state": {
+      "@id": "dd:state",
+      "@type": "xsd:string"
+    },
+    "zipCode": {
+      "@id": "dd:zip_code",
+      "@type": "xsd:string"
+    },
+    "country": {
+      "@id": "dd:country",
+      "@type": "xsd:string"
+    },
+    "eventType": {
+      "@id": "dd:event_type",
+      "@type": "xsd:string"
+    }
+  }
+}

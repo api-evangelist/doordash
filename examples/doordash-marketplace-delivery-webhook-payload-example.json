@@ -1,0 +1,10 @@
+{
+  "event_type": "dasher_confirmed",
+  "order_id": "D-12345",
+  "dasher_name": "Acme Pickup Store",
+  "dasher_phone_number": "+15555551234",
+  "dasher_location_lat": 37.422,
+  "dasher_location_lng": -122.084,
+  "estimated_delivery_time": "2026-06-02T14:30:00Z",
+  "tracking_url": "https://example.com/path/abc123"
+}

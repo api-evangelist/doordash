@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-schema/doordash-option-group-schema.json",
+  "title": "OptionGroup",
+  "description": "OptionGroup schema from DoorDash API",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for this option group.",
+      "example": "D-12345"
+    },
+    "name": {
+      "type": "string",
+      "description": "The display name of the option group.",
+      "example": "Acme Pickup Store"
+    },
+    "min_selections": {
+      "type": "integer",
+      "description": "The minimum number of options that must be selected.",
+      "minimum": 0,
+      "example": 0
+    },
+    "max_selections": {
+      "type": "integer",
+      "description": "The maximum number of options that can be selected.",
+      "minimum": 1,
+      "example": 1
+    },
+    "options": {
+      "type": "array",
+      "description": "The available options in this group.",
+      "items": {
+        "$ref": "#/components/schemas/MenuOption"
+      }
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "options"
+  ]
+}

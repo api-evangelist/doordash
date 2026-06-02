@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-schema/doordash-marketplace-delivery-webhook-payload-schema.json",
+  "title": "MarketplaceDeliveryWebhookPayload",
+  "description": "MarketplaceDeliveryWebhookPayload schema from DoorDash API",
+  "type": "object",
+  "properties": {
+    "event_type": {
+      "type": "string",
+      "description": "The type of delivery event.",
+      "enum": [
+        "dasher_confirmed",
+        "dasher_at_store",
+        "dasher_picked_up",
+        "dasher_at_customer",
+        "dasher_delivered"
+      ],
+      "example": "dasher_confirmed"
+    },
+    "order_id": {
+      "type": "string",
+      "description": "The DoorDash order identifier.",
+      "example": "D-12345"
+    },
+    "dasher_name": {
+      "type": "string",
+      "description": "The Dasher's first name.",
+      "example": "Acme Pickup Store"
+    },
+    "dasher_phone_number": {
+      "type": "string",
+      "description": "The Dasher's phone number.",
+      "example": "+15555551234"
+    },
+    "dasher_location_lat": {
+      "type": "number",
+      "format": "double",
+      "description": "The Dasher's current latitude.",
+      "example": 37.422
+    },
+    "dasher_location_lng": {
+      "type": "number",
+      "format": "double",
+      "description": "The Dasher's current longitude.",
+      "example": -122.084
+    },
+    "estimated_delivery_time": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The estimated delivery time.",
+      "example": "2026-06-02T14:30:00Z"
+    },
+    "tracking_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "A URL for tracking the delivery.",
+      "example": "https://example.com/path/abc123"
+    }
+  }
+}

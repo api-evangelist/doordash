@@ -1,0 +1,46 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "dd": "https://developer.doordash.com/schemas/",
+    "schema": "https://schema.org/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "ReportRequest": "dd:ReportRequest",
+    "ReportRequestResponse": "dd:ReportRequestResponse",
+    "ReportLinkResponse": "dd:ReportLinkResponse",
+    "reportType": {
+      "@id": "dd:report_type",
+      "@type": "xsd:string"
+    },
+    "startDate": {
+      "@id": "dd:start_date",
+      "@type": "xsd:date"
+    },
+    "endDate": {
+      "@id": "dd:end_date",
+      "@type": "xsd:date"
+    },
+    "storeIds": {
+      "@id": "dd:store_ids",
+      "@container": "@set",
+      "@type": "xsd:string"
+    },
+    "reportId": {
+      "@id": "dd:report_id",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "dd:status",
+      "@type": "xsd:string"
+    },
+    "downloadUrl": {
+      "@id": "dd:download_url",
+      "@type": "@id"
+    },
+    "createdAt": "schema:dateCreated",
+    "completedAt": {
+      "@id": "dd:completed_at",
+      "@type": "xsd:dateTime"
+    }
+  }
+}

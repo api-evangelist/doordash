@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-estimate-request-structure.json",
+  "name": "EstimateRequest",
+  "description": "EstimateRequest structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "pickup_address": {
+      "type": "string",
+      "description": "The full street address for the pickup location.",
+      "example": "901 Market St, San Francisco, CA 94105"
+    },
+    "dropoff_address": {
+      "type": "string",
+      "description": "The full street address for the dropoff location.",
+      "example": "901 Market St, San Francisco, CA 94105"
+    },
+    "pickup_time": {
+      "type": "datetime",
+      "description": "The requested pickup time in UTC ISO-8601 format.",
+      "example": "2026-06-02T14:30:00Z"
+    },
+    "order_value": {
+      "type": "int32",
+      "description": "The total value of the order in cents.",
+      "example": 42
+    }
+  },
+  "required": [
+    "pickup_address",
+    "dropoff_address"
+  ]
+}

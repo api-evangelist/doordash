@@ -1,0 +1,8 @@
+{
+  "report_id": "D-12345",
+  "status": "PENDING",
+  "download_url": "https://example.com/path/abc123",
+  "report_type": "financial",
+  "created_at": "2026-06-02T14:30:00Z",
+  "completed_at": "2026-06-02T14:30:00Z"
+}

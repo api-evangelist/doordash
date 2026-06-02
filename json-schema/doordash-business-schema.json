@@ -1,20 +1,24 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "#/components/schemas/Business",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-schema/doordash-business-schema.json",
   "title": "Business",
+  "description": "Business schema from DoorDash API",
   "type": "object",
   "properties": {
     "external_business_id": {
       "type": "string",
-      "description": "The unique external identifier for the business."
+      "description": "The unique external identifier for the business.",
+      "example": "D-12345"
     },
     "name": {
       "type": "string",
-      "description": "The name of the business."
+      "description": "The name of the business.",
+      "example": "Acme Pickup Store"
     },
     "description": {
       "type": "string",
-      "description": "A description of the business."
+      "description": "A description of the business.",
+      "example": "Leave at the front desk."
     }
   }
 }

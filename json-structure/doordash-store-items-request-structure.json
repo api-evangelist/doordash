@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-store-items-request-structure.json",
+  "name": "StoreItemsRequest",
+  "description": "StoreItemsRequest structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "description": "The store-level item inventory and pricing data.",
+      "items": {
+        "$ref": "#/components/schemas/StoreItem"
+      }
+    }
+  },
+  "required": [
+    "items"
+  ]
+}

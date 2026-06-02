@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-menu-response-structure.json",
+  "name": "MenuResponse",
+  "description": "MenuResponse structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "menu_id": {
+      "type": "string",
+      "description": "The unique identifier for the menu request.",
+      "example": "D-12345"
+    },
+    "status": {
+      "type": "string",
+      "description": "The processing status of the menu request.",
+      "enum": [
+        "received",
+        "processing",
+        "completed",
+        "failed"
+      ],
+      "example": "received"
+    }
+  }
+}

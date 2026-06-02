@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-schema/doordash-item-status-update-schema.json",
+  "title": "ItemStatusUpdate",
+  "description": "ItemStatusUpdate schema from DoorDash API",
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "description": "The items to update availability for.",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "is_available"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The merchant-supplied item identifier."
+          },
+          "is_available": {
+            "type": "boolean",
+            "description": "Whether the item is available for ordering."
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "items"
+  ]
+}

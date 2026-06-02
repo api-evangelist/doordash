@@ -1,0 +1,127 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DoorDash Item Management API — Inventory
+  description: 'DoorDash Item Management API — Inventory. 2 operation(s). Lead operation: Add Inventory and Pricing for Items at a Store. Self-contained Naftiko capability covering one DoorDash business surface.'
+  tags:
+  - DoorDash
+  - Item Management
+  - Inventory
+  created: '2026-06-02'
+  modified: '2026-06-02'
+binds:
+- namespace: env
+  keys:
+    DOORDASH_JWT: DOORDASH_JWT
+capability:
+  consumes:
+  - type: http
+    namespace: item-management-inventory
+    baseUri: https://openapi.doordash.com/marketplace/api/v2
+    description: DoorDash Item Management API — Inventory business capability. Self-contained, no shared references.
+    authentication:
+      type: bearer
+      token: '{{env.DOORDASH_JWT}}'
+    resources:
+    - name: stores-store-location-id-items
+      path: /stores/{store_location_id}/items
+      operations:
+      - name: createStoreInventory
+        method: POST
+        description: Add Inventory and Pricing for Items at a Store
+        inputParameters:
+        - name: store_location_id
+          in: path
+          type: string
+          required: true
+          description: The unique identifier for the store location.
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request payload.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateStoreInventory
+        method: PATCH
+        description: Update Inventory and Pricing for Items at a Store
+        inputParameters:
+        - name: store_location_id
+          in: path
+          type: string
+          required: true
+          description: The unique identifier for the store location.
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request payload.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: item-management-inventory-rest
+    port: 8080
+    description: REST adapter for DoorDash Item Management API — Inventory. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/stores/{store-location-id}/items
+      name: stores-store-location-id-items
+      description: REST surface for /v1/stores/{store-location-id}/items.
+      operations:
+      - method: POST
+        name: createStoreInventory
+        description: Add Inventory and Pricing for Items at a Store
+        call: item-management-inventory.createStoreInventory
+        with:
+          store_location_id: rest.store_location_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updateStoreInventory
+        description: Update Inventory and Pricing for Items at a Store
+        call: item-management-inventory.updateStoreInventory
+        with:
+          store_location_id: rest.store_location_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: item-management-inventory-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DoorDash Item Management API — Inventory. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: add-inventory-pricing-items-store
+      description: Add Inventory and Pricing for Items at a Store
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: item-management-inventory.createStoreInventory
+      with:
+        store_location_id: tools.store_location_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-inventory-pricing-items-store
+      description: Update Inventory and Pricing for Items at a Store
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: item-management-inventory.updateStoreInventory
+      with:
+        store_location_id: tools.store_location_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

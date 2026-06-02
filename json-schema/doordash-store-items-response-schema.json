@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-schema/doordash-store-items-response-schema.json",
+  "title": "StoreItemsResponse",
+  "description": "StoreItemsResponse schema from DoorDash API",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "description": "The processing status of the request.",
+      "example": "active"
+    },
+    "items_processed": {
+      "type": "integer",
+      "description": "The number of items processed.",
+      "example": 42
+    },
+    "errors": {
+      "type": "array",
+      "description": "Any errors encountered during processing.",
+      "items": {
+        "$ref": "#/components/schemas/ItemError"
+      }
+    }
+  }
+}

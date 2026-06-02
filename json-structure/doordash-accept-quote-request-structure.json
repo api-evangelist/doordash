@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-accept-quote-request-structure.json",
+  "name": "AcceptQuoteRequest",
+  "description": "AcceptQuoteRequest structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "tip": {
+      "type": "int32",
+      "description": "Optional tip amount in cents to include with the delivery.",
+      "example": 42
+    }
+  }
+}

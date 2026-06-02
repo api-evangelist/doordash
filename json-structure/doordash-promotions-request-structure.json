@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-promotions-request-structure.json",
+  "name": "PromotionsRequest",
+  "description": "PromotionsRequest structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "promotions": {
+      "type": "array",
+      "description": "The promotions to add or update.",
+      "items": {
+        "$ref": "#/components/schemas/Promotion"
+      }
+    }
+  },
+  "required": [
+    "promotions"
+  ]
+}

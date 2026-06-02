@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-location-structure.json",
+  "name": "Location",
+  "description": "Location structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "lat": {
+      "type": "double",
+      "description": "Latitude coordinate.",
+      "example": 37.422
+    },
+    "lng": {
+      "type": "double",
+      "description": "Longitude coordinate.",
+      "example": -122.084
+    }
+  }
+}

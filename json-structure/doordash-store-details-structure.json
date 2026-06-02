@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-store-details-structure.json",
+  "name": "StoreDetails",
+  "description": "StoreDetails structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "merchant_supplied_id": {
+      "type": "string",
+      "description": "The merchant-supplied store identifier.",
+      "example": "D-12345"
+    },
+    "name": {
+      "type": "string",
+      "description": "The store name.",
+      "example": "Acme Pickup Store"
+    },
+    "address": {
+      "type": "string",
+      "description": "The store address.",
+      "example": "901 Market St, San Francisco, CA 94105"
+    },
+    "phone_number": {
+      "type": "string",
+      "description": "The store phone number.",
+      "example": "+15555551234"
+    },
+    "is_active": {
+      "type": "boolean",
+      "description": "Whether the store is currently active on DoorDash.",
+      "example": true
+    },
+    "status": {
+      "type": "string",
+      "description": "The operational status of the store.",
+      "enum": [
+        "open",
+        "closed",
+        "temporarily_closed"
+      ],
+      "example": "open"
+    }
+  }
+}

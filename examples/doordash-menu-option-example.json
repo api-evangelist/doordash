@@ -1,0 +1,6 @@
+{
+  "id": "D-12345",
+  "name": "Acme Pickup Store",
+  "price": 42,
+  "is_active": true
+}

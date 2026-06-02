@@ -1,0 +1,18 @@
+{
+  "external_delivery_id": "D-12345",
+  "delivery_status": "created",
+  "fee": 42,
+  "currency": "USD",
+  "tip": 42,
+  "pickup_address": "901 Market St, San Francisco, CA 94105",
+  "dropoff_address": "901 Market St, San Francisco, CA 94105",
+  "pickup_time_estimated": "2026-06-02T14:30:00Z",
+  "pickup_time_actual": "2026-06-02T14:30:00Z",
+  "dropoff_time_estimated": "2026-06-02T14:30:00Z",
+  "dropoff_time_actual": "2026-06-02T14:30:00Z",
+  "dasher_id": 42,
+  "dasher_name": "Acme Pickup Store",
+  "tracking_url": "https://example.com/path/abc123",
+  "created_at": "2026-06-02T14:30:00Z",
+  "updated_at": "2026-06-02T14:30:00Z"
+}

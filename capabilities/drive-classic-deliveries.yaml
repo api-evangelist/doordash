@@ -1,0 +1,246 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DoorDash Drive Classic API — Deliveries
+  description: 'DoorDash Drive Classic API — Deliveries. 5 operation(s). Lead operation: Create a Delivery Estimate. Self-contained Naftiko capability covering one DoorDash business surface.'
+  tags:
+  - DoorDash
+  - Drive Classic
+  - Deliveries
+  created: '2026-06-02'
+  modified: '2026-06-02'
+binds:
+- namespace: env
+  keys:
+    DOORDASH_JWT: DOORDASH_JWT
+capability:
+  consumes:
+  - type: http
+    namespace: drive-classic-deliveries
+    baseUri: https://openapi.doordash.com/drive/v1
+    description: DoorDash Drive Classic API — Deliveries business capability. Self-contained, no shared references.
+    authentication:
+      type: bearer
+      token: '{{env.DOORDASH_JWT}}'
+    resources:
+    - name: estimates
+      path: /estimates
+      operations:
+      - name: createDeliveryEstimate
+        method: POST
+        description: Create a Delivery Estimate
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request payload.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deliveries
+      path: /deliveries
+      operations:
+      - name: createDelivery
+        method: POST
+        description: Create a Delivery
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request payload.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deliveries-external-delivery-id
+      path: /deliveries/{external_delivery_id}
+      operations:
+      - name: getDelivery
+        method: GET
+        description: Get Delivery Details
+        inputParameters:
+        - name: external_delivery_id
+          in: path
+          type: string
+          required: true
+          description: The unique external delivery ID provided when creating the delivery.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: updateDelivery
+        method: PATCH
+        description: Update a Delivery
+        inputParameters:
+        - name: external_delivery_id
+          in: path
+          type: string
+          required: true
+          description: The unique external delivery ID provided when creating the delivery.
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request payload.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: deliveries-external-delivery-id-cancel
+      path: /deliveries/{external_delivery_id}/cancel
+      operations:
+      - name: cancelDelivery
+        method: PUT
+        description: Cancel a Delivery
+        inputParameters:
+        - name: external_delivery_id
+          in: path
+          type: string
+          required: true
+          description: The unique external delivery ID provided when creating the delivery.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: drive-classic-deliveries-rest
+    port: 8080
+    description: REST adapter for DoorDash Drive Classic API — Deliveries. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/estimates
+      name: estimates
+      description: REST surface for /v1/estimates.
+      operations:
+      - method: POST
+        name: createDeliveryEstimate
+        description: Create a Delivery Estimate
+        call: drive-classic-deliveries.createDeliveryEstimate
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/deliveries
+      name: deliveries
+      description: REST surface for /v1/deliveries.
+      operations:
+      - method: POST
+        name: createDelivery
+        description: Create a Delivery
+        call: drive-classic-deliveries.createDelivery
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/deliveries/{external-delivery-id}
+      name: deliveries-external-delivery-id
+      description: REST surface for /v1/deliveries/{external-delivery-id}.
+      operations:
+      - method: GET
+        name: getDelivery
+        description: Get Delivery Details
+        call: drive-classic-deliveries.getDelivery
+        with:
+          external_delivery_id: rest.external_delivery_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: updateDelivery
+        description: Update a Delivery
+        call: drive-classic-deliveries.updateDelivery
+        with:
+          external_delivery_id: rest.external_delivery_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/deliveries/{external-delivery-id}/cancel
+      name: deliveries-external-delivery-id-cancel
+      description: REST surface for /v1/deliveries/{external-delivery-id}/cancel.
+      operations:
+      - method: PUT
+        name: cancelDelivery
+        description: Cancel a Delivery
+        call: drive-classic-deliveries.cancelDelivery
+        with:
+          external_delivery_id: rest.external_delivery_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: drive-classic-deliveries-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DoorDash Drive Classic API — Deliveries. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: create-delivery-estimate
+      description: Create a Delivery Estimate
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: drive-classic-deliveries.createDeliveryEstimate
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-delivery
+      description: Create a Delivery
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: drive-classic-deliveries.createDelivery
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-delivery-details
+      description: Get Delivery Details
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: drive-classic-deliveries.getDelivery
+      with:
+        external_delivery_id: tools.external_delivery_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-delivery
+      description: Update a Delivery
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: drive-classic-deliveries.updateDelivery
+      with:
+        external_delivery_id: tools.external_delivery_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: cancel-delivery
+      description: Cancel a Delivery
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: drive-classic-deliveries.cancelDelivery
+      with:
+        external_delivery_id: tools.external_delivery_id
+      outputParameters:
+      - type: object
+        mapping: $.

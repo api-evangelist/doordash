@@ -1,0 +1,7 @@
+{
+  "event_type": "store_activated",
+  "store_id": "D-12345",
+  "status": "active",
+  "message": "example",
+  "timestamp": "2026-06-02T14:30:00Z"
+}

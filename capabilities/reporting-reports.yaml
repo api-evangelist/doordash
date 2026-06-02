@@ -1,0 +1,120 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: DoorDash Reporting API — Reports
+  description: 'DoorDash Reporting API — Reports. 2 operation(s). Lead operation: Create a Report Request. Self-contained Naftiko capability covering one DoorDash business surface.'
+  tags:
+  - DoorDash
+  - Reporting
+  - Reports
+  created: '2026-06-02'
+  modified: '2026-06-02'
+binds:
+- namespace: env
+  keys:
+    DOORDASH_JWT: DOORDASH_JWT
+capability:
+  consumes:
+  - type: http
+    namespace: reporting-reports
+    baseUri: https://openapi.doordash.com/dataexchange/v1
+    description: DoorDash Reporting API — Reports business capability. Self-contained, no shared references.
+    authentication:
+      type: bearer
+      token: '{{env.DOORDASH_JWT}}'
+    resources:
+    - name: reports
+      path: /reports
+      operations:
+      - name: createReport
+        method: POST
+        description: Create a Report Request
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: true
+          description: Request payload.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: reports-report-id-reportlink
+      path: /reports/{report_id}/reportlink
+      operations:
+      - name: getReportLink
+        method: GET
+        description: Get Report Download Link
+        inputParameters:
+        - name: report_id
+          in: path
+          type: string
+          required: true
+          description: The unique identifier for the report, returned when the report request was created.
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    namespace: reporting-reports-rest
+    port: 8080
+    description: REST adapter for DoorDash Reporting API — Reports. One Spectral-compliant resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/reports
+      name: reports
+      description: REST surface for /v1/reports.
+      operations:
+      - method: POST
+        name: createReport
+        description: Create a Report Request
+        call: reporting-reports.createReport
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/reports/{report-id}/reportlink
+      name: reports-report-id-reportlink
+      description: REST surface for /v1/reports/{report-id}/reportlink.
+      operations:
+      - method: GET
+        name: getReportLink
+        description: Get Report Download Link
+        call: reporting-reports.getReportLink
+        with:
+          report_id: rest.report_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: reporting-reports-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for DoorDash Reporting API — Reports. One tool per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: create-report-request
+      description: Create a Report Request
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: reporting-reports.createReport
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-report-download-link
+      description: Get Report Download Link
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: reporting-reports.getReportLink
+      with:
+        report_id: tools.report_id
+      outputParameters:
+      - type: object
+        mapping: $.

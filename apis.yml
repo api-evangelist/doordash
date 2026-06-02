@@ -29,6 +29,30 @@ apis:
       url: capabilities/drive-quotes.yaml
     - type: NaftikoCapability
       url: capabilities/drive-stores.yaml
+    - type: SDK
+      url: https://www.npmjs.com/package/@doordash/sdk
+      title: Node.js SDK
+    - type: CodeExamples
+      url: https://github.com/doordash-oss/doordash_sdk_example_application
+      title: Node.js SDK Example Application
+    - type: CodeExamples
+      url: https://github.com/JoshAtDoorDash/DoorDashAPI-Nodejs-Sample
+      title: Node.js Sample
+    - type: CodeExamples
+      url: https://github.com/JoshAtDoorDash/DoorDashAPI-Python-Sample
+      title: Python Sample
+    - type: CodeExamples
+      url: https://github.com/JoshAtDoorDash/DoorDashAPI-Java-Sample
+      title: Java Sample
+    - type: CodeExamples
+      url: https://github.com/JoshAtDoorDash/DoorDashAPI-Kotlin-Sample
+      title: Kotlin Sample
+    - type: CodeExamples
+      url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
+      title: PHP Sample
+    - type: CodeExamples
+      url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
+      title: C# / .NET Sample
     description: The DoorDash Drive API enables businesses to request on-demand deliveries fulfilled by DoorDash's fleet of
       Dashers. It provides endpoints for checking delivery serviceability, getting delivery quotes, creating and managing deliveries,
       and tracking delivery status in real time. The API uses JWT-based authentication and is designed for businesses that want
@@ -139,10 +163,35 @@ apis:
       menu reporting data. It offers a POST endpoint for creating report requests and a GET endpoint for retrieving report download
       links, along with webhook notifications when reports are ready.
 common:
+  - type: DeveloperPortal
+    url: https://developer.doordash.com/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/
+  - type: Website
+    url: https://www.doordash.com/
+  - type: Blog
+    url: https://doordash.engineering/
+  - type: Login
+    url: https://developer.doordash.com/en-US/login
+  - type: TermsOfService
+    url: https://www.doordash.com/terms/
+  - type: PrivacyPolicy
+    url: https://www.doordash.com/privacy/
+  - type: Support
+    url: https://help.doordash.com/
   - type: GitHubOrganization
     url: https://github.com/doordash
+  - type: GitHubOrganization
+    url: https://github.com/doordash-oss
+    title: DoorDash Open Source
   - type: LinkedIn
     url: https://www.linkedin.com/company/doordash
+  - type: SDK
+    url: https://www.npmjs.com/package/@doordash/sdk
+    title: Node.js SDK
+  - type: Tools
+    url: https://github.com/doordash-oss/oapi-codegen-dd
+    title: OpenAPI Go Codegen (oapi-codegen-dd)
   - type: JSONLD
     url: json-ld/doordash-context.jsonld
   - type: JSONSchema
@@ -153,7 +202,22 @@ common:
     url: json-schema/doordash-menu-schema.json
   - type: JSONSchema
     url: json-schema/doordash-report-schema.json
-modified: '2026-05-19'
-description: Production access to the Drive API is currently restricted, and we cannot provide a timeline for certification
-  following development. If you have not completed development and submitted a production access request, we recommend pausing
-  development. Contact us here to record your interest.
+  - type: Vocabulary
+    url: vocabulary/doordash-vocabulary.yml
+  - type: Rules
+    url: rules/doordash-spectral-rules.yml
+  - type: Plans
+    url: plans/doordash-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/doordash-rate-limits.yml
+  - type: FinOps
+    url: finops/doordash-finops.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
+modified: '2026-06-02'
+description: DoorDash is an on-demand local commerce platform whose developer program exposes its logistics and marketplace
+  network through public APIs. The Drive and Drive Classic APIs let businesses request on-demand deliveries fulfilled by
+  DoorDash's Dasher fleet, while the Marketplace, Item Management, and Reporting APIs let merchants and retailers receive
+  orders, synchronize menus and catalogs, and access financial and operational reporting. All APIs use JWT-based
+  authentication and are documented at developer.doordash.com.

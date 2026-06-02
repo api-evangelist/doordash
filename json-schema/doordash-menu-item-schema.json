@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-schema/doordash-menu-item-schema.json",
+  "title": "MenuItem",
+  "description": "MenuItem schema from DoorDash API",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The merchant-supplied item identifier.",
+      "example": "D-12345"
+    },
+    "name": {
+      "type": "string",
+      "description": "The display name of the item.",
+      "example": "Acme Pickup Store"
+    },
+    "description": {
+      "type": "string",
+      "description": "A description of the item.",
+      "example": "Leave at the front desk."
+    },
+    "price": {
+      "type": "integer",
+      "description": "The item price in cents.",
+      "example": 42
+    },
+    "image_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "A URL to an image of the item.",
+      "example": "https://example.com/path/abc123"
+    },
+    "is_active": {
+      "type": "boolean",
+      "description": "Whether the item is currently available for ordering.",
+      "example": true
+    },
+    "sort_id": {
+      "type": "integer",
+      "description": "The sort order for this item within its category.",
+      "example": 42
+    },
+    "option_groups": {
+      "type": "array",
+      "description": "Option groups (modifiers) for this item.",
+      "items": {
+        "$ref": "#/components/schemas/OptionGroup"
+      }
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "price"
+  ]
+}

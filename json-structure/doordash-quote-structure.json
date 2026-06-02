@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-structure.org/meta/core/v0/#",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/json-structure/doordash-quote-structure.json",
+  "name": "Quote",
+  "description": "Quote structure from DoorDash API",
+  "type": "object",
+  "properties": {
+    "external_delivery_id": {
+      "type": "string",
+      "description": "The unique external delivery ID for this quote.",
+      "example": "D-12345"
+    },
+    "fee": {
+      "type": "int32",
+      "description": "The delivery fee in cents.",
+      "example": 42
+    },
+    "currency": {
+      "type": "string",
+      "description": "The currency code for the fee amount.",
+      "example": "USD"
+    },
+    "delivery_time": {
+      "type": "datetime",
+      "description": "The estimated delivery time in UTC ISO-8601 format.",
+      "example": "2026-06-02T14:30:00Z"
+    },
+    "pickup_time": {
+      "type": "datetime",
+      "description": "The estimated pickup time in UTC ISO-8601 format.",
+      "example": "2026-06-02T14:30:00Z"
+    },
+    "expires_at": {
+      "type": "datetime",
+      "description": "The time at which this quote expires, typically 5 minutes after creation.",
+      "example": "2026-06-02T14:30:00Z"
+    }
+  }
+}
