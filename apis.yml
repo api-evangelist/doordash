@@ -4,164 +4,140 @@ apis:
   - aid: doordash:drive-api
     name: DoorDash Drive API
     tags:
-    - Delivery
-    - Food Delivery
-    - Last Mile
-    - Logistics
-    - On-Demand
+      - Delivery
+      - Food Delivery
+      - Last Mile
+      - Logistics
+      - On-Demand
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://openapi.doordash.com/drive/v2
     humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
     properties:
-    - url: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
-      type: Documentation
-    - type: OpenAPI
-      url: openapi/doordash-drive-openapi.yml
-    - type: AsyncAPI
-      url: asyncapi/doordash-drive-webhooks-asyncapi.yml
-    - type: NaftikoCapability
-      url: capabilities/drive-addresses.yaml
-    - type: NaftikoCapability
-      url: capabilities/drive-businesses.yaml
-    - type: NaftikoCapability
-      url: capabilities/drive-deliveries.yaml
-    - type: NaftikoCapability
-      url: capabilities/drive-quotes.yaml
-    - type: NaftikoCapability
-      url: capabilities/drive-stores.yaml
-    - type: SDK
-      url: https://www.npmjs.com/package/@doordash/sdk
-      title: Node.js SDK
-    - type: CodeExamples
-      url: https://github.com/doordash-oss/doordash_sdk_example_application
-      title: Node.js SDK Example Application
-    - type: CodeExamples
-      url: https://github.com/JoshAtDoorDash/DoorDashAPI-Nodejs-Sample
-      title: Node.js Sample
-    - type: CodeExamples
-      url: https://github.com/JoshAtDoorDash/DoorDashAPI-Python-Sample
-      title: Python Sample
-    - type: CodeExamples
-      url: https://github.com/JoshAtDoorDash/DoorDashAPI-Java-Sample
-      title: Java Sample
-    - type: CodeExamples
-      url: https://github.com/JoshAtDoorDash/DoorDashAPI-Kotlin-Sample
-      title: Kotlin Sample
-    - type: CodeExamples
-      url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
-      title: PHP Sample
-    - type: CodeExamples
-      url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
-      title: C# / .NET Sample
-    description: The DoorDash Drive API enables businesses to request on-demand deliveries fulfilled by DoorDash's fleet of
-      Dashers. It provides endpoints for checking delivery serviceability, getting delivery quotes, creating and managing deliveries,
-      and tracking delivery status in real time. The API uses JWT-based authentication and is designed for businesses that want
-      to offer delivery from their own ordering experience while leveraging DoorDash's logistics network.
+      - url: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+        type: Documentation
+      - type: OpenAPI
+        url: openapi/doordash-drive-openapi.yml
+      - type: AsyncAPI
+        url: asyncapi/doordash-drive-webhooks-asyncapi.yml
+      - type: SDK
+        url: https://www.npmjs.com/package/@doordash/sdk
+        title: Node.js SDK
+      - type: CodeExamples
+        url: https://github.com/doordash-oss/doordash_sdk_example_application
+        title: Node.js SDK Example Application
+      - type: CodeExamples
+        url: https://github.com/JoshAtDoorDash/DoorDashAPI-Nodejs-Sample
+        title: Node.js Sample
+      - type: CodeExamples
+        url: https://github.com/JoshAtDoorDash/DoorDashAPI-Python-Sample
+        title: Python Sample
+      - type: CodeExamples
+        url: https://github.com/JoshAtDoorDash/DoorDashAPI-Java-Sample
+        title: Java Sample
+      - type: CodeExamples
+        url: https://github.com/JoshAtDoorDash/DoorDashAPI-Kotlin-Sample
+        title: Kotlin Sample
+      - type: CodeExamples
+        url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
+        title: PHP Sample
+      - type: CodeExamples
+        url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
+        title: C# / .NET Sample
+    description: >-
+      The DoorDash Drive API enables businesses to request on-demand deliveries fulfilled by DoorDash's fleet of
+      Dashers. It provides endpoints for checking delivery serviceability, getting delivery quotes, creating and
+      managing deliveries, and tracking delivery status in real time. The API uses JWT-based authentication and is
+      designed for businesses that want to offer delivery from their own ordering experience while leveraging DoorDash's
+      logistics network.
   - aid: doordash:drive-classic-api
     name: DoorDash Drive Classic API
     tags:
-    - Delivery
-    - Enterprise
-    - Food Delivery
-    - Last Mile
-    - Logistics
+      - Delivery
+      - Enterprise
+      - Food Delivery
+      - Last Mile
+      - Logistics
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://openapi.doordash.com/drive/v1
     humanURL: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
     properties:
-    - url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
-      type: Documentation
-    - type: OpenAPI
-      url: openapi/doordash-drive-classic-openapi.yml
-    - type: NaftikoCapability
-      url: capabilities/drive-classic-businesses.yaml
-    - type: NaftikoCapability
-      url: capabilities/drive-classic-deliveries.yaml
-    - type: NaftikoCapability
-      url: capabilities/drive-classic-stores.yaml
-    description: The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware
-      providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints
-      for managing businesses, stores, and deliveries through DoorDash's logistics platform. The API uses JWT-based Bearer token
-      authentication and operates at the v1 endpoint path.
+      - url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+        type: Documentation
+      - type: OpenAPI
+        url: openapi/doordash-drive-classic-openapi.yml
+    description: >-
+      The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and
+      middleware providers who require extensive configuration and customizability for their delivery integrations. It
+      provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. The API
+      uses JWT-based Bearer token authentication and operates at the v1 endpoint path.
   - aid: doordash:marketplace-api
     name: DoorDash Marketplace API
     tags:
-    - Food Delivery
-    - Marketplace
-    - Orders
-    - Restaurants
-    - Retail
+      - Food Delivery
+      - Marketplace
+      - Orders
+      - Restaurants
+      - Retail
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://openapi.doordash.com/marketplace
     humanURL: https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
     properties:
-    - url: https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
-      type: Documentation
-    - type: OpenAPI
-      url: openapi/doordash-marketplace-openapi.yml
-    - type: AsyncAPI
-      url: asyncapi/doordash-marketplace-webhooks-asyncapi.yml
-    - type: NaftikoCapability
-      url: capabilities/marketplace-items.yaml
-    - type: NaftikoCapability
-      url: capabilities/marketplace-menus.yaml
-    - type: NaftikoCapability
-      url: capabilities/marketplace-orders.yaml
-    - type: NaftikoCapability
-      url: capabilities/marketplace-stores.yaml
-    description: The DoorDash Marketplace API allows merchants and third-party providers to integrate directly with the DoorDash
-      marketplace for order management, menu synchronization, and store operations. It supports receiving orders from DoorDash,
-      updating order statuses, and managing menu availability in real time. The API is not generally available and access is
-      granted through a selective partner program where DoorDash evaluates integration quality and business fit.
+      - url: https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
+        type: Documentation
+      - type: OpenAPI
+        url: openapi/doordash-marketplace-openapi.yml
+      - type: AsyncAPI
+        url: asyncapi/doordash-marketplace-webhooks-asyncapi.yml
+    description: >-
+      The DoorDash Marketplace API allows merchants and third-party providers to integrate directly with the DoorDash
+      marketplace for order management, menu synchronization, and store operations. It supports receiving orders from
+      DoorDash, updating order statuses, and managing menu availability in real time. The API is not generally available
+      and access is granted through a selective partner program where DoorDash evaluates integration quality and
+      business fit.
   - aid: doordash:marketplace-item-management-api
     name: DoorDash Item Management API
     tags:
-    - Catalog
-    - Inventory
-    - Menus
-    - Pricing
-    - Retail
+      - Catalog
+      - Inventory
+      - Menus
+      - Pricing
+      - Retail
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://openapi.doordash.com/marketplace
     humanURL: https://developer.doordash.com/en-US/api/marketplace_v2/
     properties:
-    - url: https://developer.doordash.com/en-US/api/marketplace_v2/
-      type: Documentation
-    - type: OpenAPI
-      url: openapi/doordash-item-management-openapi.yml
-    - type: NaftikoCapability
-      url: capabilities/item-management-catalog.yaml
-    - type: NaftikoCapability
-      url: capabilities/item-management-inventory.yaml
-    - type: NaftikoCapability
-      url: capabilities/item-management-promotions.yaml
-    description: The DoorDash Item Management API enables merchants and integration partners to programmatically manage their
-      item catalogs, inventory levels, pricing, and other product attributes on the DoorDash platform. It provides endpoints
-      for creating, updating, and retrieving item data across stores. This API is particularly useful for retail and grocery
-      partners who need to keep large catalogs synchronized between their own systems and DoorDash's marketplace.
+      - url: https://developer.doordash.com/en-US/api/marketplace_v2/
+        type: Documentation
+      - type: OpenAPI
+        url: openapi/doordash-item-management-openapi.yml
+    description: >-
+      The DoorDash Item Management API enables merchants and integration partners to programmatically manage their item
+      catalogs, inventory levels, pricing, and other product attributes on the DoorDash platform. It provides endpoints
+      for creating, updating, and retrieving item data across stores. This API is particularly useful for retail and
+      grocery partners who need to keep large catalogs synchronized between their own systems and DoorDash's
+      marketplace.
   - aid: doordash:reporting-api
     name: DoorDash Reporting API
     tags:
-    - Analytics
-    - Data
-    - Financial
-    - Operations
-    - Reporting
+      - Analytics
+      - Data
+      - Financial
+      - Operations
+      - Reporting
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://openapi.doordash.com/dataexchange/v1
     humanURL: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
     properties:
-    - url: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
-      type: Documentation
-    - type: OpenAPI
-      url: openapi/doordash-reporting-openapi.yml
-    - type: AsyncAPI
-      url: asyncapi/doordash-reporting-webhooks-asyncapi.yml
-    - type: NaftikoCapability
-      url: capabilities/reporting-reports.yaml
-    description: The DoorDash Reporting API provides approved partners with access to standardized financial, operations, and
-      menu reporting data. It offers a POST endpoint for creating report requests and a GET endpoint for retrieving report download
-      links, along with webhook notifications when reports are ready.
+      - url: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
+        type: Documentation
+      - type: OpenAPI
+        url: openapi/doordash-reporting-openapi.yml
+      - type: AsyncAPI
+        url: asyncapi/doordash-reporting-webhooks-asyncapi.yml
+    description: >-
+      The DoorDash Reporting API provides approved partners with access to standardized financial, operations, and menu
+      reporting data. It offers a POST endpoint for creating report requests and a GET endpoint for retrieving report
+      download links, along with webhook notifications when reports are ready.
 common:
   - type: DeveloperPortal
     url: https://developer.doordash.com/
@@ -216,8 +192,9 @@ maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
 modified: '2026-06-02'
-description: DoorDash is an on-demand local commerce platform whose developer program exposes its logistics and marketplace
-  network through public APIs. The Drive and Drive Classic APIs let businesses request on-demand deliveries fulfilled by
-  DoorDash's Dasher fleet, while the Marketplace, Item Management, and Reporting APIs let merchants and retailers receive
-  orders, synchronize menus and catalogs, and access financial and operational reporting. All APIs use JWT-based
+description: >-
+  DoorDash is an on-demand local commerce platform whose developer program exposes its logistics and marketplace network
+  through public APIs. The Drive and Drive Classic APIs let businesses request on-demand deliveries fulfilled by
+  DoorDash's Dasher fleet, while the Marketplace, Item Management, and Reporting APIs let merchants and retailers
+  receive orders, synchronize menus and catalogs, and access financial and operational reporting. All APIs use JWT-based
   authentication and are documented at developer.doordash.com.
