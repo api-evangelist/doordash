@@ -1,0 +1,917 @@
+"""
+DoorDash Conceptual GraphQL Schema
+Derived from the DoorDash Drive API, Marketplace API, Item Management API,
+and Reporting API documented at https://developer.doordash.com/
+"""
+
+# ------------------------------------------------------------------
+# Scalars
+# ------------------------------------------------------------------
+
+scalar DateTime
+scalar Date
+scalar JSON
+scalar URL
+
+# ------------------------------------------------------------------
+# Enums
+# ------------------------------------------------------------------
+
+enum DeliveryStatusValue {
+  CREATED
+  CONFIRMED
+  ENROUTE_TO_PICKUP
+  ARRIVED_AT_PICKUP
+  PICKED_UP
+  ENROUTE_TO_DROPOFF
+  ARRIVED_AT_DROPOFF
+  DELIVERED
+  CANCELLED
+  FAILED
+  RETURNED
+}
+
+enum OrderStatusValue {
+  PENDING
+  CONFIRMED
+  IN_PROGRESS
+  READY_FOR_PICKUP
+  PICKED_UP
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentMethodType {
+  CREDIT_CARD
+  DEBIT_CARD
+  APPLE_PAY
+  GOOGLE_PAY
+  PAYPAL
+  DOORDASH_CREDITS
+  GIFT_CARD
+}
+
+enum WebhookEventType {
+  DELIVERY_STATUS_UPDATE
+  DELIVERY_CREATED
+  DELIVERY_CANCELLED
+  ORDER_CREATED
+  ORDER_CONFIRMED
+  ORDER_CANCELLED
+  ORDER_UPDATED
+  MENU_UPDATED
+  REPORT_READY
+  DRIVER_ASSIGNED
+  DRIVER_ARRIVED_AT_PICKUP
+  DRIVER_ARRIVED_AT_DROPOFF
+}
+
+enum AvailabilityStatus {
+  AVAILABLE
+  UNAVAILABLE
+  SCHEDULED
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+enum PromotionType {
+  PERCENTAGE_OFF
+  FIXED_AMOUNT_OFF
+  FREE_DELIVERY
+  BUY_ONE_GET_ONE
+  FREE_ITEM
+}
+
+enum ReviewTargetType {
+  STORE
+  DRIVER
+  ORDER
+}
+
+enum SignatureType {
+  ELECTRONIC
+  PHOTO
+  NO_SIGNATURE_REQUIRED
+}
+
+# ------------------------------------------------------------------
+# Core Value Types
+# ------------------------------------------------------------------
+
+"""A monetary amount with ISO 4217 currency code."""
+type Price {
+  amount: Float!
+  currency: String!
+  displayString: String
+}
+
+"""A delta applied on top of a base Price."""
+type PriceModifier {
+  id: ID!
+  label: String!
+  delta: Price!
+  reason: String
+}
+
+"""Latitude/longitude coordinate pair."""
+type GeoLocation {
+  latitude: Float!
+  longitude: Float!
+  accuracy: Float
+}
+
+"""A structured postal address."""
+type Address {
+  id: ID!
+  street: String!
+  subpremise: String
+  city: String!
+  state: String!
+  zipCode: String!
+  country: String!
+  location: GeoLocation
+  isDefault: Boolean
+}
+
+# ------------------------------------------------------------------
+# Availability & Scheduling
+# ------------------------------------------------------------------
+
+"""A time-based availability window for a menu entity."""
+type Availability {
+  id: ID!
+  status: AvailabilityStatus!
+  startTime: DateTime
+  endTime: DateTime
+  daysOfWeek: [DayOfWeek!]
+  timezone: String
+}
+
+"""Regular operating hours for a Store on a given day."""
+type StoreHours {
+  id: ID!
+  dayOfWeek: DayOfWeek!
+  openTime: String!
+  closeTime: String!
+  isClosed: Boolean!
+}
+
+"""Override hours for holidays or special events."""
+type SpecialHour {
+  id: ID!
+  date: Date!
+  openTime: String
+  closeTime: String
+  isClosed: Boolean!
+  reason: String
+}
+
+"""A recurring availability schedule."""
+type Schedule {
+  id: ID!
+  name: String!
+  regularHours: [StoreHours!]!
+  specialHours: [SpecialHour!]
+  timezone: String!
+  effectiveFrom: Date
+  effectiveTo: Date
+}
+
+"""Scheduling details for a future-dated (preorder) delivery."""
+type PreorderDetails {
+  id: ID!
+  requestedPickupTime: DateTime!
+  requestedDropoffTime: DateTime!
+  orderReadyTime: DateTime
+  isAsap: Boolean!
+}
+
+# ------------------------------------------------------------------
+# Merchant & Store Domain
+# ------------------------------------------------------------------
+
+"""A registered business entity using DoorDash Drive."""
+type Business {
+  id: ID!
+  name: String!
+  externalBusinessId: String
+  description: String
+  email: String
+  phone: String
+  website: URL
+  locations: [BusinessLocation!]
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+"""A physical location belonging to a Business."""
+type BusinessLocation {
+  id: ID!
+  externalStoreId: String
+  business: Business!
+  name: String!
+  address: Address!
+  phone: String
+  isActive: Boolean!
+  specialInstructions: String
+  merchantTip: Price
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+"""A merchant store on the DoorDash Marketplace."""
+type Store {
+  id: ID!
+  externalStoreId: String
+  merchant: Merchant
+  name: String!
+  address: Address!
+  phone: String
+  description: String
+  isOpen: Boolean!
+  acceptsScheduledOrders: Boolean!
+  minimumOrderTotal: Price
+  averageRating: Float
+  reviewCount: Int
+  priceRange: Int
+  estimatedDeliveryTime: Int
+  hours: [StoreHours!]
+  specialHours: [SpecialHour!]
+  menu: StoreMenu
+  categories: [Category!]
+  schedule: Schedule
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+"""A business entity on the DoorDash Marketplace."""
+type Merchant {
+  id: ID!
+  externalMerchantId: String
+  name: String!
+  profile: MerchantProfile
+  stores: [Store!]
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+"""Extended profile and metadata for a Merchant."""
+type MerchantProfile {
+  id: ID!
+  merchant: Merchant!
+  logoUrl: URL
+  coverImageUrl: URL
+  cuisineTypes: [String!]
+  tags: [String!]
+  website: URL
+  description: String
+  isChain: Boolean
+}
+
+"""A top-level category tag for Stores (e.g. Pizza, Burgers, Sushi)."""
+type Category {
+  id: ID!
+  name: String!
+  slug: String!
+  imageUrl: URL
+  stores: [Store!]
+}
+
+# ------------------------------------------------------------------
+# Menu & Catalog Domain
+# ------------------------------------------------------------------
+
+"""The top-level menu attached to a Store."""
+type StoreMenu {
+  id: ID!
+  store: Store!
+  menus: [Menu!]!
+  updatedAt: DateTime
+}
+
+"""A named menu grouping categories and items."""
+type Menu {
+  id: ID!
+  externalMenuId: String
+  name: String!
+  subtitle: String
+  isActive: Boolean!
+  availability: [Availability!]
+  categories: [MenuCategory!]!
+  updatedAt: DateTime
+}
+
+"""A grouping of MenuItems within a Menu."""
+type MenuCategory {
+  id: ID!
+  externalCategoryId: String
+  menu: Menu!
+  name: String!
+  subtitle: String
+  sortOrder: Int
+  availability: [Availability!]
+  items: [MenuItem!]!
+}
+
+"""An individual item available for order."""
+type MenuItem {
+  id: ID!
+  externalItemId: String
+  category: MenuCategory!
+  name: String!
+  description: String
+  price: Price!
+  imageUrl: URL
+  isAvailable: Boolean!
+  taxRate: Float
+  sortOrder: Int
+  availability: [Availability!]
+  modifierGroups: [MenuModifierGroup!]
+  detail: MenuItemDetail
+}
+
+"""Extended detail and nutritional info for a MenuItem."""
+type MenuItemDetail {
+  id: ID!
+  item: MenuItem!
+  calories: Int
+  allergens: [String!]
+  ingredients: [String!]
+  isVegetarian: Boolean
+  isVegan: Boolean
+  isGlutenFree: Boolean
+  isSpicy: Boolean
+  alcoholContent: Boolean
+  ageRestriction: Int
+  photos: [Photo!]
+}
+
+"""A group of modifier options (e.g. "Choose a size")."""
+type MenuModifierGroup {
+  id: ID!
+  externalModifierGroupId: String
+  item: MenuItem!
+  name: String!
+  description: String
+  minPermitted: Int!
+  maxPermitted: Int!
+  isRequired: Boolean!
+  modifiers: [MenuModifier!]!
+}
+
+"""A single modifier option within a MenuModifierGroup."""
+type MenuModifier {
+  id: ID!
+  externalModifierId: String
+  group: MenuModifierGroup!
+  name: String!
+  description: String
+  price: Price!
+  isDefault: Boolean
+  isAvailable: Boolean!
+  nestedGroups: [MenuModifierGroup!]
+}
+
+# ------------------------------------------------------------------
+# Order Domain
+# ------------------------------------------------------------------
+
+"""A completed or in-progress customer order."""
+type Order {
+  id: ID!
+  externalOrderId: String
+  store: Store
+  customer: Customer
+  status: OrderStatusValue!
+  items: [OrderItem!]!
+  fees: [OrderFee!]
+  payment: Payment
+  delivery: Delivery
+  subtotal: Subtotal!
+  tax: Tax!
+  tip: Tip
+  serviceFee: ServiceFee
+  totalPrice: Price!
+  specialInstructions: String
+  isScheduled: Boolean!
+  preorderDetails: PreorderDetails
+  createdAt: DateTime!
+  updatedAt: DateTime
+  completedAt: DateTime
+}
+
+"""A line item within an Order."""
+type OrderItem {
+  id: ID!
+  order: Order!
+  menuItem: MenuItem
+  name: String!
+  quantity: Int!
+  unitPrice: Price!
+  totalPrice: Price!
+  specialInstructions: String
+  modifiers: [OrderModifier!]
+}
+
+"""A modifier applied to an OrderItem."""
+type OrderModifier {
+  id: ID!
+  orderItem: OrderItem!
+  menuModifier: MenuModifier
+  name: String!
+  quantity: Int!
+  unitPrice: Price!
+  totalPrice: Price!
+}
+
+"""A fee line on an Order (delivery fee, service fee, etc.)."""
+type OrderFee {
+  id: ID!
+  order: Order!
+  label: String!
+  amount: Price!
+  feeType: String!
+  isTaxed: Boolean!
+}
+
+"""Order subtotal before fees and tax."""
+type Subtotal {
+  amount: Price!
+  itemCount: Int!
+}
+
+"""Tax line on an Order."""
+type Tax {
+  amount: Price!
+  taxRate: Float
+  breakdown: [JSON]
+}
+
+"""Customer tip on an Order."""
+type Tip {
+  amount: Price!
+  isCustom: Boolean!
+}
+
+"""Platform service fee on an Order."""
+type ServiceFee {
+  amount: Price!
+  label: String
+}
+
+"""Tip paid directly to the Dasher (Drive API)."""
+type DriveTip {
+  amount: Price!
+}
+
+# ------------------------------------------------------------------
+# Payment Domain
+# ------------------------------------------------------------------
+
+"""Payment record associated with an Order."""
+type Payment {
+  id: ID!
+  order: Order!
+  method: PaymentMethod
+  status: String!
+  amount: Price!
+  paidAt: DateTime
+  refundedAmount: Price
+  transactionId: String
+}
+
+"""A saved payment method on a Customer account."""
+type PaymentMethod {
+  id: ID!
+  customer: Customer!
+  type: PaymentMethodType!
+  card: Card
+  isDefault: Boolean!
+  displayLabel: String!
+  createdAt: DateTime!
+}
+
+"""Credit/debit card details within a PaymentMethod."""
+type Card {
+  id: ID!
+  last4: String!
+  brand: String!
+  expiryMonth: Int!
+  expiryYear: Int!
+  isExpired: Boolean!
+  billingAddress: Address
+}
+
+# ------------------------------------------------------------------
+# Delivery & Driver Domain
+# ------------------------------------------------------------------
+
+"""A Drive delivery job assigned to a Dasher."""
+type Delivery {
+  id: ID!
+  externalDeliveryId: String!
+  order: Order
+  driver: Driver
+  status: DeliveryStatus!
+  quote: DeliveryQuote
+  pickup: Pickup!
+  dropoff: Dropoff!
+  driveTip: DriveTip
+  signature: Signature
+  tracking: DeliveryTracking
+  preorderDetails: PreorderDetails
+  supportReference: String
+  cancelReason: String
+  createdAt: DateTime!
+  updatedAt: DateTime
+  completedAt: DateTime
+}
+
+"""Current status of a Delivery."""
+type DeliveryStatus {
+  id: ID!
+  delivery: Delivery!
+  value: DeliveryStatusValue!
+  description: String
+  timestamp: DateTime!
+}
+
+"""A price and time estimate for a potential Delivery."""
+type DeliveryQuote {
+  id: ID!
+  fee: Price!
+  currency: String!
+  estimatedPickupTime: DateTime!
+  estimatedDropoffTime: DateTime!
+  expiresAt: DateTime!
+  externalDeliveryId: String
+}
+
+"""An estimated time window for delivery arrival."""
+type DeliveryWindow {
+  estimatedMinutes: Int!
+  lowerBound: DateTime!
+  upperBound: DateTime!
+}
+
+"""An estimated time window for Dasher pickup."""
+type PickupWindow {
+  estimatedMinutes: Int!
+  lowerBound: DateTime!
+  upperBound: DateTime!
+}
+
+"""A DoorDash Dasher (driver) fulfilling deliveries."""
+type Driver {
+  id: ID!
+  firstName: String!
+  lastName: String
+  phone: String
+  photoUrl: URL
+  rating: DriverRating
+  currentLocation: DriverLocation
+  vehicleType: String
+  vehicleMake: String
+  vehicleModel: String
+  vehicleColor: String
+  licensePlate: String
+}
+
+"""Real-time GPS location of a Driver."""
+type DriverLocation {
+  driver: Driver!
+  location: GeoLocation!
+  heading: Float
+  speed: Float
+  timestamp: DateTime!
+}
+
+"""Rating and feedback summary for a Driver."""
+type DriverRating {
+  driver: Driver!
+  averageRating: Float!
+  totalRatings: Int!
+  lastUpdated: DateTime
+}
+
+"""Pickup details for a Delivery."""
+type Pickup {
+  id: ID!
+  delivery: Delivery!
+  address: Address!
+  businessName: String!
+  phone: String
+  instructions: String
+  window: PickupWindow
+  arrivedAt: DateTime
+  completedAt: DateTime
+}
+
+"""Dropoff details for a Delivery."""
+type Dropoff {
+  id: ID!
+  delivery: Delivery!
+  address: Address!
+  contactName: String!
+  phone: String
+  instructions: String
+  detail: DropoffDetail
+  window: DeliveryWindow
+  arrivedAt: DateTime
+  completedAt: DateTime
+}
+
+"""Additional instructions and contact info for a Dropoff."""
+type DropoffDetail {
+  id: ID!
+  dropoff: Dropoff!
+  requiresSignature: Boolean!
+  requiresId: Boolean!
+  minimumAgeRequired: Int
+  accessCode: String
+  unitNumber: String
+  leaveAtDoor: Boolean
+}
+
+"""Aggregated tracking state for a Delivery."""
+type DeliveryTracking {
+  id: ID!
+  delivery: Delivery!
+  trackingUrl: URL
+  currentStatus: DeliveryStatusValue!
+  driverLocation: DriverLocation
+  events: [TrackingEvent!]!
+  estimatedDropoffTime: DateTime
+  updatedAt: DateTime!
+}
+
+"""A single event in the Delivery tracking timeline."""
+type TrackingEvent {
+  id: ID!
+  tracking: DeliveryTracking!
+  status: DeliveryStatusValue!
+  description: String
+  location: GeoLocation
+  occurredAt: DateTime!
+}
+
+"""Proof of delivery signature record."""
+type Signature {
+  id: ID!
+  delivery: Delivery!
+  type: SignatureType!
+  imageUrl: URL
+  signerName: String
+  capturedAt: DateTime!
+}
+
+"""A photo associated with proof of delivery or a menu item."""
+type Photo {
+  id: ID!
+  url: URL!
+  caption: String
+  sortOrder: Int
+  width: Int
+  height: Int
+  createdAt: DateTime!
+}
+
+# ------------------------------------------------------------------
+# Customer Domain
+# ------------------------------------------------------------------
+
+"""A DoorDash end-user placing orders."""
+type Customer {
+  id: ID!
+  externalCustomerId: String
+  email: String!
+  phone: String
+  profile: CustomerProfile
+  addresses: [Address!]
+  paymentMethods: [PaymentMethod!]
+  dashPass: DashPass
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+"""Extended profile data for a Customer."""
+type CustomerProfile {
+  id: ID!
+  customer: Customer!
+  firstName: String!
+  lastName: String!
+  photoUrl: URL
+  preferredLanguage: String
+  marketingOptIn: Boolean
+}
+
+# ------------------------------------------------------------------
+# Promotions & Loyalty Domain
+# ------------------------------------------------------------------
+
+"""A DashPass membership subscription record."""
+type DashPass {
+  id: ID!
+  customer: Customer!
+  isActive: Boolean!
+  startDate: Date!
+  endDate: Date
+  autoRenews: Boolean!
+  monthlyFee: Price!
+}
+
+"""A discount or promotional offer."""
+type Promotion {
+  id: ID!
+  code: String
+  name: String!
+  description: String
+  type: PromotionType!
+  discountAmount: Price
+  discountPercentage: Float
+  minimumOrderTotal: Price
+  maximumDiscount: Price
+  isActive: Boolean!
+  validFrom: DateTime!
+  validTo: DateTime!
+  applicableItems: [PromotionItem!]
+  usageLimit: Int
+  usageCount: Int
+}
+
+"""An item or category targeted by a Promotion."""
+type PromotionItem {
+  id: ID!
+  promotion: Promotion!
+  menuItem: MenuItem
+  category: MenuCategory
+  isRequired: Boolean!
+}
+
+"""A redeemable voucher code."""
+type Voucher {
+  id: ID!
+  code: String!
+  promotion: Promotion
+  customer: Customer
+  isRedeemed: Boolean!
+  redeemedAt: DateTime
+  expiresAt: DateTime!
+  value: Price!
+}
+
+# ------------------------------------------------------------------
+# Reviews & Ratings Domain
+# ------------------------------------------------------------------
+
+"""A customer review of a Store or Driver."""
+type Review {
+  id: ID!
+  author: Customer
+  targetType: ReviewTargetType!
+  store: Store
+  driver: Driver
+  order: Order
+  rating: Rating!
+  body: String
+  photos: [Photo!]
+  isVerifiedPurchase: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+"""An aggregate rating score entity."""
+type Rating {
+  value: Float!
+  maxValue: Float!
+  count: Int!
+}
+
+# ------------------------------------------------------------------
+# Webhooks Domain
+# ------------------------------------------------------------------
+
+"""A registered webhook endpoint for delivery or order events."""
+type Webhook {
+  id: ID!
+  url: URL!
+  secret: String
+  isActive: Boolean!
+  eventTypes: [WebhookEventType!]!
+  createdAt: DateTime!
+  updatedAt: DateTime
+}
+
+"""A fired event payload sent to a Webhook endpoint."""
+type WebhookEvent {
+  id: ID!
+  webhook: Webhook!
+  eventType: WebhookEventType!
+  payload: JSON!
+  deliveryAttempts: Int!
+  lastAttemptAt: DateTime
+  succeededAt: DateTime
+  failedAt: DateTime
+  createdAt: DateTime!
+}
+
+# ------------------------------------------------------------------
+# Root Operations
+# ------------------------------------------------------------------
+
+type Query {
+  """Look up a Business by its DoorDash or external ID."""
+  business(id: ID, externalBusinessId: String): Business
+
+  """List all BusinessLocations for a Business."""
+  businessLocations(businessId: ID!): [BusinessLocation!]!
+
+  """Look up a Store by its DoorDash or external ID."""
+  store(id: ID, externalStoreId: String): Store
+
+  """Look up a Merchant by ID."""
+  merchant(id: ID!): Merchant
+
+  """Look up a Menu by ID."""
+  menu(id: ID!): Menu
+
+  """Look up a MenuItem by ID."""
+  menuItem(id: ID!): MenuItem
+
+  """Get an Order by its DoorDash or external ID."""
+  order(id: ID, externalOrderId: String): Order
+
+  """Get a Delivery by its DoorDash or external ID."""
+  delivery(id: ID, externalDeliveryId: String): Delivery
+
+  """Get a DeliveryQuote for a prospective delivery."""
+  deliveryQuote(
+    pickupAddress: ID!
+    dropoffAddress: ID!
+    orderValue: Float
+    isScheduled: Boolean
+    pickupTime: DateTime
+  ): DeliveryQuote
+
+  """Get real-time tracking for a Delivery."""
+  deliveryTracking(deliveryId: ID!): DeliveryTracking
+
+  """Look up a Customer by ID."""
+  customer(id: ID!): Customer
+
+  """Get an active Promotion by code."""
+  promotion(code: String!): Promotion
+
+  """List webhooks registered for the calling application."""
+  webhooks: [Webhook!]!
+
+  """List recent WebhookEvents for a Webhook."""
+  webhookEvents(webhookId: ID!, limit: Int): [WebhookEvent!]!
+}
+
+type Mutation {
+  """Create a new Delivery via the Drive API."""
+  createDelivery(
+    externalDeliveryId: String!
+    pickupAddress: ID!
+    dropoffAddress: ID!
+    orderValue: Float
+    items: [ID!]
+    tip: Float
+    isScheduled: Boolean
+    preorderDetails: ID
+  ): Delivery!
+
+  """Cancel an existing Delivery."""
+  cancelDelivery(id: ID!, cancelReason: String): Delivery!
+
+  """Update the status of a Delivery (Marketplace)."""
+  updateDeliveryStatus(id: ID!, status: DeliveryStatusValue!): Delivery!
+
+  """Confirm an inbound Marketplace Order."""
+  confirmOrder(id: ID!, estimatedPickupTime: DateTime): Order!
+
+  """Cancel a Marketplace Order."""
+  cancelOrder(id: ID!, cancelReason: String!): Order!
+
+  """Create or replace a Store Menu."""
+  upsertMenu(storeId: ID!, menu: JSON!): Menu!
+
+  """Update availability of a specific MenuItem."""
+  updateMenuItemAvailability(itemId: ID!, isAvailable: Boolean!): MenuItem!
+
+  """Register a new Webhook endpoint."""
+  createWebhook(url: URL!, eventTypes: [WebhookEventType!]!, secret: String): Webhook!
+
+  """Deactivate a Webhook."""
+  deleteWebhook(id: ID!): Boolean!
+}
