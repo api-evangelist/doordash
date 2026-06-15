@@ -1,0 +1,162 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DoorDash Item Management API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Catalog",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DoorDash Add Items to Catalog",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.doordash.com/marketplace/api/v2/items",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds new items to the DoorDash item catalog. Each item is identified by a unique Merchant Supplied Item ID (MSID). Items added through this endpoint become available for inventory and pricing management at individual stores."
+        },
+        {
+          "info": {
+            "name": "DoorDash Update Items in Catalog",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.doordash.com/marketplace/api/v2/items",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates information about existing items in the catalog. Uses the same validation as the create endpoint. Items are matched by their Merchant Supplied Item ID."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Inventory",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DoorDash Add Inventory and Pricing for Items at a Store",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.doordash.com/marketplace/api/v2/stores/:store_location_id/items",
+            "params": [
+              {
+                "name": "store_location_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the store location."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds inventory, pricing, and other in-store attributes for items at a specific store location. Items must already exist in the catalog before inventory can be set at the store level."
+        },
+        {
+          "info": {
+            "name": "DoorDash Update Inventory and Pricing for Items at a Store",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.doordash.com/marketplace/api/v2/stores/:store_location_id/items",
+            "params": [
+              {
+                "name": "store_location_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the store location."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates inventory, pricing, and other in-store attributes for existing items at a specific store location. Changes are typically reflected within minutes."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Promotions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DoorDash Add Promotions for Items at a Store",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.doordash.com/marketplace/api/v2/promotions/stores/:store_location_id",
+            "params": [
+              {
+                "name": "store_location_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the store location."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds item-level promotions for items at a specific store location. Promotions allow partners to set promotional pricing for their items on the DoorDash platform."
+        },
+        {
+          "info": {
+            "name": "DoorDash Update Promotions for Items at a Store",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.doordash.com/marketplace/api/v2/promotions/stores/:store_location_id",
+            "params": [
+              {
+                "name": "store_location_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the store location."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates existing item-level promotions at a specific store location."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

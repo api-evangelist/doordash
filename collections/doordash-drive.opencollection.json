@@ -1,0 +1,361 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DoorDash Drive API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Quotes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DoorDash Create a Delivery Quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.doordash.com/drive/v2/quotes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a delivery quote to confirm that a delivery is serviceable by DoorDash and returns the estimated fee and delivery time. Quotes are valid for 5 minutes after creation."
+        },
+        {
+          "info": {
+            "name": "DoorDash Accept a Delivery Quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.doordash.com/drive/v2/quotes/:external_delivery_id/accept",
+            "params": [
+              {
+                "name": "external_delivery_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external delivery ID provided when creating the delivery or quote."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Accepts a previously created delivery quote and initiates the delivery process. The quote must be accepted within 5 minutes of being created. You can optionally edit the tip amount when accepting."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Deliveries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DoorDash Create a Delivery",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.doordash.com/drive/v2/deliveries",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new delivery request directly without first creating a quote. DoorDash will assign a Dasher to fulfill the delivery. This is an alternative to the quote-then-accept workflow."
+        },
+        {
+          "info": {
+            "name": "DoorDash Get Delivery Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.doordash.com/drive/v2/deliveries/:external_delivery_id",
+            "params": [
+              {
+                "name": "external_delivery_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external delivery ID provided when creating the delivery or quote."
+              }
+            ]
+          },
+          "docs": "Retrieves the current details and status of a delivery using the external delivery ID provided during creation."
+        },
+        {
+          "info": {
+            "name": "DoorDash Update a Delivery",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.doordash.com/drive/v2/deliveries/:external_delivery_id",
+            "params": [
+              {
+                "name": "external_delivery_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external delivery ID provided when creating the delivery or quote."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates specified attributes of an existing delivery. Not all fields can be updated after creation, and updates may be restricted based on the current delivery status."
+        },
+        {
+          "info": {
+            "name": "DoorDash Cancel a Delivery",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://openapi.doordash.com/drive/v2/deliveries/:external_delivery_id/cancel",
+            "params": [
+              {
+                "name": "external_delivery_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external delivery ID provided when creating the delivery or quote."
+              }
+            ]
+          },
+          "docs": "Cancels an active delivery. Deliveries cannot be cancelled after a Dasher has been assigned. Cancellation may incur fees depending on the delivery state."
+        },
+        {
+          "info": {
+            "name": "DoorDash Send Checkout Audit Signal",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.doordash.com/drive/v2/checkout_audit_signal",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sends a checkout audit signal to DoorDash for tracking and analytics purposes related to the delivery checkout flow."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Businesses",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DoorDash List Businesses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.doordash.com/drive/v2/businesses"
+          },
+          "docs": "Lists all businesses owned by the authenticated developer account."
+        },
+        {
+          "info": {
+            "name": "DoorDash Create a Business",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.doordash.com/drive/v2/businesses",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new Drive business entity representing a legal entity or owner on the DoorDash platform."
+        },
+        {
+          "info": {
+            "name": "DoorDash Get Business Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.doordash.com/drive/v2/businesses/:external_business_id",
+            "params": [
+              {
+                "name": "external_business_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external identifier for the business."
+              }
+            ]
+          },
+          "docs": "Retrieves the details of a specific business by its external business ID."
+        },
+        {
+          "info": {
+            "name": "DoorDash Update a Business",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.doordash.com/drive/v2/businesses/:external_business_id",
+            "params": [
+              {
+                "name": "external_business_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external identifier for the business."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the attributes of an existing business entity."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Stores",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DoorDash Create a Store",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.doordash.com/drive/v2/businesses/:external_business_id/stores",
+            "params": [
+              {
+                "name": "external_business_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external identifier for the business."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new store location associated with a business. Stores represent individual pickup points that make deliveries."
+        },
+        {
+          "info": {
+            "name": "DoorDash Get Store Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.doordash.com/drive/v2/businesses/:external_business_id/stores/:external_store_id",
+            "params": [
+              {
+                "name": "external_business_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external identifier for the business."
+              },
+              {
+                "name": "external_store_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external identifier for the store."
+              }
+            ]
+          },
+          "docs": "Retrieves the details of a specific store by its external store ID within a given business."
+        },
+        {
+          "info": {
+            "name": "DoorDash Update a Store",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.doordash.com/drive/v2/businesses/:external_business_id/stores/:external_store_id",
+            "params": [
+              {
+                "name": "external_business_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external identifier for the business."
+              },
+              {
+                "name": "external_store_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external identifier for the store."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the attributes of an existing store location."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Addresses",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DoorDash Get Address Suggestions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.doordash.com/drive/v2/addresses",
+            "params": [
+              {
+                "name": "query",
+                "value": "example",
+                "type": "query",
+                "description": "Partial address string to get suggestions for."
+              },
+              {
+                "name": "latitude",
+                "value": "37.422",
+                "type": "query",
+                "description": "Latitude coordinate to bias results toward a location."
+              },
+              {
+                "name": "longitude",
+                "value": "-122.084",
+                "type": "query",
+                "description": "Longitude coordinate to bias results toward a location."
+              }
+            ]
+          },
+          "docs": "Returns address auto-completion suggestions based on partial address input and optional location coordinates."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

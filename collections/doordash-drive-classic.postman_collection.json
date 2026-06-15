@@ -1,0 +1,2857 @@
+{
+  "item": [
+    {
+      "id": "128fbee0-1e40-4b74-ae43-7e7462ec3a44",
+      "name": "Businesses",
+      "description": {
+        "content": "Manage business entities that represent legal entities or owners.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "aa994680-f642-4c50-bbca-f881f44197d8",
+          "name": "DoorDash List Businesses",
+          "request": {
+            "name": "DoorDash List Businesses",
+            "description": {
+              "content": "Lists all businesses owned by the authenticated developer account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "businesses"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "943f93bd-868c-4140-8762-99f97ed5bdcc",
+              "name": "List of businesses retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"external_business_id\": \"D-12345\",\n    \"name\": \"Acme Pickup Store\",\n    \"description\": \"Leave at the front desk.\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8d4ef38e-d253-411c-b718-c4e933d511e0",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "43f1f4ef-3df6-4cf5-90c8-e85e8d556595",
+          "name": "DoorDash Create a Business",
+          "request": {
+            "name": "DoorDash Create a Business",
+            "description": {
+              "content": "Creates a new Drive business entity representing a legal entity or owner on the DoorDash platform.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "businesses"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"external_business_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f23bf55a-3f60-4014-b19b-08d17fe37b7a",
+              "name": "Business created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_business_id\": \"D-12345\",\n  \"name\": \"Acme Pickup Store\",\n  \"description\": \"Leave at the front desk.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"external_business_id\": \"D-12345\",\n  \"name\": \"Acme Pickup Store\",\n  \"description\": \"Leave at the front desk.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9110a5e2-4cc9-4ce5-a263-1237044f7038",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_business_id\": \"D-12345\",\n  \"name\": \"Acme Pickup Store\",\n  \"description\": \"Leave at the front desk.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2771654c-1808-43f9-a8b3-dfd79f026a83",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_business_id\": \"D-12345\",\n  \"name\": \"Acme Pickup Store\",\n  \"description\": \"Leave at the front desk.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d899a429-70df-4ab3-9f43-d9debe8f7e3e",
+          "name": "DoorDash Get Business Details",
+          "request": {
+            "name": "DoorDash Get Business Details",
+            "description": {
+              "content": "Retrieves the details of a specific business by its external ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "businesses",
+                ":external_business_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "external_business_id",
+                  "description": "(Required) The unique external identifier for the business."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d117e3d8-4dbb-4754-86a7-693713d6cde7",
+              "name": "Business details retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses",
+                    ":external_business_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_business_id",
+                      "description": "(Required) The unique external identifier for the business."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"external_business_id\": \"D-12345\",\n  \"name\": \"Acme Pickup Store\",\n  \"description\": \"Leave at the front desk.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "412757cb-1121-4eee-b57a-bf669ebea5ca",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses",
+                    ":external_business_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_business_id",
+                      "description": "(Required) The unique external identifier for the business."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "425f5c52-e547-4e3a-8702-ad66a61a503d",
+              "name": "Business not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses",
+                    ":external_business_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_business_id",
+                      "description": "(Required) The unique external identifier for the business."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3ad6b8e8-5d47-4b85-8ac1-bfafc3b23ab3",
+          "name": "DoorDash Update a Business",
+          "request": {
+            "name": "DoorDash Update a Business",
+            "description": {
+              "content": "Updates the attributes of an existing business entity.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "businesses",
+                ":external_business_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "external_business_id",
+                  "description": "(Required) The unique external identifier for the business."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"external_business_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3bddf574-dd88-41e3-b25f-56f02e25f744",
+              "name": "Business updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses",
+                    ":external_business_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_business_id",
+                      "description": "(Required) The unique external identifier for the business."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_business_id\": \"D-12345\",\n  \"name\": \"Acme Pickup Store\",\n  \"description\": \"Leave at the front desk.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"external_business_id\": \"D-12345\",\n  \"name\": \"Acme Pickup Store\",\n  \"description\": \"Leave at the front desk.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "172cfddd-e2b3-4b44-9c2c-641f42f821e6",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses",
+                    ":external_business_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_business_id",
+                      "description": "(Required) The unique external identifier for the business."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_business_id\": \"D-12345\",\n  \"name\": \"Acme Pickup Store\",\n  \"description\": \"Leave at the front desk.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "842802e6-b752-4fa9-bb58-bdeb76b1830a",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses",
+                    ":external_business_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_business_id",
+                      "description": "(Required) The unique external identifier for the business."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_business_id\": \"D-12345\",\n  \"name\": \"Acme Pickup Store\",\n  \"description\": \"Leave at the front desk.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e1689ca1-a732-4f18-8433-3a4ff1d01abe",
+              "name": "Business not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses",
+                    ":external_business_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_business_id",
+                      "description": "(Required) The unique external identifier for the business."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_business_id\": \"D-12345\",\n  \"name\": \"Acme Pickup Store\",\n  \"description\": \"Leave at the front desk.\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "ea82f473-10f9-4434-8b53-700f31162880",
+      "name": "Deliveries",
+      "description": {
+        "content": "Create, retrieve, update, cancel, and estimate deliveries using the classic API endpoints.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f2410cf5-3a0f-4d46-8d51-d0bf3b6feb41",
+          "name": "DoorDash Create a Delivery Estimate",
+          "request": {
+            "name": "DoorDash Create a Delivery Estimate",
+            "description": {
+              "content": "Requests time and fee estimates for a delivery. Can also be used to check if an area is serviced by DoorDash. Time values must be provided in UTC ISO-8601 format.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "estimates"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pickup_address\": \"<string>\",\n  \"dropoff_address\": \"<string>\",\n  \"pickup_time\": \"<dateTime>\",\n  \"order_value\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "12206a2b-fe3f-4cd0-b363-98dd19fce369",
+              "name": "Delivery estimate created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "estimates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pickup_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"dropoff_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"pickup_time\": \"2026-06-02T14:30:00Z\",\n  \"order_value\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"fee\": 42,\n  \"currency\": \"USD\",\n  \"pickup_time\": \"2026-06-02T14:30:00Z\",\n  \"dropoff_time\": \"2026-06-02T14:30:00Z\",\n  \"delivery_duration\": 42\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7f00359f-cc66-40c2-b453-6d9152ec093c",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "estimates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pickup_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"dropoff_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"pickup_time\": \"2026-06-02T14:30:00Z\",\n  \"order_value\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8498862c-5653-45b6-84ab-b4a6e9adb501",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "estimates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pickup_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"dropoff_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"pickup_time\": \"2026-06-02T14:30:00Z\",\n  \"order_value\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "79fe4e03-12d2-49d1-85d5-dfd290e23867",
+          "name": "DoorDash Create a Delivery",
+          "request": {
+            "name": "DoorDash Create a Delivery",
+            "description": {
+              "content": "Creates a new delivery request. DoorDash will assign a Dasher to fulfill the delivery. Time values must be provided in UTC format. The API recommends up to 3 retries with exponential backoff.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "deliveries"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"external_delivery_id\": \"<string>\",\n  \"pickup_address\": \"<string>\",\n  \"dropoff_address\": \"<string>\",\n  \"pickup_business_name\": \"<string>\",\n  \"pickup_phone_number\": \"<string>\",\n  \"pickup_instructions\": \"<string>\",\n  \"dropoff_business_name\": \"<string>\",\n  \"dropoff_phone_number\": \"<string>\",\n  \"dropoff_instructions\": \"<string>\",\n  \"dropoff_contact_given_name\": \"<string>\",\n  \"dropoff_contact_family_name\": \"<string>\",\n  \"order_value\": \"<integer>\",\n  \"tip\": \"<integer>\",\n  \"pickup_time\": \"<dateTime>\",\n  \"dropoff_time\": \"<dateTime>\",\n  \"contains_alcohol\": \"<boolean>\",\n  \"external_business_id\": \"<string>\",\n  \"external_store_id\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c77e0c60-f0dc-4b23-90e0-be3e8e6ab464",
+              "name": "Delivery created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deliveries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_delivery_id\": \"D-12345\",\n  \"pickup_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"pickup_business_name\": \"Acme Pickup Store\",\n  \"pickup_phone_number\": \"+15555551234\",\n  \"pickup_instructions\": \"Leave at the front desk.\",\n  \"dropoff_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"dropoff_business_name\": \"Acme Pickup Store\",\n  \"dropoff_phone_number\": \"+15555551234\",\n  \"dropoff_instructions\": \"Leave at the front desk.\",\n  \"dropoff_contact_given_name\": \"Acme Pickup Store\",\n  \"dropoff_contact_family_name\": \"Acme Pickup Store\",\n  \"order_value\": 42,\n  \"tip\": 42,\n  \"pickup_time\": \"2026-06-02T14:30:00Z\",\n  \"dropoff_time\": \"2026-06-02T14:30:00Z\",\n  \"contains_alcohol\": true,\n  \"external_business_id\": \"D-12345\",\n  \"external_store_id\": \"D-12345\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"external_delivery_id\": \"D-12345\",\n  \"delivery_status\": \"created\",\n  \"fee\": 42,\n  \"currency\": \"USD\",\n  \"tip\": 42,\n  \"pickup_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"dropoff_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"pickup_time_estimated\": \"2026-06-02T14:30:00Z\",\n  \"pickup_time_actual\": \"2026-06-02T14:30:00Z\",\n  \"dropoff_time_estimated\": \"2026-06-02T14:30:00Z\",\n  \"dropoff_time_actual\": \"2026-06-02T14:30:00Z\",\n  \"dasher_id\": 42,\n  \"dasher_name\": \"Acme Pickup Store\",\n  \"tracking_url\": \"https://example.com/path/abc123\",\n  \"created_at\": \"2026-06-02T14:30:00Z\",\n  \"updated_at\": \"2026-06-02T14:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1cb73980-c84e-4211-bd0c-e51ae6dc6c2c",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deliveries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_delivery_id\": \"D-12345\",\n  \"pickup_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"pickup_business_name\": \"Acme Pickup Store\",\n  \"pickup_phone_number\": \"+15555551234\",\n  \"pickup_instructions\": \"Leave at the front desk.\",\n  \"dropoff_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"dropoff_business_name\": \"Acme Pickup Store\",\n  \"dropoff_phone_number\": \"+15555551234\",\n  \"dropoff_instructions\": \"Leave at the front desk.\",\n  \"dropoff_contact_given_name\": \"Acme Pickup Store\",\n  \"dropoff_contact_family_name\": \"Acme Pickup Store\",\n  \"order_value\": 42,\n  \"tip\": 42,\n  \"pickup_time\": \"2026-06-02T14:30:00Z\",\n  \"dropoff_time\": \"2026-06-02T14:30:00Z\",\n  \"contains_alcohol\": true,\n  \"external_business_id\": \"D-12345\",\n  \"external_store_id\": \"D-12345\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c96625ca-9d29-4d8d-a390-23766ea2d37e",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deliveries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_delivery_id\": \"D-12345\",\n  \"pickup_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"pickup_business_name\": \"Acme Pickup Store\",\n  \"pickup_phone_number\": \"+15555551234\",\n  \"pickup_instructions\": \"Leave at the front desk.\",\n  \"dropoff_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"dropoff_business_name\": \"Acme Pickup Store\",\n  \"dropoff_phone_number\": \"+15555551234\",\n  \"dropoff_instructions\": \"Leave at the front desk.\",\n  \"dropoff_contact_given_name\": \"Acme Pickup Store\",\n  \"dropoff_contact_family_name\": \"Acme Pickup Store\",\n  \"order_value\": 42,\n  \"tip\": 42,\n  \"pickup_time\": \"2026-06-02T14:30:00Z\",\n  \"dropoff_time\": \"2026-06-02T14:30:00Z\",\n  \"contains_alcohol\": true,\n  \"external_business_id\": \"D-12345\",\n  \"external_store_id\": \"D-12345\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9b147123-494d-4178-8da9-3ed7af8dac6d",
+          "name": "DoorDash Get Delivery Details",
+          "request": {
+            "name": "DoorDash Get Delivery Details",
+            "description": {
+              "content": "Retrieves the current details and status of a delivery using the external delivery ID provided during creation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "deliveries",
+                ":external_delivery_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "external_delivery_id",
+                  "description": "(Required) The unique external delivery ID provided when creating the delivery."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "670a76ae-9295-4259-8ea2-8d83f83b28c1",
+              "name": "Delivery details retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deliveries",
+                    ":external_delivery_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_delivery_id",
+                      "description": "(Required) The unique external delivery ID provided when creating the delivery."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"external_delivery_id\": \"D-12345\",\n  \"delivery_status\": \"created\",\n  \"fee\": 42,\n  \"currency\": \"USD\",\n  \"tip\": 42,\n  \"pickup_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"dropoff_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"pickup_time_estimated\": \"2026-06-02T14:30:00Z\",\n  \"pickup_time_actual\": \"2026-06-02T14:30:00Z\",\n  \"dropoff_time_estimated\": \"2026-06-02T14:30:00Z\",\n  \"dropoff_time_actual\": \"2026-06-02T14:30:00Z\",\n  \"dasher_id\": 42,\n  \"dasher_name\": \"Acme Pickup Store\",\n  \"tracking_url\": \"https://example.com/path/abc123\",\n  \"created_at\": \"2026-06-02T14:30:00Z\",\n  \"updated_at\": \"2026-06-02T14:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a7099e5c-32b9-4034-a9fb-70d779b07b60",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deliveries",
+                    ":external_delivery_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_delivery_id",
+                      "description": "(Required) The unique external delivery ID provided when creating the delivery."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b070119c-88d1-4b8c-8d34-a101114cf625",
+              "name": "Delivery not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deliveries",
+                    ":external_delivery_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_delivery_id",
+                      "description": "(Required) The unique external delivery ID provided when creating the delivery."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4895f972-4bb9-40ba-ad00-8fe46a7e2d54",
+          "name": "DoorDash Update a Delivery",
+          "request": {
+            "name": "DoorDash Update a Delivery",
+            "description": {
+              "content": "Updates specified attributes of an existing delivery. Updates may be restricted based on the current delivery status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "deliveries",
+                ":external_delivery_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "external_delivery_id",
+                  "description": "(Required) The unique external delivery ID provided when creating the delivery."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tip\": \"<integer>\",\n  \"dropoff_instructions\": \"<string>\",\n  \"dropoff_phone_number\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "19dd1055-a816-4fb9-ae48-3ebc13106b5f",
+              "name": "Delivery updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deliveries",
+                    ":external_delivery_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_delivery_id",
+                      "description": "(Required) The unique external delivery ID provided when creating the delivery."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tip\": 42,\n  \"dropoff_instructions\": \"Leave at the front desk.\",\n  \"dropoff_phone_number\": \"+15555551234\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"external_delivery_id\": \"D-12345\",\n  \"delivery_status\": \"created\",\n  \"fee\": 42,\n  \"currency\": \"USD\",\n  \"tip\": 42,\n  \"pickup_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"dropoff_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"pickup_time_estimated\": \"2026-06-02T14:30:00Z\",\n  \"pickup_time_actual\": \"2026-06-02T14:30:00Z\",\n  \"dropoff_time_estimated\": \"2026-06-02T14:30:00Z\",\n  \"dropoff_time_actual\": \"2026-06-02T14:30:00Z\",\n  \"dasher_id\": 42,\n  \"dasher_name\": \"Acme Pickup Store\",\n  \"tracking_url\": \"https://example.com/path/abc123\",\n  \"created_at\": \"2026-06-02T14:30:00Z\",\n  \"updated_at\": \"2026-06-02T14:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fa77a08c-c498-4a2a-ab3c-38513417935c",
+              "name": "Invalid update parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deliveries",
+                    ":external_delivery_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_delivery_id",
+                      "description": "(Required) The unique external delivery ID provided when creating the delivery."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tip\": 42,\n  \"dropoff_instructions\": \"Leave at the front desk.\",\n  \"dropoff_phone_number\": \"+15555551234\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f0cb5cb3-78d6-428c-8d5a-25327defabb8",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deliveries",
+                    ":external_delivery_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_delivery_id",
+                      "description": "(Required) The unique external delivery ID provided when creating the delivery."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tip\": 42,\n  \"dropoff_instructions\": \"Leave at the front desk.\",\n  \"dropoff_phone_number\": \"+15555551234\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f6322dff-b23e-46df-a103-4238b168296f",
+              "name": "Delivery not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deliveries",
+                    ":external_delivery_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_delivery_id",
+                      "description": "(Required) The unique external delivery ID provided when creating the delivery."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tip\": 42,\n  \"dropoff_instructions\": \"Leave at the front desk.\",\n  \"dropoff_phone_number\": \"+15555551234\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "24f2d0dc-1c18-43cc-9bb9-2c5c08520c77",
+          "name": "DoorDash Cancel a Delivery",
+          "request": {
+            "name": "DoorDash Cancel a Delivery",
+            "description": {
+              "content": "Cancels an active delivery. Cancellation restrictions apply based on the current delivery status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "deliveries",
+                ":external_delivery_id",
+                "cancel"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "external_delivery_id",
+                  "description": "(Required) The unique external delivery ID provided when creating the delivery."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "69449c72-3c45-4b7d-8bab-9fc8da28ec47",
+              "name": "Delivery cancelled successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deliveries",
+                    ":external_delivery_id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_delivery_id",
+                      "description": "(Required) The unique external delivery ID provided when creating the delivery."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"external_delivery_id\": \"D-12345\",\n  \"delivery_status\": \"created\",\n  \"fee\": 42,\n  \"currency\": \"USD\",\n  \"tip\": 42,\n  \"pickup_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"dropoff_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"pickup_time_estimated\": \"2026-06-02T14:30:00Z\",\n  \"pickup_time_actual\": \"2026-06-02T14:30:00Z\",\n  \"dropoff_time_estimated\": \"2026-06-02T14:30:00Z\",\n  \"dropoff_time_actual\": \"2026-06-02T14:30:00Z\",\n  \"dasher_id\": 42,\n  \"dasher_name\": \"Acme Pickup Store\",\n  \"tracking_url\": \"https://example.com/path/abc123\",\n  \"created_at\": \"2026-06-02T14:30:00Z\",\n  \"updated_at\": \"2026-06-02T14:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e2604396-45da-40d9-a7b1-bf8df0b7853b",
+              "name": "Delivery cannot be cancelled in current state",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deliveries",
+                    ":external_delivery_id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_delivery_id",
+                      "description": "(Required) The unique external delivery ID provided when creating the delivery."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dbc41630-56c8-4397-a9d9-c20b031c7a67",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deliveries",
+                    ":external_delivery_id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_delivery_id",
+                      "description": "(Required) The unique external delivery ID provided when creating the delivery."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ee1b7f6f-d228-4313-b68b-03031da1b360",
+              "name": "Delivery not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "deliveries",
+                    ":external_delivery_id",
+                    "cancel"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_delivery_id",
+                      "description": "(Required) The unique external delivery ID provided when creating the delivery."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "5710404e-0bfd-48a1-83c9-0863706b36d7",
+      "name": "Stores",
+      "description": {
+        "content": "Manage store locations associated with businesses.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "dae61e45-09fc-4161-a6ae-c69c0d19c55e",
+          "name": "DoorDash Create a Store",
+          "request": {
+            "name": "DoorDash Create a Store",
+            "description": {
+              "content": "Creates a new store location associated with a business.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "businesses",
+                ":external_business_id",
+                "stores"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "external_business_id",
+                  "description": "(Required) The unique external identifier for the business."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"external_store_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"address\": \"<string>\",\n  \"phone_number\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "bb5167df-1ad9-479c-b9f3-c82d3a5a82b1",
+              "name": "Store created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses",
+                    ":external_business_id",
+                    "stores"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_business_id",
+                      "description": "(Required) The unique external identifier for the business."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_store_id\": \"D-12345\",\n  \"name\": \"Acme Pickup Store\",\n  \"phone_number\": \"+15555551234\",\n  \"address\": \"901 Market St, San Francisco, CA 94105\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"external_business_id\": \"D-12345\",\n  \"external_store_id\": \"D-12345\",\n  \"name\": \"Acme Pickup Store\",\n  \"phone_number\": \"+15555551234\",\n  \"address\": \"901 Market St, San Francisco, CA 94105\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9582a9a4-7b27-4bde-8b47-b7f37f9233d3",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses",
+                    ":external_business_id",
+                    "stores"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_business_id",
+                      "description": "(Required) The unique external identifier for the business."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_store_id\": \"D-12345\",\n  \"name\": \"Acme Pickup Store\",\n  \"phone_number\": \"+15555551234\",\n  \"address\": \"901 Market St, San Francisco, CA 94105\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1a1bf79e-dc4b-40a0-a9d5-da2c52ebca3c",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses",
+                    ":external_business_id",
+                    "stores"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_business_id",
+                      "description": "(Required) The unique external identifier for the business."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_store_id\": \"D-12345\",\n  \"name\": \"Acme Pickup Store\",\n  \"phone_number\": \"+15555551234\",\n  \"address\": \"901 Market St, San Francisco, CA 94105\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "25699c2d-3283-4f82-8364-bf5de815d7a3",
+          "name": "DoorDash Get Store Details",
+          "request": {
+            "name": "DoorDash Get Store Details",
+            "description": {
+              "content": "Retrieves the details of a specific store within a business.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "businesses",
+                ":external_business_id",
+                "stores",
+                ":external_store_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "external_business_id",
+                  "description": "(Required) The unique external identifier for the business."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "external_store_id",
+                  "description": "(Required) The unique external identifier for the store."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "890d5afe-94fe-4a6b-a7b0-b65f61243323",
+              "name": "Store details retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses",
+                    ":external_business_id",
+                    "stores",
+                    ":external_store_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_business_id",
+                      "description": "(Required) The unique external identifier for the business."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_store_id",
+                      "description": "(Required) The unique external identifier for the store."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"external_business_id\": \"D-12345\",\n  \"external_store_id\": \"D-12345\",\n  \"name\": \"Acme Pickup Store\",\n  \"phone_number\": \"+15555551234\",\n  \"address\": \"901 Market St, San Francisco, CA 94105\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0546dc35-e3d8-441c-87e7-05535e7d8ff2",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses",
+                    ":external_business_id",
+                    "stores",
+                    ":external_store_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_business_id",
+                      "description": "(Required) The unique external identifier for the business."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_store_id",
+                      "description": "(Required) The unique external identifier for the store."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2ac634c8-51cf-4e4b-b962-ba5cc0065926",
+              "name": "Store or business not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses",
+                    ":external_business_id",
+                    "stores",
+                    ":external_store_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_business_id",
+                      "description": "(Required) The unique external identifier for the business."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_store_id",
+                      "description": "(Required) The unique external identifier for the store."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "301537b0-a548-4cad-82cb-262657b5552c",
+          "name": "DoorDash Update a Store",
+          "request": {
+            "name": "DoorDash Update a Store",
+            "description": {
+              "content": "Updates the attributes of an existing store location.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "businesses",
+                ":external_business_id",
+                "stores",
+                ":external_store_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "external_business_id",
+                  "description": "(Required) The unique external identifier for the business."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "external_store_id",
+                  "description": "(Required) The unique external identifier for the store."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"external_store_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"address\": \"<string>\",\n  \"phone_number\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "042d0c1a-1562-4d28-8463-11482c9b10f2",
+              "name": "Store updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses",
+                    ":external_business_id",
+                    "stores",
+                    ":external_store_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_business_id",
+                      "description": "(Required) The unique external identifier for the business."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_store_id",
+                      "description": "(Required) The unique external identifier for the store."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_store_id\": \"D-12345\",\n  \"name\": \"Acme Pickup Store\",\n  \"phone_number\": \"+15555551234\",\n  \"address\": \"901 Market St, San Francisco, CA 94105\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"external_business_id\": \"D-12345\",\n  \"external_store_id\": \"D-12345\",\n  \"name\": \"Acme Pickup Store\",\n  \"phone_number\": \"+15555551234\",\n  \"address\": \"901 Market St, San Francisco, CA 94105\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fb68abe3-0660-4b7a-89f3-7aa6bdced35d",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses",
+                    ":external_business_id",
+                    "stores",
+                    ":external_store_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_business_id",
+                      "description": "(Required) The unique external identifier for the business."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_store_id",
+                      "description": "(Required) The unique external identifier for the store."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_store_id\": \"D-12345\",\n  \"name\": \"Acme Pickup Store\",\n  \"phone_number\": \"+15555551234\",\n  \"address\": \"901 Market St, San Francisco, CA 94105\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "02be541a-6cf6-4a44-92ce-e00fe32bdfee",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses",
+                    ":external_business_id",
+                    "stores",
+                    ":external_store_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_business_id",
+                      "description": "(Required) The unique external identifier for the business."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_store_id",
+                      "description": "(Required) The unique external identifier for the store."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_store_id\": \"D-12345\",\n  \"name\": \"Acme Pickup Store\",\n  \"phone_number\": \"+15555551234\",\n  \"address\": \"901 Market St, San Francisco, CA 94105\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e00d272d-50a4-4d6f-9e57-60a133d93772",
+              "name": "Store or business not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "businesses",
+                    ":external_business_id",
+                    "stores",
+                    ":external_store_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_business_id",
+                      "description": "(Required) The unique external identifier for the business."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_store_id",
+                      "description": "(Required) The unique external identifier for the store."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_store_id\": \"D-12345\",\n  \"name\": \"Acme Pickup Store\",\n  \"phone_number\": \"+15555551234\",\n  \"address\": \"901 Market St, San Francisco, CA 94105\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\",\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://openapi.doordash.com/drive/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "9212a95d-55c4-4300-a6de-6169bdcec37e",
+    "name": "DoorDash Drive Classic API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.\n\nContact Support:\n Name: DoorDash Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

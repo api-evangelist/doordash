@@ -1,0 +1,193 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DoorDash Marketplace API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DoorDash Update an Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.doordash.com/marketplace/api/v1/orders/:order_id",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique DoorDash order identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the status of an order, cancels items, adjusts item or option quantities, or substitutes items. A separate token may be required for patch_order_events operations."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Menus",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DoorDash Create a Menu",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.doordash.com/marketplace/api/v1/menus",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Uploads a complete menu for a store. Menu creation is processed asynchronously. A successful response indicates the request was received. A webhook notification is sent when processing completes or fails."
+        },
+        {
+          "info": {
+            "name": "DoorDash Update a Menu",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.doordash.com/marketplace/api/v1/menus/:menu_id",
+            "params": [
+              {
+                "name": "menu_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the menu."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing menu. Uses the same validation as menu creation. Processing is asynchronous with webhook notification upon completion."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Stores",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DoorDash Get Store Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.doordash.com/marketplace/api/v1/stores/:merchant_supplied_id/store_details",
+            "params": [
+              {
+                "name": "merchant_supplied_id",
+                "value": "",
+                "type": "path",
+                "description": "The merchant-supplied identifier for the store."
+              }
+            ]
+          },
+          "docs": "Retrieves live store-level information for a store that is set up on the integration."
+        },
+        {
+          "info": {
+            "name": "DoorDash Get Menu Details for a Store",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.doordash.com/marketplace/api/v1/stores/:merchant_supplied_id/menu_details",
+            "params": [
+              {
+                "name": "merchant_supplied_id",
+                "value": "",
+                "type": "path",
+                "description": "The merchant-supplied identifier for the store."
+              }
+            ]
+          },
+          "docs": "Retrieves live menu-level information for a store that is set up on the integration."
+        },
+        {
+          "info": {
+            "name": "DoorDash Update Store Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.doordash.com/marketplace/api/v1/stores/:merchant_supplied_id/status",
+            "params": [
+              {
+                "name": "merchant_supplied_id",
+                "value": "",
+                "type": "path",
+                "description": "The merchant-supplied identifier for the store."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the operational status of a store, such as opening or closing the store for orders on the DoorDash marketplace."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Items",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DoorDash Update Item Availability",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.doordash.com/marketplace/api/v1/stores/:merchant_supplied_id/item_status",
+            "params": [
+              {
+                "name": "merchant_supplied_id",
+                "value": "",
+                "type": "path",
+                "description": "The merchant-supplied identifier for the store."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the availability status of items and item options for a store. Used to 86 items (mark as unavailable) or stock them back in when they become available to order."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
