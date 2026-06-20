@@ -9,7 +9,7 @@ apis:
   - Last Mile
   - Logistics
   - On-Demand
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   baseURL: https://openapi.doordash.com/drive/v2
   humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
   properties:
@@ -59,7 +59,7 @@ apis:
   - Food Delivery
   - Last Mile
   - Logistics
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   baseURL: https://openapi.doordash.com/drive/v1
   humanURL: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
   properties:
@@ -81,7 +81,7 @@ apis:
   - Orders
   - Restaurants
   - Retail
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   baseURL: https://openapi.doordash.com/marketplace
   humanURL: https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
   properties:
@@ -105,7 +105,7 @@ apis:
   - Menus
   - Pricing
   - Retail
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   baseURL: https://openapi.doordash.com/marketplace
   humanURL: https://developer.doordash.com/en-US/api/marketplace_v2/
   properties:
@@ -127,7 +127,7 @@ apis:
   - Financial
   - Operations
   - Reporting
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   baseURL: https://openapi.doordash.com/dataexchange/v1
   humanURL: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
   properties:
