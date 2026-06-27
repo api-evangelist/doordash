@@ -19,7 +19,7 @@ apis:
     url: openapi/doordash-drive-openapi.yml
   - type: AsyncAPI
     url: asyncapi/doordash-drive-webhooks-asyncapi.yml
-  - type: SDK
+  - type: SDKs
     url: https://www.npmjs.com/package/@doordash/sdk
     title: Node.js SDK
   - type: CodeExamples
@@ -165,7 +165,7 @@ common:
   title: DoorDash Open Source
 - type: LinkedIn
   url: https://www.linkedin.com/company/doordash
-- type: SDK
+- type: SDKs
   url: https://www.npmjs.com/package/@doordash/sdk
   title: Node.js SDK
 - type: Tools
