@@ -1,0 +1,14 @@
+generated: '2026-07-11'
+method: searched
+probe: true
+source: https://trust.doordash.com/
+url: https://trust.doordash.com/
+certifications:
+- SOC 2
+- PCI DSS
+evidence:
+- source: https://trust.doordash.com/
+  keywords:
+  - soc 2
+  - pci dss
+  - trust center

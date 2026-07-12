@@ -1,0 +1,19 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/doordash-drive-classic-openapi.yml, openapi/doordash-drive-openapi.yml, openapi/doordash-item-management-openapi.yml,
+  openapi/doordash-marketplace-openapi.yml, openapi/doordash-reporting-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: JWT token signed with your DoorDash developer credentials.
+  sources:
+  - openapi/doordash-drive-classic-openapi.yml
+  - openapi/doordash-drive-openapi.yml
+  - openapi/doordash-item-management-openapi.yml
+  - openapi/doordash-marketplace-openapi.yml
+  - openapi/doordash-reporting-openapi.yml
