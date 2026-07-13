@@ -1,20 +1,23 @@
-# DoorDash API Spectral Ruleset
-# Enforces the conventions observed across the DoorDash Drive, Drive Classic,
-# Marketplace, Item Management, and Reporting OpenAPI specifications.
+# doordash — Spectral ruleset (strengthened)
+# Plain Spectral. Existing hand-authored rules preserved; measured rules added
+# from this provider's own OpenAPI conventions by strengthen_ruleset.py,
+# then self-validated against the spec.
 #
-# Conventions enforced:
-#   - Title format: "DoorDash ..." ; operation summaries prefixed with "DoorDash"
-#   - OpenAPI 3.1.0
-#   - HTTPS servers only
-#   - snake_case path segments and parameters, plural collection nouns
-#   - camelCase operationIds with verb prefixes
-#   - Title Case tags
-#   - Bearer JWT security
-#   - snake_case schema properties
-extends: []
+# Provenance:
+#   - servers-https-only: 100% of servers already https (error)
+#   - servers-expected-domain: 5/5 servers on doordash.com
+#   - path-params-casing: snake @ 100% (n=32)
+#   - operationid-casing: camel @ 100% (n=42)
+#   - schema-names-casing: pascal @ 100% (n=58)
+#   - schema-properties-casing: snake @ 100% (n=296)
+#   - security: global (root) — NOT emitting operation-security-required
+#   - error-schema-defined: Error
+#   - operation-documents-401: 100% adherence
+#   - merge: kept 36 existing, added 6 measured, upgraded 0
+#   - added: servers-expected-domain, path-params-casing, schema-names-casing, schema-properties-casing, error-schema-defined, no-empty-descriptions
+extends:
+  - spectral:oas
 rules:
-
-  # ── INFO / METADATA ──────────────────────────────────────────────
   info-title-doordash-prefix:
     description: API title should start with "DoorDash".
     severity: warn
@@ -22,7 +25,7 @@ rules:
     then:
       function: pattern
       functionOptions:
-        match: "^DoorDash"
+        match: ^DoorDash
   info-description-required:
     description: A meaningful info.description is required (min 40 chars).
     severity: warn
@@ -52,8 +55,6 @@ rules:
     then:
       field: contact
       function: defined
-
-  # ── OPENAPI VERSION ──────────────────────────────────────────────
   openapi-version-3-1:
     description: DoorDash specs target OpenAPI 3.1.0.
     severity: warn
@@ -61,9 +62,7 @@ rules:
     then:
       function: pattern
       functionOptions:
-        match: "^3\\.1\\."
-
-  # ── SERVERS ──────────────────────────────────────────────────────
+        match: ^3\.1\.
   servers-defined:
     description: At least one server must be defined.
     severity: error
@@ -78,7 +77,7 @@ rules:
     then:
       function: pattern
       functionOptions:
-        match: "^https://"
+        match: ^https://
   server-description-required:
     description: Each server should have a description.
     severity: info
@@ -86,8 +85,6 @@ rules:
     then:
       field: description
       function: defined
-
-  # ── PATHS — NAMING CONVENTIONS ───────────────────────────────────
   path-no-trailing-slash:
     description: Paths must not end with a trailing slash.
     severity: warn
@@ -95,7 +92,7 @@ rules:
     then:
       function: pattern
       functionOptions:
-        notMatch: ".+/$"
+        notMatch: .+/$
   path-segments-snake-case:
     description: Static path segments should be snake_case (lowercase letters, digits, underscores).
     severity: warn
@@ -103,7 +100,7 @@ rules:
     then:
       function: pattern
       functionOptions:
-        match: "^(/([a-z0-9_]+|\\{[a-z0-9_]+\\}))+$"
+        match: ^(/([a-z0-9_]+|\{[a-z0-9_]+\}))+$
   path-no-query-string:
     description: Path keys must not contain query strings.
     severity: error
@@ -111,9 +108,7 @@ rules:
     then:
       function: pattern
       functionOptions:
-        notMatch: "\\?"
-
-  # ── OPERATIONS ───────────────────────────────────────────────────
+        notMatch: \?
   operation-operationId-required:
     description: Every operation must have an operationId.
     severity: error
@@ -128,7 +123,7 @@ rules:
     then:
       function: pattern
       functionOptions:
-        match: "^(get|list|create|update|delete|cancel|accept|send|check)[A-Za-z0-9]*$"
+        match: ^(get|list|create|update|delete|cancel|accept|send|check)[A-Za-z0-9]*$
   operation-summary-required:
     description: Every operation must have a summary.
     severity: warn
@@ -143,7 +138,7 @@ rules:
     then:
       function: pattern
       functionOptions:
-        match: "^DoorDash "
+        match: '^DoorDash '
   operation-description-required:
     description: Every operation must have a description.
     severity: warn
@@ -165,8 +160,6 @@ rules:
     then:
       field: x-microcks-operation
       function: defined
-
-  # ── TAGS ─────────────────────────────────────────────────────────
   global-tags-defined:
     description: A global tags array should be defined.
     severity: info
@@ -188,9 +181,7 @@ rules:
     then:
       function: pattern
       functionOptions:
-        match: "^[A-Z][A-Za-z0-9]*( [A-Z][A-Za-z0-9]*)*$"
-
-  # ── PARAMETERS ───────────────────────────────────────────────────
+        match: ^[A-Z][A-Za-z0-9]*( [A-Z][A-Za-z0-9]*)*$
   parameter-description-required:
     description: Parameters must have a description.
     severity: warn
@@ -205,7 +196,7 @@ rules:
     then:
       function: pattern
       functionOptions:
-        match: "^[a-z][a-z0-9_]*$"
+        match: ^[a-z][a-z0-9_]*$
   parameter-schema-typed:
     description: Each parameter must declare a schema with a type.
     severity: warn
@@ -213,8 +204,6 @@ rules:
     then:
       field: type
       function: defined
-
-  # ── REQUEST BODIES ───────────────────────────────────────────────
   request-body-json:
     description: Request bodies should offer application/json content.
     severity: warn
@@ -222,8 +211,6 @@ rules:
     then:
       field: application/json
       function: defined
-
-  # ── RESPONSES ────────────────────────────────────────────────────
   response-success-defined:
     description: Each operation must define at least one 2xx response.
     severity: error
@@ -234,10 +221,14 @@ rules:
         schema:
           type: object
           anyOf:
-            - required: ['200']
-            - required: ['201']
-            - required: ['202']
-            - required: ['204']
+          - required:
+            - '200'
+          - required:
+            - '201'
+          - required:
+            - '202'
+          - required:
+            - '204'
   response-auth-defined:
     description: Operations should document a 401 unauthorized response.
     severity: info
@@ -252,8 +243,6 @@ rules:
     then:
       field: description
       function: defined
-
-  # ── SCHEMAS — PROPERTY NAMING ────────────────────────────────────
   schema-property-snake-case:
     description: Schema property names should be snake_case.
     severity: warn
@@ -261,7 +250,7 @@ rules:
     then:
       function: pattern
       functionOptions:
-        match: "^[a-z][a-z0-9_]*$"
+        match: ^[a-z][a-z0-9_]*$
   schema-property-typed:
     description: Schema properties should declare a type or $ref.
     severity: info
@@ -271,13 +260,16 @@ rules:
       functionOptions:
         schema:
           anyOf:
-            - required: [type]
-            - required: ['$ref']
-            - required: [allOf]
-            - required: [oneOf]
-            - required: [anyOf]
-
-  # ── SECURITY ─────────────────────────────────────────────────────
+          - required:
+            - type
+          - required:
+            - $ref
+          - required:
+            - allOf
+          - required:
+            - oneOf
+          - required:
+            - anyOf
   security-global-defined:
     description: A global security requirement should be declared.
     severity: warn
@@ -295,8 +287,10 @@ rules:
         schema:
           type: object
           properties:
-            type: { const: http }
-            scheme: { const: bearer }
+            type:
+              const: http
+            scheme:
+              const: bearer
   security-scheme-described:
     description: Security schemes should be described.
     severity: info
@@ -304,8 +298,6 @@ rules:
     then:
       field: description
       function: defined
-
-  # ── HTTP METHOD CONVENTIONS ──────────────────────────────────────
   get-no-request-body:
     description: GET operations must not declare a request body.
     severity: error
@@ -320,3 +312,50 @@ rules:
     then:
       field: requestBody
       function: undefined
+  servers-expected-domain:
+    description: Server URLs should be on the doordash.com domain.
+    severity: warn
+    given: $.servers[*].url
+    then:
+      function: pattern
+      functionOptions:
+        match: doordash\.com
+  path-params-casing:
+    description: Path parameters should be snake_case (the dominant convention in this API).
+    severity: warn
+    given: $.paths[*].parameters[?(@.in=='path')].name
+    then:
+      function: casing
+      functionOptions:
+        type: snake
+  schema-names-casing:
+    description: Component schema names should be PascalCase (the dominant convention in this API).
+    severity: warn
+    given: $.components.schemas
+    then:
+      field: '@key'
+      function: casing
+      functionOptions:
+        type: pascal
+  schema-properties-casing:
+    description: Schema properties should be snake_case (the dominant convention in this API).
+    severity: warn
+    given: $.components.schemas[*].properties
+    then:
+      field: '@key'
+      function: casing
+      functionOptions:
+        type: snake
+  error-schema-defined:
+    description: A shared error schema (Error) should be defined for error payloads.
+    severity: warn
+    given: $.components.schemas
+    then:
+      field: Error
+      function: truthy
+  no-empty-descriptions:
+    description: Descriptions must not be empty strings.
+    severity: warn
+    given: $..description
+    then:
+      function: truthy
