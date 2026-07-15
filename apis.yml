@@ -142,6 +142,8 @@ apis:
     endpoint for creating report requests and a GET endpoint for retrieving report
     download links, along with webhook notifications when reports are ready.
 common:
+- type: AgenticAccess
+  url: agentic-access/doordash-agentic-access.yml
 - type: TrustCenter
   url: security/doordash-trust-center.yml
 - type: DomainSecurity
