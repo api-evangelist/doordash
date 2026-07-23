@@ -1,0 +1,149 @@
+openapi: 3.1.0
+info:
+  title: DoorDash Drive Classic Addresses API
+  description: The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.
+  version: '1.0'
+  contact:
+    name: DoorDash Developer Support
+    url: https://developer.doordash.com/en-US/
+  termsOfService: https://www.doordash.com/terms/
+servers:
+- url: https://openapi.doordash.com/drive/v1
+  description: Production Server
+security:
+- bearerAuth: []
+tags:
+- name: Addresses
+  description: Get address auto-completion suggestions based on partial input.
+paths:
+  /addresses:
+    get:
+      operationId: getAddressSuggestions
+      summary: DoorDash Get Address Suggestions
+      description: Returns address auto-completion suggestions based on partial address input and optional location coordinates.
+      tags:
+      - Addresses
+      parameters:
+      - name: query
+        in: query
+        required: true
+        description: Partial address string to get suggestions for.
+        schema:
+          type: string
+        example: example
+      - name: latitude
+        in: query
+        required: false
+        description: Latitude coordinate to bias results toward a location.
+        schema:
+          type: number
+          format: double
+        example: 37.422
+      - name: longitude
+        in: query
+        required: false
+        description: Longitude coordinate to bias results toward a location.
+        schema:
+          type: number
+          format: double
+        example: -122.084
+      responses:
+        '200':
+          description: Address suggestions retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AddressSuggestion'
+              examples:
+                GetAddressSuggestions200Example:
+                  summary: Default getAddressSuggestions 200 response
+                  x-microcks-default: true
+                  value:
+                  - full_address: 901 Market St, San Francisco, CA 94105
+                    street: example
+                    city: San Francisco
+                    state: CA
+                    zip_code: '94105'
+                    country: US
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                GetAddressSuggestions401Example:
+                  summary: Default getAddressSuggestions 401 response
+                  x-microcks-default: true
+                  value:
+                    field_errors:
+                    - field: example
+                      error: example
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    AddressSuggestion:
+      type: object
+      properties:
+        full_address:
+          type: string
+          description: The complete suggested address string.
+          example: 901 Market St, San Francisco, CA 94105
+        street:
+          type: string
+          description: The street portion of the address.
+          example: example
+        city:
+          type: string
+          description: The city name.
+          example: San Francisco
+        state:
+          type: string
+          description: The state or province.
+          example: CA
+        zip_code:
+          type: string
+          description: The postal or ZIP code.
+          example: '94105'
+        country:
+          type: string
+          description: The country code.
+          example: US
+    Error:
+      type: object
+      properties:
+        field_errors:
+          type: array
+          description: A list of field-level validation errors.
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: The name of the field with the error.
+              error:
+                type: string
+                description: The error message for the field.
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token signed with your DoorDash developer credentials.
+externalDocs:
+  description: DoorDash Drive Classic API Documentation
+  url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/

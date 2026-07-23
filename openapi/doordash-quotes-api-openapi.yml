@@ -1,0 +1,490 @@
+openapi: 3.1.0
+info:
+  title: DoorDash Drive Classic Addresses Quotes API
+  description: The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.
+  version: '1.0'
+  contact:
+    name: DoorDash Developer Support
+    url: https://developer.doordash.com/en-US/
+  termsOfService: https://www.doordash.com/terms/
+servers:
+- url: https://openapi.doordash.com/drive/v1
+  description: Production Server
+security:
+- bearerAuth: []
+tags:
+- name: Quotes
+  description: Validate delivery serviceability and get pricing quotes before creating a delivery.
+paths:
+  /quotes:
+    post:
+      operationId: createDeliveryQuote
+      summary: DoorDash Create a Delivery Quote
+      description: Creates a delivery quote to confirm that a delivery is serviceable by DoorDash and returns the estimated fee and delivery time. Quotes are valid for 5 minutes after creation.
+      tags:
+      - Quotes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuoteRequest'
+            examples:
+              CreateDeliveryQuoteRequestExample:
+                summary: Default createDeliveryQuote request
+                x-microcks-default: true
+                value:
+                  external_delivery_id: D-12345
+                  pickup_address: 901 Market St, San Francisco, CA 94105
+                  pickup_business_name: Acme Pickup Store
+                  pickup_phone_number: '+15555551234'
+                  dropoff_address: 901 Market St, San Francisco, CA 94105
+                  dropoff_business_name: Acme Pickup Store
+                  dropoff_phone_number: '+15555551234'
+                  order_value: 42
+                  pickup_time: '2026-06-02T14:30:00Z'
+                  dropoff_time: '2026-06-02T14:30:00Z'
+      responses:
+        '200':
+          description: Delivery quote created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+              examples:
+                CreateDeliveryQuote200Example:
+                  summary: Default createDeliveryQuote 200 response
+                  x-microcks-default: true
+                  value:
+                    external_delivery_id: D-12345
+                    fee: 42
+                    currency: USD
+                    delivery_time: '2026-06-02T14:30:00Z'
+                    pickup_time: '2026-06-02T14:30:00Z'
+                    expires_at: '2026-06-02T14:30:00Z'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                CreateDeliveryQuote400Example:
+                  summary: Default createDeliveryQuote 400 response
+                  x-microcks-default: true
+                  value:
+                    field_errors:
+                    - field: example
+                      error: example
+                    message: example
+                    code: ABC123
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                CreateDeliveryQuote401Example:
+                  summary: Default createDeliveryQuote 401 response
+                  x-microcks-default: true
+                  value:
+                    field_errors:
+                    - field: example
+                      error: example
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /quotes/{external_delivery_id}/accept:
+    post:
+      operationId: acceptDeliveryQuote
+      summary: DoorDash Accept a Delivery Quote
+      description: Accepts a previously created delivery quote and initiates the delivery process. The quote must be accepted within 5 minutes of being created. You can optionally edit the tip amount when accepting.
+      tags:
+      - Quotes
+      parameters:
+      - $ref: '#/components/parameters/ExternalDeliveryId'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcceptQuoteRequest'
+            examples:
+              AcceptDeliveryQuoteRequestExample:
+                summary: Default acceptDeliveryQuote request
+                x-microcks-default: true
+                value:
+                  tip: 42
+      responses:
+        '200':
+          description: Quote accepted and delivery initiated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delivery'
+              examples:
+                AcceptDeliveryQuote200Example:
+                  summary: Default acceptDeliveryQuote 200 response
+                  x-microcks-default: true
+                  value:
+                    external_delivery_id: D-12345
+                    delivery_status: created
+                    fee: 42
+                    currency: USD
+                    tip: 42
+                    order_value: 42
+                    pickup_address: 901 Market St, San Francisco, CA 94105
+                    pickup_business_name: Acme Pickup Store
+                    pickup_phone_number: '+15555551234'
+                    pickup_instructions: Leave at the front desk.
+                    pickup_time_estimated: '2026-06-02T14:30:00Z'
+                    pickup_time_actual: '2026-06-02T14:30:00Z'
+                    dropoff_address: 901 Market St, San Francisco, CA 94105
+                    dropoff_business_name: Acme Pickup Store
+                    dropoff_phone_number: '+15555551234'
+                    dropoff_instructions: Leave at the front desk.
+                    dropoff_time_estimated: '2026-06-02T14:30:00Z'
+                    dropoff_time_actual: '2026-06-02T14:30:00Z'
+                    dropoff_contact_given_name: Acme Pickup Store
+                    dropoff_contact_family_name: Acme Pickup Store
+                    dasher_id: 42
+                    dasher_name: Acme Pickup Store
+                    dasher_phone_number: '+15555551234'
+                    dasher_location:
+                      lat: 37.422
+                      lng: -122.084
+                    tracking_url: https://example.com/path/abc123
+                    contains_alcohol: true
+                    force_batch_id: D-12345
+                    created_at: '2026-06-02T14:30:00Z'
+                    updated_at: '2026-06-02T14:30:00Z'
+        '400':
+          description: Quote expired or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                AcceptDeliveryQuote400Example:
+                  summary: Default acceptDeliveryQuote 400 response
+                  x-microcks-default: true
+                  value:
+                    field_errors:
+                    - field: example
+                      error: example
+                    message: example
+                    code: ABC123
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                AcceptDeliveryQuote401Example:
+                  summary: Default acceptDeliveryQuote 401 response
+                  x-microcks-default: true
+                  value:
+                    field_errors:
+                    - field: example
+                      error: example
+                    message: example
+                    code: ABC123
+        '404':
+          description: Quote not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                AcceptDeliveryQuote404Example:
+                  summary: Default acceptDeliveryQuote 404 response
+                  x-microcks-default: true
+                  value:
+                    field_errors:
+                    - field: example
+                      error: example
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    Delivery:
+      type: object
+      properties:
+        external_delivery_id:
+          type: string
+          description: The unique external delivery ID.
+          example: D-12345
+        delivery_status:
+          type: string
+          description: The current status of the delivery.
+          enum:
+          - created
+          - confirmed
+          - enroute_to_pickup
+          - arrived_at_pickup
+          - picked_up
+          - enroute_to_dropoff
+          - arrived_at_dropoff
+          - delivered
+          - cancelled
+          - returned
+          example: created
+        fee:
+          type: integer
+          description: The delivery fee in cents.
+          example: 42
+        currency:
+          type: string
+          description: The currency code for monetary amounts.
+          example: USD
+        tip:
+          type: integer
+          description: The tip amount in cents.
+          example: 42
+        order_value:
+          type: integer
+          description: The total value of the order in cents.
+          example: 42
+        pickup_address:
+          type: string
+          description: The full street address for the pickup location.
+          example: 901 Market St, San Francisco, CA 94105
+        pickup_business_name:
+          type: string
+          description: The business name at the pickup location.
+          example: Acme Pickup Store
+        pickup_phone_number:
+          type: string
+          description: The phone number at the pickup location.
+          example: '+15555551234'
+        pickup_instructions:
+          type: string
+          description: Special instructions for pickup.
+          example: Leave at the front desk.
+        pickup_time_estimated:
+          type: string
+          format: date-time
+          description: The estimated pickup time in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
+        pickup_time_actual:
+          type: string
+          format: date-time
+          description: The actual pickup time in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
+        dropoff_address:
+          type: string
+          description: The full street address for the dropoff location.
+          example: 901 Market St, San Francisco, CA 94105
+        dropoff_business_name:
+          type: string
+          description: The business name at the dropoff location.
+          example: Acme Pickup Store
+        dropoff_phone_number:
+          type: string
+          description: The phone number at the dropoff location.
+          example: '+15555551234'
+        dropoff_instructions:
+          type: string
+          description: Special instructions for dropoff.
+          example: Leave at the front desk.
+        dropoff_time_estimated:
+          type: string
+          format: date-time
+          description: The estimated dropoff time in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
+        dropoff_time_actual:
+          type: string
+          format: date-time
+          description: The actual dropoff time in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
+        dropoff_contact_given_name:
+          type: string
+          description: The first name of the dropoff contact.
+          example: Acme Pickup Store
+        dropoff_contact_family_name:
+          type: string
+          description: The last name of the dropoff contact.
+          example: Acme Pickup Store
+        dasher_id:
+          type: integer
+          description: The unique identifier for the assigned Dasher.
+          example: 42
+        dasher_name:
+          type: string
+          description: The first name of the assigned Dasher.
+          example: Acme Pickup Store
+        dasher_phone_number:
+          type: string
+          description: The phone number of the assigned Dasher.
+          example: '+15555551234'
+        dasher_location:
+          $ref: '#/components/schemas/Location'
+        tracking_url:
+          type: string
+          format: uri
+          description: A URL for tracking the delivery in real time.
+          example: https://example.com/path/abc123
+        contains_alcohol:
+          type: boolean
+          description: Whether the order contains alcohol.
+          example: true
+        force_batch_id:
+          type: string
+          description: The batch identifier for grouped deliveries.
+          example: D-12345
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the delivery was created.
+          example: '2026-06-02T14:30:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: The timestamp when the delivery was last updated.
+          example: '2026-06-02T14:30:00Z'
+    Location:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Latitude coordinate.
+          example: 37.422
+        lng:
+          type: number
+          format: double
+          description: Longitude coordinate.
+          example: -122.084
+    Quote:
+      type: object
+      properties:
+        external_delivery_id:
+          type: string
+          description: The unique external delivery ID for this quote.
+          example: D-12345
+        fee:
+          type: integer
+          description: The delivery fee in cents.
+          example: 42
+        currency:
+          type: string
+          description: The currency code for the fee amount.
+          example: USD
+        delivery_time:
+          type: string
+          format: date-time
+          description: The estimated delivery time in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
+        pickup_time:
+          type: string
+          format: date-time
+          description: The estimated pickup time in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
+        expires_at:
+          type: string
+          format: date-time
+          description: The time at which this quote expires, typically 5 minutes after creation.
+          example: '2026-06-02T14:30:00Z'
+    AcceptQuoteRequest:
+      type: object
+      properties:
+        tip:
+          type: integer
+          description: Optional tip amount in cents to include with the delivery.
+          example: 42
+    Error:
+      type: object
+      properties:
+        field_errors:
+          type: array
+          description: A list of field-level validation errors.
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: The name of the field with the error.
+              error:
+                type: string
+                description: The error message for the field.
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+    QuoteRequest:
+      type: object
+      required:
+      - external_delivery_id
+      - pickup_address
+      - dropoff_address
+      properties:
+        external_delivery_id:
+          type: string
+          description: A unique identifier for this delivery, provided by the caller.
+          example: D-12345
+        pickup_address:
+          type: string
+          description: The full street address for the pickup location.
+          example: 901 Market St, San Francisco, CA 94105
+        pickup_business_name:
+          type: string
+          description: The business name at the pickup location.
+          example: Acme Pickup Store
+        pickup_phone_number:
+          type: string
+          description: The phone number at the pickup location.
+          example: '+15555551234'
+        dropoff_address:
+          type: string
+          description: The full street address for the dropoff location.
+          example: 901 Market St, San Francisco, CA 94105
+        dropoff_business_name:
+          type: string
+          description: The business name at the dropoff location.
+          example: Acme Pickup Store
+        dropoff_phone_number:
+          type: string
+          description: The phone number at the dropoff location.
+          example: '+15555551234'
+        order_value:
+          type: integer
+          description: The total value of the order in cents.
+          example: 42
+        pickup_time:
+          type: string
+          format: date-time
+          description: The requested pickup time in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
+        dropoff_time:
+          type: string
+          format: date-time
+          description: The requested dropoff time in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
+  parameters:
+    ExternalDeliveryId:
+      name: external_delivery_id
+      in: path
+      required: true
+      description: The unique external delivery ID provided when creating the delivery or quote.
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token signed with your DoorDash developer credentials.
+externalDocs:
+  description: DoorDash Drive Classic API Documentation
+  url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/

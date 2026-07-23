@@ -1,0 +1,815 @@
+openapi: 3.1.0
+info:
+  title: DoorDash Drive Classic Addresses Deliveries API
+  description: The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.
+  version: '1.0'
+  contact:
+    name: DoorDash Developer Support
+    url: https://developer.doordash.com/en-US/
+  termsOfService: https://www.doordash.com/terms/
+servers:
+- url: https://openapi.doordash.com/drive/v1
+  description: Production Server
+security:
+- bearerAuth: []
+tags:
+- name: Deliveries
+  description: Create, retrieve, update, cancel, and estimate deliveries using the classic API endpoints.
+paths:
+  /estimates:
+    post:
+      operationId: createDeliveryEstimate
+      summary: DoorDash Create a Delivery Estimate
+      description: Requests time and fee estimates for a delivery. Can also be used to check if an area is serviced by DoorDash. Time values must be provided in UTC ISO-8601 format.
+      tags:
+      - Deliveries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EstimateRequest'
+            examples:
+              CreateDeliveryEstimateRequestExample:
+                summary: Default createDeliveryEstimate request
+                x-microcks-default: true
+                value:
+                  pickup_address: 901 Market St, San Francisco, CA 94105
+                  dropoff_address: 901 Market St, San Francisco, CA 94105
+                  pickup_time: '2026-06-02T14:30:00Z'
+                  order_value: 42
+      responses:
+        '200':
+          description: Delivery estimate created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Estimate'
+              examples:
+                CreateDeliveryEstimate200Example:
+                  summary: Default createDeliveryEstimate 200 response
+                  x-microcks-default: true
+                  value:
+                    fee: 42
+                    currency: USD
+                    pickup_time: '2026-06-02T14:30:00Z'
+                    dropoff_time: '2026-06-02T14:30:00Z'
+                    delivery_duration: 42
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                CreateDeliveryEstimate400Example:
+                  summary: Default createDeliveryEstimate 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                CreateDeliveryEstimate401Example:
+                  summary: Default createDeliveryEstimate 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /deliveries:
+    post:
+      operationId: createDelivery
+      summary: DoorDash Create a Delivery
+      description: Creates a new delivery request. DoorDash will assign a Dasher to fulfill the delivery. Time values must be provided in UTC format. The API recommends up to 3 retries with exponential backoff.
+      tags:
+      - Deliveries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassicDeliveryRequest'
+            examples:
+              CreateDeliveryRequestExample:
+                summary: Default createDelivery request
+                x-microcks-default: true
+                value:
+                  external_delivery_id: D-12345
+                  pickup_address: 901 Market St, San Francisco, CA 94105
+                  pickup_business_name: Acme Pickup Store
+                  pickup_phone_number: '+15555551234'
+                  pickup_instructions: Leave at the front desk.
+                  dropoff_address: 901 Market St, San Francisco, CA 94105
+                  dropoff_business_name: Acme Pickup Store
+                  dropoff_phone_number: '+15555551234'
+                  dropoff_instructions: Leave at the front desk.
+                  dropoff_contact_given_name: Acme Pickup Store
+                  dropoff_contact_family_name: Acme Pickup Store
+                  order_value: 42
+                  tip: 42
+                  pickup_time: '2026-06-02T14:30:00Z'
+                  dropoff_time: '2026-06-02T14:30:00Z'
+                  contains_alcohol: true
+                  external_business_id: D-12345
+                  external_store_id: D-12345
+      responses:
+        '200':
+          description: Delivery created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassicDelivery'
+              examples:
+                CreateDelivery200Example:
+                  summary: Default createDelivery 200 response
+                  x-microcks-default: true
+                  value:
+                    external_delivery_id: D-12345
+                    delivery_status: created
+                    fee: 42
+                    currency: USD
+                    tip: 42
+                    pickup_address: 901 Market St, San Francisco, CA 94105
+                    dropoff_address: 901 Market St, San Francisco, CA 94105
+                    pickup_time_estimated: '2026-06-02T14:30:00Z'
+                    pickup_time_actual: '2026-06-02T14:30:00Z'
+                    dropoff_time_estimated: '2026-06-02T14:30:00Z'
+                    dropoff_time_actual: '2026-06-02T14:30:00Z'
+                    dasher_id: 42
+                    dasher_name: Acme Pickup Store
+                    tracking_url: https://example.com/path/abc123
+                    created_at: '2026-06-02T14:30:00Z'
+                    updated_at: '2026-06-02T14:30:00Z'
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                CreateDelivery400Example:
+                  summary: Default createDelivery 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                CreateDelivery401Example:
+                  summary: Default createDelivery 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /deliveries/{external_delivery_id}:
+    get:
+      operationId: getDelivery
+      summary: DoorDash Get Delivery Details
+      description: Retrieves the current details and status of a delivery using the external delivery ID provided during creation.
+      tags:
+      - Deliveries
+      parameters:
+      - $ref: '#/components/parameters/ExternalDeliveryId'
+      responses:
+        '200':
+          description: Delivery details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassicDelivery'
+              examples:
+                GetDelivery200Example:
+                  summary: Default getDelivery 200 response
+                  x-microcks-default: true
+                  value:
+                    external_delivery_id: D-12345
+                    delivery_status: created
+                    fee: 42
+                    currency: USD
+                    tip: 42
+                    pickup_address: 901 Market St, San Francisco, CA 94105
+                    dropoff_address: 901 Market St, San Francisco, CA 94105
+                    pickup_time_estimated: '2026-06-02T14:30:00Z'
+                    pickup_time_actual: '2026-06-02T14:30:00Z'
+                    dropoff_time_estimated: '2026-06-02T14:30:00Z'
+                    dropoff_time_actual: '2026-06-02T14:30:00Z'
+                    dasher_id: 42
+                    dasher_name: Acme Pickup Store
+                    tracking_url: https://example.com/path/abc123
+                    created_at: '2026-06-02T14:30:00Z'
+                    updated_at: '2026-06-02T14:30:00Z'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                GetDelivery401Example:
+                  summary: Default getDelivery 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+        '404':
+          description: Delivery not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                GetDelivery404Example:
+                  summary: Default getDelivery 404 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    patch:
+      operationId: updateDelivery
+      summary: DoorDash Update a Delivery
+      description: Updates specified attributes of an existing delivery. Updates may be restricted based on the current delivery status.
+      tags:
+      - Deliveries
+      parameters:
+      - $ref: '#/components/parameters/ExternalDeliveryId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassicDeliveryUpdateRequest'
+            examples:
+              UpdateDeliveryRequestExample:
+                summary: Default updateDelivery request
+                x-microcks-default: true
+                value:
+                  tip: 42
+                  dropoff_instructions: Leave at the front desk.
+                  dropoff_phone_number: '+15555551234'
+      responses:
+        '200':
+          description: Delivery updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassicDelivery'
+              examples:
+                UpdateDelivery200Example:
+                  summary: Default updateDelivery 200 response
+                  x-microcks-default: true
+                  value:
+                    external_delivery_id: D-12345
+                    delivery_status: created
+                    fee: 42
+                    currency: USD
+                    tip: 42
+                    pickup_address: 901 Market St, San Francisco, CA 94105
+                    dropoff_address: 901 Market St, San Francisco, CA 94105
+                    pickup_time_estimated: '2026-06-02T14:30:00Z'
+                    pickup_time_actual: '2026-06-02T14:30:00Z'
+                    dropoff_time_estimated: '2026-06-02T14:30:00Z'
+                    dropoff_time_actual: '2026-06-02T14:30:00Z'
+                    dasher_id: 42
+                    dasher_name: Acme Pickup Store
+                    tracking_url: https://example.com/path/abc123
+                    created_at: '2026-06-02T14:30:00Z'
+                    updated_at: '2026-06-02T14:30:00Z'
+        '400':
+          description: Invalid update parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateDelivery400Example:
+                  summary: Default updateDelivery 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateDelivery401Example:
+                  summary: Default updateDelivery 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+        '404':
+          description: Delivery not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateDelivery404Example:
+                  summary: Default updateDelivery 404 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /deliveries/{external_delivery_id}/cancel:
+    put:
+      operationId: cancelDelivery
+      summary: DoorDash Cancel a Delivery
+      description: Cancels an active delivery. Cancellation restrictions apply based on the current delivery status.
+      tags:
+      - Deliveries
+      parameters:
+      - $ref: '#/components/parameters/ExternalDeliveryId'
+      responses:
+        '200':
+          description: Delivery cancelled successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassicDelivery'
+              examples:
+                CancelDelivery200Example:
+                  summary: Default cancelDelivery 200 response
+                  x-microcks-default: true
+                  value:
+                    external_delivery_id: D-12345
+                    delivery_status: created
+                    fee: 42
+                    currency: USD
+                    tip: 42
+                    pickup_address: 901 Market St, San Francisco, CA 94105
+                    dropoff_address: 901 Market St, San Francisco, CA 94105
+                    pickup_time_estimated: '2026-06-02T14:30:00Z'
+                    pickup_time_actual: '2026-06-02T14:30:00Z'
+                    dropoff_time_estimated: '2026-06-02T14:30:00Z'
+                    dropoff_time_actual: '2026-06-02T14:30:00Z'
+                    dasher_id: 42
+                    dasher_name: Acme Pickup Store
+                    tracking_url: https://example.com/path/abc123
+                    created_at: '2026-06-02T14:30:00Z'
+                    updated_at: '2026-06-02T14:30:00Z'
+        '400':
+          description: Delivery cannot be cancelled in current state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                CancelDelivery400Example:
+                  summary: Default cancelDelivery 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                CancelDelivery401Example:
+                  summary: Default cancelDelivery 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+        '404':
+          description: Delivery not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                CancelDelivery404Example:
+                  summary: Default cancelDelivery 404 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /checkout_audit_signal:
+    post:
+      operationId: sendCheckoutAuditSignal
+      summary: DoorDash Send Checkout Audit Signal
+      description: Sends a checkout audit signal to DoorDash for tracking and analytics purposes related to the delivery checkout flow.
+      tags:
+      - Deliveries
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutAuditSignal'
+            examples:
+              SendCheckoutAuditSignalRequestExample:
+                summary: Default sendCheckoutAuditSignal request
+                x-microcks-default: true
+                value:
+                  external_delivery_id: D-12345
+                  event_type: example
+      responses:
+        '200':
+          description: Checkout audit signal accepted
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error_2'
+              examples:
+                SendCheckoutAuditSignal400Example:
+                  summary: Default sendCheckoutAuditSignal 400 response
+                  x-microcks-default: true
+                  value:
+                    field_errors:
+                    - field: example
+                      error: example
+                    message: example
+                    code: ABC123
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error_2'
+              examples:
+                SendCheckoutAuditSignal401Example:
+                  summary: Default sendCheckoutAuditSignal 401 response
+                  x-microcks-default: true
+                  value:
+                    field_errors:
+                    - field: example
+                      error: example
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    Error_2:
+      type: object
+      properties:
+        field_errors:
+          type: array
+          description: A list of field-level validation errors.
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: The name of the field with the error.
+              error:
+                type: string
+                description: The error message for the field.
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+    ClassicDeliveryRequest:
+      type: object
+      required:
+      - external_delivery_id
+      - pickup_address
+      - dropoff_address
+      properties:
+        external_delivery_id:
+          type: string
+          description: A unique identifier for this delivery.
+          example: D-12345
+        pickup_address:
+          type: string
+          description: The full street address for the pickup location.
+          example: 901 Market St, San Francisco, CA 94105
+        pickup_business_name:
+          type: string
+          description: The business name at the pickup location.
+          example: Acme Pickup Store
+        pickup_phone_number:
+          type: string
+          description: The phone number at the pickup location.
+          example: '+15555551234'
+        pickup_instructions:
+          type: string
+          description: Special instructions for the Dasher at pickup.
+          example: Leave at the front desk.
+        dropoff_address:
+          type: string
+          description: The full street address for the dropoff location.
+          example: 901 Market St, San Francisco, CA 94105
+        dropoff_business_name:
+          type: string
+          description: The business name at the dropoff location.
+          example: Acme Pickup Store
+        dropoff_phone_number:
+          type: string
+          description: The phone number at the dropoff location.
+          example: '+15555551234'
+        dropoff_instructions:
+          type: string
+          description: Special instructions for the Dasher at dropoff.
+          example: Leave at the front desk.
+        dropoff_contact_given_name:
+          type: string
+          description: The first name of the dropoff contact.
+          example: Acme Pickup Store
+        dropoff_contact_family_name:
+          type: string
+          description: The last name of the dropoff contact.
+          example: Acme Pickup Store
+        order_value:
+          type: integer
+          description: The total value of the order in cents.
+          example: 42
+        tip:
+          type: integer
+          description: The tip amount in cents.
+          example: 42
+        pickup_time:
+          type: string
+          format: date-time
+          description: The requested pickup time in UTC.
+          example: '2026-06-02T14:30:00Z'
+        dropoff_time:
+          type: string
+          format: date-time
+          description: The requested dropoff time in UTC.
+          example: '2026-06-02T14:30:00Z'
+        contains_alcohol:
+          type: boolean
+          description: Whether the order contains alcohol.
+          example: true
+        external_business_id:
+          type: string
+          description: The external business ID to associate with this delivery.
+          example: D-12345
+        external_store_id:
+          type: string
+          description: The external store ID to associate with this delivery.
+          example: D-12345
+    ClassicDelivery:
+      type: object
+      properties:
+        external_delivery_id:
+          type: string
+          description: The unique external delivery ID.
+          example: D-12345
+        delivery_status:
+          type: string
+          description: The current status of the delivery.
+          enum:
+          - created
+          - confirmed
+          - enroute_to_pickup
+          - arrived_at_pickup
+          - picked_up
+          - enroute_to_dropoff
+          - arrived_at_dropoff
+          - delivered
+          - cancelled
+          - returned
+          example: created
+        fee:
+          type: integer
+          description: The delivery fee in cents.
+          example: 42
+        currency:
+          type: string
+          description: The currency code.
+          example: USD
+        tip:
+          type: integer
+          description: The tip amount in cents.
+          example: 42
+        pickup_address:
+          type: string
+          description: The pickup address.
+          example: 901 Market St, San Francisco, CA 94105
+        dropoff_address:
+          type: string
+          description: The dropoff address.
+          example: 901 Market St, San Francisco, CA 94105
+        pickup_time_estimated:
+          type: string
+          format: date-time
+          description: The estimated pickup time.
+          example: '2026-06-02T14:30:00Z'
+        pickup_time_actual:
+          type: string
+          format: date-time
+          description: The actual pickup time.
+          example: '2026-06-02T14:30:00Z'
+        dropoff_time_estimated:
+          type: string
+          format: date-time
+          description: The estimated dropoff time.
+          example: '2026-06-02T14:30:00Z'
+        dropoff_time_actual:
+          type: string
+          format: date-time
+          description: The actual dropoff time.
+          example: '2026-06-02T14:30:00Z'
+        dasher_id:
+          type: integer
+          description: The assigned Dasher's ID.
+          example: 42
+        dasher_name:
+          type: string
+          description: The assigned Dasher's first name.
+          example: Acme Pickup Store
+        tracking_url:
+          type: string
+          format: uri
+          description: A URL for tracking the delivery.
+          example: https://example.com/path/abc123
+        created_at:
+          type: string
+          format: date-time
+          description: When the delivery was created.
+          example: '2026-06-02T14:30:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: When the delivery was last updated.
+          example: '2026-06-02T14:30:00Z'
+    Estimate:
+      type: object
+      properties:
+        fee:
+          type: integer
+          description: The estimated delivery fee in cents.
+          example: 42
+        currency:
+          type: string
+          description: The currency code for the fee amount.
+          example: USD
+        pickup_time:
+          type: string
+          format: date-time
+          description: The estimated pickup time.
+          example: '2026-06-02T14:30:00Z'
+        dropoff_time:
+          type: string
+          format: date-time
+          description: The estimated dropoff time.
+          example: '2026-06-02T14:30:00Z'
+        delivery_duration:
+          type: integer
+          description: The estimated delivery duration in seconds.
+          example: 42
+    ClassicDeliveryUpdateRequest:
+      type: object
+      properties:
+        tip:
+          type: integer
+          description: Updated tip amount in cents.
+          example: 42
+        dropoff_instructions:
+          type: string
+          description: Updated dropoff instructions.
+          example: Leave at the front desk.
+        dropoff_phone_number:
+          type: string
+          description: Updated dropoff phone number.
+          example: '+15555551234'
+    EstimateRequest:
+      type: object
+      required:
+      - pickup_address
+      - dropoff_address
+      properties:
+        pickup_address:
+          type: string
+          description: The full street address for the pickup location.
+          example: 901 Market St, San Francisco, CA 94105
+        dropoff_address:
+          type: string
+          description: The full street address for the dropoff location.
+          example: 901 Market St, San Francisco, CA 94105
+        pickup_time:
+          type: string
+          format: date-time
+          description: The requested pickup time in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
+        order_value:
+          type: integer
+          description: The total value of the order in cents.
+          example: 42
+    CheckoutAuditSignal:
+      type: object
+      properties:
+        external_delivery_id:
+          type: string
+          description: The external delivery ID associated with this checkout event.
+          example: D-12345
+        event_type:
+          type: string
+          description: The type of checkout audit event.
+          example: example
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+        field_errors:
+          type: array
+          description: A list of field-level validation errors.
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: The field with the error.
+              error:
+                type: string
+                description: The error message.
+  parameters:
+    ExternalDeliveryId:
+      name: external_delivery_id
+      in: path
+      required: true
+      description: The unique external delivery ID provided when creating the delivery.
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token signed with your DoorDash developer credentials.
+externalDocs:
+  description: DoorDash Drive Classic API Documentation
+  url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/

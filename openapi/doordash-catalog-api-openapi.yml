@@ -1,0 +1,290 @@
+openapi: 3.1.0
+info:
+  title: DoorDash Drive Classic Addresses Catalog API
+  description: The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.
+  version: '1.0'
+  contact:
+    name: DoorDash Developer Support
+    url: https://developer.doordash.com/en-US/
+  termsOfService: https://www.doordash.com/terms/
+servers:
+- url: https://openapi.doordash.com/drive/v1
+  description: Production Server
+security:
+- bearerAuth: []
+tags:
+- name: Catalog
+  description: Manage the item catalog including adding new items and updating existing item information such as names, descriptions, images, and attributes.
+paths:
+  /items:
+    post:
+      operationId: createItems
+      summary: DoorDash Add Items to Catalog
+      description: Adds new items to the DoorDash item catalog. Each item is identified by a unique Merchant Supplied Item ID (MSID). Items added through this endpoint become available for inventory and pricing management at individual stores.
+      tags:
+      - Catalog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CatalogItemsRequest'
+            examples:
+              CreateItemsRequestExample:
+                summary: Default createItems request
+                x-microcks-default: true
+                value:
+                  items:
+                  - merchant_supplied_id: {}
+                    name: {}
+                    description: {}
+                    image_url: {}
+                    brand: {}
+                    upc: {}
+                    category: {}
+                    subcategory: {}
+                    weight: {}
+                    weight_unit: {}
+                    is_alcohol: {}
+      responses:
+        '200':
+          description: Items added to catalog successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogItemsResponse'
+              examples:
+                CreateItems200Example:
+                  summary: Default createItems 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    items_processed: 42
+                    errors:
+                    - merchant_supplied_id: {}
+                      message: {}
+                      code: {}
+        '400':
+          description: Invalid item data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                CreateItems400Example:
+                  summary: Default createItems 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                CreateItems401Example:
+                  summary: Default createItems 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    patch:
+      operationId: updateItems
+      summary: DoorDash Update Items in Catalog
+      description: Updates information about existing items in the catalog. Uses the same validation as the create endpoint. Items are matched by their Merchant Supplied Item ID.
+      tags:
+      - Catalog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CatalogItemsRequest'
+            examples:
+              UpdateItemsRequestExample:
+                summary: Default updateItems request
+                x-microcks-default: true
+                value:
+                  items:
+                  - merchant_supplied_id: {}
+                    name: {}
+                    description: {}
+                    image_url: {}
+                    brand: {}
+                    upc: {}
+                    category: {}
+                    subcategory: {}
+                    weight: {}
+                    weight_unit: {}
+                    is_alcohol: {}
+      responses:
+        '200':
+          description: Items updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogItemsResponse'
+              examples:
+                UpdateItems200Example:
+                  summary: Default updateItems 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    items_processed: 42
+                    errors:
+                    - merchant_supplied_id: {}
+                      message: {}
+                      code: {}
+        '400':
+          description: Invalid item data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateItems400Example:
+                  summary: Default updateItems 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateItems401Example:
+                  summary: Default updateItems 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    CatalogItem:
+      type: object
+      required:
+      - merchant_supplied_id
+      - name
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: The unique merchant-supplied item identifier (MSID).
+          example: D-12345
+        name:
+          type: string
+          description: The display name of the item.
+          example: Acme Pickup Store
+        description:
+          type: string
+          description: A description of the item.
+          example: Leave at the front desk.
+        image_url:
+          type: string
+          format: uri
+          description: A URL to an image of the item.
+          example: https://example.com/path/abc123
+        brand:
+          type: string
+          description: The brand name of the item.
+          example: example
+        upc:
+          type: string
+          description: The Universal Product Code for the item.
+          example: example
+        category:
+          type: string
+          description: The category the item belongs to.
+          example: example
+        subcategory:
+          type: string
+          description: The subcategory the item belongs to.
+          example: example
+        weight:
+          type: number
+          description: The weight of the item.
+          example: 12.5
+        weight_unit:
+          type: string
+          description: The unit of weight measurement.
+          enum:
+          - oz
+          - lb
+          - g
+          - kg
+          example: oz
+        is_alcohol:
+          type: boolean
+          description: Whether the item contains alcohol.
+          example: true
+    CatalogItemsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The processing status of the request.
+          example: active
+        items_processed:
+          type: integer
+          description: The number of items processed.
+          example: 42
+        errors:
+          type: array
+          description: Any errors encountered during processing.
+          items:
+            $ref: '#/components/schemas/ItemError'
+    CatalogItemsRequest:
+      type: object
+      required:
+      - items
+      properties:
+        items:
+          type: array
+          description: The items to add or update in the catalog.
+          items:
+            $ref: '#/components/schemas/CatalogItem'
+    ItemError:
+      type: object
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: The item identifier that had an error.
+          example: D-12345
+        message:
+          type: string
+          description: The error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token signed with your DoorDash developer credentials.
+externalDocs:
+  description: DoorDash Drive Classic API Documentation
+  url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/

@@ -1,0 +1,729 @@
+openapi: 3.1.0
+info:
+  title: DoorDash Drive Classic Addresses Stores API
+  description: The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.
+  version: '1.0'
+  contact:
+    name: DoorDash Developer Support
+    url: https://developer.doordash.com/en-US/
+  termsOfService: https://www.doordash.com/terms/
+servers:
+- url: https://openapi.doordash.com/drive/v1
+  description: Production Server
+security:
+- bearerAuth: []
+tags:
+- name: Stores
+  description: Manage store locations associated with businesses.
+paths:
+  /businesses/{external_business_id}/stores:
+    post:
+      operationId: createStore
+      summary: DoorDash Create a Store
+      description: Creates a new store location associated with a business.
+      tags:
+      - Stores
+      parameters:
+      - $ref: '#/components/parameters/ExternalBusinessId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreRequest'
+            examples:
+              CreateStoreRequestExample:
+                summary: Default createStore request
+                x-microcks-default: true
+                value:
+                  external_store_id: D-12345
+                  name: Acme Pickup Store
+                  phone_number: '+15555551234'
+                  address: 901 Market St, San Francisco, CA 94105
+      responses:
+        '200':
+          description: Store created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Store'
+              examples:
+                CreateStore200Example:
+                  summary: Default createStore 200 response
+                  x-microcks-default: true
+                  value:
+                    external_business_id: D-12345
+                    external_store_id: D-12345
+                    name: Acme Pickup Store
+                    phone_number: '+15555551234'
+                    address: 901 Market St, San Francisco, CA 94105
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                CreateStore400Example:
+                  summary: Default createStore 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                CreateStore401Example:
+                  summary: Default createStore 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /businesses/{external_business_id}/stores/{external_store_id}:
+    get:
+      operationId: getStore
+      summary: DoorDash Get Store Details
+      description: Retrieves the details of a specific store within a business.
+      tags:
+      - Stores
+      parameters:
+      - $ref: '#/components/parameters/ExternalBusinessId'
+      - $ref: '#/components/parameters/ExternalStoreId'
+      responses:
+        '200':
+          description: Store details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Store'
+              examples:
+                GetStore200Example:
+                  summary: Default getStore 200 response
+                  x-microcks-default: true
+                  value:
+                    external_business_id: D-12345
+                    external_store_id: D-12345
+                    name: Acme Pickup Store
+                    phone_number: '+15555551234'
+                    address: 901 Market St, San Francisco, CA 94105
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                GetStore401Example:
+                  summary: Default getStore 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+        '404':
+          description: Store or business not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                GetStore404Example:
+                  summary: Default getStore 404 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    patch:
+      operationId: updateStore
+      summary: DoorDash Update a Store
+      description: Updates the attributes of an existing store location.
+      tags:
+      - Stores
+      parameters:
+      - $ref: '#/components/parameters/ExternalBusinessId'
+      - $ref: '#/components/parameters/ExternalStoreId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreRequest'
+            examples:
+              UpdateStoreRequestExample:
+                summary: Default updateStore request
+                x-microcks-default: true
+                value:
+                  external_store_id: D-12345
+                  name: Acme Pickup Store
+                  phone_number: '+15555551234'
+                  address: 901 Market St, San Francisco, CA 94105
+      responses:
+        '200':
+          description: Store updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Store'
+              examples:
+                UpdateStore200Example:
+                  summary: Default updateStore 200 response
+                  x-microcks-default: true
+                  value:
+                    external_business_id: D-12345
+                    external_store_id: D-12345
+                    name: Acme Pickup Store
+                    phone_number: '+15555551234'
+                    address: 901 Market St, San Francisco, CA 94105
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateStore400Example:
+                  summary: Default updateStore 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateStore401Example:
+                  summary: Default updateStore 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+        '404':
+          description: Store or business not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateStore404Example:
+                  summary: Default updateStore 404 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /stores/{merchant_supplied_id}/store_details:
+    get:
+      operationId: getStoreDetails
+      summary: DoorDash Get Store Details
+      description: Retrieves live store-level information for a store that is set up on the integration.
+      tags:
+      - Stores
+      parameters:
+      - $ref: '#/components/parameters/MerchantSuppliedId'
+      responses:
+        '200':
+          description: Store details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreDetails'
+              examples:
+                GetStoreDetails200Example:
+                  summary: Default getStoreDetails 200 response
+                  x-microcks-default: true
+                  value:
+                    merchant_supplied_id: D-12345
+                    name: Acme Pickup Store
+                    address: 901 Market St, San Francisco, CA 94105
+                    phone_number: '+15555551234'
+                    is_active: true
+                    status: open
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error_3'
+              examples:
+                GetStoreDetails401Example:
+                  summary: Default getStoreDetails 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+        '404':
+          description: Store not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error_3'
+              examples:
+                GetStoreDetails404Example:
+                  summary: Default getStoreDetails 404 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /stores/{merchant_supplied_id}/menu_details:
+    get:
+      operationId: getMenuDetails
+      summary: DoorDash Get Menu Details for a Store
+      description: Retrieves live menu-level information for a store that is set up on the integration.
+      tags:
+      - Stores
+      parameters:
+      - $ref: '#/components/parameters/MerchantSuppliedId'
+      responses:
+        '200':
+          description: Menu details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuDetails'
+              examples:
+                GetMenuDetails200Example:
+                  summary: Default getMenuDetails 200 response
+                  x-microcks-default: true
+                  value:
+                    store_id: D-12345
+                    categories:
+                    - id: {}
+                      name: {}
+                      description: {}
+                      sort_id: {}
+                      items: {}
+                    last_updated: '2026-06-02T14:30:00Z'
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error_3'
+              examples:
+                GetMenuDetails401Example:
+                  summary: Default getMenuDetails 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+        '404':
+          description: Store not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error_3'
+              examples:
+                GetMenuDetails404Example:
+                  summary: Default getMenuDetails 404 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /stores/{merchant_supplied_id}/status:
+    patch:
+      operationId: updateStoreStatus
+      summary: DoorDash Update Store Status
+      description: Updates the operational status of a store, such as opening or closing the store for orders on the DoorDash marketplace.
+      tags:
+      - Stores
+      parameters:
+      - $ref: '#/components/parameters/MerchantSuppliedId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreStatusUpdate'
+            examples:
+              UpdateStoreStatusRequestExample:
+                summary: Default updateStoreStatus request
+                x-microcks-default: true
+                value:
+                  status: open
+                  reason: example
+      responses:
+        '200':
+          description: Store status updated successfully
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error_3'
+              examples:
+                UpdateStoreStatus400Example:
+                  summary: Default updateStoreStatus 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error_3'
+              examples:
+                UpdateStoreStatus401Example:
+                  summary: Default updateStoreStatus 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+        '404':
+          description: Store not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error_3'
+              examples:
+                UpdateStoreStatus404Example:
+                  summary: Default updateStoreStatus 404 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  parameters:
+    ExternalBusinessId:
+      name: external_business_id
+      in: path
+      required: true
+      description: The unique external identifier for the business.
+      schema:
+        type: string
+    ExternalStoreId:
+      name: external_store_id
+      in: path
+      required: true
+      description: The unique external identifier for the store.
+      schema:
+        type: string
+    MerchantSuppliedId:
+      name: merchant_supplied_id
+      in: path
+      required: true
+      description: The merchant-supplied identifier for the store.
+      schema:
+        type: string
+  schemas:
+    StoreRequest:
+      type: object
+      required:
+      - external_store_id
+      - name
+      - address
+      properties:
+        external_store_id:
+          type: string
+          description: A unique external identifier for the store.
+          example: D-12345
+        name:
+          type: string
+          description: The name of the store.
+          example: Acme Pickup Store
+        phone_number:
+          type: string
+          description: The phone number for the store.
+          example: '+15555551234'
+        address:
+          type: string
+          description: The full street address of the store.
+          example: 901 Market St, San Francisco, CA 94105
+    MenuOption:
+      type: object
+      required:
+      - id
+      - name
+      - price
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this option.
+          example: D-12345
+        name:
+          type: string
+          description: The display name of the option.
+          example: Acme Pickup Store
+        price:
+          type: integer
+          description: The additional price for this option in cents.
+          example: 42
+        is_active:
+          type: boolean
+          description: Whether the option is currently available.
+          example: true
+    Error_3:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+    MenuItem:
+      type: object
+      required:
+      - id
+      - name
+      - price
+      properties:
+        id:
+          type: string
+          description: The merchant-supplied item identifier.
+          example: D-12345
+        name:
+          type: string
+          description: The display name of the item.
+          example: Acme Pickup Store
+        description:
+          type: string
+          description: A description of the item.
+          example: Leave at the front desk.
+        price:
+          type: integer
+          description: The item price in cents.
+          example: 42
+        image_url:
+          type: string
+          format: uri
+          description: A URL to an image of the item.
+          example: https://example.com/path/abc123
+        is_active:
+          type: boolean
+          description: Whether the item is currently available for ordering.
+          example: true
+        sort_id:
+          type: integer
+          description: The sort order for this item within its category.
+          example: 42
+        option_groups:
+          type: array
+          description: Option groups (modifiers) for this item.
+          items:
+            $ref: '#/components/schemas/OptionGroup'
+    StoreStatusUpdate:
+      type: object
+      required:
+      - status
+      properties:
+        status:
+          type: string
+          description: The new store status.
+          enum:
+          - open
+          - closed
+          - temporarily_closed
+          example: open
+        reason:
+          type: string
+          description: The reason for the status change.
+          example: example
+    StoreDetails:
+      type: object
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: The merchant-supplied store identifier.
+          example: D-12345
+        name:
+          type: string
+          description: The store name.
+          example: Acme Pickup Store
+        address:
+          type: string
+          description: The store address.
+          example: 901 Market St, San Francisco, CA 94105
+        phone_number:
+          type: string
+          description: The store phone number.
+          example: '+15555551234'
+        is_active:
+          type: boolean
+          description: Whether the store is currently active on DoorDash.
+          example: true
+        status:
+          type: string
+          description: The operational status of the store.
+          enum:
+          - open
+          - closed
+          - temporarily_closed
+          example: open
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+        field_errors:
+          type: array
+          description: A list of field-level validation errors.
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: The field with the error.
+              error:
+                type: string
+                description: The error message.
+    OptionGroup:
+      type: object
+      required:
+      - id
+      - name
+      - options
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this option group.
+          example: D-12345
+        name:
+          type: string
+          description: The display name of the option group.
+          example: Acme Pickup Store
+        min_selections:
+          type: integer
+          description: The minimum number of options that must be selected.
+          minimum: 0
+          example: 0
+        max_selections:
+          type: integer
+          description: The maximum number of options that can be selected.
+          minimum: 1
+          example: 1
+        options:
+          type: array
+          description: The available options in this group.
+          items:
+            $ref: '#/components/schemas/MenuOption'
+    MenuDetails:
+      type: object
+      properties:
+        store_id:
+          type: string
+          description: The merchant-supplied store identifier.
+          example: D-12345
+        categories:
+          type: array
+          description: The menu categories.
+          items:
+            $ref: '#/components/schemas/MenuCategory'
+        last_updated:
+          type: string
+          format: date-time
+          description: When the menu was last updated.
+          example: '2026-06-02T14:30:00Z'
+    MenuCategory:
+      type: object
+      required:
+      - id
+      - name
+      - items
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this category.
+          example: D-12345
+        name:
+          type: string
+          description: The display name of the category.
+          example: Acme Pickup Store
+        description:
+          type: string
+          description: A description of the category.
+          example: Leave at the front desk.
+        sort_id:
+          type: integer
+          description: The sort order for this category.
+          example: 42
+        items:
+          type: array
+          description: The items in this category.
+          items:
+            $ref: '#/components/schemas/MenuItem'
+    Store:
+      type: object
+      properties:
+        external_business_id:
+          type: string
+          description: The external business ID this store belongs to.
+          example: D-12345
+        external_store_id:
+          type: string
+          description: The unique external identifier for the store.
+          example: D-12345
+        name:
+          type: string
+          description: The name of the store.
+          example: Acme Pickup Store
+        phone_number:
+          type: string
+          description: The phone number for the store.
+          example: '+15555551234'
+        address:
+          type: string
+          description: The full street address of the store.
+          example: 901 Market St, San Francisco, CA 94105
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token signed with your DoorDash developer credentials.
+externalDocs:
+  description: DoorDash Drive Classic API Documentation
+  url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/

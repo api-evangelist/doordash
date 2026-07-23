@@ -1,0 +1,353 @@
+openapi: 3.1.0
+info:
+  title: DoorDash Drive Classic Addresses Businesses API
+  description: The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.
+  version: '1.0'
+  contact:
+    name: DoorDash Developer Support
+    url: https://developer.doordash.com/en-US/
+  termsOfService: https://www.doordash.com/terms/
+servers:
+- url: https://openapi.doordash.com/drive/v1
+  description: Production Server
+security:
+- bearerAuth: []
+tags:
+- name: Businesses
+  description: Manage business entities that represent legal entities or owners.
+paths:
+  /businesses:
+    get:
+      operationId: listBusinesses
+      summary: DoorDash List Businesses
+      description: Lists all businesses owned by the authenticated developer account.
+      tags:
+      - Businesses
+      responses:
+        '200':
+          description: List of businesses retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Business'
+              examples:
+                ListBusinesses200Example:
+                  summary: Default listBusinesses 200 response
+                  x-microcks-default: true
+                  value:
+                  - external_business_id: D-12345
+                    name: Acme Pickup Store
+                    description: Leave at the front desk.
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                ListBusinesses401Example:
+                  summary: Default listBusinesses 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    post:
+      operationId: createBusiness
+      summary: DoorDash Create a Business
+      description: Creates a new Drive business entity representing a legal entity or owner on the DoorDash platform.
+      tags:
+      - Businesses
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusinessRequest'
+            examples:
+              CreateBusinessRequestExample:
+                summary: Default createBusiness request
+                x-microcks-default: true
+                value:
+                  external_business_id: D-12345
+                  name: Acme Pickup Store
+                  description: Leave at the front desk.
+      responses:
+        '200':
+          description: Business created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+              examples:
+                CreateBusiness200Example:
+                  summary: Default createBusiness 200 response
+                  x-microcks-default: true
+                  value:
+                    external_business_id: D-12345
+                    name: Acme Pickup Store
+                    description: Leave at the front desk.
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                CreateBusiness400Example:
+                  summary: Default createBusiness 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                CreateBusiness401Example:
+                  summary: Default createBusiness 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /businesses/{external_business_id}:
+    get:
+      operationId: getBusiness
+      summary: DoorDash Get Business Details
+      description: Retrieves the details of a specific business by its external ID.
+      tags:
+      - Businesses
+      parameters:
+      - $ref: '#/components/parameters/ExternalBusinessId'
+      responses:
+        '200':
+          description: Business details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+              examples:
+                GetBusiness200Example:
+                  summary: Default getBusiness 200 response
+                  x-microcks-default: true
+                  value:
+                    external_business_id: D-12345
+                    name: Acme Pickup Store
+                    description: Leave at the front desk.
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                GetBusiness401Example:
+                  summary: Default getBusiness 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+        '404':
+          description: Business not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                GetBusiness404Example:
+                  summary: Default getBusiness 404 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    patch:
+      operationId: updateBusiness
+      summary: DoorDash Update a Business
+      description: Updates the attributes of an existing business entity.
+      tags:
+      - Businesses
+      parameters:
+      - $ref: '#/components/parameters/ExternalBusinessId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusinessRequest'
+            examples:
+              UpdateBusinessRequestExample:
+                summary: Default updateBusiness request
+                x-microcks-default: true
+                value:
+                  external_business_id: D-12345
+                  name: Acme Pickup Store
+                  description: Leave at the front desk.
+      responses:
+        '200':
+          description: Business updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+              examples:
+                UpdateBusiness200Example:
+                  summary: Default updateBusiness 200 response
+                  x-microcks-default: true
+                  value:
+                    external_business_id: D-12345
+                    name: Acme Pickup Store
+                    description: Leave at the front desk.
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateBusiness400Example:
+                  summary: Default updateBusiness 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateBusiness401Example:
+                  summary: Default updateBusiness 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+        '404':
+          description: Business not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateBusiness404Example:
+                  summary: Default updateBusiness 404 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+                    field_errors:
+                    - field: example
+                      error: example
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  parameters:
+    ExternalBusinessId:
+      name: external_business_id
+      in: path
+      required: true
+      description: The unique external identifier for the business.
+      schema:
+        type: string
+  schemas:
+    BusinessRequest:
+      type: object
+      required:
+      - external_business_id
+      - name
+      properties:
+        external_business_id:
+          type: string
+          description: A unique external identifier for the business.
+          example: D-12345
+        name:
+          type: string
+          description: The name of the business.
+          example: Acme Pickup Store
+        description:
+          type: string
+          description: A description of the business.
+          example: Leave at the front desk.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+        field_errors:
+          type: array
+          description: A list of field-level validation errors.
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: The field with the error.
+              error:
+                type: string
+                description: The error message.
+    Business:
+      type: object
+      properties:
+        external_business_id:
+          type: string
+          description: The unique external identifier for the business.
+          example: D-12345
+        name:
+          type: string
+          description: The name of the business.
+          example: Acme Pickup Store
+        description:
+          type: string
+          description: A description of the business.
+          example: Leave at the front desk.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token signed with your DoorDash developer credentials.
+externalDocs:
+  description: DoorDash Drive Classic API Documentation
+  url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/

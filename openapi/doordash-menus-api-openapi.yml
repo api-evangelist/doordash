@@ -1,0 +1,352 @@
+openapi: 3.1.0
+info:
+  title: DoorDash Drive Classic Addresses Menus API
+  description: The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.
+  version: '1.0'
+  contact:
+    name: DoorDash Developer Support
+    url: https://developer.doordash.com/en-US/
+  termsOfService: https://www.doordash.com/terms/
+servers:
+- url: https://openapi.doordash.com/drive/v1
+  description: Production Server
+security:
+- bearerAuth: []
+tags:
+- name: Menus
+  description: Create, update, and manage menus for stores on the DoorDash marketplace.
+paths:
+  /menus:
+    post:
+      operationId: createMenu
+      summary: DoorDash Create a Menu
+      description: Uploads a complete menu for a store. Menu creation is processed asynchronously. A successful response indicates the request was received. A webhook notification is sent when processing completes or fails.
+      tags:
+      - Menus
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuRequest'
+            examples:
+              CreateMenuRequestExample:
+                summary: Default createMenu request
+                x-microcks-default: true
+                value:
+                  store_id: D-12345
+                  categories:
+                  - id: {}
+                    name: {}
+                    description: {}
+                    sort_id: {}
+                    items: {}
+      responses:
+        '200':
+          description: Menu creation request accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuResponse'
+              examples:
+                CreateMenu200Example:
+                  summary: Default createMenu 200 response
+                  x-microcks-default: true
+                  value:
+                    menu_id: D-12345
+                    status: received
+        '400':
+          description: Invalid menu data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                CreateMenu400Example:
+                  summary: Default createMenu 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                CreateMenu401Example:
+                  summary: Default createMenu 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+  /menus/{menu_id}:
+    patch:
+      operationId: updateMenu
+      summary: DoorDash Update a Menu
+      description: Updates an existing menu. Uses the same validation as menu creation. Processing is asynchronous with webhook notification upon completion.
+      tags:
+      - Menus
+      parameters:
+      - $ref: '#/components/parameters/MenuId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuRequest'
+            examples:
+              UpdateMenuRequestExample:
+                summary: Default updateMenu request
+                x-microcks-default: true
+                value:
+                  store_id: D-12345
+                  categories:
+                  - id: {}
+                    name: {}
+                    description: {}
+                    sort_id: {}
+                    items: {}
+      responses:
+        '200':
+          description: Menu update request accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuResponse'
+              examples:
+                UpdateMenu200Example:
+                  summary: Default updateMenu 200 response
+                  x-microcks-default: true
+                  value:
+                    menu_id: D-12345
+                    status: received
+        '400':
+          description: Invalid menu data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateMenu400Example:
+                  summary: Default updateMenu 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateMenu401Example:
+                  summary: Default updateMenu 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+        '404':
+          description: Menu not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateMenu404Example:
+                  summary: Default updateMenu 404 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    MenuOption:
+      type: object
+      required:
+      - id
+      - name
+      - price
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this option.
+          example: D-12345
+        name:
+          type: string
+          description: The display name of the option.
+          example: Acme Pickup Store
+        price:
+          type: integer
+          description: The additional price for this option in cents.
+          example: 42
+        is_active:
+          type: boolean
+          description: Whether the option is currently available.
+          example: true
+    MenuItem:
+      type: object
+      required:
+      - id
+      - name
+      - price
+      properties:
+        id:
+          type: string
+          description: The merchant-supplied item identifier.
+          example: D-12345
+        name:
+          type: string
+          description: The display name of the item.
+          example: Acme Pickup Store
+        description:
+          type: string
+          description: A description of the item.
+          example: Leave at the front desk.
+        price:
+          type: integer
+          description: The item price in cents.
+          example: 42
+        image_url:
+          type: string
+          format: uri
+          description: A URL to an image of the item.
+          example: https://example.com/path/abc123
+        is_active:
+          type: boolean
+          description: Whether the item is currently available for ordering.
+          example: true
+        sort_id:
+          type: integer
+          description: The sort order for this item within its category.
+          example: 42
+        option_groups:
+          type: array
+          description: Option groups (modifiers) for this item.
+          items:
+            $ref: '#/components/schemas/OptionGroup'
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+    OptionGroup:
+      type: object
+      required:
+      - id
+      - name
+      - options
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this option group.
+          example: D-12345
+        name:
+          type: string
+          description: The display name of the option group.
+          example: Acme Pickup Store
+        min_selections:
+          type: integer
+          description: The minimum number of options that must be selected.
+          minimum: 0
+          example: 0
+        max_selections:
+          type: integer
+          description: The maximum number of options that can be selected.
+          minimum: 1
+          example: 1
+        options:
+          type: array
+          description: The available options in this group.
+          items:
+            $ref: '#/components/schemas/MenuOption'
+    MenuRequest:
+      type: object
+      required:
+      - store_id
+      - categories
+      properties:
+        store_id:
+          type: string
+          description: The merchant-supplied store identifier.
+          example: D-12345
+        categories:
+          type: array
+          description: The menu categories containing items.
+          items:
+            $ref: '#/components/schemas/MenuCategory'
+    MenuCategory:
+      type: object
+      required:
+      - id
+      - name
+      - items
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this category.
+          example: D-12345
+        name:
+          type: string
+          description: The display name of the category.
+          example: Acme Pickup Store
+        description:
+          type: string
+          description: A description of the category.
+          example: Leave at the front desk.
+        sort_id:
+          type: integer
+          description: The sort order for this category.
+          example: 42
+        items:
+          type: array
+          description: The items in this category.
+          items:
+            $ref: '#/components/schemas/MenuItem'
+    MenuResponse:
+      type: object
+      properties:
+        menu_id:
+          type: string
+          description: The unique identifier for the menu request.
+          example: D-12345
+        status:
+          type: string
+          description: The processing status of the menu request.
+          enum:
+          - received
+          - processing
+          - completed
+          - failed
+          example: received
+  parameters:
+    MenuId:
+      name: menu_id
+      in: path
+      required: true
+      description: The unique identifier for the menu.
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token signed with your DoorDash developer credentials.
+externalDocs:
+  description: DoorDash Drive Classic API Documentation
+  url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/

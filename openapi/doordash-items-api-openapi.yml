@@ -1,0 +1,136 @@
+openapi: 3.1.0
+info:
+  title: DoorDash Drive Classic Addresses Items API
+  description: The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.
+  version: '1.0'
+  contact:
+    name: DoorDash Developer Support
+    url: https://developer.doordash.com/en-US/
+  termsOfService: https://www.doordash.com/terms/
+servers:
+- url: https://openapi.doordash.com/drive/v1
+  description: Production Server
+security:
+- bearerAuth: []
+tags:
+- name: Items
+  description: Manage item availability and 86ing (marking items as unavailable) in real time.
+paths:
+  /stores/{merchant_supplied_id}/item_status:
+    patch:
+      operationId: updateItemStatus
+      summary: DoorDash Update Item Availability
+      description: Updates the availability status of items and item options for a store. Used to 86 items (mark as unavailable) or stock them back in when they become available to order.
+      tags:
+      - Items
+      parameters:
+      - $ref: '#/components/parameters/MerchantSuppliedId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemStatusUpdate'
+            examples:
+              UpdateItemStatusRequestExample:
+                summary: Default updateItemStatus request
+                x-microcks-default: true
+                value:
+                  items:
+                  - id: D-12345
+                    is_available: true
+      responses:
+        '200':
+          description: Item status updated successfully
+        '400':
+          description: Invalid request parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateItemStatus400Example:
+                  summary: Default updateItemStatus 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateItemStatus401Example:
+                  summary: Default updateItemStatus 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+        '404':
+          description: Store not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateItemStatus404Example:
+                  summary: Default updateItemStatus 404 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    ItemStatusUpdate:
+      type: object
+      required:
+      - items
+      properties:
+        items:
+          type: array
+          description: The items to update availability for.
+          items:
+            type: object
+            required:
+            - id
+            - is_available
+            properties:
+              id:
+                type: string
+                description: The merchant-supplied item identifier.
+              is_available:
+                type: boolean
+                description: Whether the item is available for ordering.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+  parameters:
+    MerchantSuppliedId:
+      name: merchant_supplied_id
+      in: path
+      required: true
+      description: The merchant-supplied identifier for the store.
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token signed with your DoorDash developer credentials.
+externalDocs:
+  description: DoorDash Drive Classic API Documentation
+  url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/

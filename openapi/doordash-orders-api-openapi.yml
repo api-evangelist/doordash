@@ -1,0 +1,337 @@
+openapi: 3.1.0
+info:
+  title: DoorDash Drive Classic Addresses Orders API
+  description: The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.
+  version: '1.0'
+  contact:
+    name: DoorDash Developer Support
+    url: https://developer.doordash.com/en-US/
+  termsOfService: https://www.doordash.com/terms/
+servers:
+- url: https://openapi.doordash.com/drive/v1
+  description: Production Server
+security:
+- bearerAuth: []
+tags:
+- name: Orders
+  description: Receive, confirm, update, and manage orders placed through the DoorDash marketplace.
+paths:
+  /orders/{order_id}:
+    patch:
+      operationId: updateOrder
+      summary: DoorDash Update an Order
+      description: Updates the status of an order, cancels items, adjusts item or option quantities, or substitutes items. A separate token may be required for patch_order_events operations.
+      tags:
+      - Orders
+      parameters:
+      - $ref: '#/components/parameters/OrderId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderUpdate'
+            examples:
+              UpdateOrderRequestExample:
+                summary: Default updateOrder request
+                x-microcks-default: true
+                value:
+                  status: confirmed
+                  cancelled_items:
+                  - item_id: {}
+                    reason: {}
+                  substitutions:
+                  - original_item_id: {}
+                    substitute_item_id: {}
+                    substitute_item_name: {}
+                    substitute_item_price: {}
+      responses:
+        '200':
+          description: Order updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+              examples:
+                UpdateOrder200Example:
+                  summary: Default updateOrder 200 response
+                  x-microcks-default: true
+                  value:
+                    id: D-12345
+                    external_reference_id: D-12345
+                    status: pending
+                    store_id: D-12345
+                    subtotal: 42
+                    tax: 42
+                    delivery_fee: 42
+                    tip: 42
+                    items:
+                    - id: {}
+                      name: {}
+                      quantity: {}
+                      price: {}
+                      special_instructions: {}
+                      options: {}
+                    customer:
+                      first_name: Acme Pickup Store
+                      last_name: Acme Pickup Store
+                      phone_number: '+15555551234'
+                    delivery_address: 901 Market St, San Francisco, CA 94105
+                    special_instructions: Leave at the front desk.
+                    created_at: '2026-06-02T14:30:00Z'
+                    estimated_pickup_time: '2026-06-02T14:30:00Z'
+        '400':
+          description: Invalid update parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateOrder400Example:
+                  summary: Default updateOrder 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateOrder401Example:
+                  summary: Default updateOrder 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+        '404':
+          description: Order not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateOrder404Example:
+                  summary: Default updateOrder 404 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  parameters:
+    OrderId:
+      name: order_id
+      in: path
+      required: true
+      description: The unique DoorDash order identifier.
+      schema:
+        type: string
+  schemas:
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique DoorDash order identifier.
+          example: D-12345
+        external_reference_id:
+          type: string
+          description: An external reference ID for the order.
+          example: D-12345
+        status:
+          type: string
+          description: The current status of the order.
+          enum:
+          - pending
+          - confirmed
+          - being_prepared
+          - ready_for_pickup
+          - picked_up
+          - delivered
+          - cancelled
+          example: pending
+        store_id:
+          type: string
+          description: The merchant-supplied store identifier.
+          example: D-12345
+        subtotal:
+          type: integer
+          description: The order subtotal in cents.
+          example: 42
+        tax:
+          type: integer
+          description: The tax amount in cents.
+          example: 42
+        delivery_fee:
+          type: integer
+          description: The delivery fee in cents.
+          example: 42
+        tip:
+          type: integer
+          description: The tip amount in cents.
+          example: 42
+        items:
+          type: array
+          description: The items in the order.
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        customer:
+          $ref: '#/components/schemas/Customer'
+        delivery_address:
+          type: string
+          description: The delivery address for the order.
+          example: 901 Market St, San Francisco, CA 94105
+        special_instructions:
+          type: string
+          description: Special instructions from the customer.
+          example: Leave at the front desk.
+        created_at:
+          type: string
+          format: date-time
+          description: When the order was created.
+          example: '2026-06-02T14:30:00Z'
+        estimated_pickup_time:
+          type: string
+          format: date-time
+          description: The estimated time the Dasher will arrive to pick up the order.
+          example: '2026-06-02T14:30:00Z'
+    OrderItem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique item identifier within the order.
+          example: D-12345
+        name:
+          type: string
+          description: The name of the item.
+          example: Acme Pickup Store
+        quantity:
+          type: integer
+          description: The quantity ordered.
+          minimum: 1
+          example: 1
+        price:
+          type: integer
+          description: The item price in cents.
+          example: 42
+        special_instructions:
+          type: string
+          description: Special instructions for this item.
+          example: Leave at the front desk.
+        options:
+          type: array
+          description: Selected options for the item.
+          items:
+            $ref: '#/components/schemas/OrderItemOption'
+    OrderItemOption:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique option identifier.
+          example: D-12345
+        name:
+          type: string
+          description: The option name.
+          example: Acme Pickup Store
+        quantity:
+          type: integer
+          description: The quantity of this option.
+          example: 42
+        price:
+          type: integer
+          description: The option price in cents.
+          example: 42
+    Customer:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: The customer's first name.
+          example: Acme Pickup Store
+        last_name:
+          type: string
+          description: The customer's last name.
+          example: Acme Pickup Store
+        phone_number:
+          type: string
+          description: The customer's phone number.
+          example: '+15555551234'
+    CancelledItem:
+      type: object
+      properties:
+        item_id:
+          type: string
+          description: The ID of the item to cancel.
+          example: D-12345
+        reason:
+          type: string
+          description: The reason for cancellation.
+          example: example
+    OrderUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The updated order status.
+          enum:
+          - confirmed
+          - being_prepared
+          - ready_for_pickup
+          - cancelled
+          example: confirmed
+        cancelled_items:
+          type: array
+          description: Items to cancel from the order.
+          items:
+            $ref: '#/components/schemas/CancelledItem'
+        substitutions:
+          type: array
+          description: Item substitutions for the order.
+          items:
+            $ref: '#/components/schemas/Substitution'
+    Substitution:
+      type: object
+      properties:
+        original_item_id:
+          type: string
+          description: The ID of the original item to substitute.
+          example: D-12345
+        substitute_item_id:
+          type: string
+          description: The ID of the substitute item.
+          example: D-12345
+        substitute_item_name:
+          type: string
+          description: The name of the substitute item.
+          example: Acme Pickup Store
+        substitute_item_price:
+          type: integer
+          description: The price of the substitute item in cents.
+          example: 42
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token signed with your DoorDash developer credentials.
+externalDocs:
+  description: DoorDash Drive Classic API Documentation
+  url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/

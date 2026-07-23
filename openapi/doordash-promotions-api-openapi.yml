@@ -1,0 +1,288 @@
+openapi: 3.1.0
+info:
+  title: DoorDash Drive Classic Addresses Promotions API
+  description: The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.
+  version: '1.0'
+  contact:
+    name: DoorDash Developer Support
+    url: https://developer.doordash.com/en-US/
+  termsOfService: https://www.doordash.com/terms/
+servers:
+- url: https://openapi.doordash.com/drive/v1
+  description: Production Server
+security:
+- bearerAuth: []
+tags:
+- name: Promotions
+  description: Manage item-level promotions at the store level, including adding and updating promotional pricing.
+paths:
+  /promotions/stores/{store_location_id}:
+    post:
+      operationId: createStorePromotions
+      summary: DoorDash Add Promotions for Items at a Store
+      description: Adds item-level promotions for items at a specific store location. Promotions allow partners to set promotional pricing for their items on the DoorDash platform.
+      tags:
+      - Promotions
+      parameters:
+      - $ref: '#/components/parameters/StoreLocationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromotionsRequest'
+            examples:
+              CreateStorePromotionsRequestExample:
+                summary: Default createStorePromotions request
+                x-microcks-default: true
+                value:
+                  promotions:
+                  - merchant_supplied_id: {}
+                    promotional_price: {}
+                    start_date: {}
+                    end_date: {}
+                    description: {}
+      responses:
+        '200':
+          description: Promotions created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionsResponse'
+              examples:
+                CreateStorePromotions200Example:
+                  summary: Default createStorePromotions 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    promotions_processed: 42
+                    errors:
+                    - merchant_supplied_id: {}
+                      message: {}
+                      code: {}
+        '400':
+          description: Invalid promotion data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                CreateStorePromotions400Example:
+                  summary: Default createStorePromotions 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                CreateStorePromotions401Example:
+                  summary: Default createStorePromotions 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+        '404':
+          description: Store not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                CreateStorePromotions404Example:
+                  summary: Default createStorePromotions 404 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+    patch:
+      operationId: updateStorePromotions
+      summary: DoorDash Update Promotions for Items at a Store
+      description: Updates existing item-level promotions at a specific store location.
+      tags:
+      - Promotions
+      parameters:
+      - $ref: '#/components/parameters/StoreLocationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromotionsRequest'
+            examples:
+              UpdateStorePromotionsRequestExample:
+                summary: Default updateStorePromotions request
+                x-microcks-default: true
+                value:
+                  promotions:
+                  - merchant_supplied_id: {}
+                    promotional_price: {}
+                    start_date: {}
+                    end_date: {}
+                    description: {}
+      responses:
+        '200':
+          description: Promotions updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionsResponse'
+              examples:
+                UpdateStorePromotions200Example:
+                  summary: Default updateStorePromotions 200 response
+                  x-microcks-default: true
+                  value:
+                    status: active
+                    promotions_processed: 42
+                    errors:
+                    - merchant_supplied_id: {}
+                      message: {}
+                      code: {}
+        '400':
+          description: Invalid promotion data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateStorePromotions400Example:
+                  summary: Default updateStorePromotions 400 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateStorePromotions401Example:
+                  summary: Default updateStorePromotions 401 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+        '404':
+          description: Store not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                UpdateStorePromotions404Example:
+                  summary: Default updateStorePromotions 404 response
+                  x-microcks-default: true
+                  value:
+                    message: example
+                    code: ABC123
+      x-microcks-operation:
+        delay: 0
+        dispatcher: FALLBACK
+components:
+  schemas:
+    PromotionsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The processing status of the request.
+          example: active
+        promotions_processed:
+          type: integer
+          description: The number of promotions processed.
+          example: 42
+        errors:
+          type: array
+          description: Any errors encountered during processing.
+          items:
+            $ref: '#/components/schemas/ItemError'
+    Promotion:
+      type: object
+      required:
+      - merchant_supplied_id
+      - promotional_price
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: The merchant-supplied item identifier for the promoted item.
+          example: D-12345
+        promotional_price:
+          type: integer
+          description: The promotional price in cents.
+          example: 42
+        start_date:
+          type: string
+          format: date-time
+          description: The start date of the promotion in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
+        end_date:
+          type: string
+          format: date-time
+          description: The end date of the promotion in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
+        description:
+          type: string
+          description: A description of the promotion.
+          example: Leave at the front desk.
+    ItemError:
+      type: object
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: The item identifier that had an error.
+          example: D-12345
+        message:
+          type: string
+          description: The error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+    PromotionsRequest:
+      type: object
+      required:
+      - promotions
+      properties:
+        promotions:
+          type: array
+          description: The promotions to add or update.
+          items:
+            $ref: '#/components/schemas/Promotion'
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+  parameters:
+    StoreLocationId:
+      name: store_location_id
+      in: path
+      required: true
+      description: The unique identifier for the store location.
+      schema:
+        type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token signed with your DoorDash developer credentials.
+externalDocs:
+  description: DoorDash Drive Classic API Documentation
+  url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
