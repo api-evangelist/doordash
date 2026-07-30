@@ -1,147 +1,558 @@
 aid: doordash
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/doordash.png
 url: https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/apis.yml
 apis:
-- aid: doordash:drive-api
-  name: DoorDash Drive API
-  tags:
-  - Delivery
-  - Food Delivery
-  - Last Mile
-  - Logistics
-  - On-Demand
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  baseURL: https://openapi.doordash.com/drive/v2
+- aid: doordash:doordash-addresses-api
+  name: doordash Addresses API
+  description: Get address auto-completion suggestions based on partial input.
   humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Addresses
   properties:
-  - url: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
-    type: Documentation
   - type: OpenAPI
-    url: openapi/doordash-drive-openapi.yml
+    url: openapi/doordash-addresses-api-openapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
   - type: AsyncAPI
     url: asyncapi/doordash-drive-webhooks-asyncapi.yml
   - type: SDKs
     url: https://www.npmjs.com/package/@doordash/sdk
-    title: Node.js SDK
   - type: CodeExamples
     url: https://github.com/doordash-oss/doordash_sdk_example_application
-    title: Node.js SDK Example Application
   - type: CodeExamples
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-Nodejs-Sample
-    title: Node.js Sample
   - type: CodeExamples
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-Python-Sample
-    title: Python Sample
   - type: CodeExamples
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-Java-Sample
-    title: Java Sample
   - type: CodeExamples
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-Kotlin-Sample
-    title: Kotlin Sample
   - type: CodeExamples
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
-    title: PHP Sample
   - type: CodeExamples
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
-    title: C# / .NET Sample
-  - url: graphql/doordash-graphql.md
-    type: GraphQL
-  description: The DoorDash Drive API enables businesses to request on-demand deliveries
-    fulfilled by DoorDash's fleet of Dashers. It provides endpoints for checking delivery
-    serviceability, getting delivery quotes, creating and managing deliveries, and
-    tracking delivery status in real time. The API uses JWT-based authentication and
-    is designed for businesses that want to offer delivery from their own ordering
-    experience while leveraging DoorDash's logistics network.
-- aid: doordash:drive-classic-api
-  name: DoorDash Drive Classic API
-  tags:
-  - Delivery
-  - Enterprise
-  - Food Delivery
-  - Last Mile
-  - Logistics
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  baseURL: https://openapi.doordash.com/drive/v1
-  humanURL: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
-  properties:
-  - url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
-    type: Documentation
-  - type: OpenAPI
-    url: openapi/doordash-drive-classic-openapi.yml
-  description: The DoorDash Drive Classic API is the legacy version of the Drive API,
-    designed for large enterprises and middleware providers who require extensive
-    configuration and customizability for their delivery integrations. It provides
-    endpoints for managing businesses, stores, and deliveries through DoorDash's logistics
-    platform. The API uses JWT-based Bearer token authentication and operates at the
-    v1 endpoint path.
-- aid: doordash:marketplace-api
-  name: DoorDash Marketplace API
-  tags:
-  - Food Delivery
-  - Marketplace
-  - Orders
-  - Restaurants
-  - Retail
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  baseURL: https://openapi.doordash.com/marketplace
-  humanURL: https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
-  properties:
-  - url: https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
-    type: Documentation
-  - type: OpenAPI
-    url: openapi/doordash-marketplace-openapi.yml
+  - type: GraphQL
+    url: graphql/doordash-graphql.md
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
   - type: AsyncAPI
     url: asyncapi/doordash-marketplace-webhooks-asyncapi.yml
-  description: The DoorDash Marketplace API allows merchants and third-party providers
-    to integrate directly with the DoorDash marketplace for order management, menu
-    synchronization, and store operations. It supports receiving orders from DoorDash,
-    updating order statuses, and managing menu availability in real time. The API
-    is not generally available and access is granted through a selective partner program
-    where DoorDash evaluates integration quality and business fit.
-- aid: doordash:marketplace-item-management-api
-  name: DoorDash Item Management API
-  tags:
-  - Catalog
-  - Inventory
-  - Menus
-  - Pricing
-  - Retail
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  baseURL: https://openapi.doordash.com/marketplace
-  humanURL: https://developer.doordash.com/en-US/api/marketplace_v2/
-  properties:
-  - url: https://developer.doordash.com/en-US/api/marketplace_v2/
-    type: Documentation
-  - type: OpenAPI
-    url: openapi/doordash-item-management-openapi.yml
-  description: The DoorDash Item Management API enables merchants and integration
-    partners to programmatically manage their item catalogs, inventory levels, pricing,
-    and other product attributes on the DoorDash platform. It provides endpoints for
-    creating, updating, and retrieving item data across stores. This API is particularly
-    useful for retail and grocery partners who need to keep large catalogs synchronized
-    between their own systems and DoorDash's marketplace.
-- aid: doordash:reporting-api
-  name: DoorDash Reporting API
-  tags:
-  - Analytics
-  - Data
-  - Financial
-  - Operations
-  - Reporting
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  baseURL: https://openapi.doordash.com/dataexchange/v1
-  humanURL: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
-  properties:
-  - url: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
-    type: Documentation
-  - type: OpenAPI
-    url: openapi/doordash-reporting-openapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/api/marketplace_v2/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
   - type: AsyncAPI
     url: asyncapi/doordash-reporting-webhooks-asyncapi.yml
-  description: The DoorDash Reporting API provides approved partners with access to
-    standardized financial, operations, and menu reporting data. It offers a POST
-    endpoint for creating report requests and a GET endpoint for retrieving report
-    download links, along with webhook notifications when reports are ready.
+- aid: doordash:doordash-businesses-api
+  name: doordash Businesses API
+  description: Manage business entities that represent legal entities or owners.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Businesses
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-businesses-api-openapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  - type: AsyncAPI
+    url: asyncapi/doordash-drive-webhooks-asyncapi.yml
+  - type: SDKs
+    url: https://www.npmjs.com/package/@doordash/sdk
+  - type: CodeExamples
+    url: https://github.com/doordash-oss/doordash_sdk_example_application
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Nodejs-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Python-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Java-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Kotlin-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
+  - type: GraphQL
+    url: graphql/doordash-graphql.md
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
+  - type: AsyncAPI
+    url: asyncapi/doordash-marketplace-webhooks-asyncapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/api/marketplace_v2/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
+  - type: AsyncAPI
+    url: asyncapi/doordash-reporting-webhooks-asyncapi.yml
+- aid: doordash:doordash-catalog-api
+  name: doordash Catalog API
+  description: >-
+    Manage the item catalog including adding new items and updating existing item information such as
+    names, descriptions, images, and attributes.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Catalog
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-catalog-api-openapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  - type: AsyncAPI
+    url: asyncapi/doordash-drive-webhooks-asyncapi.yml
+  - type: SDKs
+    url: https://www.npmjs.com/package/@doordash/sdk
+  - type: CodeExamples
+    url: https://github.com/doordash-oss/doordash_sdk_example_application
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Nodejs-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Python-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Java-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Kotlin-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
+  - type: GraphQL
+    url: graphql/doordash-graphql.md
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
+  - type: AsyncAPI
+    url: asyncapi/doordash-marketplace-webhooks-asyncapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/api/marketplace_v2/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
+  - type: AsyncAPI
+    url: asyncapi/doordash-reporting-webhooks-asyncapi.yml
+- aid: doordash:doordash-deliveries-api
+  name: doordash Deliveries API
+  description: >-
+    Create, retrieve, update, cancel, and estimate deliveries using the classic API endpoints.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Deliveries
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-deliveries-api-openapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  - type: AsyncAPI
+    url: asyncapi/doordash-drive-webhooks-asyncapi.yml
+  - type: SDKs
+    url: https://www.npmjs.com/package/@doordash/sdk
+  - type: CodeExamples
+    url: https://github.com/doordash-oss/doordash_sdk_example_application
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Nodejs-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Python-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Java-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Kotlin-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
+  - type: GraphQL
+    url: graphql/doordash-graphql.md
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
+  - type: AsyncAPI
+    url: asyncapi/doordash-marketplace-webhooks-asyncapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/api/marketplace_v2/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
+  - type: AsyncAPI
+    url: asyncapi/doordash-reporting-webhooks-asyncapi.yml
+- aid: doordash:doordash-inventory-api
+  name: doordash Inventory API
+  description: >-
+    Manage store-level inventory, pricing, and other in-store attributes for items on the DoorDash platform.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Inventory
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-inventory-api-openapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  - type: AsyncAPI
+    url: asyncapi/doordash-drive-webhooks-asyncapi.yml
+  - type: SDKs
+    url: https://www.npmjs.com/package/@doordash/sdk
+  - type: CodeExamples
+    url: https://github.com/doordash-oss/doordash_sdk_example_application
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Nodejs-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Python-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Java-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Kotlin-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
+  - type: GraphQL
+    url: graphql/doordash-graphql.md
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
+  - type: AsyncAPI
+    url: asyncapi/doordash-marketplace-webhooks-asyncapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/api/marketplace_v2/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
+  - type: AsyncAPI
+    url: asyncapi/doordash-reporting-webhooks-asyncapi.yml
+- aid: doordash:doordash-items-api
+  name: doordash Items API
+  description: Manage item availability and 86ing (marking items as unavailable) in real time.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Items
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-items-api-openapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  - type: AsyncAPI
+    url: asyncapi/doordash-drive-webhooks-asyncapi.yml
+  - type: SDKs
+    url: https://www.npmjs.com/package/@doordash/sdk
+  - type: CodeExamples
+    url: https://github.com/doordash-oss/doordash_sdk_example_application
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Nodejs-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Python-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Java-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Kotlin-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
+  - type: GraphQL
+    url: graphql/doordash-graphql.md
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
+  - type: AsyncAPI
+    url: asyncapi/doordash-marketplace-webhooks-asyncapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/api/marketplace_v2/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
+  - type: AsyncAPI
+    url: asyncapi/doordash-reporting-webhooks-asyncapi.yml
+- aid: doordash:doordash-menus-api
+  name: doordash Menus API
+  description: Create, update, and manage menus for stores on the DoorDash marketplace.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Menus
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-menus-api-openapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  - type: AsyncAPI
+    url: asyncapi/doordash-drive-webhooks-asyncapi.yml
+  - type: SDKs
+    url: https://www.npmjs.com/package/@doordash/sdk
+  - type: CodeExamples
+    url: https://github.com/doordash-oss/doordash_sdk_example_application
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Nodejs-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Python-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Java-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Kotlin-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
+  - type: GraphQL
+    url: graphql/doordash-graphql.md
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
+  - type: AsyncAPI
+    url: asyncapi/doordash-marketplace-webhooks-asyncapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/api/marketplace_v2/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
+  - type: AsyncAPI
+    url: asyncapi/doordash-reporting-webhooks-asyncapi.yml
+- aid: doordash:doordash-orders-api
+  name: doordash Orders API
+  description: Receive, confirm, update, and manage orders placed through the DoorDash marketplace.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-orders-api-openapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  - type: AsyncAPI
+    url: asyncapi/doordash-drive-webhooks-asyncapi.yml
+  - type: SDKs
+    url: https://www.npmjs.com/package/@doordash/sdk
+  - type: CodeExamples
+    url: https://github.com/doordash-oss/doordash_sdk_example_application
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Nodejs-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Python-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Java-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Kotlin-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
+  - type: GraphQL
+    url: graphql/doordash-graphql.md
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
+  - type: AsyncAPI
+    url: asyncapi/doordash-marketplace-webhooks-asyncapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/api/marketplace_v2/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
+  - type: AsyncAPI
+    url: asyncapi/doordash-reporting-webhooks-asyncapi.yml
+- aid: doordash:doordash-promotions-api
+  name: doordash Promotions API
+  description: >-
+    Manage item-level promotions at the store level, including adding and updating promotional pricing.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Promotions
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-promotions-api-openapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  - type: AsyncAPI
+    url: asyncapi/doordash-drive-webhooks-asyncapi.yml
+  - type: SDKs
+    url: https://www.npmjs.com/package/@doordash/sdk
+  - type: CodeExamples
+    url: https://github.com/doordash-oss/doordash_sdk_example_application
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Nodejs-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Python-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Java-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Kotlin-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
+  - type: GraphQL
+    url: graphql/doordash-graphql.md
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
+  - type: AsyncAPI
+    url: asyncapi/doordash-marketplace-webhooks-asyncapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/api/marketplace_v2/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
+  - type: AsyncAPI
+    url: asyncapi/doordash-reporting-webhooks-asyncapi.yml
+- aid: doordash:doordash-quotes-api
+  name: doordash Quotes API
+  description: Validate delivery serviceability and get pricing quotes before creating a delivery.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Quotes
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-quotes-api-openapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  - type: AsyncAPI
+    url: asyncapi/doordash-drive-webhooks-asyncapi.yml
+  - type: SDKs
+    url: https://www.npmjs.com/package/@doordash/sdk
+  - type: CodeExamples
+    url: https://github.com/doordash-oss/doordash_sdk_example_application
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Nodejs-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Python-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Java-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Kotlin-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
+  - type: GraphQL
+    url: graphql/doordash-graphql.md
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
+  - type: AsyncAPI
+    url: asyncapi/doordash-marketplace-webhooks-asyncapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/api/marketplace_v2/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
+  - type: AsyncAPI
+    url: asyncapi/doordash-reporting-webhooks-asyncapi.yml
+- aid: doordash:doordash-reports-api
+  name: doordash Reports API
+  description: >-
+    Create report requests and retrieve report download links for financial, operations, menu, and feedback
+    data.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Reports
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-reports-api-openapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  - type: AsyncAPI
+    url: asyncapi/doordash-drive-webhooks-asyncapi.yml
+  - type: SDKs
+    url: https://www.npmjs.com/package/@doordash/sdk
+  - type: CodeExamples
+    url: https://github.com/doordash-oss/doordash_sdk_example_application
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Nodejs-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Python-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Java-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Kotlin-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
+  - type: GraphQL
+    url: graphql/doordash-graphql.md
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
+  - type: AsyncAPI
+    url: asyncapi/doordash-marketplace-webhooks-asyncapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/api/marketplace_v2/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
+  - type: AsyncAPI
+    url: asyncapi/doordash-reporting-webhooks-asyncapi.yml
+- aid: doordash:doordash-stores-api
+  name: doordash Stores API
+  description: Manage store locations associated with businesses.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Stores
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-stores-api-openapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  - type: AsyncAPI
+    url: asyncapi/doordash-drive-webhooks-asyncapi.yml
+  - type: SDKs
+    url: https://www.npmjs.com/package/@doordash/sdk
+  - type: CodeExamples
+    url: https://github.com/doordash-oss/doordash_sdk_example_application
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Nodejs-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Python-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Java-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-Kotlin-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
+  - type: CodeExamples
+    url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
+  - type: GraphQL
+    url: graphql/doordash-graphql.md
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/
+  - type: AsyncAPI
+    url: asyncapi/doordash-marketplace-webhooks-asyncapi.yml
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/api/marketplace_v2/
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
+  - type: AsyncAPI
+    url: asyncapi/doordash-reporting-webhooks-asyncapi.yml
 common:
+- type: PostmanWorkspace
+  url: https://www.postman.com/kinlaneapi/doordash/overview
 - type: AgenticAccess
   url: agentic-access/doordash-agentic-access.yml
 - type: TrustCenter
