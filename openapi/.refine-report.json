@@ -1,0 +1,36 @@
+{
+  "provider": "doordash",
+  "sources": [
+    "doordash-addresses-api-openapi.yml",
+    "doordash-businesses-api-openapi.yml",
+    "doordash-catalog-api-openapi.yml",
+    "doordash-deliveries-api-openapi.yml",
+    "doordash-inventory-api-openapi.yml",
+    "doordash-items-api-openapi.yml",
+    "doordash-menus-api-openapi.yml",
+    "doordash-orders-api-openapi.yml",
+    "doordash-promotions-api-openapi.yml",
+    "doordash-quotes-api-openapi.yml",
+    "doordash-reports-api-openapi.yml",
+    "doordash-stores-api-openapi.yml"
+  ],
+  "outputs": [
+    "doordash-addresses-api-openapi.yml",
+    "doordash-businesses-api-openapi.yml",
+    "doordash-catalog-api-openapi.yml",
+    "doordash-deliveries-api-openapi.yml",
+    "doordash-inventory-api-openapi.yml",
+    "doordash-items-api-openapi.yml",
+    "doordash-menus-api-openapi.yml",
+    "doordash-orders-api-openapi.yml",
+    "doordash-promotions-api-openapi.yml",
+    "doordash-quotes-api-openapi.yml",
+    "doordash-reports-api-openapi.yml",
+    "doordash-stores-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

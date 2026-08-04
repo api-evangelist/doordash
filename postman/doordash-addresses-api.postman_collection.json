@@ -1,0 +1,205 @@
+{
+  "info": {
+    "_postman_id": "3e516629-25c4-4127-a8f5-c360938e7cee",
+    "name": "DoorDash Drive Classic Addresses API",
+    "description": "The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.\n\nContact Support:\n Name: DoorDash Developer Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:32:35.000Z",
+    "updatedAt": "2026-07-28T01:32:35.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-3e516629-25c4-4127-a8f5-c360938e7cee"
+  },
+  "item": [
+    {
+      "name": "addresses",
+      "item": [
+        {
+          "name": "DoorDash Get Address Suggestions",
+          "id": "15551eb3-dfb0-4ebd-abb7-76f90df29471",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/addresses?query=<string>&latitude=<double>&longitude=<double>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "addresses"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Partial address string to get suggestions for.",
+                  "key": "query",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Latitude coordinate to bias results toward a location.",
+                  "key": "latitude",
+                  "value": "<double>"
+                },
+                {
+                  "description": "Longitude coordinate to bias results toward a location.",
+                  "key": "longitude",
+                  "value": "<double>"
+                }
+              ]
+            },
+            "description": "Returns address auto-completion suggestions based on partial address input and optional location coordinates."
+          },
+          "response": [
+            {
+              "id": "8a9f28b1-14a4-4495-b4bb-e7bc6d8d1937",
+              "name": "Address suggestions retrieved successfully",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/addresses?query=<string>&latitude=<double>&longitude=<double>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "addresses"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Partial address string to get suggestions for.",
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Latitude coordinate to bias results toward a location.",
+                      "key": "latitude",
+                      "value": "<double>"
+                    },
+                    {
+                      "description": "Longitude coordinate to bias results toward a location.",
+                      "key": "longitude",
+                      "value": "<double>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "[\n  {\n    \"full_address\": \"<string>\",\n    \"street\": \"<string>\",\n    \"city\": \"<string>\",\n    \"state\": \"<string>\",\n    \"zip_code\": \"<string>\",\n    \"country\": \"<string>\"\n  },\n  {\n    \"full_address\": \"<string>\",\n    \"street\": \"<string>\",\n    \"city\": \"<string>\",\n    \"state\": \"<string>\",\n    \"zip_code\": \"<string>\",\n    \"country\": \"<string>\"\n  }\n]",
+              "createdAt": "2026-07-28T01:32:36.000Z",
+              "updatedAt": "2026-07-28T01:32:36.000Z",
+              "uid": "35240-8a9f28b1-14a4-4495-b4bb-e7bc6d8d1937"
+            },
+            {
+              "id": "c6d20736-6187-4330-9621-b6a345eb8619",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/addresses?query=<string>&latitude=<double>&longitude=<double>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "addresses"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Partial address string to get suggestions for.",
+                      "key": "query",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Latitude coordinate to bias results toward a location.",
+                      "key": "latitude",
+                      "value": "<double>"
+                    },
+                    {
+                      "description": "Longitude coordinate to bias results toward a location.",
+                      "key": "longitude",
+                      "value": "<double>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ],\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:32:36.000Z",
+              "updatedAt": "2026-07-28T01:32:36.000Z",
+              "uid": "35240-c6d20736-6187-4330-9621-b6a345eb8619"
+            }
+          ],
+          "createdAt": "2026-07-28T01:32:36.000Z",
+          "updatedAt": "2026-07-28T01:32:36.000Z",
+          "uid": "35240-15551eb3-dfb0-4ebd-abb7-76f90df29471"
+        }
+      ],
+      "id": "b994684f-f166-465d-874b-1ac9b4f462ea",
+      "createdAt": "2026-07-28T01:32:36.000Z",
+      "updatedAt": "2026-07-28T01:32:36.000Z",
+      "uid": "35240-b994684f-f166-465d-874b-1ac9b4f462ea"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://openapi.doordash.com/drive/v1"
+    }
+  ]
+}

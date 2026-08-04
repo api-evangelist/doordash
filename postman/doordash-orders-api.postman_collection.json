@@ -1,0 +1,350 @@
+{
+  "info": {
+    "_postman_id": "515f0ef6-8abe-46d6-99c3-412b507f4a2e",
+    "name": "DoorDash Drive Classic Addresses Orders API",
+    "description": "The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.\n\nContact Support:\n Name: DoorDash Developer Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:32:43.000Z",
+    "updatedAt": "2026-07-28T01:32:43.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-515f0ef6-8abe-46d6-99c3-412b507f4a2e"
+  },
+  "item": [
+    {
+      "name": "orders",
+      "item": [
+        {
+          "name": "{order_id}",
+          "item": [
+            {
+              "name": "DoorDash Update an Order",
+              "id": "c9cddf34-f412-49cb-9350-04e63f7bf95e",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"cancelled\",\n  \"cancelled_items\": [\n    {\n      \"item_id\": \"<string>\",\n      \"reason\": \"<string>\"\n    },\n    {\n      \"item_id\": \"<string>\",\n      \"reason\": \"<string>\"\n    }\n  ],\n  \"substitutions\": [\n    {\n      \"original_item_id\": \"<string>\",\n      \"substitute_item_id\": \"<string>\",\n      \"substitute_item_name\": \"<string>\",\n      \"substitute_item_price\": \"<integer>\"\n    },\n    {\n      \"original_item_id\": \"<string>\",\n      \"substitute_item_id\": \"<string>\",\n      \"substitute_item_name\": \"<string>\",\n      \"substitute_item_price\": \"<integer>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/orders/:order_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "orders",
+                    ":order_id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "c6e34642-2fb9-42ce-ab31-5b670fee7f08",
+                      "key": "order_id",
+                      "value": "<string>",
+                      "description": "(Required) The unique DoorDash order identifier."
+                    }
+                  ]
+                },
+                "description": "Updates the status of an order, cancels items, adjusts item or option quantities, or substitutes items. A separate token may be required for patch_order_events operations."
+              },
+              "response": [
+                {
+                  "id": "600cbc7e-26db-458b-bc63-112db5075f3e",
+                  "name": "Order updated successfully",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"status\": \"cancelled\",\n  \"cancelled_items\": [\n    {\n      \"item_id\": \"<string>\",\n      \"reason\": \"<string>\"\n    },\n    {\n      \"item_id\": \"<string>\",\n      \"reason\": \"<string>\"\n    }\n  ],\n  \"substitutions\": [\n    {\n      \"original_item_id\": \"<string>\",\n      \"substitute_item_id\": \"<string>\",\n      \"substitute_item_name\": \"<string>\",\n      \"substitute_item_price\": \"<integer>\"\n    },\n    {\n      \"original_item_id\": \"<string>\",\n      \"substitute_item_id\": \"<string>\",\n      \"substitute_item_name\": \"<string>\",\n      \"substitute_item_price\": \"<integer>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/orders/:order_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        ":order_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "order_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"external_reference_id\": \"<string>\",\n  \"status\": \"picked_up\",\n  \"store_id\": \"<string>\",\n  \"subtotal\": \"<integer>\",\n  \"tax\": \"<integer>\",\n  \"delivery_fee\": \"<integer>\",\n  \"tip\": \"<integer>\",\n  \"items\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"quantity\": \"<integer>\",\n      \"price\": \"<integer>\",\n      \"special_instructions\": \"<string>\",\n      \"options\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"quantity\": \"<integer>\",\n          \"price\": \"<integer>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"quantity\": \"<integer>\",\n          \"price\": \"<integer>\"\n        }\n      ]\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"quantity\": \"<integer>\",\n      \"price\": \"<integer>\",\n      \"special_instructions\": \"<string>\",\n      \"options\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"quantity\": \"<integer>\",\n          \"price\": \"<integer>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"quantity\": \"<integer>\",\n          \"price\": \"<integer>\"\n        }\n      ]\n    }\n  ],\n  \"customer\": {\n    \"first_name\": \"<string>\",\n    \"last_name\": \"<string>\",\n    \"phone_number\": \"<string>\"\n  },\n  \"delivery_address\": \"<string>\",\n  \"special_instructions\": \"<string>\",\n  \"created_at\": \"<dateTime>\",\n  \"estimated_pickup_time\": \"<dateTime>\"\n}",
+                  "createdAt": "2026-07-28T01:32:43.000Z",
+                  "updatedAt": "2026-07-28T01:32:43.000Z",
+                  "uid": "35240-600cbc7e-26db-458b-bc63-112db5075f3e"
+                },
+                {
+                  "id": "a578a4ed-cb9f-4152-8276-586ba61ca0d5",
+                  "name": "Invalid update parameters",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"status\": \"cancelled\",\n  \"cancelled_items\": [\n    {\n      \"item_id\": \"<string>\",\n      \"reason\": \"<string>\"\n    },\n    {\n      \"item_id\": \"<string>\",\n      \"reason\": \"<string>\"\n    }\n  ],\n  \"substitutions\": [\n    {\n      \"original_item_id\": \"<string>\",\n      \"substitute_item_id\": \"<string>\",\n      \"substitute_item_name\": \"<string>\",\n      \"substitute_item_price\": \"<integer>\"\n    },\n    {\n      \"original_item_id\": \"<string>\",\n      \"substitute_item_id\": \"<string>\",\n      \"substitute_item_name\": \"<string>\",\n      \"substitute_item_price\": \"<integer>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/orders/:order_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        ":order_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "order_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:32:43.000Z",
+                  "updatedAt": "2026-07-28T01:32:43.000Z",
+                  "uid": "35240-a578a4ed-cb9f-4152-8276-586ba61ca0d5"
+                },
+                {
+                  "id": "b4c4bd5d-44fe-4938-bb32-06c1b710eb8c",
+                  "name": "Authentication failed",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"status\": \"cancelled\",\n  \"cancelled_items\": [\n    {\n      \"item_id\": \"<string>\",\n      \"reason\": \"<string>\"\n    },\n    {\n      \"item_id\": \"<string>\",\n      \"reason\": \"<string>\"\n    }\n  ],\n  \"substitutions\": [\n    {\n      \"original_item_id\": \"<string>\",\n      \"substitute_item_id\": \"<string>\",\n      \"substitute_item_name\": \"<string>\",\n      \"substitute_item_price\": \"<integer>\"\n    },\n    {\n      \"original_item_id\": \"<string>\",\n      \"substitute_item_id\": \"<string>\",\n      \"substitute_item_name\": \"<string>\",\n      \"substitute_item_price\": \"<integer>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/orders/:order_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        ":order_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "order_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:32:43.000Z",
+                  "updatedAt": "2026-07-28T01:32:43.000Z",
+                  "uid": "35240-b4c4bd5d-44fe-4938-bb32-06c1b710eb8c"
+                },
+                {
+                  "id": "4ab6acc2-7747-4a3d-b6a9-5b57f04d68f6",
+                  "name": "Order not found",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"status\": \"cancelled\",\n  \"cancelled_items\": [\n    {\n      \"item_id\": \"<string>\",\n      \"reason\": \"<string>\"\n    },\n    {\n      \"item_id\": \"<string>\",\n      \"reason\": \"<string>\"\n    }\n  ],\n  \"substitutions\": [\n    {\n      \"original_item_id\": \"<string>\",\n      \"substitute_item_id\": \"<string>\",\n      \"substitute_item_name\": \"<string>\",\n      \"substitute_item_price\": \"<integer>\"\n    },\n    {\n      \"original_item_id\": \"<string>\",\n      \"substitute_item_id\": \"<string>\",\n      \"substitute_item_name\": \"<string>\",\n      \"substitute_item_price\": \"<integer>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/orders/:order_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "orders",
+                        ":order_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "order_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:32:43.000Z",
+                  "updatedAt": "2026-07-28T01:32:43.000Z",
+                  "uid": "35240-4ab6acc2-7747-4a3d-b6a9-5b57f04d68f6"
+                }
+              ],
+              "createdAt": "2026-07-28T01:32:43.000Z",
+              "updatedAt": "2026-07-28T01:32:43.000Z",
+              "uid": "35240-c9cddf34-f412-49cb-9350-04e63f7bf95e"
+            }
+          ],
+          "id": "7dc3f5fe-4112-4b44-8069-cb46f5bc641f",
+          "createdAt": "2026-07-28T01:32:43.000Z",
+          "updatedAt": "2026-07-28T01:32:43.000Z",
+          "uid": "35240-7dc3f5fe-4112-4b44-8069-cb46f5bc641f"
+        }
+      ],
+      "id": "e6e9b376-86cf-4115-bf2c-fb9fb7a82f79",
+      "createdAt": "2026-07-28T01:32:43.000Z",
+      "updatedAt": "2026-07-28T01:32:43.000Z",
+      "uid": "35240-e6e9b376-86cf-4115-bf2c-fb9fb7a82f79"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://openapi.doordash.com/drive/v1"
+    }
+  ]
+}

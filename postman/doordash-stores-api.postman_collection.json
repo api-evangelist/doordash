@@ -1,0 +1,1566 @@
+{
+  "info": {
+    "_postman_id": "e17b55eb-1011-412e-88ed-825d1e25c8c6",
+    "name": "DoorDash Drive Classic Addresses Stores API",
+    "description": "The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.\n\nContact Support:\n Name: DoorDash Developer Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:32:46.000Z",
+    "updatedAt": "2026-07-28T01:32:47.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-e17b55eb-1011-412e-88ed-825d1e25c8c6"
+  },
+  "item": [
+    {
+      "name": "businesses",
+      "item": [
+        {
+          "name": "{external_business_id}",
+          "item": [
+            {
+              "name": "stores",
+              "item": [
+                {
+                  "name": "{external_store_id}",
+                  "item": [
+                    {
+                      "name": "DoorDash Get Store Details",
+                      "id": "1d27d875-0013-469c-a144-2e2da44a162e",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/businesses/:external_business_id/stores/:external_store_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "businesses",
+                            ":external_business_id",
+                            "stores",
+                            ":external_store_id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "9aaf95cd-9903-4e86-8294-159414581348",
+                              "key": "external_business_id",
+                              "value": "<string>",
+                              "description": "(Required) The unique external identifier for the business."
+                            },
+                            {
+                              "id": "0601d6e2-5a8b-40fe-aeaf-2ab79bb2f852",
+                              "key": "external_store_id",
+                              "value": "<string>",
+                              "description": "(Required) The unique external identifier for the store."
+                            }
+                          ]
+                        },
+                        "description": "Retrieves the details of a specific store within a business."
+                      },
+                      "response": [
+                        {
+                          "id": "3b6d48e9-ab97-4f78-bf91-25d1b27e392b",
+                          "name": "Store details retrieved successfully",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/businesses/:external_business_id/stores/:external_store_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "businesses",
+                                ":external_business_id",
+                                "stores",
+                                ":external_store_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "external_business_id"
+                                },
+                                {
+                                  "key": "external_store_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"external_business_id\": \"<string>\",\n  \"external_store_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"phone_number\": \"<string>\",\n  \"address\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:32:47.000Z",
+                          "updatedAt": "2026-07-28T01:32:47.000Z",
+                          "uid": "35240-3b6d48e9-ab97-4f78-bf91-25d1b27e392b"
+                        },
+                        {
+                          "id": "6a53829c-6415-4fd5-bbf5-25cc05497da4",
+                          "name": "Authentication failed",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/businesses/:external_business_id/stores/:external_store_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "businesses",
+                                ":external_business_id",
+                                "stores",
+                                ":external_store_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "external_business_id"
+                                },
+                                {
+                                  "key": "external_store_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+                          "createdAt": "2026-07-28T01:32:47.000Z",
+                          "updatedAt": "2026-07-28T01:32:47.000Z",
+                          "uid": "35240-6a53829c-6415-4fd5-bbf5-25cc05497da4"
+                        },
+                        {
+                          "id": "2b2f11f6-4446-456f-b1de-37d76d34112e",
+                          "name": "Store or business not found",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/businesses/:external_business_id/stores/:external_store_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "businesses",
+                                ":external_business_id",
+                                "stores",
+                                ":external_store_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "external_business_id"
+                                },
+                                {
+                                  "key": "external_store_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+                          "createdAt": "2026-07-28T01:32:47.000Z",
+                          "updatedAt": "2026-07-28T01:32:47.000Z",
+                          "uid": "35240-2b2f11f6-4446-456f-b1de-37d76d34112e"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:32:47.000Z",
+                      "updatedAt": "2026-07-28T01:32:47.000Z",
+                      "uid": "35240-1d27d875-0013-469c-a144-2e2da44a162e"
+                    },
+                    {
+                      "name": "DoorDash Update a Store",
+                      "id": "d4e8934d-2ac6-4045-9dea-d84516ab34eb",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"external_store_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"address\": \"<string>\",\n  \"phone_number\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/businesses/:external_business_id/stores/:external_store_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "businesses",
+                            ":external_business_id",
+                            "stores",
+                            ":external_store_id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "7927f797-cb0c-4681-81d3-03d233d54e2a",
+                              "key": "external_business_id",
+                              "value": "<string>",
+                              "description": "(Required) The unique external identifier for the business."
+                            },
+                            {
+                              "id": "2baa56b3-fc9b-44a8-969c-afdde5a4ef64",
+                              "key": "external_store_id",
+                              "value": "<string>",
+                              "description": "(Required) The unique external identifier for the store."
+                            }
+                          ]
+                        },
+                        "description": "Updates the attributes of an existing store location."
+                      },
+                      "response": [
+                        {
+                          "id": "fa730865-6320-428e-bcdf-eb42d6833b13",
+                          "name": "Store updated successfully",
+                          "originalRequest": {
+                            "method": "PATCH",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"external_store_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"address\": \"<string>\",\n  \"phone_number\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/businesses/:external_business_id/stores/:external_store_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "businesses",
+                                ":external_business_id",
+                                "stores",
+                                ":external_store_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "external_business_id"
+                                },
+                                {
+                                  "key": "external_store_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"external_business_id\": \"<string>\",\n  \"external_store_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"phone_number\": \"<string>\",\n  \"address\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:32:47.000Z",
+                          "updatedAt": "2026-07-28T01:32:47.000Z",
+                          "uid": "35240-fa730865-6320-428e-bcdf-eb42d6833b13"
+                        },
+                        {
+                          "id": "38a2ed58-c927-4fdf-acbe-8ee2d17571a3",
+                          "name": "Invalid request parameters",
+                          "originalRequest": {
+                            "method": "PATCH",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"external_store_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"address\": \"<string>\",\n  \"phone_number\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/businesses/:external_business_id/stores/:external_store_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "businesses",
+                                ":external_business_id",
+                                "stores",
+                                ":external_store_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "external_business_id"
+                                },
+                                {
+                                  "key": "external_store_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+                          "createdAt": "2026-07-28T01:32:47.000Z",
+                          "updatedAt": "2026-07-28T01:32:47.000Z",
+                          "uid": "35240-38a2ed58-c927-4fdf-acbe-8ee2d17571a3"
+                        },
+                        {
+                          "id": "027d432d-ee1e-4f7a-b374-8a8732cca179",
+                          "name": "Authentication failed",
+                          "originalRequest": {
+                            "method": "PATCH",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"external_store_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"address\": \"<string>\",\n  \"phone_number\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/businesses/:external_business_id/stores/:external_store_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "businesses",
+                                ":external_business_id",
+                                "stores",
+                                ":external_store_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "external_business_id"
+                                },
+                                {
+                                  "key": "external_store_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+                          "createdAt": "2026-07-28T01:32:47.000Z",
+                          "updatedAt": "2026-07-28T01:32:47.000Z",
+                          "uid": "35240-027d432d-ee1e-4f7a-b374-8a8732cca179"
+                        },
+                        {
+                          "id": "8c33f398-ce58-4fa3-a697-f9c8b08941f0",
+                          "name": "Store or business not found",
+                          "originalRequest": {
+                            "method": "PATCH",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"external_store_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"address\": \"<string>\",\n  \"phone_number\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/businesses/:external_business_id/stores/:external_store_id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "businesses",
+                                ":external_business_id",
+                                "stores",
+                                ":external_store_id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "external_business_id"
+                                },
+                                {
+                                  "key": "external_store_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+                          "createdAt": "2026-07-28T01:32:47.000Z",
+                          "updatedAt": "2026-07-28T01:32:47.000Z",
+                          "uid": "35240-8c33f398-ce58-4fa3-a697-f9c8b08941f0"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:32:47.000Z",
+                      "updatedAt": "2026-07-28T01:32:47.000Z",
+                      "uid": "35240-d4e8934d-2ac6-4045-9dea-d84516ab34eb"
+                    }
+                  ],
+                  "id": "a1a6c984-5c3e-45d2-879f-e1d1be353e4e",
+                  "createdAt": "2026-07-28T01:32:47.000Z",
+                  "updatedAt": "2026-07-28T01:32:47.000Z",
+                  "uid": "35240-a1a6c984-5c3e-45d2-879f-e1d1be353e4e"
+                },
+                {
+                  "name": "DoorDash Create a Store",
+                  "id": "9f1277af-ea23-425f-acdb-8950bd9e2fde",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"external_store_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"address\": \"<string>\",\n  \"phone_number\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/businesses/:external_business_id/stores",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "businesses",
+                        ":external_business_id",
+                        "stores"
+                      ],
+                      "variable": [
+                        {
+                          "id": "3ed11008-ada4-471b-8dec-75e67697bd65",
+                          "key": "external_business_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique external identifier for the business."
+                        }
+                      ]
+                    },
+                    "description": "Creates a new store location associated with a business."
+                  },
+                  "response": [
+                    {
+                      "id": "01d36a1c-6b45-4fa3-b364-5cad39361b52",
+                      "name": "Store created successfully",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"external_store_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"address\": \"<string>\",\n  \"phone_number\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/businesses/:external_business_id/stores",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "businesses",
+                            ":external_business_id",
+                            "stores"
+                          ],
+                          "variable": [
+                            {
+                              "key": "external_business_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"external_business_id\": \"<string>\",\n  \"external_store_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"phone_number\": \"<string>\",\n  \"address\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:47.000Z",
+                      "updatedAt": "2026-07-28T01:32:47.000Z",
+                      "uid": "35240-01d36a1c-6b45-4fa3-b364-5cad39361b52"
+                    },
+                    {
+                      "id": "0206fa70-ec10-42f8-823e-113be8e33e4b",
+                      "name": "Invalid request parameters",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"external_store_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"address\": \"<string>\",\n  \"phone_number\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/businesses/:external_business_id/stores",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "businesses",
+                            ":external_business_id",
+                            "stores"
+                          ],
+                          "variable": [
+                            {
+                              "key": "external_business_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:32:47.000Z",
+                      "updatedAt": "2026-07-28T01:32:47.000Z",
+                      "uid": "35240-0206fa70-ec10-42f8-823e-113be8e33e4b"
+                    },
+                    {
+                      "id": "fbeb459f-b36a-44a7-b4f4-82aeaedd914e",
+                      "name": "Authentication failed",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"external_store_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"address\": \"<string>\",\n  \"phone_number\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/businesses/:external_business_id/stores",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "businesses",
+                            ":external_business_id",
+                            "stores"
+                          ],
+                          "variable": [
+                            {
+                              "key": "external_business_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:32:47.000Z",
+                      "updatedAt": "2026-07-28T01:32:47.000Z",
+                      "uid": "35240-fbeb459f-b36a-44a7-b4f4-82aeaedd914e"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:32:47.000Z",
+                  "updatedAt": "2026-07-28T01:32:47.000Z",
+                  "uid": "35240-9f1277af-ea23-425f-acdb-8950bd9e2fde"
+                }
+              ],
+              "id": "a38792ed-fd08-48bc-a894-f256e318491f",
+              "createdAt": "2026-07-28T01:32:47.000Z",
+              "updatedAt": "2026-07-28T01:32:47.000Z",
+              "uid": "35240-a38792ed-fd08-48bc-a894-f256e318491f"
+            }
+          ],
+          "id": "cc62d241-0b26-4724-9c14-a3d9032fe1f1",
+          "createdAt": "2026-07-28T01:32:47.000Z",
+          "updatedAt": "2026-07-28T01:32:47.000Z",
+          "uid": "35240-cc62d241-0b26-4724-9c14-a3d9032fe1f1"
+        }
+      ],
+      "id": "9bc0c3e9-4ce1-42f4-acf2-d4f150ca971c",
+      "createdAt": "2026-07-28T01:32:47.000Z",
+      "updatedAt": "2026-07-28T01:32:47.000Z",
+      "uid": "35240-9bc0c3e9-4ce1-42f4-acf2-d4f150ca971c"
+    },
+    {
+      "name": "stores",
+      "item": [
+        {
+          "name": "{merchant_supplied_id}",
+          "item": [
+            {
+              "name": "store_details",
+              "item": [
+                {
+                  "name": "DoorDash Get Store Details",
+                  "id": "e7349084-6257-4ae7-881b-9fba8b72b1d9",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/stores/:merchant_supplied_id/store_details",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "stores",
+                        ":merchant_supplied_id",
+                        "store_details"
+                      ],
+                      "variable": [
+                        {
+                          "id": "3951020a-e5bd-444f-a5d9-8da9a89d1f6c",
+                          "key": "merchant_supplied_id",
+                          "value": "<string>",
+                          "description": "(Required) The merchant-supplied identifier for the store."
+                        }
+                      ]
+                    },
+                    "description": "Retrieves live store-level information for a store that is set up on the integration."
+                  },
+                  "response": [
+                    {
+                      "id": "b8d1277f-6786-4913-aa86-e5b380e01d66",
+                      "name": "Store details retrieved successfully",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:merchant_supplied_id/store_details",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":merchant_supplied_id",
+                            "store_details"
+                          ],
+                          "variable": [
+                            {
+                              "key": "merchant_supplied_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"merchant_supplied_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"address\": \"<string>\",\n  \"phone_number\": \"<string>\",\n  \"is_active\": \"<boolean>\",\n  \"status\": \"open\"\n}",
+                      "createdAt": "2026-07-28T01:32:47.000Z",
+                      "updatedAt": "2026-07-28T01:32:47.000Z",
+                      "uid": "35240-b8d1277f-6786-4913-aa86-e5b380e01d66"
+                    },
+                    {
+                      "id": "6a018708-93dc-424f-9887-2f45592ef28f",
+                      "name": "Authentication failed",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:merchant_supplied_id/store_details",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":merchant_supplied_id",
+                            "store_details"
+                          ],
+                          "variable": [
+                            {
+                              "key": "merchant_supplied_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:47.000Z",
+                      "updatedAt": "2026-07-28T01:32:47.000Z",
+                      "uid": "35240-6a018708-93dc-424f-9887-2f45592ef28f"
+                    },
+                    {
+                      "id": "05957307-c25e-441a-adfc-66043a1d3309",
+                      "name": "Store not found",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:merchant_supplied_id/store_details",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":merchant_supplied_id",
+                            "store_details"
+                          ],
+                          "variable": [
+                            {
+                              "key": "merchant_supplied_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:47.000Z",
+                      "updatedAt": "2026-07-28T01:32:47.000Z",
+                      "uid": "35240-05957307-c25e-441a-adfc-66043a1d3309"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:32:47.000Z",
+                  "updatedAt": "2026-07-28T01:32:47.000Z",
+                  "uid": "35240-e7349084-6257-4ae7-881b-9fba8b72b1d9"
+                }
+              ],
+              "id": "09df08da-8301-4dbb-87b3-918183f9ad0f",
+              "createdAt": "2026-07-28T01:32:47.000Z",
+              "updatedAt": "2026-07-28T01:32:47.000Z",
+              "uid": "35240-09df08da-8301-4dbb-87b3-918183f9ad0f"
+            },
+            {
+              "name": "menu_details",
+              "item": [
+                {
+                  "name": "DoorDash Get Menu Details for a Store",
+                  "id": "855cfb07-8e43-464f-83ca-c041d113cb90",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/stores/:merchant_supplied_id/menu_details",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "stores",
+                        ":merchant_supplied_id",
+                        "menu_details"
+                      ],
+                      "variable": [
+                        {
+                          "id": "5fd653ce-4791-4506-99a6-dc91daa95fea",
+                          "key": "merchant_supplied_id",
+                          "value": "<string>",
+                          "description": "(Required) The merchant-supplied identifier for the store."
+                        }
+                      ]
+                    },
+                    "description": "Retrieves live menu-level information for a store that is set up on the integration."
+                  },
+                  "response": [
+                    {
+                      "id": "ab7a8049-f37c-40c6-9a72-d9d138f50dad",
+                      "name": "Menu details retrieved successfully",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:merchant_supplied_id/menu_details",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":merchant_supplied_id",
+                            "menu_details"
+                          ],
+                          "variable": [
+                            {
+                              "key": "merchant_supplied_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"store_id\": \"<string>\",\n  \"categories\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"items\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        }\n      ],\n      \"description\": \"<string>\",\n      \"sort_id\": \"<integer>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"items\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        }\n      ],\n      \"description\": \"<string>\",\n      \"sort_id\": \"<integer>\"\n    }\n  ],\n  \"last_updated\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-07-28T01:32:47.000Z",
+                      "updatedAt": "2026-07-28T01:32:47.000Z",
+                      "uid": "35240-ab7a8049-f37c-40c6-9a72-d9d138f50dad"
+                    },
+                    {
+                      "id": "ef140251-2011-4d02-afb9-8d8235bb3306",
+                      "name": "Authentication failed",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:merchant_supplied_id/menu_details",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":merchant_supplied_id",
+                            "menu_details"
+                          ],
+                          "variable": [
+                            {
+                              "key": "merchant_supplied_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:47.000Z",
+                      "updatedAt": "2026-07-28T01:32:47.000Z",
+                      "uid": "35240-ef140251-2011-4d02-afb9-8d8235bb3306"
+                    },
+                    {
+                      "id": "5f8672ab-6512-465a-8137-02831372c6d6",
+                      "name": "Store not found",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:merchant_supplied_id/menu_details",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":merchant_supplied_id",
+                            "menu_details"
+                          ],
+                          "variable": [
+                            {
+                              "key": "merchant_supplied_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:47.000Z",
+                      "updatedAt": "2026-07-28T01:32:47.000Z",
+                      "uid": "35240-5f8672ab-6512-465a-8137-02831372c6d6"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:32:47.000Z",
+                  "updatedAt": "2026-07-28T01:32:47.000Z",
+                  "uid": "35240-855cfb07-8e43-464f-83ca-c041d113cb90"
+                }
+              ],
+              "id": "3f99c9b5-ff50-4d5b-aa09-21b75e08dfad",
+              "createdAt": "2026-07-28T01:32:47.000Z",
+              "updatedAt": "2026-07-28T01:32:47.000Z",
+              "uid": "35240-3f99c9b5-ff50-4d5b-aa09-21b75e08dfad"
+            },
+            {
+              "name": "status",
+              "item": [
+                {
+                  "name": "DoorDash Update Store Status",
+                  "id": "17090944-376d-4ee8-80d7-39d0c2f9b79b",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"status\": \"temporarily_closed\",\n  \"reason\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/stores/:merchant_supplied_id/status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "stores",
+                        ":merchant_supplied_id",
+                        "status"
+                      ],
+                      "variable": [
+                        {
+                          "id": "029b8801-e6ff-410f-9292-cde255c1debc",
+                          "key": "merchant_supplied_id",
+                          "value": "<string>",
+                          "description": "(Required) The merchant-supplied identifier for the store."
+                        }
+                      ]
+                    },
+                    "description": "Updates the operational status of a store, such as opening or closing the store for orders on the DoorDash marketplace."
+                  },
+                  "response": [
+                    {
+                      "id": "58a94138-ac6a-43a9-861f-39932e7862b1",
+                      "name": "Store status updated successfully",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"status\": \"temporarily_closed\",\n  \"reason\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:merchant_supplied_id/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":merchant_supplied_id",
+                            "status"
+                          ],
+                          "variable": [
+                            {
+                              "key": "merchant_supplied_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:32:47.000Z",
+                      "updatedAt": "2026-07-28T01:32:47.000Z",
+                      "uid": "35240-58a94138-ac6a-43a9-861f-39932e7862b1"
+                    },
+                    {
+                      "id": "b34cc9ed-36f4-4564-bf84-3fe2fa40b800",
+                      "name": "Invalid request parameters",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"status\": \"temporarily_closed\",\n  \"reason\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:merchant_supplied_id/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":merchant_supplied_id",
+                            "status"
+                          ],
+                          "variable": [
+                            {
+                              "key": "merchant_supplied_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:47.000Z",
+                      "updatedAt": "2026-07-28T01:32:47.000Z",
+                      "uid": "35240-b34cc9ed-36f4-4564-bf84-3fe2fa40b800"
+                    },
+                    {
+                      "id": "a2c31b7b-7aed-4ebd-800f-83278adfb9a1",
+                      "name": "Authentication failed",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"status\": \"temporarily_closed\",\n  \"reason\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:merchant_supplied_id/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":merchant_supplied_id",
+                            "status"
+                          ],
+                          "variable": [
+                            {
+                              "key": "merchant_supplied_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:47.000Z",
+                      "updatedAt": "2026-07-28T01:32:47.000Z",
+                      "uid": "35240-a2c31b7b-7aed-4ebd-800f-83278adfb9a1"
+                    },
+                    {
+                      "id": "aace551e-9082-4781-9b57-6f62bdb84a1e",
+                      "name": "Store not found",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"status\": \"temporarily_closed\",\n  \"reason\": \"<string>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:merchant_supplied_id/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":merchant_supplied_id",
+                            "status"
+                          ],
+                          "variable": [
+                            {
+                              "key": "merchant_supplied_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:47.000Z",
+                      "updatedAt": "2026-07-28T01:32:47.000Z",
+                      "uid": "35240-aace551e-9082-4781-9b57-6f62bdb84a1e"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:32:47.000Z",
+                  "updatedAt": "2026-07-28T01:32:47.000Z",
+                  "uid": "35240-17090944-376d-4ee8-80d7-39d0c2f9b79b"
+                }
+              ],
+              "id": "3f9fdeb9-1b07-447b-bf38-4c33ed83a84d",
+              "createdAt": "2026-07-28T01:32:47.000Z",
+              "updatedAt": "2026-07-28T01:32:47.000Z",
+              "uid": "35240-3f9fdeb9-1b07-447b-bf38-4c33ed83a84d"
+            }
+          ],
+          "id": "d9cb1295-0890-4e64-b7e8-466076bcb376",
+          "createdAt": "2026-07-28T01:32:47.000Z",
+          "updatedAt": "2026-07-28T01:32:47.000Z",
+          "uid": "35240-d9cb1295-0890-4e64-b7e8-466076bcb376"
+        }
+      ],
+      "id": "d98d2709-fa3d-41a6-9ab4-9aa727a835b0",
+      "createdAt": "2026-07-28T01:32:47.000Z",
+      "updatedAt": "2026-07-28T01:32:47.000Z",
+      "uid": "35240-d98d2709-fa3d-41a6-9ab4-9aa727a835b0"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://openapi.doordash.com/drive/v1"
+    }
+  ]
+}

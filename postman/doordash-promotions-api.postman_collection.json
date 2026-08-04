@@ -1,0 +1,671 @@
+{
+  "info": {
+    "_postman_id": "b68556ae-0643-4e6c-a5f9-62ec9f50b627",
+    "name": "DoorDash Drive Classic Addresses Promotions API",
+    "description": "The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.\n\nContact Support:\n Name: DoorDash Developer Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:32:43.000Z",
+    "updatedAt": "2026-07-28T01:32:44.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-b68556ae-0643-4e6c-a5f9-62ec9f50b627"
+  },
+  "item": [
+    {
+      "name": "promotions",
+      "item": [
+        {
+          "name": "stores",
+          "item": [
+            {
+              "name": "{store_location_id}",
+              "item": [
+                {
+                  "name": "DoorDash Add Promotions for Items at a Store",
+                  "id": "494277ab-0909-4359-b09c-4e663ed5c474",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"promotions\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"promotional_price\": \"<integer>\",\n      \"start_date\": \"<dateTime>\",\n      \"end_date\": \"<dateTime>\",\n      \"description\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"promotional_price\": \"<integer>\",\n      \"start_date\": \"<dateTime>\",\n      \"end_date\": \"<dateTime>\",\n      \"description\": \"<string>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/promotions/stores/:store_location_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "promotions",
+                        "stores",
+                        ":store_location_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "4494276e-6d20-445a-869d-8d0d27822bce",
+                          "key": "store_location_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier for the store location."
+                        }
+                      ]
+                    },
+                    "description": "Adds item-level promotions for items at a specific store location. Promotions allow partners to set promotional pricing for their items on the DoorDash platform."
+                  },
+                  "response": [
+                    {
+                      "id": "5da2d56c-45e4-4fb0-bdbd-50cffdaa4eff",
+                      "name": "Promotions created successfully",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"promotions\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"promotional_price\": \"<integer>\",\n      \"start_date\": \"<dateTime>\",\n      \"end_date\": \"<dateTime>\",\n      \"description\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"promotional_price\": \"<integer>\",\n      \"start_date\": \"<dateTime>\",\n      \"end_date\": \"<dateTime>\",\n      \"description\": \"<string>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/promotions/stores/:store_location_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "promotions",
+                            "stores",
+                            ":store_location_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "store_location_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"status\": \"<string>\",\n  \"promotions_processed\": \"<integer>\",\n  \"errors\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"message\": \"<string>\",\n      \"code\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"message\": \"<string>\",\n      \"code\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:32:44.000Z",
+                      "updatedAt": "2026-07-28T01:32:44.000Z",
+                      "uid": "35240-5da2d56c-45e4-4fb0-bdbd-50cffdaa4eff"
+                    },
+                    {
+                      "id": "07b75546-dad0-4689-8072-329ff4517a08",
+                      "name": "Invalid promotion data",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"promotions\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"promotional_price\": \"<integer>\",\n      \"start_date\": \"<dateTime>\",\n      \"end_date\": \"<dateTime>\",\n      \"description\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"promotional_price\": \"<integer>\",\n      \"start_date\": \"<dateTime>\",\n      \"end_date\": \"<dateTime>\",\n      \"description\": \"<string>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/promotions/stores/:store_location_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "promotions",
+                            "stores",
+                            ":store_location_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "store_location_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:44.000Z",
+                      "updatedAt": "2026-07-28T01:32:44.000Z",
+                      "uid": "35240-07b75546-dad0-4689-8072-329ff4517a08"
+                    },
+                    {
+                      "id": "13d44ee9-09b1-457d-ba35-a41b0f74fbcc",
+                      "name": "Authentication failed",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"promotions\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"promotional_price\": \"<integer>\",\n      \"start_date\": \"<dateTime>\",\n      \"end_date\": \"<dateTime>\",\n      \"description\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"promotional_price\": \"<integer>\",\n      \"start_date\": \"<dateTime>\",\n      \"end_date\": \"<dateTime>\",\n      \"description\": \"<string>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/promotions/stores/:store_location_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "promotions",
+                            "stores",
+                            ":store_location_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "store_location_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:44.000Z",
+                      "updatedAt": "2026-07-28T01:32:44.000Z",
+                      "uid": "35240-13d44ee9-09b1-457d-ba35-a41b0f74fbcc"
+                    },
+                    {
+                      "id": "54d10a45-572a-4638-9536-2c3188c4f62a",
+                      "name": "Store not found",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"promotions\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"promotional_price\": \"<integer>\",\n      \"start_date\": \"<dateTime>\",\n      \"end_date\": \"<dateTime>\",\n      \"description\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"promotional_price\": \"<integer>\",\n      \"start_date\": \"<dateTime>\",\n      \"end_date\": \"<dateTime>\",\n      \"description\": \"<string>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/promotions/stores/:store_location_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "promotions",
+                            "stores",
+                            ":store_location_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "store_location_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:44.000Z",
+                      "updatedAt": "2026-07-28T01:32:44.000Z",
+                      "uid": "35240-54d10a45-572a-4638-9536-2c3188c4f62a"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:32:44.000Z",
+                  "updatedAt": "2026-07-28T01:32:44.000Z",
+                  "uid": "35240-494277ab-0909-4359-b09c-4e663ed5c474"
+                },
+                {
+                  "name": "DoorDash Update Promotions for Items at a Store",
+                  "id": "d0cdf120-cb96-473c-a18b-cbce9ad43db3",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"promotions\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"promotional_price\": \"<integer>\",\n      \"start_date\": \"<dateTime>\",\n      \"end_date\": \"<dateTime>\",\n      \"description\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"promotional_price\": \"<integer>\",\n      \"start_date\": \"<dateTime>\",\n      \"end_date\": \"<dateTime>\",\n      \"description\": \"<string>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/promotions/stores/:store_location_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "promotions",
+                        "stores",
+                        ":store_location_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "c46545f8-a8bc-4a9e-8503-e67bfd0856cf",
+                          "key": "store_location_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier for the store location."
+                        }
+                      ]
+                    },
+                    "description": "Updates existing item-level promotions at a specific store location."
+                  },
+                  "response": [
+                    {
+                      "id": "428c5a89-c47d-47ee-95a5-9f004cfd4b27",
+                      "name": "Promotions updated successfully",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"promotions\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"promotional_price\": \"<integer>\",\n      \"start_date\": \"<dateTime>\",\n      \"end_date\": \"<dateTime>\",\n      \"description\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"promotional_price\": \"<integer>\",\n      \"start_date\": \"<dateTime>\",\n      \"end_date\": \"<dateTime>\",\n      \"description\": \"<string>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/promotions/stores/:store_location_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "promotions",
+                            "stores",
+                            ":store_location_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "store_location_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"status\": \"<string>\",\n  \"promotions_processed\": \"<integer>\",\n  \"errors\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"message\": \"<string>\",\n      \"code\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"message\": \"<string>\",\n      \"code\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:32:44.000Z",
+                      "updatedAt": "2026-07-28T01:32:44.000Z",
+                      "uid": "35240-428c5a89-c47d-47ee-95a5-9f004cfd4b27"
+                    },
+                    {
+                      "id": "d103d66c-e147-4f1e-a332-9a4ad501e306",
+                      "name": "Invalid promotion data",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"promotions\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"promotional_price\": \"<integer>\",\n      \"start_date\": \"<dateTime>\",\n      \"end_date\": \"<dateTime>\",\n      \"description\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"promotional_price\": \"<integer>\",\n      \"start_date\": \"<dateTime>\",\n      \"end_date\": \"<dateTime>\",\n      \"description\": \"<string>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/promotions/stores/:store_location_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "promotions",
+                            "stores",
+                            ":store_location_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "store_location_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:44.000Z",
+                      "updatedAt": "2026-07-28T01:32:44.000Z",
+                      "uid": "35240-d103d66c-e147-4f1e-a332-9a4ad501e306"
+                    },
+                    {
+                      "id": "4bcadcc7-2eeb-4990-824f-9b7fd5230091",
+                      "name": "Authentication failed",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"promotions\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"promotional_price\": \"<integer>\",\n      \"start_date\": \"<dateTime>\",\n      \"end_date\": \"<dateTime>\",\n      \"description\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"promotional_price\": \"<integer>\",\n      \"start_date\": \"<dateTime>\",\n      \"end_date\": \"<dateTime>\",\n      \"description\": \"<string>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/promotions/stores/:store_location_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "promotions",
+                            "stores",
+                            ":store_location_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "store_location_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:44.000Z",
+                      "updatedAt": "2026-07-28T01:32:44.000Z",
+                      "uid": "35240-4bcadcc7-2eeb-4990-824f-9b7fd5230091"
+                    },
+                    {
+                      "id": "3f883d69-3606-422f-83e3-b352c966a63c",
+                      "name": "Store not found",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"promotions\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"promotional_price\": \"<integer>\",\n      \"start_date\": \"<dateTime>\",\n      \"end_date\": \"<dateTime>\",\n      \"description\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"promotional_price\": \"<integer>\",\n      \"start_date\": \"<dateTime>\",\n      \"end_date\": \"<dateTime>\",\n      \"description\": \"<string>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/promotions/stores/:store_location_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "promotions",
+                            "stores",
+                            ":store_location_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "store_location_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:44.000Z",
+                      "updatedAt": "2026-07-28T01:32:44.000Z",
+                      "uid": "35240-3f883d69-3606-422f-83e3-b352c966a63c"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:32:44.000Z",
+                  "updatedAt": "2026-07-28T01:32:44.000Z",
+                  "uid": "35240-d0cdf120-cb96-473c-a18b-cbce9ad43db3"
+                }
+              ],
+              "id": "4310e084-234e-4157-80fa-b350c3701a1c",
+              "createdAt": "2026-07-28T01:32:44.000Z",
+              "updatedAt": "2026-07-28T01:32:44.000Z",
+              "uid": "35240-4310e084-234e-4157-80fa-b350c3701a1c"
+            }
+          ],
+          "id": "6017345b-8ad1-45bb-9faa-ef5a75e8f2bc",
+          "createdAt": "2026-07-28T01:32:44.000Z",
+          "updatedAt": "2026-07-28T01:32:44.000Z",
+          "uid": "35240-6017345b-8ad1-45bb-9faa-ef5a75e8f2bc"
+        }
+      ],
+      "id": "57f81d14-868f-44ee-9719-c7238514d777",
+      "createdAt": "2026-07-28T01:32:44.000Z",
+      "updatedAt": "2026-07-28T01:32:44.000Z",
+      "uid": "35240-57f81d14-868f-44ee-9719-c7238514d777"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://openapi.doordash.com/drive/v1"
+    }
+  ]
+}

@@ -1,0 +1,862 @@
+{
+  "info": {
+    "_postman_id": "e647c18f-a7a6-440b-9b36-4b42bcab3b1d",
+    "name": "DoorDash Drive Classic Addresses Businesses API",
+    "description": "The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.\n\nContact Support:\n Name: DoorDash Developer Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:32:36.000Z",
+    "updatedAt": "2026-07-28T01:32:36.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-e647c18f-a7a6-440b-9b36-4b42bcab3b1d"
+  },
+  "item": [
+    {
+      "name": "businesses",
+      "item": [
+        {
+          "name": "{external_business_id}",
+          "item": [
+            {
+              "name": "DoorDash Get Business Details",
+              "id": "4b0cd615-94c5-4345-8791-cefa61dad052",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/businesses/:external_business_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "businesses",
+                    ":external_business_id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "2d2bb50f-8e33-4a1d-ac77-82b730bde540",
+                      "key": "external_business_id",
+                      "value": "<string>",
+                      "description": "(Required) The unique external identifier for the business."
+                    }
+                  ]
+                },
+                "description": "Retrieves the details of a specific business by its external ID."
+              },
+              "response": [
+                {
+                  "id": "14a1843f-30b4-4d9c-a31a-ef3b63914f5e",
+                  "name": "Business details retrieved successfully",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/businesses/:external_business_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "businesses",
+                        ":external_business_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "external_business_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"external_business_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:32:36.000Z",
+                  "updatedAt": "2026-07-28T01:32:36.000Z",
+                  "uid": "35240-14a1843f-30b4-4d9c-a31a-ef3b63914f5e"
+                },
+                {
+                  "id": "04e86e55-7f01-48c5-be64-7c0a50e4bd36",
+                  "name": "Authentication failed",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/businesses/:external_business_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "businesses",
+                        ":external_business_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "external_business_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:32:36.000Z",
+                  "updatedAt": "2026-07-28T01:32:36.000Z",
+                  "uid": "35240-04e86e55-7f01-48c5-be64-7c0a50e4bd36"
+                },
+                {
+                  "id": "4d1d89de-9fc9-4f4e-9ac1-a12b47b925d3",
+                  "name": "Business not found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/businesses/:external_business_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "businesses",
+                        ":external_business_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "external_business_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:32:36.000Z",
+                  "updatedAt": "2026-07-28T01:32:36.000Z",
+                  "uid": "35240-4d1d89de-9fc9-4f4e-9ac1-a12b47b925d3"
+                }
+              ],
+              "createdAt": "2026-07-28T01:32:36.000Z",
+              "updatedAt": "2026-07-28T01:32:36.000Z",
+              "uid": "35240-4b0cd615-94c5-4345-8791-cefa61dad052"
+            },
+            {
+              "name": "DoorDash Update a Business",
+              "id": "ddeab2ea-8c04-48dd-a8a7-c0cb216fc378",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_business_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/businesses/:external_business_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "businesses",
+                    ":external_business_id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "4dd28904-f496-453d-a17d-8e2b770554ca",
+                      "key": "external_business_id",
+                      "value": "<string>",
+                      "description": "(Required) The unique external identifier for the business."
+                    }
+                  ]
+                },
+                "description": "Updates the attributes of an existing business entity."
+              },
+              "response": [
+                {
+                  "id": "d03946d3-da94-4a9e-91c9-cc80a146b998",
+                  "name": "Business updated successfully",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"external_business_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/businesses/:external_business_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "businesses",
+                        ":external_business_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "external_business_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"external_business_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:32:36.000Z",
+                  "updatedAt": "2026-07-28T01:32:36.000Z",
+                  "uid": "35240-d03946d3-da94-4a9e-91c9-cc80a146b998"
+                },
+                {
+                  "id": "84aff05a-2622-4fdb-aba4-3cde9a9eea6e",
+                  "name": "Invalid request parameters",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"external_business_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/businesses/:external_business_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "businesses",
+                        ":external_business_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "external_business_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:32:36.000Z",
+                  "updatedAt": "2026-07-28T01:32:36.000Z",
+                  "uid": "35240-84aff05a-2622-4fdb-aba4-3cde9a9eea6e"
+                },
+                {
+                  "id": "9efe1122-dda7-499a-a663-4661d8daf575",
+                  "name": "Authentication failed",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"external_business_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/businesses/:external_business_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "businesses",
+                        ":external_business_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "external_business_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:32:36.000Z",
+                  "updatedAt": "2026-07-28T01:32:36.000Z",
+                  "uid": "35240-9efe1122-dda7-499a-a663-4661d8daf575"
+                },
+                {
+                  "id": "5b05e599-853d-4c8c-8054-de6fb8b41273",
+                  "name": "Business not found",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"external_business_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/businesses/:external_business_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "businesses",
+                        ":external_business_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "external_business_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:32:36.000Z",
+                  "updatedAt": "2026-07-28T01:32:36.000Z",
+                  "uid": "35240-5b05e599-853d-4c8c-8054-de6fb8b41273"
+                }
+              ],
+              "createdAt": "2026-07-28T01:32:36.000Z",
+              "updatedAt": "2026-07-28T01:32:36.000Z",
+              "uid": "35240-ddeab2ea-8c04-48dd-a8a7-c0cb216fc378"
+            }
+          ],
+          "id": "691d6848-b5eb-42bd-8987-0cdfc8bdaae2",
+          "createdAt": "2026-07-28T01:32:36.000Z",
+          "updatedAt": "2026-07-28T01:32:36.000Z",
+          "uid": "35240-691d6848-b5eb-42bd-8987-0cdfc8bdaae2"
+        },
+        {
+          "name": "DoorDash List Businesses",
+          "id": "75a7e3ca-2f6b-42dc-a0c2-3748a12e9073",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/businesses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "businesses"
+              ]
+            },
+            "description": "Lists all businesses owned by the authenticated developer account."
+          },
+          "response": [
+            {
+              "id": "107e48af-5311-45b4-bac7-2ea6743225fc",
+              "name": "List of businesses retrieved successfully",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/businesses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "businesses"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "[\n  {\n    \"external_business_id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"description\": \"<string>\"\n  },\n  {\n    \"external_business_id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"description\": \"<string>\"\n  }\n]",
+              "createdAt": "2026-07-28T01:32:36.000Z",
+              "updatedAt": "2026-07-28T01:32:36.000Z",
+              "uid": "35240-107e48af-5311-45b4-bac7-2ea6743225fc"
+            },
+            {
+              "id": "41568e9b-f0f2-4ec0-8392-64eed282622a",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/businesses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "businesses"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T01:32:36.000Z",
+              "updatedAt": "2026-07-28T01:32:36.000Z",
+              "uid": "35240-41568e9b-f0f2-4ec0-8392-64eed282622a"
+            }
+          ],
+          "createdAt": "2026-07-28T01:32:36.000Z",
+          "updatedAt": "2026-07-28T01:32:36.000Z",
+          "uid": "35240-75a7e3ca-2f6b-42dc-a0c2-3748a12e9073"
+        },
+        {
+          "name": "DoorDash Create a Business",
+          "id": "91e0cfea-0a15-4966-94ad-ce5071e3b736",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"external_business_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/businesses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "businesses"
+              ]
+            },
+            "description": "Creates a new Drive business entity representing a legal entity or owner on the DoorDash platform."
+          },
+          "response": [
+            {
+              "id": "312cd0a0-3774-46eb-b31c-1aa3f222b677",
+              "name": "Business created successfully",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_business_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/businesses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "businesses"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"external_business_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:32:36.000Z",
+              "updatedAt": "2026-07-28T01:32:36.000Z",
+              "uid": "35240-312cd0a0-3774-46eb-b31c-1aa3f222b677"
+            },
+            {
+              "id": "c3fd9360-e8e0-4391-9b23-912d1df10215",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_business_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/businesses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "businesses"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T01:32:36.000Z",
+              "updatedAt": "2026-07-28T01:32:36.000Z",
+              "uid": "35240-c3fd9360-e8e0-4391-9b23-912d1df10215"
+            },
+            {
+              "id": "e1ebc92a-c635-430f-9bce-3102c083b012",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_business_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/businesses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "businesses"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T01:32:36.000Z",
+              "updatedAt": "2026-07-28T01:32:36.000Z",
+              "uid": "35240-e1ebc92a-c635-430f-9bce-3102c083b012"
+            }
+          ],
+          "createdAt": "2026-07-28T01:32:36.000Z",
+          "updatedAt": "2026-07-28T01:32:36.000Z",
+          "uid": "35240-91e0cfea-0a15-4966-94ad-ce5071e3b736"
+        }
+      ],
+      "id": "a3f8537c-0ea8-457e-879f-f0916fd8a39c",
+      "createdAt": "2026-07-28T01:32:36.000Z",
+      "updatedAt": "2026-07-28T01:32:36.000Z",
+      "uid": "35240-a3f8537c-0ea8-457e-879f-f0916fd8a39c"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://openapi.doordash.com/drive/v1"
+    }
+  ]
+}

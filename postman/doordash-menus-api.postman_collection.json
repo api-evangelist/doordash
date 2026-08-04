@@ -1,0 +1,563 @@
+{
+  "info": {
+    "_postman_id": "376378ab-7ffd-4473-a768-4d3f8b34ab27",
+    "name": "DoorDash Drive Classic Addresses Menus API",
+    "description": "The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.\n\nContact Support:\n Name: DoorDash Developer Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:32:41.000Z",
+    "updatedAt": "2026-07-28T01:32:42.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-376378ab-7ffd-4473-a768-4d3f8b34ab27"
+  },
+  "item": [
+    {
+      "name": "menus",
+      "item": [
+        {
+          "name": "{menu_id}",
+          "item": [
+            {
+              "name": "DoorDash Update a Menu",
+              "id": "d4cbf242-43d5-4bbd-9231-8451725ab5cd",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"store_id\": \"<string>\",\n  \"categories\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"items\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        }\n      ],\n      \"description\": \"<string>\",\n      \"sort_id\": \"<integer>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"items\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        }\n      ],\n      \"description\": \"<string>\",\n      \"sort_id\": \"<integer>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/menus/:menu_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "menus",
+                    ":menu_id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "479941a2-98b2-486c-a12f-10f7cf9c5bdb",
+                      "key": "menu_id",
+                      "value": "<string>",
+                      "description": "(Required) The unique identifier for the menu."
+                    }
+                  ]
+                },
+                "description": "Updates an existing menu. Uses the same validation as menu creation. Processing is asynchronous with webhook notification upon completion."
+              },
+              "response": [
+                {
+                  "id": "c64ced19-3bca-407b-83dc-fe36a402f6d8",
+                  "name": "Menu update request accepted",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"store_id\": \"<string>\",\n  \"categories\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"items\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        }\n      ],\n      \"description\": \"<string>\",\n      \"sort_id\": \"<integer>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"items\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        }\n      ],\n      \"description\": \"<string>\",\n      \"sort_id\": \"<integer>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/menus/:menu_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "menus",
+                        ":menu_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "menu_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"menu_id\": \"<string>\",\n  \"status\": \"completed\"\n}",
+                  "createdAt": "2026-07-28T01:32:42.000Z",
+                  "updatedAt": "2026-07-28T01:32:42.000Z",
+                  "uid": "35240-c64ced19-3bca-407b-83dc-fe36a402f6d8"
+                },
+                {
+                  "id": "5b4ea069-aee0-4bb0-80a9-438942823ad1",
+                  "name": "Invalid menu data",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"store_id\": \"<string>\",\n  \"categories\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"items\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        }\n      ],\n      \"description\": \"<string>\",\n      \"sort_id\": \"<integer>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"items\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        }\n      ],\n      \"description\": \"<string>\",\n      \"sort_id\": \"<integer>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/menus/:menu_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "menus",
+                        ":menu_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "menu_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:32:42.000Z",
+                  "updatedAt": "2026-07-28T01:32:42.000Z",
+                  "uid": "35240-5b4ea069-aee0-4bb0-80a9-438942823ad1"
+                },
+                {
+                  "id": "0c9ce8fe-73c4-4f3b-af3d-c0ce850390cb",
+                  "name": "Authentication failed",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"store_id\": \"<string>\",\n  \"categories\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"items\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        }\n      ],\n      \"description\": \"<string>\",\n      \"sort_id\": \"<integer>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"items\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        }\n      ],\n      \"description\": \"<string>\",\n      \"sort_id\": \"<integer>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/menus/:menu_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "menus",
+                        ":menu_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "menu_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:32:42.000Z",
+                  "updatedAt": "2026-07-28T01:32:42.000Z",
+                  "uid": "35240-0c9ce8fe-73c4-4f3b-af3d-c0ce850390cb"
+                },
+                {
+                  "id": "2ecbf14d-4bcb-4da1-b4a2-39002c4044ed",
+                  "name": "Menu not found",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"store_id\": \"<string>\",\n  \"categories\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"items\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        }\n      ],\n      \"description\": \"<string>\",\n      \"sort_id\": \"<integer>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"items\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        }\n      ],\n      \"description\": \"<string>\",\n      \"sort_id\": \"<integer>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/menus/:menu_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "menus",
+                        ":menu_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "menu_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:32:42.000Z",
+                  "updatedAt": "2026-07-28T01:32:42.000Z",
+                  "uid": "35240-2ecbf14d-4bcb-4da1-b4a2-39002c4044ed"
+                }
+              ],
+              "createdAt": "2026-07-28T01:32:42.000Z",
+              "updatedAt": "2026-07-28T01:32:42.000Z",
+              "uid": "35240-d4cbf242-43d5-4bbd-9231-8451725ab5cd"
+            }
+          ],
+          "id": "44ce8539-4e4c-4a40-a52d-ba25c0e2f59f",
+          "createdAt": "2026-07-28T01:32:42.000Z",
+          "updatedAt": "2026-07-28T01:32:42.000Z",
+          "uid": "35240-44ce8539-4e4c-4a40-a52d-ba25c0e2f59f"
+        },
+        {
+          "name": "DoorDash Create a Menu",
+          "id": "c6ceb69b-cda1-4986-a123-8fe52364240f",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"store_id\": \"<string>\",\n  \"categories\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"items\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        }\n      ],\n      \"description\": \"<string>\",\n      \"sort_id\": \"<integer>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"items\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        }\n      ],\n      \"description\": \"<string>\",\n      \"sort_id\": \"<integer>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/menus",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "menus"
+              ]
+            },
+            "description": "Uploads a complete menu for a store. Menu creation is processed asynchronously. A successful response indicates the request was received. A webhook notification is sent when processing completes or fails."
+          },
+          "response": [
+            {
+              "id": "3e1d599a-d363-41af-9f48-c2bb9c3e242e",
+              "name": "Menu creation request accepted",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"store_id\": \"<string>\",\n  \"categories\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"items\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        }\n      ],\n      \"description\": \"<string>\",\n      \"sort_id\": \"<integer>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"items\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        }\n      ],\n      \"description\": \"<string>\",\n      \"sort_id\": \"<integer>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/menus",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "menus"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"menu_id\": \"<string>\",\n  \"status\": \"completed\"\n}",
+              "createdAt": "2026-07-28T01:32:42.000Z",
+              "updatedAt": "2026-07-28T01:32:42.000Z",
+              "uid": "35240-3e1d599a-d363-41af-9f48-c2bb9c3e242e"
+            },
+            {
+              "id": "d1148b65-5b7e-4d61-90db-6a6feccc61e6",
+              "name": "Invalid menu data",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"store_id\": \"<string>\",\n  \"categories\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"items\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        }\n      ],\n      \"description\": \"<string>\",\n      \"sort_id\": \"<integer>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"items\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        }\n      ],\n      \"description\": \"<string>\",\n      \"sort_id\": \"<integer>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/menus",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "menus"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:32:42.000Z",
+              "updatedAt": "2026-07-28T01:32:42.000Z",
+              "uid": "35240-d1148b65-5b7e-4d61-90db-6a6feccc61e6"
+            },
+            {
+              "id": "0b1c0029-0b8b-4dbb-a2d0-824d41216284",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"store_id\": \"<string>\",\n  \"categories\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"items\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        }\n      ],\n      \"description\": \"<string>\",\n      \"sort_id\": \"<integer>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"items\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"price\": \"<integer>\",\n          \"description\": \"<string>\",\n          \"image_url\": \"<uri>\",\n          \"is_active\": \"<boolean>\",\n          \"sort_id\": \"<integer>\",\n          \"option_groups\": [\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"name\": \"<string>\",\n              \"options\": [\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                },\n                {\n                  \"id\": \"<string>\",\n                  \"name\": \"<string>\",\n                  \"price\": \"<integer>\",\n                  \"is_active\": \"<boolean>\"\n                }\n              ],\n              \"min_selections\": \"<integer>\",\n              \"max_selections\": \"<integer>\"\n            }\n          ]\n        }\n      ],\n      \"description\": \"<string>\",\n      \"sort_id\": \"<integer>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/menus",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "menus"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:32:42.000Z",
+              "updatedAt": "2026-07-28T01:32:42.000Z",
+              "uid": "35240-0b1c0029-0b8b-4dbb-a2d0-824d41216284"
+            }
+          ],
+          "createdAt": "2026-07-28T01:32:42.000Z",
+          "updatedAt": "2026-07-28T01:32:42.000Z",
+          "uid": "35240-c6ceb69b-cda1-4986-a123-8fe52364240f"
+        }
+      ],
+      "id": "f3a5da29-bca8-47fa-b146-0e5bda2a2f93",
+      "createdAt": "2026-07-28T01:32:42.000Z",
+      "updatedAt": "2026-07-28T01:32:42.000Z",
+      "uid": "35240-f3a5da29-bca8-47fa-b146-0e5bda2a2f93"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://openapi.doordash.com/drive/v1"
+    }
+  ]
+}

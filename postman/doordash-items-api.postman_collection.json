@@ -1,0 +1,355 @@
+{
+  "info": {
+    "_postman_id": "ff259b1d-9092-47f8-9db9-93ab73b5442a",
+    "name": "DoorDash Drive Classic Addresses Items API",
+    "description": "The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.\n\nContact Support:\n Name: DoorDash Developer Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:32:41.000Z",
+    "updatedAt": "2026-07-28T01:32:41.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-ff259b1d-9092-47f8-9db9-93ab73b5442a"
+  },
+  "item": [
+    {
+      "name": "stores",
+      "item": [
+        {
+          "name": "{merchant_supplied_id}",
+          "item": [
+            {
+              "name": "item_status",
+              "item": [
+                {
+                  "name": "DoorDash Update Item Availability",
+                  "id": "bdd86bd1-0f2a-43fe-9368-aaa093e28285",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"items\": [\n    {\n      \"id\": \"<string>\",\n      \"is_available\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"is_available\": \"<boolean>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/stores/:merchant_supplied_id/item_status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "stores",
+                        ":merchant_supplied_id",
+                        "item_status"
+                      ],
+                      "variable": [
+                        {
+                          "id": "0f0bb7a2-9d38-41e3-8f2a-19204a6d3f53",
+                          "key": "merchant_supplied_id",
+                          "value": "<string>",
+                          "description": "(Required) The merchant-supplied identifier for the store."
+                        }
+                      ]
+                    },
+                    "description": "Updates the availability status of items and item options for a store. Used to 86 items (mark as unavailable) or stock them back in when they become available to order."
+                  },
+                  "response": [
+                    {
+                      "id": "d7f3546a-e6b2-46c0-a41c-51abebc2972e",
+                      "name": "Item status updated successfully",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"items\": [\n    {\n      \"id\": \"<string>\",\n      \"is_available\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"is_available\": \"<boolean>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:merchant_supplied_id/item_status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":merchant_supplied_id",
+                            "item_status"
+                          ],
+                          "variable": [
+                            {
+                              "key": "merchant_supplied_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:32:41.000Z",
+                      "updatedAt": "2026-07-28T01:32:41.000Z",
+                      "uid": "35240-d7f3546a-e6b2-46c0-a41c-51abebc2972e"
+                    },
+                    {
+                      "id": "f818a891-ecb6-416e-9bb4-12c2d309b3f2",
+                      "name": "Invalid request parameters",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"items\": [\n    {\n      \"id\": \"<string>\",\n      \"is_available\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"is_available\": \"<boolean>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:merchant_supplied_id/item_status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":merchant_supplied_id",
+                            "item_status"
+                          ],
+                          "variable": [
+                            {
+                              "key": "merchant_supplied_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:41.000Z",
+                      "updatedAt": "2026-07-28T01:32:41.000Z",
+                      "uid": "35240-f818a891-ecb6-416e-9bb4-12c2d309b3f2"
+                    },
+                    {
+                      "id": "bac36358-a72b-41bc-9c3b-5fc5301223a6",
+                      "name": "Authentication failed",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"items\": [\n    {\n      \"id\": \"<string>\",\n      \"is_available\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"is_available\": \"<boolean>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:merchant_supplied_id/item_status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":merchant_supplied_id",
+                            "item_status"
+                          ],
+                          "variable": [
+                            {
+                              "key": "merchant_supplied_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:41.000Z",
+                      "updatedAt": "2026-07-28T01:32:41.000Z",
+                      "uid": "35240-bac36358-a72b-41bc-9c3b-5fc5301223a6"
+                    },
+                    {
+                      "id": "616e0fd7-f2eb-4aec-a8c1-bbae2c69d23d",
+                      "name": "Store not found",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"items\": [\n    {\n      \"id\": \"<string>\",\n      \"is_available\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"is_available\": \"<boolean>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:merchant_supplied_id/item_status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":merchant_supplied_id",
+                            "item_status"
+                          ],
+                          "variable": [
+                            {
+                              "key": "merchant_supplied_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:41.000Z",
+                      "updatedAt": "2026-07-28T01:32:41.000Z",
+                      "uid": "35240-616e0fd7-f2eb-4aec-a8c1-bbae2c69d23d"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:32:41.000Z",
+                  "updatedAt": "2026-07-28T01:32:41.000Z",
+                  "uid": "35240-bdd86bd1-0f2a-43fe-9368-aaa093e28285"
+                }
+              ],
+              "id": "5f0648ec-aed9-4754-94b4-5fdb6d28b9ab",
+              "createdAt": "2026-07-28T01:32:41.000Z",
+              "updatedAt": "2026-07-28T01:32:41.000Z",
+              "uid": "35240-5f0648ec-aed9-4754-94b4-5fdb6d28b9ab"
+            }
+          ],
+          "id": "52321655-f2db-410b-a170-94f75473b8df",
+          "createdAt": "2026-07-28T01:32:41.000Z",
+          "updatedAt": "2026-07-28T01:32:41.000Z",
+          "uid": "35240-52321655-f2db-410b-a170-94f75473b8df"
+        }
+      ],
+      "id": "baa2c869-35eb-4638-94fe-c52df16d9f69",
+      "createdAt": "2026-07-28T01:32:41.000Z",
+      "updatedAt": "2026-07-28T01:32:41.000Z",
+      "uid": "35240-baa2c869-35eb-4638-94fe-c52df16d9f69"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://openapi.doordash.com/drive/v1"
+    }
+  ]
+}

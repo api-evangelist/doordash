@@ -1,0 +1,577 @@
+{
+  "info": {
+    "_postman_id": "e531fe93-e453-4cde-b576-9397176a4b04",
+    "name": "DoorDash Drive Classic Addresses Quotes API",
+    "description": "The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.\n\nContact Support:\n Name: DoorDash Developer Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:32:44.000Z",
+    "updatedAt": "2026-07-28T01:32:45.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-e531fe93-e453-4cde-b576-9397176a4b04"
+  },
+  "item": [
+    {
+      "name": "quotes",
+      "item": [
+        {
+          "name": "{external_delivery_id}",
+          "item": [
+            {
+              "name": "accept",
+              "item": [
+                {
+                  "name": "DoorDash Accept a Delivery Quote",
+                  "id": "2a89956e-3cc1-4186-a093-3535885e364a",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"tip\": \"<integer>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/quotes/:external_delivery_id/accept",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "quotes",
+                        ":external_delivery_id",
+                        "accept"
+                      ],
+                      "variable": [
+                        {
+                          "id": "7b2f3b99-8732-47e3-a378-2f57e1be33c3",
+                          "key": "external_delivery_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique external delivery ID provided when creating the delivery or quote."
+                        }
+                      ]
+                    },
+                    "description": "Accepts a previously created delivery quote and initiates the delivery process. The quote must be accepted within 5 minutes of being created. You can optionally edit the tip amount when accepting."
+                  },
+                  "response": [
+                    {
+                      "id": "0b6b6673-4279-459d-90b1-d27f6747d4be",
+                      "name": "Quote accepted and delivery initiated",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"tip\": \"<integer>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/quotes/:external_delivery_id/accept",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "quotes",
+                            ":external_delivery_id",
+                            "accept"
+                          ],
+                          "variable": [
+                            {
+                              "key": "external_delivery_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"external_delivery_id\": \"<string>\",\n  \"delivery_status\": \"delivered\",\n  \"fee\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"tip\": \"<integer>\",\n  \"order_value\": \"<integer>\",\n  \"pickup_address\": \"<string>\",\n  \"pickup_business_name\": \"<string>\",\n  \"pickup_phone_number\": \"<string>\",\n  \"pickup_instructions\": \"<string>\",\n  \"pickup_time_estimated\": \"<dateTime>\",\n  \"pickup_time_actual\": \"<dateTime>\",\n  \"dropoff_address\": \"<string>\",\n  \"dropoff_business_name\": \"<string>\",\n  \"dropoff_phone_number\": \"<string>\",\n  \"dropoff_instructions\": \"<string>\",\n  \"dropoff_time_estimated\": \"<dateTime>\",\n  \"dropoff_time_actual\": \"<dateTime>\",\n  \"dropoff_contact_given_name\": \"<string>\",\n  \"dropoff_contact_family_name\": \"<string>\",\n  \"dasher_id\": \"<integer>\",\n  \"dasher_name\": \"<string>\",\n  \"dasher_phone_number\": \"<string>\",\n  \"dasher_location\": {\n    \"lat\": \"<double>\",\n    \"lng\": \"<double>\"\n  },\n  \"tracking_url\": \"<uri>\",\n  \"contains_alcohol\": \"<boolean>\",\n  \"force_batch_id\": \"<string>\",\n  \"created_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-07-28T01:32:45.000Z",
+                      "updatedAt": "2026-07-28T01:32:45.000Z",
+                      "uid": "35240-0b6b6673-4279-459d-90b1-d27f6747d4be"
+                    },
+                    {
+                      "id": "f598461d-0834-4ce4-b5e4-2f07582b7521",
+                      "name": "Quote expired or invalid",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"tip\": \"<integer>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/quotes/:external_delivery_id/accept",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "quotes",
+                            ":external_delivery_id",
+                            "accept"
+                          ],
+                          "variable": [
+                            {
+                              "key": "external_delivery_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ],\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:45.000Z",
+                      "updatedAt": "2026-07-28T01:32:45.000Z",
+                      "uid": "35240-f598461d-0834-4ce4-b5e4-2f07582b7521"
+                    },
+                    {
+                      "id": "cdb74e25-adec-4880-8cab-1ec8b5009a7c",
+                      "name": "Authentication failed",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"tip\": \"<integer>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/quotes/:external_delivery_id/accept",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "quotes",
+                            ":external_delivery_id",
+                            "accept"
+                          ],
+                          "variable": [
+                            {
+                              "key": "external_delivery_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ],\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:45.000Z",
+                      "updatedAt": "2026-07-28T01:32:45.000Z",
+                      "uid": "35240-cdb74e25-adec-4880-8cab-1ec8b5009a7c"
+                    },
+                    {
+                      "id": "1a0ff047-28b6-4cb9-b809-f8f21094a39c",
+                      "name": "Quote not found",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"tip\": \"<integer>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/quotes/:external_delivery_id/accept",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "quotes",
+                            ":external_delivery_id",
+                            "accept"
+                          ],
+                          "variable": [
+                            {
+                              "key": "external_delivery_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ],\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:45.000Z",
+                      "updatedAt": "2026-07-28T01:32:45.000Z",
+                      "uid": "35240-1a0ff047-28b6-4cb9-b809-f8f21094a39c"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:32:45.000Z",
+                  "updatedAt": "2026-07-28T01:32:45.000Z",
+                  "uid": "35240-2a89956e-3cc1-4186-a093-3535885e364a"
+                }
+              ],
+              "id": "2741ff67-df31-47c3-a4e3-e51f41610007",
+              "createdAt": "2026-07-28T01:32:45.000Z",
+              "updatedAt": "2026-07-28T01:32:45.000Z",
+              "uid": "35240-2741ff67-df31-47c3-a4e3-e51f41610007"
+            }
+          ],
+          "id": "f730355e-d523-4eff-8945-69642713ca4d",
+          "createdAt": "2026-07-28T01:32:45.000Z",
+          "updatedAt": "2026-07-28T01:32:45.000Z",
+          "uid": "35240-f730355e-d523-4eff-8945-69642713ca4d"
+        },
+        {
+          "name": "DoorDash Create a Delivery Quote",
+          "id": "f00b4750-7498-453a-a31a-a10e1826aec5",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"external_delivery_id\": \"<string>\",\n  \"pickup_address\": \"<string>\",\n  \"dropoff_address\": \"<string>\",\n  \"pickup_business_name\": \"<string>\",\n  \"pickup_phone_number\": \"<string>\",\n  \"dropoff_business_name\": \"<string>\",\n  \"dropoff_phone_number\": \"<string>\",\n  \"order_value\": \"<integer>\",\n  \"pickup_time\": \"<dateTime>\",\n  \"dropoff_time\": \"<dateTime>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/quotes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "quotes"
+              ]
+            },
+            "description": "Creates a delivery quote to confirm that a delivery is serviceable by DoorDash and returns the estimated fee and delivery time. Quotes are valid for 5 minutes after creation."
+          },
+          "response": [
+            {
+              "id": "d62da03e-ea0a-4724-a891-091dc8e65b9b",
+              "name": "Delivery quote created successfully",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_delivery_id\": \"<string>\",\n  \"pickup_address\": \"<string>\",\n  \"dropoff_address\": \"<string>\",\n  \"pickup_business_name\": \"<string>\",\n  \"pickup_phone_number\": \"<string>\",\n  \"dropoff_business_name\": \"<string>\",\n  \"dropoff_phone_number\": \"<string>\",\n  \"order_value\": \"<integer>\",\n  \"pickup_time\": \"<dateTime>\",\n  \"dropoff_time\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/quotes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "quotes"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"external_delivery_id\": \"<string>\",\n  \"fee\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"delivery_time\": \"<dateTime>\",\n  \"pickup_time\": \"<dateTime>\",\n  \"expires_at\": \"<dateTime>\"\n}",
+              "createdAt": "2026-07-28T01:32:45.000Z",
+              "updatedAt": "2026-07-28T01:32:45.000Z",
+              "uid": "35240-d62da03e-ea0a-4724-a891-091dc8e65b9b"
+            },
+            {
+              "id": "ea847349-9340-4b97-9a18-0c0255fa2b54",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_delivery_id\": \"<string>\",\n  \"pickup_address\": \"<string>\",\n  \"dropoff_address\": \"<string>\",\n  \"pickup_business_name\": \"<string>\",\n  \"pickup_phone_number\": \"<string>\",\n  \"dropoff_business_name\": \"<string>\",\n  \"dropoff_phone_number\": \"<string>\",\n  \"order_value\": \"<integer>\",\n  \"pickup_time\": \"<dateTime>\",\n  \"dropoff_time\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/quotes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "quotes"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ],\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:32:45.000Z",
+              "updatedAt": "2026-07-28T01:32:45.000Z",
+              "uid": "35240-ea847349-9340-4b97-9a18-0c0255fa2b54"
+            },
+            {
+              "id": "a4426372-90a6-41bf-ba9d-f5e4169959dc",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_delivery_id\": \"<string>\",\n  \"pickup_address\": \"<string>\",\n  \"dropoff_address\": \"<string>\",\n  \"pickup_business_name\": \"<string>\",\n  \"pickup_phone_number\": \"<string>\",\n  \"dropoff_business_name\": \"<string>\",\n  \"dropoff_phone_number\": \"<string>\",\n  \"order_value\": \"<integer>\",\n  \"pickup_time\": \"<dateTime>\",\n  \"dropoff_time\": \"<dateTime>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/quotes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "quotes"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ],\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:32:45.000Z",
+              "updatedAt": "2026-07-28T01:32:45.000Z",
+              "uid": "35240-a4426372-90a6-41bf-ba9d-f5e4169959dc"
+            }
+          ],
+          "createdAt": "2026-07-28T01:32:45.000Z",
+          "updatedAt": "2026-07-28T01:32:45.000Z",
+          "uid": "35240-f00b4750-7498-453a-a31a-a10e1826aec5"
+        }
+      ],
+      "id": "c7d18ce7-a19a-4441-af53-244203cf4b8e",
+      "createdAt": "2026-07-28T01:32:45.000Z",
+      "updatedAt": "2026-07-28T01:32:45.000Z",
+      "uid": "35240-c7d18ce7-a19a-4441-af53-244203cf4b8e"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://openapi.doordash.com/drive/v1"
+    }
+  ]
+}

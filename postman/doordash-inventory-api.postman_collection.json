@@ -1,0 +1,671 @@
+{
+  "info": {
+    "_postman_id": "0eab4441-d6d6-4d78-a6ab-741c2cc5c25a",
+    "name": "DoorDash Drive Classic Addresses Inventory API",
+    "description": "The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.\n\nContact Support:\n Name: DoorDash Developer Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:32:40.000Z",
+    "updatedAt": "2026-07-28T01:32:40.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-0eab4441-d6d6-4d78-a6ab-741c2cc5c25a"
+  },
+  "item": [
+    {
+      "name": "stores",
+      "item": [
+        {
+          "name": "{store_location_id}",
+          "item": [
+            {
+              "name": "items",
+              "item": [
+                {
+                  "name": "DoorDash Add Inventory and Pricing for Items at a Store",
+                  "id": "d0240b49-4b6a-446e-b268-62690532f321",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"items\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"price\": \"<integer>\",\n      \"in_stock\": \"<boolean>\",\n      \"quantity_on_hand\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"price\": \"<integer>\",\n      \"in_stock\": \"<boolean>\",\n      \"quantity_on_hand\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/stores/:store_location_id/items",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "stores",
+                        ":store_location_id",
+                        "items"
+                      ],
+                      "variable": [
+                        {
+                          "id": "33d6c485-8150-42e7-b74f-54ec9dae9562",
+                          "key": "store_location_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier for the store location."
+                        }
+                      ]
+                    },
+                    "description": "Adds inventory, pricing, and other in-store attributes for items at a specific store location. Items must already exist in the catalog before inventory can be set at the store level."
+                  },
+                  "response": [
+                    {
+                      "id": "58d15bef-ea77-4a40-9dff-d7369da40287",
+                      "name": "Store inventory created successfully",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"items\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"price\": \"<integer>\",\n      \"in_stock\": \"<boolean>\",\n      \"quantity_on_hand\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"price\": \"<integer>\",\n      \"in_stock\": \"<boolean>\",\n      \"quantity_on_hand\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:store_location_id/items",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":store_location_id",
+                            "items"
+                          ],
+                          "variable": [
+                            {
+                              "key": "store_location_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"status\": \"<string>\",\n  \"items_processed\": \"<integer>\",\n  \"errors\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"message\": \"<string>\",\n      \"code\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"message\": \"<string>\",\n      \"code\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:32:40.000Z",
+                      "updatedAt": "2026-07-28T01:32:40.000Z",
+                      "uid": "35240-58d15bef-ea77-4a40-9dff-d7369da40287"
+                    },
+                    {
+                      "id": "f20b7d64-af24-4c01-b024-e08edee9fd5a",
+                      "name": "Invalid inventory data",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"items\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"price\": \"<integer>\",\n      \"in_stock\": \"<boolean>\",\n      \"quantity_on_hand\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"price\": \"<integer>\",\n      \"in_stock\": \"<boolean>\",\n      \"quantity_on_hand\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:store_location_id/items",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":store_location_id",
+                            "items"
+                          ],
+                          "variable": [
+                            {
+                              "key": "store_location_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:40.000Z",
+                      "updatedAt": "2026-07-28T01:32:40.000Z",
+                      "uid": "35240-f20b7d64-af24-4c01-b024-e08edee9fd5a"
+                    },
+                    {
+                      "id": "677157d2-c2cf-4463-aba4-ac70adc4cf9d",
+                      "name": "Authentication failed",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"items\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"price\": \"<integer>\",\n      \"in_stock\": \"<boolean>\",\n      \"quantity_on_hand\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"price\": \"<integer>\",\n      \"in_stock\": \"<boolean>\",\n      \"quantity_on_hand\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:store_location_id/items",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":store_location_id",
+                            "items"
+                          ],
+                          "variable": [
+                            {
+                              "key": "store_location_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:40.000Z",
+                      "updatedAt": "2026-07-28T01:32:40.000Z",
+                      "uid": "35240-677157d2-c2cf-4463-aba4-ac70adc4cf9d"
+                    },
+                    {
+                      "id": "1c19c520-15b4-42ac-82ed-4ee1d6f838b7",
+                      "name": "Store not found",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"items\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"price\": \"<integer>\",\n      \"in_stock\": \"<boolean>\",\n      \"quantity_on_hand\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"price\": \"<integer>\",\n      \"in_stock\": \"<boolean>\",\n      \"quantity_on_hand\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:store_location_id/items",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":store_location_id",
+                            "items"
+                          ],
+                          "variable": [
+                            {
+                              "key": "store_location_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:40.000Z",
+                      "updatedAt": "2026-07-28T01:32:40.000Z",
+                      "uid": "35240-1c19c520-15b4-42ac-82ed-4ee1d6f838b7"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:32:40.000Z",
+                  "updatedAt": "2026-07-28T01:32:40.000Z",
+                  "uid": "35240-d0240b49-4b6a-446e-b268-62690532f321"
+                },
+                {
+                  "name": "DoorDash Update Inventory and Pricing for Items at a Store",
+                  "id": "7fef394a-113d-43c8-b46b-369d39fa00e3",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"items\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"price\": \"<integer>\",\n      \"in_stock\": \"<boolean>\",\n      \"quantity_on_hand\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"price\": \"<integer>\",\n      \"in_stock\": \"<boolean>\",\n      \"quantity_on_hand\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/stores/:store_location_id/items",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "stores",
+                        ":store_location_id",
+                        "items"
+                      ],
+                      "variable": [
+                        {
+                          "id": "93953fac-48fb-49cd-b481-acac4362a404",
+                          "key": "store_location_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier for the store location."
+                        }
+                      ]
+                    },
+                    "description": "Updates inventory, pricing, and other in-store attributes for existing items at a specific store location. Changes are typically reflected within minutes."
+                  },
+                  "response": [
+                    {
+                      "id": "4db8b8dc-0d95-4e40-a4cc-2a00d50aeee8",
+                      "name": "Store inventory updated successfully",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"items\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"price\": \"<integer>\",\n      \"in_stock\": \"<boolean>\",\n      \"quantity_on_hand\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"price\": \"<integer>\",\n      \"in_stock\": \"<boolean>\",\n      \"quantity_on_hand\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:store_location_id/items",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":store_location_id",
+                            "items"
+                          ],
+                          "variable": [
+                            {
+                              "key": "store_location_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"status\": \"<string>\",\n  \"items_processed\": \"<integer>\",\n  \"errors\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"message\": \"<string>\",\n      \"code\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"message\": \"<string>\",\n      \"code\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:32:40.000Z",
+                      "updatedAt": "2026-07-28T01:32:40.000Z",
+                      "uid": "35240-4db8b8dc-0d95-4e40-a4cc-2a00d50aeee8"
+                    },
+                    {
+                      "id": "f653ed51-95eb-4319-b0be-100a86b756e8",
+                      "name": "Invalid inventory data",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"items\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"price\": \"<integer>\",\n      \"in_stock\": \"<boolean>\",\n      \"quantity_on_hand\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"price\": \"<integer>\",\n      \"in_stock\": \"<boolean>\",\n      \"quantity_on_hand\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:store_location_id/items",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":store_location_id",
+                            "items"
+                          ],
+                          "variable": [
+                            {
+                              "key": "store_location_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:40.000Z",
+                      "updatedAt": "2026-07-28T01:32:40.000Z",
+                      "uid": "35240-f653ed51-95eb-4319-b0be-100a86b756e8"
+                    },
+                    {
+                      "id": "cb972ede-c179-4940-809f-ac8c56e688c6",
+                      "name": "Authentication failed",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"items\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"price\": \"<integer>\",\n      \"in_stock\": \"<boolean>\",\n      \"quantity_on_hand\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"price\": \"<integer>\",\n      \"in_stock\": \"<boolean>\",\n      \"quantity_on_hand\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:store_location_id/items",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":store_location_id",
+                            "items"
+                          ],
+                          "variable": [
+                            {
+                              "key": "store_location_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:40.000Z",
+                      "updatedAt": "2026-07-28T01:32:40.000Z",
+                      "uid": "35240-cb972ede-c179-4940-809f-ac8c56e688c6"
+                    },
+                    {
+                      "id": "cf1a50f6-e3df-4891-bdd3-653e38e672dd",
+                      "name": "Store not found",
+                      "originalRequest": {
+                        "method": "PATCH",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"items\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"price\": \"<integer>\",\n      \"in_stock\": \"<boolean>\",\n      \"quantity_on_hand\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"price\": \"<integer>\",\n      \"in_stock\": \"<boolean>\",\n      \"quantity_on_hand\": \"<integer>\",\n      \"aisle\": \"<string>\",\n      \"shelf\": \"<string>\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/stores/:store_location_id/items",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "stores",
+                            ":store_location_id",
+                            "items"
+                          ],
+                          "variable": [
+                            {
+                              "key": "store_location_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:40.000Z",
+                      "updatedAt": "2026-07-28T01:32:40.000Z",
+                      "uid": "35240-cf1a50f6-e3df-4891-bdd3-653e38e672dd"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:32:40.000Z",
+                  "updatedAt": "2026-07-28T01:32:40.000Z",
+                  "uid": "35240-7fef394a-113d-43c8-b46b-369d39fa00e3"
+                }
+              ],
+              "id": "bc661b73-2f06-4d24-a140-2638aa99961f",
+              "createdAt": "2026-07-28T01:32:40.000Z",
+              "updatedAt": "2026-07-28T01:32:40.000Z",
+              "uid": "35240-bc661b73-2f06-4d24-a140-2638aa99961f"
+            }
+          ],
+          "id": "f031639d-49da-4f34-8568-e196af9a8c43",
+          "createdAt": "2026-07-28T01:32:40.000Z",
+          "updatedAt": "2026-07-28T01:32:40.000Z",
+          "uid": "35240-f031639d-49da-4f34-8568-e196af9a8c43"
+        }
+      ],
+      "id": "137116ef-67a2-4aa5-8bec-93488a327a58",
+      "createdAt": "2026-07-28T01:32:40.000Z",
+      "updatedAt": "2026-07-28T01:32:40.000Z",
+      "uid": "35240-137116ef-67a2-4aa5-8bec-93488a327a58"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://openapi.doordash.com/drive/v1"
+    }
+  ]
+}

@@ -1,0 +1,458 @@
+{
+  "info": {
+    "_postman_id": "59ada7ee-f390-4bf7-b8be-6957384f8205",
+    "name": "DoorDash Drive Classic Addresses Reports API",
+    "description": "The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.\n\nContact Support:\n Name: DoorDash Developer Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:32:45.000Z",
+    "updatedAt": "2026-07-28T01:32:46.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-59ada7ee-f390-4bf7-b8be-6957384f8205"
+  },
+  "item": [
+    {
+      "name": "reports",
+      "item": [
+        {
+          "name": "{report_id}",
+          "item": [
+            {
+              "name": "reportlink",
+              "item": [
+                {
+                  "name": "DoorDash Get Report Download Link",
+                  "id": "61fbde66-f9a8-430e-bb53-6a6dd52d1921",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/reports/:report_id/reportlink",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "reports",
+                        ":report_id",
+                        "reportlink"
+                      ],
+                      "variable": [
+                        {
+                          "id": "5cc05edb-df79-48ec-a8dc-2574f93a5ea7",
+                          "key": "report_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier for the report, returned when the report request was created."
+                        }
+                      ]
+                    },
+                    "description": "Retrieves the status and download link for a previously requested report. When the report generation is complete, the status will be SUCCEEDED and a download link will be provided. The download link is temporary and should be used promptly."
+                  },
+                  "response": [
+                    {
+                      "id": "38f853fb-0e04-43ab-b497-ad34fff7a919",
+                      "name": "Report status and link retrieved",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/reports/:report_id/reportlink",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "reports",
+                            ":report_id",
+                            "reportlink"
+                          ],
+                          "variable": [
+                            {
+                              "key": "report_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"report_id\": \"<string>\",\n  \"status\": \"PENDING\",\n  \"download_url\": \"<uri>\",\n  \"report_type\": \"feedback\",\n  \"created_at\": \"<dateTime>\",\n  \"completed_at\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-07-28T01:32:46.000Z",
+                      "updatedAt": "2026-07-28T01:32:46.000Z",
+                      "uid": "35240-38f853fb-0e04-43ab-b497-ad34fff7a919"
+                    },
+                    {
+                      "id": "3e6b6621-4aae-4b5e-8d52-b65fc33841fd",
+                      "name": "Authentication failed",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/reports/:report_id/reportlink",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "reports",
+                            ":report_id",
+                            "reportlink"
+                          ],
+                          "variable": [
+                            {
+                              "key": "report_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:46.000Z",
+                      "updatedAt": "2026-07-28T01:32:46.000Z",
+                      "uid": "35240-3e6b6621-4aae-4b5e-8d52-b65fc33841fd"
+                    },
+                    {
+                      "id": "8fd749c7-2a38-40cb-b981-0211564cf31e",
+                      "name": "Report not found",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/reports/:report_id/reportlink",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "reports",
+                            ":report_id",
+                            "reportlink"
+                          ],
+                          "variable": [
+                            {
+                              "key": "report_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:32:46.000Z",
+                      "updatedAt": "2026-07-28T01:32:46.000Z",
+                      "uid": "35240-8fd749c7-2a38-40cb-b981-0211564cf31e"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:32:46.000Z",
+                  "updatedAt": "2026-07-28T01:32:46.000Z",
+                  "uid": "35240-61fbde66-f9a8-430e-bb53-6a6dd52d1921"
+                }
+              ],
+              "id": "96eafd85-255c-470d-b469-7123e5131ad9",
+              "createdAt": "2026-07-28T01:32:46.000Z",
+              "updatedAt": "2026-07-28T01:32:46.000Z",
+              "uid": "35240-96eafd85-255c-470d-b469-7123e5131ad9"
+            }
+          ],
+          "id": "b5c19f6e-1cc7-4c1c-99fd-6230bc15da9b",
+          "createdAt": "2026-07-28T01:32:46.000Z",
+          "updatedAt": "2026-07-28T01:32:46.000Z",
+          "uid": "35240-b5c19f6e-1cc7-4c1c-99fd-6230bc15da9b"
+        },
+        {
+          "name": "DoorDash Create a Report Request",
+          "id": "205c68ea-7046-4674-9ee9-187c7493f361",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"report_type\": \"menu\",\n  \"start_date\": \"<date>\",\n  \"end_date\": \"<date>\",\n  \"store_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reports",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reports"
+              ]
+            },
+            "description": "Submits a request to generate a report. Reports are processed asynchronously. A successful response returns a report ID that can be used to check the status and retrieve the download link. A webhook notification is sent when the report is ready."
+          },
+          "response": [
+            {
+              "id": "1c2fd6b2-6785-452b-935f-227dfd0b079f",
+              "name": "Report request accepted for processing",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"report_type\": \"menu\",\n  \"start_date\": \"<date>\",\n  \"end_date\": \"<date>\",\n  \"store_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/reports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reports"
+                  ]
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"report_id\": \"<string>\",\n  \"status\": \"PROCESSING\"\n}",
+              "createdAt": "2026-07-28T01:32:46.000Z",
+              "updatedAt": "2026-07-28T01:32:46.000Z",
+              "uid": "35240-1c2fd6b2-6785-452b-935f-227dfd0b079f"
+            },
+            {
+              "id": "08c0eaaf-6ef8-497c-ae6d-1cb823b8b715",
+              "name": "Invalid report parameters",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"report_type\": \"menu\",\n  \"start_date\": \"<date>\",\n  \"end_date\": \"<date>\",\n  \"store_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/reports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reports"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:32:46.000Z",
+              "updatedAt": "2026-07-28T01:32:46.000Z",
+              "uid": "35240-08c0eaaf-6ef8-497c-ae6d-1cb823b8b715"
+            },
+            {
+              "id": "c09379bc-14ff-471c-9ad4-110a1b5cda92",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"report_type\": \"menu\",\n  \"start_date\": \"<date>\",\n  \"end_date\": \"<date>\",\n  \"store_ids\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/reports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "reports"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:32:46.000Z",
+              "updatedAt": "2026-07-28T01:32:46.000Z",
+              "uid": "35240-c09379bc-14ff-471c-9ad4-110a1b5cda92"
+            }
+          ],
+          "createdAt": "2026-07-28T01:32:46.000Z",
+          "updatedAt": "2026-07-28T01:32:46.000Z",
+          "uid": "35240-205c68ea-7046-4674-9ee9-187c7493f361"
+        }
+      ],
+      "id": "13b1a492-3686-4472-8118-dbdc0f5ba034",
+      "createdAt": "2026-07-28T01:32:46.000Z",
+      "updatedAt": "2026-07-28T01:32:46.000Z",
+      "uid": "35240-13b1a492-3686-4472-8118-dbdc0f5ba034"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://openapi.doordash.com/drive/v1"
+    }
+  ]
+}

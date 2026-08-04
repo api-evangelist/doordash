@@ -1,0 +1,1428 @@
+{
+  "info": {
+    "_postman_id": "8bf59bc3-9811-4d36-8c05-0355cbe3d600",
+    "name": "DoorDash Drive Classic Addresses Deliveries API",
+    "description": "The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.\n\nContact Support:\n Name: DoorDash Developer Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:32:39.000Z",
+    "updatedAt": "2026-07-28T01:32:39.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-8bf59bc3-9811-4d36-8c05-0355cbe3d600"
+  },
+  "item": [
+    {
+      "name": "estimates",
+      "item": [
+        {
+          "name": "DoorDash Create a Delivery Estimate",
+          "id": "21ab5915-5b6b-4d8b-893c-2d5ef2f868d2",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pickup_address\": \"<string>\",\n  \"dropoff_address\": \"<string>\",\n  \"pickup_time\": \"<dateTime>\",\n  \"order_value\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/estimates",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "estimates"
+              ]
+            },
+            "description": "Requests time and fee estimates for a delivery. Can also be used to check if an area is serviced by DoorDash. Time values must be provided in UTC ISO-8601 format."
+          },
+          "response": [
+            {
+              "id": "49d470fc-083e-4935-95a3-f218b62cb44f",
+              "name": "Delivery estimate created successfully",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pickup_address\": \"<string>\",\n  \"dropoff_address\": \"<string>\",\n  \"pickup_time\": \"<dateTime>\",\n  \"order_value\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/estimates",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "estimates"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"fee\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"pickup_time\": \"<dateTime>\",\n  \"dropoff_time\": \"<dateTime>\",\n  \"delivery_duration\": \"<integer>\"\n}",
+              "createdAt": "2026-07-28T01:32:39.000Z",
+              "updatedAt": "2026-07-28T01:32:39.000Z",
+              "uid": "35240-49d470fc-083e-4935-95a3-f218b62cb44f"
+            },
+            {
+              "id": "3460f063-e802-4cbd-b687-74318744cf78",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pickup_address\": \"<string>\",\n  \"dropoff_address\": \"<string>\",\n  \"pickup_time\": \"<dateTime>\",\n  \"order_value\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/estimates",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "estimates"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T01:32:39.000Z",
+              "updatedAt": "2026-07-28T01:32:39.000Z",
+              "uid": "35240-3460f063-e802-4cbd-b687-74318744cf78"
+            },
+            {
+              "id": "27abafb2-990b-4a47-8d1d-fdc6a12647e0",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pickup_address\": \"<string>\",\n  \"dropoff_address\": \"<string>\",\n  \"pickup_time\": \"<dateTime>\",\n  \"order_value\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/estimates",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "estimates"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T01:32:39.000Z",
+              "updatedAt": "2026-07-28T01:32:39.000Z",
+              "uid": "35240-27abafb2-990b-4a47-8d1d-fdc6a12647e0"
+            }
+          ],
+          "createdAt": "2026-07-28T01:32:39.000Z",
+          "updatedAt": "2026-07-28T01:32:39.000Z",
+          "uid": "35240-21ab5915-5b6b-4d8b-893c-2d5ef2f868d2"
+        }
+      ],
+      "id": "e5714d4a-ad91-445e-a121-40edb00941cd",
+      "createdAt": "2026-07-28T01:32:39.000Z",
+      "updatedAt": "2026-07-28T01:32:39.000Z",
+      "uid": "35240-e5714d4a-ad91-445e-a121-40edb00941cd"
+    },
+    {
+      "name": "deliveries",
+      "item": [
+        {
+          "name": "{external_delivery_id}",
+          "item": [
+            {
+              "name": "cancel",
+              "item": [
+                {
+                  "name": "DoorDash Cancel a Delivery",
+                  "id": "f0632ce7-c900-43b7-bb6b-b790b34c0c7b",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/deliveries/:external_delivery_id/cancel",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "deliveries",
+                        ":external_delivery_id",
+                        "cancel"
+                      ],
+                      "variable": [
+                        {
+                          "id": "f8702519-b206-4f83-8641-73f37e8e3e59",
+                          "key": "external_delivery_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique external delivery ID provided when creating the delivery."
+                        }
+                      ]
+                    },
+                    "description": "Cancels an active delivery. Cancellation restrictions apply based on the current delivery status."
+                  },
+                  "response": [
+                    {
+                      "id": "b83fcb91-2c82-47cf-8924-21490355ed6a",
+                      "name": "Delivery cancelled successfully",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/deliveries/:external_delivery_id/cancel",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "deliveries",
+                            ":external_delivery_id",
+                            "cancel"
+                          ],
+                          "variable": [
+                            {
+                              "key": "external_delivery_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"external_delivery_id\": \"<string>\",\n  \"delivery_status\": \"created\",\n  \"fee\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"tip\": \"<integer>\",\n  \"pickup_address\": \"<string>\",\n  \"dropoff_address\": \"<string>\",\n  \"pickup_time_estimated\": \"<dateTime>\",\n  \"pickup_time_actual\": \"<dateTime>\",\n  \"dropoff_time_estimated\": \"<dateTime>\",\n  \"dropoff_time_actual\": \"<dateTime>\",\n  \"dasher_id\": \"<integer>\",\n  \"dasher_name\": \"<string>\",\n  \"tracking_url\": \"<uri>\",\n  \"created_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-07-28T01:32:39.000Z",
+                      "updatedAt": "2026-07-28T01:32:39.000Z",
+                      "uid": "35240-b83fcb91-2c82-47cf-8924-21490355ed6a"
+                    },
+                    {
+                      "id": "6c6ff271-22b3-416c-b92d-8fb818e26f73",
+                      "name": "Delivery cannot be cancelled in current state",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/deliveries/:external_delivery_id/cancel",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "deliveries",
+                            ":external_delivery_id",
+                            "cancel"
+                          ],
+                          "variable": [
+                            {
+                              "key": "external_delivery_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:32:39.000Z",
+                      "updatedAt": "2026-07-28T01:32:39.000Z",
+                      "uid": "35240-6c6ff271-22b3-416c-b92d-8fb818e26f73"
+                    },
+                    {
+                      "id": "94bdb823-e1b1-48f8-8f45-b7505358a5f2",
+                      "name": "Authentication failed",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/deliveries/:external_delivery_id/cancel",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "deliveries",
+                            ":external_delivery_id",
+                            "cancel"
+                          ],
+                          "variable": [
+                            {
+                              "key": "external_delivery_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:32:39.000Z",
+                      "updatedAt": "2026-07-28T01:32:39.000Z",
+                      "uid": "35240-94bdb823-e1b1-48f8-8f45-b7505358a5f2"
+                    },
+                    {
+                      "id": "63a66971-a31e-453e-841e-3392663d800d",
+                      "name": "Delivery not found",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/deliveries/:external_delivery_id/cancel",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "deliveries",
+                            ":external_delivery_id",
+                            "cancel"
+                          ],
+                          "variable": [
+                            {
+                              "key": "external_delivery_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:32:39.000Z",
+                      "updatedAt": "2026-07-28T01:32:39.000Z",
+                      "uid": "35240-63a66971-a31e-453e-841e-3392663d800d"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:32:39.000Z",
+                  "updatedAt": "2026-07-28T01:32:39.000Z",
+                  "uid": "35240-f0632ce7-c900-43b7-bb6b-b790b34c0c7b"
+                }
+              ],
+              "id": "9d18502d-18df-4025-b55d-dcd392727f6f",
+              "createdAt": "2026-07-28T01:32:39.000Z",
+              "updatedAt": "2026-07-28T01:32:39.000Z",
+              "uid": "35240-9d18502d-18df-4025-b55d-dcd392727f6f"
+            },
+            {
+              "name": "DoorDash Get Delivery Details",
+              "id": "b3108c63-0689-437d-ab59-2169209a7c50",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/deliveries/:external_delivery_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "deliveries",
+                    ":external_delivery_id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "cfb59d8d-084b-46a1-a861-ea32c84e4b0d",
+                      "key": "external_delivery_id",
+                      "value": "<string>",
+                      "description": "(Required) The unique external delivery ID provided when creating the delivery."
+                    }
+                  ]
+                },
+                "description": "Retrieves the current details and status of a delivery using the external delivery ID provided during creation."
+              },
+              "response": [
+                {
+                  "id": "c82ba0bf-719c-42e7-bb49-8a403c7128f0",
+                  "name": "Delivery details retrieved successfully",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/deliveries/:external_delivery_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "deliveries",
+                        ":external_delivery_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "external_delivery_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"external_delivery_id\": \"<string>\",\n  \"delivery_status\": \"created\",\n  \"fee\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"tip\": \"<integer>\",\n  \"pickup_address\": \"<string>\",\n  \"dropoff_address\": \"<string>\",\n  \"pickup_time_estimated\": \"<dateTime>\",\n  \"pickup_time_actual\": \"<dateTime>\",\n  \"dropoff_time_estimated\": \"<dateTime>\",\n  \"dropoff_time_actual\": \"<dateTime>\",\n  \"dasher_id\": \"<integer>\",\n  \"dasher_name\": \"<string>\",\n  \"tracking_url\": \"<uri>\",\n  \"created_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\"\n}",
+                  "createdAt": "2026-07-28T01:32:39.000Z",
+                  "updatedAt": "2026-07-28T01:32:39.000Z",
+                  "uid": "35240-c82ba0bf-719c-42e7-bb49-8a403c7128f0"
+                },
+                {
+                  "id": "4c6106fd-f960-4992-8dbf-cfdc527d1bf5",
+                  "name": "Authentication failed",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/deliveries/:external_delivery_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "deliveries",
+                        ":external_delivery_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "external_delivery_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:32:39.000Z",
+                  "updatedAt": "2026-07-28T01:32:39.000Z",
+                  "uid": "35240-4c6106fd-f960-4992-8dbf-cfdc527d1bf5"
+                },
+                {
+                  "id": "b36fad83-3780-4126-8db1-4678e891613d",
+                  "name": "Delivery not found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/deliveries/:external_delivery_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "deliveries",
+                        ":external_delivery_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "external_delivery_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:32:39.000Z",
+                  "updatedAt": "2026-07-28T01:32:39.000Z",
+                  "uid": "35240-b36fad83-3780-4126-8db1-4678e891613d"
+                }
+              ],
+              "createdAt": "2026-07-28T01:32:39.000Z",
+              "updatedAt": "2026-07-28T01:32:39.000Z",
+              "uid": "35240-b3108c63-0689-437d-ab59-2169209a7c50"
+            },
+            {
+              "name": "DoorDash Update a Delivery",
+              "id": "57c3d202-28f0-4f50-a12b-3f20e242b66f",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tip\": \"<integer>\",\n  \"dropoff_instructions\": \"<string>\",\n  \"dropoff_phone_number\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/deliveries/:external_delivery_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "deliveries",
+                    ":external_delivery_id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "e8285548-67c4-4e5a-8f22-eb87bc9e07a9",
+                      "key": "external_delivery_id",
+                      "value": "<string>",
+                      "description": "(Required) The unique external delivery ID provided when creating the delivery."
+                    }
+                  ]
+                },
+                "description": "Updates specified attributes of an existing delivery. Updates may be restricted based on the current delivery status."
+              },
+              "response": [
+                {
+                  "id": "022eb86c-1952-4c59-87a1-4c0eec6582e1",
+                  "name": "Delivery updated successfully",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"tip\": \"<integer>\",\n  \"dropoff_instructions\": \"<string>\",\n  \"dropoff_phone_number\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/deliveries/:external_delivery_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "deliveries",
+                        ":external_delivery_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "external_delivery_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"external_delivery_id\": \"<string>\",\n  \"delivery_status\": \"created\",\n  \"fee\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"tip\": \"<integer>\",\n  \"pickup_address\": \"<string>\",\n  \"dropoff_address\": \"<string>\",\n  \"pickup_time_estimated\": \"<dateTime>\",\n  \"pickup_time_actual\": \"<dateTime>\",\n  \"dropoff_time_estimated\": \"<dateTime>\",\n  \"dropoff_time_actual\": \"<dateTime>\",\n  \"dasher_id\": \"<integer>\",\n  \"dasher_name\": \"<string>\",\n  \"tracking_url\": \"<uri>\",\n  \"created_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\"\n}",
+                  "createdAt": "2026-07-28T01:32:39.000Z",
+                  "updatedAt": "2026-07-28T01:32:39.000Z",
+                  "uid": "35240-022eb86c-1952-4c59-87a1-4c0eec6582e1"
+                },
+                {
+                  "id": "73feb1e5-5fb5-4c05-bb4d-c858ef053797",
+                  "name": "Invalid update parameters",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"tip\": \"<integer>\",\n  \"dropoff_instructions\": \"<string>\",\n  \"dropoff_phone_number\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/deliveries/:external_delivery_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "deliveries",
+                        ":external_delivery_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "external_delivery_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:32:39.000Z",
+                  "updatedAt": "2026-07-28T01:32:39.000Z",
+                  "uid": "35240-73feb1e5-5fb5-4c05-bb4d-c858ef053797"
+                },
+                {
+                  "id": "2650f8da-c8f2-43b9-8d66-fe18dac4fc0f",
+                  "name": "Authentication failed",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"tip\": \"<integer>\",\n  \"dropoff_instructions\": \"<string>\",\n  \"dropoff_phone_number\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/deliveries/:external_delivery_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "deliveries",
+                        ":external_delivery_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "external_delivery_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:32:39.000Z",
+                  "updatedAt": "2026-07-28T01:32:39.000Z",
+                  "uid": "35240-2650f8da-c8f2-43b9-8d66-fe18dac4fc0f"
+                },
+                {
+                  "id": "260827d8-1269-4e91-98df-a34f703e52ba",
+                  "name": "Delivery not found",
+                  "originalRequest": {
+                    "method": "PATCH",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"tip\": \"<integer>\",\n  \"dropoff_instructions\": \"<string>\",\n  \"dropoff_phone_number\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/deliveries/:external_delivery_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "deliveries",
+                        ":external_delivery_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "external_delivery_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:32:39.000Z",
+                  "updatedAt": "2026-07-28T01:32:39.000Z",
+                  "uid": "35240-260827d8-1269-4e91-98df-a34f703e52ba"
+                }
+              ],
+              "createdAt": "2026-07-28T01:32:39.000Z",
+              "updatedAt": "2026-07-28T01:32:39.000Z",
+              "uid": "35240-57c3d202-28f0-4f50-a12b-3f20e242b66f"
+            }
+          ],
+          "id": "efff173f-2ea5-4d37-a4db-a3ffa18fd15e",
+          "createdAt": "2026-07-28T01:32:39.000Z",
+          "updatedAt": "2026-07-28T01:32:39.000Z",
+          "uid": "35240-efff173f-2ea5-4d37-a4db-a3ffa18fd15e"
+        },
+        {
+          "name": "DoorDash Create a Delivery",
+          "id": "baffeacf-5c5d-451b-8ab1-5684411e44f2",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"external_delivery_id\": \"<string>\",\n  \"pickup_address\": \"<string>\",\n  \"dropoff_address\": \"<string>\",\n  \"pickup_business_name\": \"<string>\",\n  \"pickup_phone_number\": \"<string>\",\n  \"pickup_instructions\": \"<string>\",\n  \"dropoff_business_name\": \"<string>\",\n  \"dropoff_phone_number\": \"<string>\",\n  \"dropoff_instructions\": \"<string>\",\n  \"dropoff_contact_given_name\": \"<string>\",\n  \"dropoff_contact_family_name\": \"<string>\",\n  \"order_value\": \"<integer>\",\n  \"tip\": \"<integer>\",\n  \"pickup_time\": \"<dateTime>\",\n  \"dropoff_time\": \"<dateTime>\",\n  \"contains_alcohol\": \"<boolean>\",\n  \"external_business_id\": \"<string>\",\n  \"external_store_id\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/deliveries",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "deliveries"
+              ]
+            },
+            "description": "Creates a new delivery request. DoorDash will assign a Dasher to fulfill the delivery. Time values must be provided in UTC format. The API recommends up to 3 retries with exponential backoff."
+          },
+          "response": [
+            {
+              "id": "85612974-1226-4c8c-9ee9-1921dae01b8d",
+              "name": "Delivery created successfully",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_delivery_id\": \"<string>\",\n  \"pickup_address\": \"<string>\",\n  \"dropoff_address\": \"<string>\",\n  \"pickup_business_name\": \"<string>\",\n  \"pickup_phone_number\": \"<string>\",\n  \"pickup_instructions\": \"<string>\",\n  \"dropoff_business_name\": \"<string>\",\n  \"dropoff_phone_number\": \"<string>\",\n  \"dropoff_instructions\": \"<string>\",\n  \"dropoff_contact_given_name\": \"<string>\",\n  \"dropoff_contact_family_name\": \"<string>\",\n  \"order_value\": \"<integer>\",\n  \"tip\": \"<integer>\",\n  \"pickup_time\": \"<dateTime>\",\n  \"dropoff_time\": \"<dateTime>\",\n  \"contains_alcohol\": \"<boolean>\",\n  \"external_business_id\": \"<string>\",\n  \"external_store_id\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/deliveries",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "deliveries"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"external_delivery_id\": \"<string>\",\n  \"delivery_status\": \"created\",\n  \"fee\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"tip\": \"<integer>\",\n  \"pickup_address\": \"<string>\",\n  \"dropoff_address\": \"<string>\",\n  \"pickup_time_estimated\": \"<dateTime>\",\n  \"pickup_time_actual\": \"<dateTime>\",\n  \"dropoff_time_estimated\": \"<dateTime>\",\n  \"dropoff_time_actual\": \"<dateTime>\",\n  \"dasher_id\": \"<integer>\",\n  \"dasher_name\": \"<string>\",\n  \"tracking_url\": \"<uri>\",\n  \"created_at\": \"<dateTime>\",\n  \"updated_at\": \"<dateTime>\"\n}",
+              "createdAt": "2026-07-28T01:32:39.000Z",
+              "updatedAt": "2026-07-28T01:32:39.000Z",
+              "uid": "35240-85612974-1226-4c8c-9ee9-1921dae01b8d"
+            },
+            {
+              "id": "04fc587c-5df2-4e1f-bfe6-e63ff3c589f9",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_delivery_id\": \"<string>\",\n  \"pickup_address\": \"<string>\",\n  \"dropoff_address\": \"<string>\",\n  \"pickup_business_name\": \"<string>\",\n  \"pickup_phone_number\": \"<string>\",\n  \"pickup_instructions\": \"<string>\",\n  \"dropoff_business_name\": \"<string>\",\n  \"dropoff_phone_number\": \"<string>\",\n  \"dropoff_instructions\": \"<string>\",\n  \"dropoff_contact_given_name\": \"<string>\",\n  \"dropoff_contact_family_name\": \"<string>\",\n  \"order_value\": \"<integer>\",\n  \"tip\": \"<integer>\",\n  \"pickup_time\": \"<dateTime>\",\n  \"dropoff_time\": \"<dateTime>\",\n  \"contains_alcohol\": \"<boolean>\",\n  \"external_business_id\": \"<string>\",\n  \"external_store_id\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/deliveries",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "deliveries"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T01:32:39.000Z",
+              "updatedAt": "2026-07-28T01:32:39.000Z",
+              "uid": "35240-04fc587c-5df2-4e1f-bfe6-e63ff3c589f9"
+            },
+            {
+              "id": "3ddfc5e2-3609-4663-bef9-aed0a7684571",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_delivery_id\": \"<string>\",\n  \"pickup_address\": \"<string>\",\n  \"dropoff_address\": \"<string>\",\n  \"pickup_business_name\": \"<string>\",\n  \"pickup_phone_number\": \"<string>\",\n  \"pickup_instructions\": \"<string>\",\n  \"dropoff_business_name\": \"<string>\",\n  \"dropoff_phone_number\": \"<string>\",\n  \"dropoff_instructions\": \"<string>\",\n  \"dropoff_contact_given_name\": \"<string>\",\n  \"dropoff_contact_family_name\": \"<string>\",\n  \"order_value\": \"<integer>\",\n  \"tip\": \"<integer>\",\n  \"pickup_time\": \"<dateTime>\",\n  \"dropoff_time\": \"<dateTime>\",\n  \"contains_alcohol\": \"<boolean>\",\n  \"external_business_id\": \"<string>\",\n  \"external_store_id\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/deliveries",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "deliveries"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\",\n  \"code\": \"<string>\",\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T01:32:39.000Z",
+              "updatedAt": "2026-07-28T01:32:39.000Z",
+              "uid": "35240-3ddfc5e2-3609-4663-bef9-aed0a7684571"
+            }
+          ],
+          "createdAt": "2026-07-28T01:32:39.000Z",
+          "updatedAt": "2026-07-28T01:32:39.000Z",
+          "uid": "35240-baffeacf-5c5d-451b-8ab1-5684411e44f2"
+        }
+      ],
+      "id": "629bffe3-a219-4b9a-84d5-dc16f7ff657c",
+      "createdAt": "2026-07-28T01:32:39.000Z",
+      "updatedAt": "2026-07-28T01:32:39.000Z",
+      "uid": "35240-629bffe3-a219-4b9a-84d5-dc16f7ff657c"
+    },
+    {
+      "name": "checkout_audit_signal",
+      "item": [
+        {
+          "name": "DoorDash Send Checkout Audit Signal",
+          "id": "ce7c1926-ed0a-4f0c-9a87-af23d8c11f9e",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"external_delivery_id\": \"<string>\",\n  \"event_type\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/checkout_audit_signal",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "checkout_audit_signal"
+              ]
+            },
+            "description": "Sends a checkout audit signal to DoorDash for tracking and analytics purposes related to the delivery checkout flow."
+          },
+          "response": [
+            {
+              "id": "b5d5f8d0-6eeb-4f3b-a41a-503b4a0ef642",
+              "name": "Checkout audit signal accepted",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_delivery_id\": \"<string>\",\n  \"event_type\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/checkout_audit_signal",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "checkout_audit_signal"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T01:32:39.000Z",
+              "updatedAt": "2026-07-28T01:32:39.000Z",
+              "uid": "35240-b5d5f8d0-6eeb-4f3b-a41a-503b4a0ef642"
+            },
+            {
+              "id": "ee25339e-e711-4fa1-a729-48e90e23924d",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_delivery_id\": \"<string>\",\n  \"event_type\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/checkout_audit_signal",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "checkout_audit_signal"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ],\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:32:39.000Z",
+              "updatedAt": "2026-07-28T01:32:39.000Z",
+              "uid": "35240-ee25339e-e711-4fa1-a729-48e90e23924d"
+            },
+            {
+              "id": "7df7f5bb-63a1-473f-ae82-7c70fd036f2f",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_delivery_id\": \"<string>\",\n  \"event_type\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/checkout_audit_signal",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "checkout_audit_signal"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"field_errors\": [\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"error\": \"<string>\"\n    }\n  ],\n  \"message\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:32:39.000Z",
+              "updatedAt": "2026-07-28T01:32:39.000Z",
+              "uid": "35240-7df7f5bb-63a1-473f-ae82-7c70fd036f2f"
+            }
+          ],
+          "createdAt": "2026-07-28T01:32:39.000Z",
+          "updatedAt": "2026-07-28T01:32:39.000Z",
+          "uid": "35240-ce7c1926-ed0a-4f0c-9a87-af23d8c11f9e"
+        }
+      ],
+      "id": "cf7e4fc6-da13-4a1a-bd63-81b912b68d1b",
+      "createdAt": "2026-07-28T01:32:39.000Z",
+      "updatedAt": "2026-07-28T01:32:39.000Z",
+      "uid": "35240-cf7e4fc6-da13-4a1a-bd63-81b912b68d1b"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://openapi.doordash.com/drive/v1"
+    }
+  ]
+}
