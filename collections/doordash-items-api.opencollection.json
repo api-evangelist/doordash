@@ -1,0 +1,47 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DoorDash Drive Classic Addresses Items API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Items",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DoorDash Update Item Availability",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.doordash.com/drive/v1/stores/:merchant_supplied_id/item_status",
+            "params": [
+              {
+                "name": "merchant_supplied_id",
+                "value": "",
+                "type": "path",
+                "description": "The merchant-supplied identifier for the store."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the availability status of items and item options for a store. Used to 86 items (mark as unavailable) or stock them back in when they become available to order."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

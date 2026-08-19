@@ -1,0 +1,162 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DoorDash Drive Classic Addresses Stores API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Stores",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DoorDash Create a Store",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.doordash.com/drive/v1/businesses/:external_business_id/stores",
+            "params": [
+              {
+                "name": "external_business_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external identifier for the business."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new store location associated with a business."
+        },
+        {
+          "info": {
+            "name": "DoorDash Get Store Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.doordash.com/drive/v1/businesses/:external_business_id/stores/:external_store_id",
+            "params": [
+              {
+                "name": "external_business_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external identifier for the business."
+              },
+              {
+                "name": "external_store_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external identifier for the store."
+              }
+            ]
+          },
+          "docs": "Retrieves the details of a specific store within a business."
+        },
+        {
+          "info": {
+            "name": "DoorDash Update a Store",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.doordash.com/drive/v1/businesses/:external_business_id/stores/:external_store_id",
+            "params": [
+              {
+                "name": "external_business_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external identifier for the business."
+              },
+              {
+                "name": "external_store_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external identifier for the store."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the attributes of an existing store location."
+        },
+        {
+          "info": {
+            "name": "DoorDash Get Store Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.doordash.com/drive/v1/stores/:merchant_supplied_id/store_details",
+            "params": [
+              {
+                "name": "merchant_supplied_id",
+                "value": "",
+                "type": "path",
+                "description": "The merchant-supplied identifier for the store."
+              }
+            ]
+          },
+          "docs": "Retrieves live store-level information for a store that is set up on the integration."
+        },
+        {
+          "info": {
+            "name": "DoorDash Get Menu Details for a Store",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.doordash.com/drive/v1/stores/:merchant_supplied_id/menu_details",
+            "params": [
+              {
+                "name": "merchant_supplied_id",
+                "value": "",
+                "type": "path",
+                "description": "The merchant-supplied identifier for the store."
+              }
+            ]
+          },
+          "docs": "Retrieves live menu-level information for a store that is set up on the integration."
+        },
+        {
+          "info": {
+            "name": "DoorDash Update Store Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.doordash.com/drive/v1/stores/:merchant_supplied_id/status",
+            "params": [
+              {
+                "name": "merchant_supplied_id",
+                "value": "",
+                "type": "path",
+                "description": "The merchant-supplied identifier for the store."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the operational status of a store, such as opening or closing the store for orders on the DoorDash marketplace."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

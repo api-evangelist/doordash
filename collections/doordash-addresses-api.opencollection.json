@@ -1,0 +1,55 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DoorDash Drive Classic Addresses API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Addresses",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DoorDash Get Address Suggestions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.doordash.com/drive/v1/addresses",
+            "params": [
+              {
+                "name": "query",
+                "value": "example",
+                "type": "query",
+                "description": "Partial address string to get suggestions for."
+              },
+              {
+                "name": "latitude",
+                "value": "37.422",
+                "type": "query",
+                "description": "Latitude coordinate to bias results toward a location."
+              },
+              {
+                "name": "longitude",
+                "value": "-122.084",
+                "type": "query",
+                "description": "Longitude coordinate to bias results toward a location."
+              }
+            ]
+          },
+          "docs": "Returns address auto-completion suggestions based on partial address input and optional location coordinates."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

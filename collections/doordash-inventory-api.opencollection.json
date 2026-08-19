@@ -1,0 +1,70 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DoorDash Drive Classic Addresses Inventory API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Inventory",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DoorDash Add Inventory and Pricing for Items at a Store",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.doordash.com/drive/v1/stores/:store_location_id/items",
+            "params": [
+              {
+                "name": "store_location_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the store location."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds inventory, pricing, and other in-store attributes for items at a specific store location. Items must already exist in the catalog before inventory can be set at the store level."
+        },
+        {
+          "info": {
+            "name": "DoorDash Update Inventory and Pricing for Items at a Store",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.doordash.com/drive/v1/stores/:store_location_id/items",
+            "params": [
+              {
+                "name": "store_location_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the store location."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates inventory, pricing, and other in-store attributes for existing items at a specific store location. Changes are typically reflected within minutes."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

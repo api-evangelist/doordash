@@ -1,0 +1,544 @@
+{
+  "item": [
+    {
+      "id": "104d4bd9-9576-4b30-9e1e-215a75bd1a62",
+      "name": "Quotes",
+      "description": {
+        "content": "Validate delivery serviceability and get pricing quotes before creating a delivery.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2263d60c-7cd5-4d54-9510-6426a1a2bc08",
+          "name": "DoorDash Create a Delivery Quote",
+          "request": {
+            "name": "DoorDash Create a Delivery Quote",
+            "description": {
+              "content": "Creates a delivery quote to confirm that a delivery is serviceable by DoorDash and returns the estimated fee and delivery time. Quotes are valid for 5 minutes after creation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "quotes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"external_delivery_id\": \"<string>\",\n  \"pickup_address\": \"<string>\",\n  \"dropoff_address\": \"<string>\",\n  \"pickup_business_name\": \"<string>\",\n  \"pickup_phone_number\": \"<string>\",\n  \"dropoff_business_name\": \"<string>\",\n  \"dropoff_phone_number\": \"<string>\",\n  \"order_value\": \"<integer>\",\n  \"pickup_time\": \"<dateTime>\",\n  \"dropoff_time\": \"<dateTime>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "640a9688-d01b-4a10-a064-cfc5b29361a3",
+              "name": "Delivery quote created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "quotes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_delivery_id\": \"D-12345\",\n  \"pickup_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"pickup_business_name\": \"Acme Pickup Store\",\n  \"pickup_phone_number\": \"+15555551234\",\n  \"dropoff_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"dropoff_business_name\": \"Acme Pickup Store\",\n  \"dropoff_phone_number\": \"+15555551234\",\n  \"order_value\": 42,\n  \"pickup_time\": \"2026-06-02T14:30:00Z\",\n  \"dropoff_time\": \"2026-06-02T14:30:00Z\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"external_delivery_id\": \"D-12345\",\n  \"fee\": 42,\n  \"currency\": \"USD\",\n  \"delivery_time\": \"2026-06-02T14:30:00Z\",\n  \"pickup_time\": \"2026-06-02T14:30:00Z\",\n  \"expires_at\": \"2026-06-02T14:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4ee2e0ff-a4f6-4437-802a-c9faaab0404b",
+              "name": "Invalid request parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "quotes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_delivery_id\": \"D-12345\",\n  \"pickup_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"pickup_business_name\": \"Acme Pickup Store\",\n  \"pickup_phone_number\": \"+15555551234\",\n  \"dropoff_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"dropoff_business_name\": \"Acme Pickup Store\",\n  \"dropoff_phone_number\": \"+15555551234\",\n  \"order_value\": 42,\n  \"pickup_time\": \"2026-06-02T14:30:00Z\",\n  \"dropoff_time\": \"2026-06-02T14:30:00Z\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ],\n  \"message\": \"example\",\n  \"code\": \"ABC123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4c160cae-020f-4d73-ba54-7965b8a5b469",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "quotes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"external_delivery_id\": \"D-12345\",\n  \"pickup_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"pickup_business_name\": \"Acme Pickup Store\",\n  \"pickup_phone_number\": \"+15555551234\",\n  \"dropoff_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"dropoff_business_name\": \"Acme Pickup Store\",\n  \"dropoff_phone_number\": \"+15555551234\",\n  \"order_value\": 42,\n  \"pickup_time\": \"2026-06-02T14:30:00Z\",\n  \"dropoff_time\": \"2026-06-02T14:30:00Z\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ],\n  \"message\": \"example\",\n  \"code\": \"ABC123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cbbd9389-a0cd-4d67-b8d3-a0777a372a04",
+          "name": "DoorDash Accept a Delivery Quote",
+          "request": {
+            "name": "DoorDash Accept a Delivery Quote",
+            "description": {
+              "content": "Accepts a previously created delivery quote and initiates the delivery process. The quote must be accepted within 5 minutes of being created. You can optionally edit the tip amount when accepting.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "quotes",
+                ":external_delivery_id",
+                "accept"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "external_delivery_id",
+                  "description": "(Required) The unique external delivery ID provided when creating the delivery or quote."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tip\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5a48fc31-2bc2-4fb7-8f28-0f7b24be4481",
+              "name": "Quote accepted and delivery initiated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "quotes",
+                    ":external_delivery_id",
+                    "accept"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_delivery_id",
+                      "description": "(Required) The unique external delivery ID provided when creating the delivery or quote."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tip\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"external_delivery_id\": \"D-12345\",\n  \"delivery_status\": \"created\",\n  \"fee\": 42,\n  \"currency\": \"USD\",\n  \"tip\": 42,\n  \"order_value\": 42,\n  \"pickup_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"pickup_business_name\": \"Acme Pickup Store\",\n  \"pickup_phone_number\": \"+15555551234\",\n  \"pickup_instructions\": \"Leave at the front desk.\",\n  \"pickup_time_estimated\": \"2026-06-02T14:30:00Z\",\n  \"pickup_time_actual\": \"2026-06-02T14:30:00Z\",\n  \"dropoff_address\": \"901 Market St, San Francisco, CA 94105\",\n  \"dropoff_business_name\": \"Acme Pickup Store\",\n  \"dropoff_phone_number\": \"+15555551234\",\n  \"dropoff_instructions\": \"Leave at the front desk.\",\n  \"dropoff_time_estimated\": \"2026-06-02T14:30:00Z\",\n  \"dropoff_time_actual\": \"2026-06-02T14:30:00Z\",\n  \"dropoff_contact_given_name\": \"Acme Pickup Store\",\n  \"dropoff_contact_family_name\": \"Acme Pickup Store\",\n  \"dasher_id\": 42,\n  \"dasher_name\": \"Acme Pickup Store\",\n  \"dasher_phone_number\": \"+15555551234\",\n  \"dasher_location\": {\n    \"lat\": 37.422,\n    \"lng\": -122.084\n  },\n  \"tracking_url\": \"https://example.com/path/abc123\",\n  \"contains_alcohol\": true,\n  \"force_batch_id\": \"D-12345\",\n  \"created_at\": \"2026-06-02T14:30:00Z\",\n  \"updated_at\": \"2026-06-02T14:30:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "18ba0700-6d8c-46f7-84e0-6e4c26bf87bf",
+              "name": "Quote expired or invalid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "quotes",
+                    ":external_delivery_id",
+                    "accept"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_delivery_id",
+                      "description": "(Required) The unique external delivery ID provided when creating the delivery or quote."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tip\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ],\n  \"message\": \"example\",\n  \"code\": \"ABC123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dfa22a25-7f18-421c-8179-91679b4b0d20",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "quotes",
+                    ":external_delivery_id",
+                    "accept"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_delivery_id",
+                      "description": "(Required) The unique external delivery ID provided when creating the delivery or quote."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tip\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ],\n  \"message\": \"example\",\n  \"code\": \"ABC123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e3ef1c6e-8815-4b29-932d-de07fe77f251",
+              "name": "Quote not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "quotes",
+                    ":external_delivery_id",
+                    "accept"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "external_delivery_id",
+                      "description": "(Required) The unique external delivery ID provided when creating the delivery or quote."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"tip\": 42\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"field_errors\": [\n    {\n      \"field\": \"example\",\n      \"error\": \"example\"\n    }\n  ],\n  \"message\": \"example\",\n  \"code\": \"ABC123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://openapi.doordash.com/drive/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "de2fc14a-4974-483b-91cb-5a52e000a1f3",
+    "name": "DoorDash Drive Classic Addresses Quotes API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.\n\nContact Support:\n Name: DoorDash Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

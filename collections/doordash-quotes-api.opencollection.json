@@ -1,0 +1,62 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DoorDash Drive Classic Addresses Quotes API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Quotes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DoorDash Create a Delivery Quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.doordash.com/drive/v1/quotes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a delivery quote to confirm that a delivery is serviceable by DoorDash and returns the estimated fee and delivery time. Quotes are valid for 5 minutes after creation."
+        },
+        {
+          "info": {
+            "name": "DoorDash Accept a Delivery Quote",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.doordash.com/drive/v1/quotes/:external_delivery_id/accept",
+            "params": [
+              {
+                "name": "external_delivery_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external delivery ID provided when creating the delivery or quote."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Accepts a previously created delivery quote and initiates the delivery process. The quote must be accepted within 5 minutes of being created. You can optionally edit the tip amount when accepting."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

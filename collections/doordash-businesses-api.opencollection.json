@@ -1,0 +1,92 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DoorDash Drive Classic Addresses Businesses API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Businesses",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DoorDash List Businesses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.doordash.com/drive/v1/businesses"
+          },
+          "docs": "Lists all businesses owned by the authenticated developer account."
+        },
+        {
+          "info": {
+            "name": "DoorDash Create a Business",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.doordash.com/drive/v1/businesses",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new Drive business entity representing a legal entity or owner on the DoorDash platform."
+        },
+        {
+          "info": {
+            "name": "DoorDash Get Business Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.doordash.com/drive/v1/businesses/:external_business_id",
+            "params": [
+              {
+                "name": "external_business_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external identifier for the business."
+              }
+            ]
+          },
+          "docs": "Retrieves the details of a specific business by its external ID."
+        },
+        {
+          "info": {
+            "name": "DoorDash Update a Business",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.doordash.com/drive/v1/businesses/:external_business_id",
+            "params": [
+              {
+                "name": "external_business_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external identifier for the business."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the attributes of an existing business entity."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

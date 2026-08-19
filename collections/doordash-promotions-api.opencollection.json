@@ -1,0 +1,70 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DoorDash Drive Classic Addresses Promotions API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Promotions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DoorDash Add Promotions for Items at a Store",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.doordash.com/drive/v1/promotions/stores/:store_location_id",
+            "params": [
+              {
+                "name": "store_location_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the store location."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds item-level promotions for items at a specific store location. Promotions allow partners to set promotional pricing for their items on the DoorDash platform."
+        },
+        {
+          "info": {
+            "name": "DoorDash Update Promotions for Items at a Store",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.doordash.com/drive/v1/promotions/stores/:store_location_id",
+            "params": [
+              {
+                "name": "store_location_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the store location."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates existing item-level promotions at a specific store location."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

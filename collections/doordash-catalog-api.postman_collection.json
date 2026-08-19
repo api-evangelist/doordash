@@ -1,0 +1,443 @@
+{
+  "item": [
+    {
+      "id": "9a00f39a-fb8c-4890-9787-44bbf9f97443",
+      "name": "Catalog",
+      "description": {
+        "content": "Manage the item catalog including adding new items and updating existing item information such as names, descriptions, images, and attributes.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "95b2a211-eeb3-4343-924a-4135a133d5e0",
+          "name": "DoorDash Add Items to Catalog",
+          "request": {
+            "name": "DoorDash Add Items to Catalog",
+            "description": {
+              "content": "Adds new items to the DoorDash item catalog. Each item is identified by a unique Merchant Supplied Item ID (MSID). Items added through this endpoint become available for inventory and pricing management at individual stores.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "items"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"image_url\": \"<uri>\",\n      \"brand\": \"<string>\",\n      \"upc\": \"<string>\",\n      \"category\": \"<string>\",\n      \"subcategory\": \"<string>\",\n      \"weight\": \"<number>\",\n      \"weight_unit\": \"<string>\",\n      \"is_alcohol\": \"<boolean>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"image_url\": \"<uri>\",\n      \"brand\": \"<string>\",\n      \"upc\": \"<string>\",\n      \"category\": \"<string>\",\n      \"subcategory\": \"<string>\",\n      \"weight\": \"<number>\",\n      \"weight_unit\": \"<string>\",\n      \"is_alcohol\": \"<boolean>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "baddccda-a1be-4f81-840b-b6b2b074aeb4",
+              "name": "Items added to catalog successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"merchant_supplied_id\": {},\n      \"name\": {},\n      \"description\": {},\n      \"image_url\": {},\n      \"brand\": {},\n      \"upc\": {},\n      \"category\": {},\n      \"subcategory\": {},\n      \"weight\": {},\n      \"weight_unit\": {},\n      \"is_alcohol\": {}\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"items_processed\": 42,\n  \"errors\": [\n    {\n      \"merchant_supplied_id\": {},\n      \"message\": {},\n      \"code\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c6d43cbc-336a-4522-8377-a375556c9506",
+              "name": "Invalid item data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"merchant_supplied_id\": {},\n      \"name\": {},\n      \"description\": {},\n      \"image_url\": {},\n      \"brand\": {},\n      \"upc\": {},\n      \"category\": {},\n      \"subcategory\": {},\n      \"weight\": {},\n      \"weight_unit\": {},\n      \"is_alcohol\": {}\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "85313424-985d-482e-bf4d-0d0bb85d4252",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"merchant_supplied_id\": {},\n      \"name\": {},\n      \"description\": {},\n      \"image_url\": {},\n      \"brand\": {},\n      \"upc\": {},\n      \"category\": {},\n      \"subcategory\": {},\n      \"weight\": {},\n      \"weight_unit\": {},\n      \"is_alcohol\": {}\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f544a476-13cd-40d5-bca6-ad176ddacc7a",
+          "name": "DoorDash Update Items in Catalog",
+          "request": {
+            "name": "DoorDash Update Items in Catalog",
+            "description": {
+              "content": "Updates information about existing items in the catalog. Uses the same validation as the create endpoint. Items are matched by their Merchant Supplied Item ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "items"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"image_url\": \"<uri>\",\n      \"brand\": \"<string>\",\n      \"upc\": \"<string>\",\n      \"category\": \"<string>\",\n      \"subcategory\": \"<string>\",\n      \"weight\": \"<number>\",\n      \"weight_unit\": \"<string>\",\n      \"is_alcohol\": \"<boolean>\"\n    },\n    {\n      \"merchant_supplied_id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"image_url\": \"<uri>\",\n      \"brand\": \"<string>\",\n      \"upc\": \"<string>\",\n      \"category\": \"<string>\",\n      \"subcategory\": \"<string>\",\n      \"weight\": \"<number>\",\n      \"weight_unit\": \"<string>\",\n      \"is_alcohol\": \"<boolean>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "37f3b04c-0622-4453-86ca-d71512654f2a",
+              "name": "Items updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"merchant_supplied_id\": {},\n      \"name\": {},\n      \"description\": {},\n      \"image_url\": {},\n      \"brand\": {},\n      \"upc\": {},\n      \"category\": {},\n      \"subcategory\": {},\n      \"weight\": {},\n      \"weight_unit\": {},\n      \"is_alcohol\": {}\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"active\",\n  \"items_processed\": 42,\n  \"errors\": [\n    {\n      \"merchant_supplied_id\": {},\n      \"message\": {},\n      \"code\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9e5c5f4f-084d-4295-9ba6-78ec72205d63",
+              "name": "Invalid item data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"merchant_supplied_id\": {},\n      \"name\": {},\n      \"description\": {},\n      \"image_url\": {},\n      \"brand\": {},\n      \"upc\": {},\n      \"category\": {},\n      \"subcategory\": {},\n      \"weight\": {},\n      \"weight_unit\": {},\n      \"is_alcohol\": {}\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c16dde29-3016-4009-8149-59312beface2",
+              "name": "Authentication failed",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"merchant_supplied_id\": {},\n      \"name\": {},\n      \"description\": {},\n      \"image_url\": {},\n      \"brand\": {},\n      \"upc\": {},\n      \"category\": {},\n      \"subcategory\": {},\n      \"weight\": {},\n      \"weight_unit\": {},\n      \"is_alcohol\": {}\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"example\",\n  \"code\": \"ABC123\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://openapi.doordash.com/drive/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "d74b4f9d-6d8c-420d-82a1-db5f59e96069",
+    "name": "DoorDash Drive Classic Addresses Catalog API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.\n\nContact Support:\n Name: DoorDash Developer Support",
+      "type": "text/plain"
+    }
+  }
+}

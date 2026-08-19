@@ -1,0 +1,130 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DoorDash Drive Classic Addresses Deliveries API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Deliveries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "DoorDash Create a Delivery Estimate",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.doordash.com/drive/v1/estimates",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Requests time and fee estimates for a delivery. Can also be used to check if an area is serviced by DoorDash. Time values must be provided in UTC ISO-8601 format."
+        },
+        {
+          "info": {
+            "name": "DoorDash Create a Delivery",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.doordash.com/drive/v1/deliveries",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new delivery request. DoorDash will assign a Dasher to fulfill the delivery. Time values must be provided in UTC format. The API recommends up to 3 retries with exponential backoff."
+        },
+        {
+          "info": {
+            "name": "DoorDash Get Delivery Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://openapi.doordash.com/drive/v1/deliveries/:external_delivery_id",
+            "params": [
+              {
+                "name": "external_delivery_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external delivery ID provided when creating the delivery."
+              }
+            ]
+          },
+          "docs": "Retrieves the current details and status of a delivery using the external delivery ID provided during creation."
+        },
+        {
+          "info": {
+            "name": "DoorDash Update a Delivery",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://openapi.doordash.com/drive/v1/deliveries/:external_delivery_id",
+            "params": [
+              {
+                "name": "external_delivery_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external delivery ID provided when creating the delivery."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates specified attributes of an existing delivery. Updates may be restricted based on the current delivery status."
+        },
+        {
+          "info": {
+            "name": "DoorDash Cancel a Delivery",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://openapi.doordash.com/drive/v1/deliveries/:external_delivery_id/cancel",
+            "params": [
+              {
+                "name": "external_delivery_id",
+                "value": "",
+                "type": "path",
+                "description": "The unique external delivery ID provided when creating the delivery."
+              }
+            ]
+          },
+          "docs": "Cancels an active delivery. Cancellation restrictions apply based on the current delivery status."
+        },
+        {
+          "info": {
+            "name": "DoorDash Send Checkout Audit Signal",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://openapi.doordash.com/drive/v1/checkout_audit_signal",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sends a checkout audit signal to DoorDash for tracking and analytics purposes related to the delivery checkout flow."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
