@@ -246,6 +246,8 @@ apis:
   humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
   baseURL: https://openapi.doordash.com/drive/v2
   tags:
+  - Item
+  tags_raw:
   - Items
   properties:
   - type: OpenAPI
@@ -334,6 +336,8 @@ apis:
   humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
   baseURL: https://openapi.doordash.com/drive/v2
   tags:
+  - Order
+  tags_raw:
   - Orders
   properties:
   - type: OpenAPI
