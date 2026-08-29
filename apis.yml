@@ -568,6 +568,9 @@ apis:
   - type: AsyncAPI
     url: asyncapi/doordash-reporting-webhooks-asyncapi.yml
 common:
+- type: CapabilityMap
+  url: capabilities/doordash-capability-edges.yml
+  name: doordash Business Capability Map
 - type: PostmanWorkspace
   url: https://www.postman.com/kinlaneapi/doordash/overview
 - type: AgenticAccess
