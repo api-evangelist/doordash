@@ -80,6 +80,8 @@ apis:
   humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
   baseURL: https://openapi.doordash.com/drive/v2
   tags:
+  - Business
+  tags_raw:
   - Businesses
   properties:
   - type: OpenAPI
@@ -569,6 +571,183 @@ apis:
     url: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
   - type: AsyncAPI
     url: asyncapi/doordash-reporting-webhooks-asyncapi.yml
+- aid: doordash:doordash-ads-api
+  name: DoorDash Ads API
+  description: Plan, launch and measure sponsored-listing and brand advertising on the DoorDash
+    marketplace. Campaigns, ad groups, product ads, keywords, creatives, targeting, budget
+    recommendations, catalog validation and downloadable performance reports.
+  humanURL: https://developer.doordash.com/en-US/api/ads
+  baseURL: https://openapi.doordash.com
+  tags:
+  - Advertising
+  - Campaigns
+  - Retail Media
+  properties:
+  - type: OpenAPI
+    url: openapi/_original/doordash-ads-openapi.yml
+    name: DoorDash Ads API 1.0.29 (provider-published)
+  - type: OpenAPI
+    url: https://developer.doordash.com/redocusaurus/plugin-redoc-0.yaml
+    name: OpenAPI (provider-hosted)
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: Overlay
+    url: overlays/doordash-ads-overlay.yaml
+- aid: doordash:doordash-storefront-api
+  name: DoorDash Storefront API
+  description: The white-label online-ordering surface DoorDash runs on a merchant's own site -
+    addresses and geocoding, store and menu reads, cart and order sessions, payment methods,
+    loyalty profiles, rewards and redemptions, and QR code generation.
+  humanURL: https://developer.doordash.com/en-US/api/storefront
+  baseURL: https://openapi.doordash.com
+  tags:
+  - Storefront
+  - Online Ordering
+  - Loyalty
+  properties:
+  - type: OpenAPI
+    url: openapi/_original/doordash-storefront-openapi.yml
+    name: Storefront V1 API Specification (provider-published)
+  - type: OpenAPI
+    url: https://developer.doordash.com/redocusaurus/plugin-redoc-19.yaml
+    name: OpenAPI (provider-hosted)
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: Overlay
+    url: overlays/doordash-storefront-overlay.yaml
+- aid: doordash:doordash-parcel-api
+  name: DoorDash Parcel API
+  description: The shipped-parcel variant of Drive - quote, create, track and cancel a parcel
+    delivery with package dimensions, labels and scanned data, on the same drive/v2 paths as the
+    on-demand Drive API.
+  humanURL: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  baseURL: https://openapi.doordash.com
+  tags:
+  - Parcel
+  - Shipping
+  - Last Mile
+  properties:
+  - type: OpenAPI
+    url: openapi/_original/doordash-parcel-openapi.yml
+    name: Parcel API 0.3.6 (provider-published)
+  - type: OpenAPI
+    url: https://developer.doordash.com/redocusaurus/plugin-redoc-24.yaml
+    name: OpenAPI (provider-hosted)
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: Overlay
+    url: overlays/doordash-parcel-overlay.yaml
+- aid: doordash:doordash-drive-refunds-api
+  name: DoorDash Drive Refunds API
+  description: Request a refund against a completed Drive delivery. DoorDash decides whether the
+    refund is granted or rejected and returns a result code; no eligibility window is published.
+  humanURL: https://developer.doordash.com/en-US/api/drive_refunds
+  baseURL: https://openapi.doordash.com
+  tags:
+  - Refunds
+  - Delivery
+  properties:
+  - type: OpenAPI
+    url: openapi/_original/doordash-drive-refunds-openapi.yml
+    name: Drive Refunds API 0.0.3 (provider-published)
+  - type: OpenAPI
+    url: https://developer.doordash.com/redocusaurus/plugin-redoc-20.yaml
+    name: OpenAPI (provider-hosted)
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: Overlay
+    url: overlays/doordash-drive-refunds-overlay.yaml
+- aid: doordash:doordash-drive-redelivery-api
+  name: DoorDash Drive Redelivery API
+  description: Re-attempt a Drive delivery that could not be completed, creating a redelivery
+    against the original external_delivery_id.
+  humanURL: https://developer.doordash.com/en-US/api/drive_redelivery
+  baseURL: https://openapi.doordash.com
+  tags:
+  - Delivery
+  - Redelivery
+  properties:
+  - type: OpenAPI
+    url: openapi/_original/doordash-drive-redelivery-openapi.yml
+    name: Drive Redelivery API 0.0.1 (provider-published)
+  - type: OpenAPI
+    url: https://developer.doordash.com/redocusaurus/plugin-redoc-23.yaml
+    name: OpenAPI (provider-hosted)
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: Overlay
+    url: overlays/doordash-drive-redelivery-overlay.yaml
+- aid: doordash:doordash-drive-dasher-feedback-api
+  name: DoorDash Drive Dasher Feedback API
+  description: Read the Dasher assignment history for a delivery and submit a rating for the
+    Dasher who completed it.
+  humanURL: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  baseURL: https://openapi.doordash.com
+  tags:
+  - Delivery
+  - Ratings
+  properties:
+  - type: OpenAPI
+    url: openapi/_original/doordash-drive-dasher-feedback-openapi.yml
+    name: Drive Dasher Feedback API 0.0.1 (provider-published)
+  - type: OpenAPI
+    url: https://developer.doordash.com/redocusaurus/plugin-redoc-21.yaml
+    name: OpenAPI (provider-hosted)
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: Overlay
+    url: overlays/doordash-drive-dasher-feedback-overlay.yaml
+- aid: doordash:doordash-checkout-api
+  name: DoorDash Checkout API
+  description: The embedded checkout interface used to hand a cart to DoorDash from a merchant's
+    own e-commerce flow. The contract states absolute URLs on api.doordash.com and order.online
+    rather than a servers[] base.
+  humanURL: https://developer.doordash.com/en-US/api/external_checkout
+  baseURL: https://api.doordash.com
+  tags:
+  - Checkout
+  - Commerce
+  properties:
+  - type: OpenAPI
+    url: openapi/_original/doordash-external-checkout-openapi.yml
+    name: DoorDash Checkout API Interface 0.1.6 (provider-published)
+  - type: OpenAPI
+    url: https://developer.doordash.com/redocusaurus/plugin-redoc-22.yaml
+    name: OpenAPI (provider-hosted)
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: Overlay
+    url: overlays/doordash-external-checkout-overlay.yaml
+- aid: doordash:doordash-marketplace-legacy-api
+  name: DoorDash Marketplace (legacy) API
+  description: The legacy point-of-sale integration surface - menus, orders, order confirmation,
+    item and store availability - served from pointofsale.doordash.com. Superseded by the
+    Marketplace API, with a published partner migration guide but no retirement date.
+  humanURL: https://developer.doordash.com/en-US/api/marketplace_legacy
+  baseURL: https://pointofsale.doordash.com
+  tags:
+  - Marketplace
+  - Point-of-Sale
+  - Legacy
+  tags_raw:
+  - Marketplace
+  - Point of Sale
+  - Legacy
+  properties:
+  - type: OpenAPI
+    url: openapi/_original/doordash-marketplace-legacy-openapi.yml
+    name: Marketplace (legacy) API Specification (provider-published)
+  - type: OpenAPI
+    url: https://developer.doordash.com/redocusaurus/plugin-redoc-18.yaml
+    name: OpenAPI (provider-hosted)
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+  - type: Overlay
+    url: overlays/doordash-marketplace-legacy-overlay.yaml
 common:
 - type: CapabilityMap
   url: capabilities/doordash-capability-edges.yml
@@ -591,8 +770,9 @@ common:
   url: https://www.doordash.com/
 - type: Blog
   url: https://doordash.engineering/
-- type: Login
-  url: https://developer.doordash.com/en-US/login
+- type: SignUp
+  url: https://developer.doordash.com/portal
+  title: Developer Portal sign-up and login
 - type: TermsOfService
   url: https://www.doordash.com/terms/
 - type: PrivacyPolicy
@@ -632,14 +812,124 @@ common:
   url: rate-limits/doordash-rate-limits.yml
 - type: FinOps
   url: finops/doordash-finops.yml
+- type: OpenAPI
+  url: openapi/_original/doordash-drive-openapi.yml
+  title: DoorDash Drive API 2.1.59 (provider-published, harvested verbatim)
+- type: APIReference
+  url: https://developer.doordash.com/en-US/api/drive
+- type: GettingStarted
+  url: https://developer.doordash.com/en-US/docs/drive/tutorials/get_started/
+- type: Pricing
+  url: https://developer.doordash.com/en-US/docs/drive/overview/pricing_payment
+- type: StatusPage
+  url: https://www.doordashstatus.com
+- type: Lifecycle
+  url: lifecycle/doordash-lifecycle.yml
+- type: ChangeLog
+  url: changelog/doordash-changelog.yml
+- type: ChangeLog
+  url: https://developer.doordash.com/en-US/docs/reporting/overview/release_notes
+  title: Reporting API release notes
+- type: Conventions
+  url: conventions/doordash-conventions.yml
+- type: Idempotency
+  url: conventions/doordash-conventions.yml
+  title: Idempotency and reversibility rules (external_delivery_id, cancel-before-assignment)
+- type: ErrorCatalog
+  url: errors/doordash-problem-types.yml
+- type: Conformance
+  url: conformance/doordash-conformance.yml
+- type: Compliance
+  url: https://trust.doordash.com/
+  title: DoorDash Trust Center (SOC 2, PCI DSS)
+- type: Security
+  url: https://hackerone.com/doordash
+  title: DoorDash Bug Bounty Program
+- type: VulnerabilityDisclosure
+  url: security/doordash-vulnerability-disclosure.yml
+- type: Packages
+  url: packages/doordash-packages.yml
+- type: Sandbox
+  url: sandbox/doordash-sandbox.yml
+- type: Components
+  url: components/doordash-components.yml
+- type: DataModel
+  url: data-model/doordash-data-model.yml
+- type: MCPServer
+  url: mcp/doordash-mcp.yml
+  title: MCP candidate - DoorDash publishes no MCP server
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/doordash-llms.txt
+- type: Overlay
+  url: overlays/doordash-drive-overlay.yaml
+- type: Webhooks
+  url: https://developer.doordash.com/en-US/docs/drive/reference/webhooks
+  title: Drive webhook event reference
+- type: AsyncAPI
+  url: asyncapi/doordash-drive-webhooks-asyncapi.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
-modified: '2026-06-02'
+created: '2026-05-04'
+modified: '2026-09-17'
+position: Producing
+tags:
+- Delivery
+- Logistics
+- Last Mile
+- On-Demand
+- Food Delivery
+- Local Commerce
+- Marketplace
+- Restaurant
+- Grocery
+- Retail
+- Fulfillment
+- Webhook
+tags_raw:
+- Delivery
+- Logistics
+- Last Mile
+- On-Demand
+- Food Delivery
+- Local Commerce
+- Marketplace
+- Restaurants
+- Grocery
+- Retail
+- Fulfillment
+- Webhooks
 description: DoorDash is an on-demand local commerce platform whose developer program
-  exposes its logistics and marketplace network through public APIs. The Drive and
-  Drive Classic APIs let businesses request on-demand deliveries fulfilled by DoorDash's
-  Dasher fleet, while the Marketplace, Item Management, and Reporting APIs let merchants
-  and retailers receive orders, synchronize menus and catalogs, and access financial
-  and operational reporting. All APIs use JWT-based authentication and are documented
-  at developer.doordash.com.
+  exposes its logistics and marketplace network through thirteen publicly documented
+  REST APIs. Drive, Drive (classic) and Parcel let businesses request deliveries fulfilled
+  by DoorDash's Dasher fleet, with Refunds, Redelivery and Dasher Feedback attached to
+  that surface. Marketplace, Marketplace (legacy) and Item Management let merchants and
+  retailers receive orders and synchronize menus, catalogs, inventory and promotions,
+  while Storefront powers white-label online ordering, Reporting delivers financial and
+  operational data exchange, and the Ads API sells sponsored placement on the marketplace.
+  Every API authenticates with a short-lived HS256 JSON Web Token the caller signs itself,
+  and DoorDash serves each OpenAPI definition as plain YAML from developer.doordash.com.
+
+x-enrichment:
+  date: '2026-09-17'
+  status: enriched
+  artifacts_added: 41
+  pass: local-v3
+x-coverage:
+  state: covered
+  reason: null
+  detail: >-
+    DoorDash publishes thirteen first-party OpenAPI documents as plain YAML at
+    developer.doordash.com/redocusaurus/plugin-redoc-<n>.yaml, unlinked from the site and
+    discoverable only through the Docusaurus route manifest; all thirteen were harvested verbatim
+    on 2026-09-17.
+  evidence:
+  - url: https://developer.doordash.com/redocusaurus/plugin-redoc-16.yaml
+    status: 200
+  - url: https://developer.doordash.com/en-US/docs/drive/reference/errors
+    status: 200
+  - url: https://openapi.doordash.com/.well-known/security.txt
+    status: 404
+  checked: '2026-09-17'
