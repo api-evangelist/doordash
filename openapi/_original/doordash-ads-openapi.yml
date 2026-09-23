@@ -1,0 +1,2925 @@
+openapi: 3.1.0
+info:
+  version: 1.0.29
+  title: DoorDash Ads API
+  description: >
+
+    DoorDash Ads API for Sponsored Products for campaign management and
+    reporting operations.
+
+
+    Please see [DoorDash CPG Advertiser Guide &
+    FAQ](https://img.cdn4dd.com/s/managed/advertiser/ads-portal/DoorDash_CPG_Advertiser_Guide_&_FAQ.pdf)
+    for more details about Ads functionalities.
+
+
+    ####
+
+
+    ### Release Notes
+
+
+    #### v1.0.29 (July 9, 2026)
+      - **[Beta]** Stacked Targeting for Sponsored Products and Sponsored Brand
+        - Ad group create and update now support combining multiple targeting features in the same ad group when each targeting feature is enabled for the advertiser and country. Sponsored Products supports dayparting, merchant targeting, behavioral targeting, interest targeting, and keyword targeting. Sponsored Brand supports dayparting, merchant targeting, behavioral targeting, and interest targeting. Existing campaign type, bid configuration, advertiser, and country validation still applies.
+      - New Retailer breakdown in CATEGORY_SHARE offline reports
+        - When `RETAILER` is included in the list of `groupBys`, the report will include a new column: `Retailer (Store Name)`
+        - Grouping by both `RETAILER` and `VERTICAL` is not supported.
+        - Retailer breakdown is only available for Diamond & Gold tier advertisers.
+      - Added `reportNameContains`, `sortCol`, and `sortDir` optional query params to Get reports (`listReports`)
+servers:
+  - url: https://openapi.doordash.com
+tags:
+  - name: Campaigns
+  - name: Ad Groups
+  - name: Product Ads
+  - name: Assets
+  - name: Creatives (SB)
+    description: For Sponsored Brand campaigns only.
+  - name: Merchants (Retailers)
+    description: To retrieve business IDs available for merchant targeting.
+  - name: Keywords (SP)
+    description: For Sponsored Products campaigns only.
+  - name: Resources
+    description: To retrieve brands and categories available for behavioral targeting.
+  - name: Catalog
+  - name: Report
+  - name: Menu
+  - name: Targeting
+security:
+  - Ads API Key Authentication: []
+paths:
+  /ads/api/v1/{campaignType}/campaigns:
+    post:
+      tags:
+        - Campaigns
+      operationId: createCampaign
+      summary: Create campaign
+      description: Create a single campaign.
+      parameters:
+        - $ref: '#/components/parameters/campaignType'
+      requestBody:
+        description: A campaign to create.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCampaignRequest'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - Campaigns
+      operationId: updateCampaign
+      summary: Update campaign
+      description: Update a single campaign.
+      parameters:
+        - $ref: '#/components/parameters/campaignType'
+      requestBody:
+        description: A partial campaign object used to update an existing campaign.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCampaignRequest'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      tags:
+        - Campaigns
+      operationId: getCampaigns
+      summary: Get campaigns
+      description: Get a list of campaigns.
+      parameters:
+        - $ref: '#/components/parameters/startIndex'
+        - $ref: '#/components/parameters/count'
+        - $ref: '#/components/parameters/campaignType'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - campaigns
+                properties:
+                  campaigns:
+                    description: List of campaigns.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CampaignResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/{campaignType}/campaigns/{campaignId}:
+    get:
+      tags:
+        - Campaigns
+      operationId: getCampaignById
+      summary: Get campaign by ID
+      description: Get a single campaign by the provided identifier.
+      parameters:
+        - $ref: '#/components/parameters/campaignType'
+        - name: campaignId
+          in: path
+          description: Unique identifier for a campaign
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/campaigns/{campaignId}/recommendations:
+    get:
+      tags:
+        - Campaigns
+      operationId: getBudgetCapoutRecommendations
+      summary: Get budget capout recommendations
+      description: >-
+        Get budget capout report and recommendations for the provided campaign
+        ID.
+      parameters:
+        - $ref: '#/components/parameters/campaignId'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetCapoutRecommendationsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/{campaignType}/adGroups:
+    post:
+      tags:
+        - Ad Groups
+      operationId: createAdGroup
+      summary: Create ad group
+      description: Create a single ad group.
+      parameters:
+        - $ref: '#/components/parameters/campaignType'
+      requestBody:
+        description: An ad group to create.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAdGroupRequest'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdGroupResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - Ad Groups
+      operationId: updateAdGroup
+      summary: Update ad group
+      description: Update a single ad group.
+      parameters:
+        - $ref: '#/components/parameters/campaignType'
+      requestBody:
+        description: A partial ad group object used to update an existing ad group.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAdGroupRequest'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdGroupResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      tags:
+        - Ad Groups
+      operationId: getAdGroups
+      summary: Get ad groups
+      description: >-
+        Get a list of ad groups, optionally filtered by campaign IDs and/or ad
+        group IDs.
+      parameters:
+        - $ref: '#/components/parameters/campaignType'
+        - $ref: '#/components/parameters/startIndex'
+        - $ref: '#/components/parameters/count'
+        - name: campaignIdFilter
+          in: query
+          description: >-
+            A comma-delimited list of campaign identifiers. At least one of
+            campaignIdFilter and adGroupIdFilter is required.
+          required: false
+          schema:
+            type: string
+        - name: adGroupIdFilter
+          in: query
+          description: >-
+            A comma-delimited list of ad group identifiers. At least one of
+            campaignIdFilter and adGroupIdFilter is required.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - adGroups
+                properties:
+                  adGroups:
+                    description: List of ad groups.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AdGroupResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/{campaignType}/adGroups/{adGroupId}:
+    get:
+      tags:
+        - Ad Groups
+      operationId: getAdGroupById
+      summary: Get ad group by ID
+      description: Get a single ad group by the provided identifier.
+      parameters:
+        - $ref: '#/components/parameters/campaignType'
+        - name: adGroupId
+          in: path
+          description: The identifier of an existing ad group.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdGroupResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/{campaignType}/productAds:
+    post:
+      tags:
+        - Product Ads
+      operationId: createProductAd
+      summary: Create product ad
+      description: Create a single product ad the provided campaign and ad group IDs.
+      parameters:
+        - $ref: '#/components/parameters/campaignType'
+      requestBody:
+        description: A product ad to create.
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/CreateProductAdRequest'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                description: The created product ad.
+                $ref: '#/components/schemas/ProductAdResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      tags:
+        - Product Ads
+      operationId: getProductAds
+      summary: Get product ads
+      description: >-
+        Get a list of product ads, optionally filtered by campaign IDs and/or
+        adGroup IDs.
+      parameters:
+        - $ref: '#/components/parameters/campaignType'
+        - $ref: '#/components/parameters/startIndex'
+        - $ref: '#/components/parameters/count'
+        - name: campaignIdFilter
+          in: query
+          description: >-
+            A comma-delimited list of campaign identifiers. At least one of
+            campaignIdFilter and adGroupIdFilter is required.
+          required: false
+          schema:
+            type: string
+        - name: adGroupIdFilter
+          in: query
+          description: >-
+            A comma-delimited list of ad group identifiers. At least one of
+            campaignIdFilter and adGroupIdFilter is required.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - productAds
+                properties:
+                  productAds:
+                    description: List of product ads
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProductAdResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - Product Ads
+      operationId: deleteProductAd
+      summary: Delete product ad
+      description: Delete a single product ad by the provided identifier.
+      parameters:
+        - $ref: '#/components/parameters/campaignType'
+      requestBody:
+        description: The identifier of an existing product ad.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - campaignId
+                - adGroupId
+                - idType
+                - productId
+              properties:
+                campaignId:
+                  $ref: '#/components/schemas/CampaignId'
+                adGroupId:
+                  $ref: '#/components/schemas/AdGroupId'
+                idType:
+                  $ref: '#/components/schemas/ProductIdType'
+                productId:
+                  $ref: '#/components/schemas/ProductId'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteProductAdResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/sp/reports/{recordType}/create:
+    post:
+      tags:
+        - Report
+      operationId: createReport
+      summary: Create report
+      description: >-
+        Create a single report. See request samples for example report requests.
+        Note that there is a 3 year rolling window for reports (`startDate`
+        cannot be more than three years ago).
+      parameters:
+        - name: recordType
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/parameters/recordType'
+          examples:
+            Campaign:
+              value: CAMPAIGN
+              summary: Campaign Report (SB, SP)
+            CampaignPerformanceAndPlacement:
+              value: ADGROUP
+              summary: Campaign Performance Report (SB, SP), Placement Report (SP)
+            Product:
+              value: PRODUCT
+              summary: Product Report (SB, SP)
+            Keyword:
+              value: KEYWORD
+              summary: Keyword Report (SP)
+            CategoryShare:
+              value: CATEGORY_SHARE
+              summary: Category Share Report
+            ProductSales:
+              value: PRODUCT_SALES
+              summary: Product Sales Report
+            Catalog:
+              value: CATALOG
+              summary: Catalog Report
+            InterestInsight:
+              value: INTEREST_INSIGHTS
+              summary: Interest Insight Report
+      requestBody:
+        description: Report request parameters.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReportRequest'
+            examples:
+              CampaignSB:
+                summary: Sponsored Brand Campaign Report
+                value:
+                  reportName: Sponsored Brand Campaign Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                    - SPONSORED_BRAND
+              CampaignPerformanceSB:
+                summary: Sponsored Brand Campaign Performance Report
+                value:
+                  reportName: Sponsored Brand Campaign Performance Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                    - SPONSORED_BRAND
+              CampaignPerformanceSBDayparted:
+                summary: Sponsored Brand Dayparted Campaign Performance Report
+                value:
+                  reportName: Sponsored Brand Dayparted Campaign Performance Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                    - SPONSORED_BRAND
+                  timeGranularity: HOUR
+              ProductSB:
+                summary: Sponsored Brand Product Report
+                value:
+                  reportName: Sponsored Brand Product Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                    - SPONSORED_BRAND
+              ProductSBDayparted:
+                summary: Sponsored Brand Dayparted Product Report
+                value:
+                  reportName: Sponsored Brand Dayparted Product Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                    - SPONSORED_BRAND
+                  timeGranularity: HOUR
+              CampaignSP:
+                summary: Sponsored Products Campaign Report
+                value:
+                  reportName: Sponsored Products Campaign Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                    - SPONSORED_PRODUCTS
+              CampaignPerformanceSP:
+                summary: Sponsored Products Campaign Performance Report
+                value:
+                  reportName: Sponsored Products Campaign Performance Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                    - SPONSORED_PRODUCTS
+              CampaignPerformanceSPDayparted:
+                summary: Sponsored Products Dayparted Campaign Performance Report
+                value:
+                  reportName: Sponsored Products Dayparted Campaign Performance Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                    - SPONSORED_PRODUCTS
+                  timeGranularity: HOUR
+              ProductSP:
+                summary: Sponsored Products Product Report
+                value:
+                  reportName: Sponsored Products Product Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                    - SPONSORED_PRODUCTS
+              ProductSPDayparted:
+                summary: Sponsored Products Dayparted Product Report
+                value:
+                  reportName: Sponsored Products Dayparted Product Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                    - SPONSORED_PRODUCTS
+                  timeGranularity: HOUR
+              Placement:
+                summary: Sponsored Products Placement Report
+                value:
+                  reportName: Sponsored Products Placement Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  segment: SEGMENT
+                  campaignTypes:
+                    - SPONSORED_PRODUCTS
+              PlacementDayparted:
+                summary: Sponsored Products Dayparted Placement Report
+                value:
+                  reportName: Sponsored Products Dayparted Placement Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  segment: SEGMENT
+                  campaignTypes:
+                    - SPONSORED_PRODUCTS
+                  timeGranularity: HOUR
+              Keyword:
+                summary: Sponsored Products Keyword Report
+                value:
+                  reportName: Sponsored Products Keyword Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                    - SPONSORED_PRODUCTS
+              CategoryShareWeekly:
+                summary: Category Share Weekly Nielsen Report
+                value:
+                  reportName: Category Share Weekly Nielsen Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  groupBys: '[BRAND, VERTICAL]'
+                  timeGranularity: '[WEEK]'
+                  categoryProvider: NIELSEN
+              CategoryShareMonthly:
+                summary: Category Share Monthly Circana Report
+                value:
+                  reportName: Category Share Monthly Circana Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  groupBys: '[BRAND, VERTICAL, CATEGORY]'
+                  timeGranularity: '[MONTH]'
+                  categoryProvider: CIRCANA
+              ProductSalesDaily:
+                summary: Product Sales Daily Report
+                value:
+                  reportName: Product Sales Daily Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  groupBys: '[BRAND, VERTICAL, ITEM]'
+                  timeGranularity: '[DAY]'
+              ProductSalesWeekly:
+                summary: Product Sales Weekly Report
+                value:
+                  reportName: Product Sales Weekly Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  groupBys: '[BRAND, VERTICAL, ITEM]'
+                  timeGranularity: '[WEEK]'
+              ProductSalesMonthly:
+                summary: Product Sales Monthly Report
+                value:
+                  reportName: Product Sales Monthly Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  groupBys: '[BRAND, VERTICAL, ITEM]'
+                  timeGranularity: '[MONTH]'
+              ProductSalesRetailer:
+                summary: Product Sales Retailer Report
+                value:
+                  reportName: Product Sales Retailer Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  groupBys: '[RETAILER]'
+                  timeGranularity: '[MONTH]'
+              Catalog:
+                summary: Catalog Report
+                value:
+                  reportName: Catalog Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  filters:
+                    - field: L1_BRAND
+                      terms:
+                        - 1
+                        - 2
+                    - field: STATUS
+                      terms:
+                        - ACTIVE
+                        - INACTIVE
+                    - field: SEARCH_TERM
+                      terms:
+                        - bottle
+              InterestInsightsDish:
+                summary: Interest Insights Dish Report
+                value:
+                  reportName: Interest Insights Dish Report
+                  startDate: '2025-01-01 00:00:00'
+                  endDate: '2025-04-01 00:00:00'
+                  groupBys: '[DISH]'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateReportResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/sp/reports/download/{reportId}:
+    get:
+      tags:
+        - Report
+      operationId: downloadReportRequest
+      summary: Download report
+      description: Download a single report by the provided identifier.
+      parameters:
+        - name: reportId
+          in: path
+          description: The identifier for a report.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DownloadReportResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/sp/reports/list:
+    get:
+      tags:
+        - Report
+      operationId: listReports
+      summary: Get reports
+      description: Get a list of reports, optionally filtered by status or report type.
+      parameters:
+        - name: startDate
+          in: query
+          description: Get all reports requested after this date.
+          required: true
+          schema:
+            type: string
+          example: '2025-11-01 00:00:00'
+        - name: endDate
+          in: query
+          description: Get all reports requested before this date.
+          schema:
+            type: string
+          example: '2025-11-01 00:00:00'
+        - $ref: '#/components/parameters/startIndex'
+        - $ref: '#/components/parameters/count'
+        - name: status
+          in: query
+          description: Filter report by status.
+          schema:
+            $ref: '#/components/schemas/ReportStatus'
+        - name: reportNameContains
+          in: query
+          description: >-
+            Get all report names requested containing this substring,
+            case-insensitive and trimmed.
+          schema:
+            type: string
+        - name: sortCol
+          in: query
+          description: Sort reports by this column.
+          schema:
+            type: string
+            enum:
+              - name
+              - type
+              - startDate
+              - dateGenerated
+              - status
+            default: dateGenerated
+        - name: sortDir
+          in: query
+          description: Sort reports by this direction.
+          schema:
+            type: string
+            enum:
+              - ASC
+              - DESC
+            default: DESC
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListReportsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/sp/catalogs/validate:
+    post:
+      tags:
+        - Catalog
+      operationId: validateCatalogProducts
+      summary: Validate products
+      description: >-
+        Validate eligibility of a list of catalog products. Products in result
+        will be returned in the same order as provided in the request.
+      requestBody:
+        description: List of product IDs
+        content:
+          application/json:
+            schema:
+              type: array
+              minItems: 1
+              maxItems: 100
+              items:
+                properties:
+                  idType:
+                    $ref: '#/components/schemas/ProductIdType'
+                  productId:
+                    $ref: '#/components/schemas/ProductId'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CatalogValidationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+          properties:
+            campaigns:
+              description: List of campaigns.
+              type: array
+              items:
+                $ref: '#/components/schemas/CampaignResponse'
+  /ads/api/v1/sp/keywords:
+    post:
+      tags:
+        - Keywords (SP)
+      operationId: getRecommendedKeywordsForProducts
+      summary: Get recommended keywords
+      description: >-
+        Get a list of recommended keywords for the provided products and
+        placement type.
+      requestBody:
+        description: List of placement types and list of product IDs.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetRecommendedKeywordsRequest'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendedKeywordsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/sp/adGroups/{adGroupId}/keywords:
+    post:
+      tags:
+        - Keywords (SP)
+      operationId: getRecommendedKeywordsAdGroupStatus
+      summary: Get recommended keywords with status in ad group
+      description: >-
+        Get a list of recommended keywords and their status within the given ad
+        group (e.g. new) for the provided products and placement type.
+      parameters:
+        - name: adGroupId
+          in: path
+          description: Unique identifier for an ad group
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: List of placement types and list of product IDs.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetRecommendedKeywordsRequest'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendedKeywordsStatusResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/resources/search:
+    post:
+      tags:
+        - Resources
+      operationId: searchResources
+      summary: Search resources
+      description: >-
+        Get a list of resources (categories or advertiser's brands) based on
+        classification type and resource type.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourcesSearchRequest'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourcesSearchResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/assets:
+    post:
+      summary: Create a new asset
+      description: Create a new asset and get upload URL
+      tags:
+        - Assets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - type
+                - width
+                - height
+              properties:
+                name:
+                  type: string
+                  description: Name of the asset
+                type:
+                  $ref: '#/components/schemas/AssetType'
+                width:
+                  type: integer
+                  format: int64
+                  description: Width of the asset in pixels
+                height:
+                  type: integer
+                  format: int64
+                  description: Height of the asset in pixels
+      responses:
+        '200':
+          description: Asset creation successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  asset:
+                    $ref: '#/components/schemas/Asset'
+                  uploadUrl:
+                    type: string
+                    description: Presigned URL for uploading the asset
+                  uploadUrlExpiresAt:
+                    type: string
+                    format: date-time
+                    description: Expiration timestamp for the upload URL
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/assets/{assetId}:
+    get:
+      summary: Get asset by ID
+      description: Get a single asset by its identifier
+      tags:
+        - Assets
+      parameters:
+        - name: assetId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Asset identifier
+      responses:
+        '200':
+          description: Asset retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  asset:
+                    $ref: '#/components/schemas/Asset'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/assets/{assetId}/register:
+    post:
+      summary: Register an asset
+      description: Register an asset after upload is complete
+      tags:
+        - Assets
+      parameters:
+        - name: assetId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Asset identifier
+      responses:
+        '200':
+          description: Asset registration successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  asset:
+                    $ref: '#/components/schemas/Asset'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/sb/creatives:
+    post:
+      summary: Create creatives
+      description: Create creatives for a campaign and ad group
+      tags:
+        - Creatives (SB)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - campaignId
+                - adGroupId
+                - creatives
+              properties:
+                campaignId:
+                  type: string
+                  description: Campaign identifier
+                adGroupId:
+                  type: string
+                  description: Ad group identifier
+                creatives:
+                  type: array
+                  items:
+                    oneOf:
+                      - $ref: '#/components/schemas/BrandHeaderImageCreative'
+                      - $ref: '#/components/schemas/BrandLandingPageCreative'
+      responses:
+        '200':
+          description: Creatives successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - campaignId
+                  - adGroupId
+                  - creatives
+                properties:
+                  campaignId:
+                    type: string
+                    description: Campaign identifier
+                  adGroupId:
+                    type: string
+                    description: Ad group identifier
+                  creatives:
+                    type: array
+                    items:
+                      oneOf:
+                        - $ref: '#/components/schemas/BrandHeaderImageCreative'
+                        - $ref: '#/components/schemas/BrandLandingPageCreative'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Campaign or ad group not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      summary: Get creatives
+      description: Get creatives with pagination support
+      tags:
+        - Creatives (SB)
+      parameters:
+        - name: campaignIdFilter
+          in: query
+          required: true
+          schema:
+            type: string
+          description: A comma-delimited list of campaign identifiers
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 20
+          description: Number of results to return per page
+        - $ref: '#/components/parameters/searchAfter'
+      responses:
+        '200':
+          description: Creatives retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  searchAfter:
+                    type: string
+                    description: >
+                      Null when results included all matching resources. Base64
+                      encoded string of the request payload when there are
+                      additional resources not included within the current
+                      result set.
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - campaignId
+                        - adGroupId
+                        - creatives
+                      properties:
+                        campaignId:
+                          type: string
+                          description: Campaign identifier
+                        adGroupId:
+                          type: string
+                          description: Ad group identifier
+                        creatives:
+                          type: array
+                          items:
+                            oneOf:
+                              - $ref: '#/components/schemas/BrandCreative'
+                              - $ref: '#/components/schemas/BrandHeaderImageCreative'
+                              - $ref: '#/components/schemas/BrandLandingPageCreative'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/merchants:
+    get:
+      summary: Get merchants
+      description: Get merchant business IDs for targeting
+      tags:
+        - Merchants (Retailers)
+      responses:
+        '200':
+          description: Merchants retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - id
+                    - name
+                  properties:
+                    id:
+                      type: number
+                      description: Merchant business ID
+                    name:
+                      type: string
+                      description: Merchant name
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/menu/labels:
+    get:
+      summary: Get dish labels
+      description: Get available dish labels available for interest targeting
+      tags:
+        - Menu
+      responses:
+        '200':
+          description: Dish Labels retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DishLabelResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/targeting/audience/estimate:
+    post:
+      summary: Get audience size estimation
+      description: >-
+        Gets an audience size estimation for a campaign to be created or updated
+        based on the targeting
+      tags:
+        - Targeting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - filters
+              properties:
+                filters:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/TargetingFilters'
+      responses:
+        '200':
+          description: Audience size estimation calculated successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AudienceEstimateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  securitySchemes:
+    Ads API Key Authentication:
+      type: apiKey
+      scheme: bearer
+      in: header
+      name: Authorization
+      description: >-
+        We will be using stateful token based API keys to authenticate clients,
+        passed in the 'Authorization' header as 'Bearer {API_KEY}'.
+  parameters:
+    campaignType:
+      name: campaignType
+      in: path
+      description: >-
+        Indicates campaign type. 'sp' for Sponsored Products or 'sb' for
+        Sponsored Brand
+      required: true
+      schema:
+        type: string
+    campaignIdFilter:
+      name: campaignIdFilter
+      in: query
+      description: A comma-delimited list of campaign identifiers.
+      required: false
+      schema:
+        type: string
+    adGroupIdFilter:
+      name: adGroupIdFilter
+      in: query
+      description: A comma-delimited list of ad group identifiers.
+      required: false
+      schema:
+        type: string
+    stateFilter:
+      name: stateFilter
+      in: query
+      description: >-
+        Restricts results to resources with state within the specified
+        comma-separated list.
+      required: false
+      schema:
+        $ref: '#/components/schemas/StatusRead'
+    startIndex:
+      name: startIndex
+      in: query
+      description: 0-indexed record offset for the result set. Defaults to 0.
+      schema:
+        type: number
+        default: 0
+    count:
+      name: count
+      in: query
+      description: Number of records to include in the paged response.
+      required: false
+      schema:
+        type: number
+    recordType:
+      name: recordType
+      in: query
+      description: >-
+        one of: CAMPAIGN, ADGROUP, PRODUCT, KEYWORD, CATEGORY_SHARE,
+        PRODUCT_SALES, CATALOG, INTEREST_INSIGHTS
+      required: true
+      schema:
+        - $ref: '#/components/schemas/RecordType'
+    campaignId:
+      name: campaignId
+      in: path
+      description: Unique identifier for a campaign
+      required: true
+      schema:
+        type: string
+    searchAfter:
+      name: searchAfter
+      in: query
+      description: >
+        Null when results included all matching resources. Base64 encoded string
+        of the request payload when there are additional resources not included
+        within the current result set.
+      schema:
+        type: string
+  responses:
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotAcceptable:
+      description: >-
+        One or more values specified for a parameter was not within the
+        specified acceptable range.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnprocessableEntity:
+      description: An invalid parameter was specified.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InvalidQueryParam:
+      description: One or more query parameters contained an invalid value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ResourceNotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    CampaignId:
+      description: Unique campaign identifier.
+      type: string
+    AdGroupId:
+      description: Unique ad group identifier.
+      type: string
+    ProductId:
+      description: Unique product identifier based on product ID type.
+      type: string
+    ProductIdType:
+      description: Product ID type
+      type: string
+      enum:
+        - GTIN_14
+        - UPC
+        - DD_SIC
+    Name:
+      description: Resource name.
+      type: string
+    Description:
+      description: Resource description.
+      type: string
+    Placement:
+      required:
+        - type
+      properties:
+        type:
+          description: Specifies an ad group surface
+          type: string
+          enum:
+            - SEARCH
+            - CATEGORIES
+            - COLLECTION
+            - DOUBLEDASH
+    StartDate:
+      description: >-
+        Start date for the resource to go live. The format of the date is
+        yyyy-MM-dd HH:mm:ss.
+      type: string
+      example: '2025-11-01 00:00:00'
+    EndDate:
+      description: >-
+        End date for the resource to stop running. The format of the date is
+        yyyy-MM-dd HH:mm:ss.
+      type: string
+      example: '2025-12-01 00:00:00'
+    Date:
+      description: A date string in format of yyyy-MM-dd HH:mm:ss
+      type: string
+      example: '2025-11-01 00:00:00'
+    StatusDescription:
+      description: Description of the resource is in current state.
+      type: string
+    StatusRead:
+      description: Current resource state.
+      type: string
+      enum:
+        - INCOMPLETE
+        - IN_REVIEW
+        - SCHEDULED
+        - ACTIVE
+        - PAUSED
+        - ENDED
+        - DRAFT
+        - REJECTED
+        - CANCELLED
+    StatusWrite:
+      description: Current resource state.
+      type: string
+      enum:
+        - ACTIVE
+        - PAUSED
+        - ENDED
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    MonetaryFields:
+      required:
+        - unitAmount
+        - currency
+      properties:
+        unitAmount:
+          description: Integer representing a monetary value in cents.
+          type: number
+        currency:
+          description: Monetary value currency
+          type: string
+          enum:
+            - USD
+        displayString:
+          description: Monetary value formatted for display
+          type: string
+        decimalPlaces:
+          description: Monetary value currency decimal places
+          type: number
+        symbol:
+          description: Monetary value symbol
+          type: string
+    MonetaryFieldsExtended:
+      required:
+        - unitAmount
+        - currency
+        - displayString
+        - decimalPlaces
+        - symbol
+        - symbolPlacement
+        - sign
+      properties:
+        unitAmount:
+          description: Integer representing a monetary value in cents.
+          type: number
+        currency:
+          description: Monetary value currency
+          type: string
+          enum:
+            - USD
+        displayString:
+          description: Monetary value formatted for display
+          type: string
+        decimalPlaces:
+          description: Monetary value currency decimal places
+          type: number
+        symbol:
+          description: Monetary value symbol
+          type: string
+        symbolPlacement:
+          description: Monetary value symbol placement
+          type: string
+          enum:
+            - left
+            - right
+        sign:
+          description: >-
+            True indicates the monetary value is positive. False indicates the
+            monetary value is negative.
+          type: boolean
+    Code:
+      description: An enumerated success or error code for machine use.
+      type: string
+    CodeDescription:
+      description: A human-readable description of the code.
+      type: string
+    CreateCampaignRequest:
+      required:
+        - name
+        - campaignType
+        - budget
+        - startDate
+      properties:
+        name:
+          $ref: '#/components/schemas/Name'
+        description:
+          $ref: '#/components/schemas/Description'
+        budget:
+          $ref: '#/components/schemas/BudgetWrite'
+        startDate:
+          $ref: '#/components/schemas/StartDate'
+        endDate:
+          $ref: '#/components/schemas/EndDate'
+    UpdateCampaignRequest:
+      required:
+        - campaignId
+      properties:
+        campaignId:
+          $ref: '#/components/schemas/CampaignId'
+        name:
+          $ref: '#/components/schemas/Name'
+        description:
+          $ref: '#/components/schemas/Description'
+        status:
+          $ref: '#/components/schemas/StatusWrite'
+        budget:
+          $ref: '#/components/schemas/BudgetWrite'
+        startDate:
+          $ref: '#/components/schemas/StartDate'
+        endDate:
+          $ref: '#/components/schemas/EndDate'
+    CampaignResponse:
+      required:
+        - campaignId
+        - name
+        - description
+        - status
+        - statusDescription
+        - code
+        - codeDescription
+        - campaignType
+        - budget
+        - startDate
+        - endDate
+        - placementType
+        - permission
+      properties:
+        campaignId:
+          $ref: '#/components/schemas/CampaignId'
+        name:
+          $ref: '#/components/schemas/Name'
+        description:
+          $ref: '#/components/schemas/Description'
+        status:
+          $ref: '#/components/schemas/StatusRead'
+        statusDescription:
+          $ref: '#/components/schemas/StatusDescription'
+        code:
+          $ref: '#/components/schemas/Code'
+        codeDescription:
+          $ref: '#/components/schemas/CodeDescription'
+        campaignType:
+          $ref: '#/components/schemas/CampaignType'
+        budget:
+          $ref: '#/components/schemas/BudgetRead'
+        startDate:
+          $ref: '#/components/schemas/StartDate'
+        endDate:
+          $ref: '#/components/schemas/EndDate'
+        placementType:
+          $ref: '#/components/schemas/PlacementType'
+        permission:
+          $ref: '#/components/schemas/Permission'
+    CampaignType:
+      description: The advertising product managed by this campaign.
+      type: string
+      enum:
+        - SPONSORED_PRODUCTS
+    ReportCampaignTypes:
+      description: >
+        - Type of campaigns to include in the report.
+
+        - Only relevant for Marketing reports (when recordType is one of
+        <code>{CAMPAIGN, ADGROUP, PRODUCT, KEYWORD}</code>).
+
+        - Only one campaign type may be specified per report request.
+      type: array
+      maxItems: 1
+      items:
+        $ref: '#/components/schemas/ReportCampaignType'
+    ReportCampaignType:
+      type: string
+      enum:
+        - SPONSORED_PRODUCTS
+        - SPONSORED_BRAND
+    PlacementType:
+      description: >-
+        Specifies how all ad groups for the campaign will specify placement type
+        details.
+      type: string
+      enum:
+        - AUTOMATIC
+        - MANUAL
+    BudgetWrite:
+      properties:
+        daily:
+          description: Daily budget for the campaign
+          properties:
+            unitAmount:
+              description: Integer representing a monetary value in cents.
+              type: number
+        lifetime:
+          description: Lifetime budget for the campaign
+          properties:
+            unitAmount:
+              description: Integer representing a monetary value in cents.
+              type: number
+        pacingStrategy:
+          $ref: '#/components/schemas/PacingStrategy'
+          description: >
+            Used to opt into or out of Optimized Pacing. In updates without a
+            pacingStrategy specified, the existing pacingStrategy will be
+            preserved.
+
+            * `DEMAND` - Spend more of the budget when traffic is high, and less
+            when traffic is low. Requires daily budget to be set.
+
+            * `UNSPECIFIED` - Specify to opt out of Optimized Pacing and use the
+            default pacing strategy.
+      minProperties: 1
+      description: At least one of daily or lifetime budget must be configured.
+    BudgetRead:
+      required:
+        - daily
+        - lifetime
+      properties:
+        daily:
+          allOf:
+            - $ref: '#/components/schemas/MonetaryFieldsExtended'
+            - type: object
+              description: A daily budget for the campaign
+        lifetime:
+          allOf:
+            - $ref: '#/components/schemas/MonetaryFieldsExtended'
+            - type: object
+              description: A lifetime budget for the campaign
+        pacingStrategy:
+          $ref: '#/components/schemas/PacingStrategy'
+    Permission:
+      required:
+        - isReadOnly
+        - message
+      properties:
+        isReadOnly:
+          description: Indicates whether a campaign is read-only through the API
+          type: boolean
+        message:
+          description: Description of the campaign permission
+          type: string
+    BudgetCapoutRecommendationsResponse:
+      type: object
+      properties:
+        adEntityId:
+          type: string
+          description: ''
+        type:
+          type: string
+          description: ''
+        value:
+          $ref: '#/components/schemas/RecommendedBudget'
+    RecommendedBudget:
+      type: object
+      properties:
+        avgCapOutTimeLast7Days:
+          type: number
+        recommendedBudget:
+          $ref: '#/components/schemas/MonetaryFields'
+        totalMissedSalesLast7Days:
+          $ref: '#/components/schemas/MonetaryFields'
+        dailyCapOutTime:
+          type: array
+          items:
+            $ref: '#/components/schemas/DailyCapOutTime'
+    DailyCapOutTime:
+      type: object
+      properties:
+        dayOfWeek:
+          $ref: '#/components/schemas/DayOfWeek'
+        capOutTime:
+          type: number
+        maximumLiveHours:
+          type: number
+    PacingStrategy:
+      description: Controls how the budget is distributed over the campaign duration.
+      type: string
+      enum:
+        - DEMAND
+        - UNSPECIFIED
+      x-enumDescriptions:
+        DEMAND: >-
+          Spend more of the budget when traffic is high, and less when traffic
+          is low.
+        UNSPECIFIED: Specify to use the default pacing strategy.
+    CreateAdGroupRequest:
+      description: >
+        **[Beta]** Sponsored Products and Sponsored Brand ad groups support
+        stacked targeting. You can combine multiple targeting features in the
+        same request when those targeting features are enabled for the
+        advertiser and country. Sponsored Products supports dayparting
+        (`dayparts`), merchant targeting (`targetBusinessIds`), behavioral
+        targeting (`behavioralTargets`), interest targeting (`interestTargets`),
+        and keyword targeting (`keywordsBidding`). Sponsored Brand supports
+        dayparting (`dayparts`), merchant targeting (`targetBusinessIds`),
+        behavioral targeting (`behavioralTargets`), and interest targeting
+        (`interestTargets`). Existing campaign type, bid configuration,
+        advertiser, and country validation still applies.
+      required:
+        - campaignId
+        - name
+        - startDate
+        - endDate
+        - automaticBid
+        - manualTargets
+      properties:
+        campaignId:
+          $ref: '#/components/schemas/CampaignId'
+        name:
+          $ref: '#/components/schemas/Name'
+        startDate:
+          $ref: '#/components/schemas/StartDate'
+        endDate:
+          $ref: '#/components/schemas/EndDate'
+        automaticBid:
+          $ref: '#/components/schemas/AutomaticBidRequest'
+        manualTargets:
+          $ref: '#/components/schemas/ManualTargetsRequest'
+        targetBusinessIds:
+          $ref: '#/components/schemas/TargetBusinessIds'
+        behavioralTargets:
+          $ref: '#/components/schemas/BehavioralTargetsRequest'
+        dayparts:
+          description: >
+            **[Beta]** Configure custom schedule for when people see this ad
+            group campaign.
+          type: array
+          items:
+            $ref: '#/components/schemas/Daypart'
+        bidType:
+          $ref: '#/components/schemas/BidType'
+        bidMinRoas:
+          $ref: '#/components/schemas/BidMinRoas'
+        interestTargets:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterestTarget'
+        keywordsBidding:
+          $ref: '#/components/schemas/KeywordsBiddingRequest'
+    UpdateAdGroupRequest:
+      description: >
+        **[Beta]** Sponsored Products and Sponsored Brand ad groups support
+        stacked targeting. You can combine multiple targeting features in the
+        same request when those targeting features are enabled for the
+        advertiser and country. Sponsored Products supports dayparting
+        (`dayparts`), merchant targeting (`targetBusinessIds`), behavioral
+        targeting (`behavioralTargets`), interest targeting (`interestTargets`),
+        and keyword targeting (`keywordsBidding`). Sponsored Brand supports
+        dayparting (`dayparts`), merchant targeting (`targetBusinessIds`),
+        behavioral targeting (`behavioralTargets`), and interest targeting
+        (`interestTargets`). Existing campaign type, bid configuration,
+        advertiser, and country validation still applies.
+      required:
+        - campaignId
+        - adGroupId
+      properties:
+        campaignId:
+          $ref: '#/components/schemas/CampaignId'
+        adGroupId:
+          $ref: '#/components/schemas/AdGroupId'
+        name:
+          $ref: '#/components/schemas/Name'
+        status:
+          $ref: '#/components/schemas/StatusWrite'
+        startDate:
+          $ref: '#/components/schemas/StartDate'
+        endDate:
+          $ref: '#/components/schemas/EndDate'
+        automaticBid:
+          $ref: '#/components/schemas/AutomaticBidRequest'
+        manualTargets:
+          $ref: '#/components/schemas/ManualTargetsRequest'
+        keywordsBidding:
+          $ref: '#/components/schemas/KeywordsBiddingRequest'
+        targetBusinessIds:
+          $ref: '#/components/schemas/TargetBusinessIds'
+        behavioralTargets:
+          $ref: '#/components/schemas/BehavioralTargetsRequest'
+        dayparts:
+          description: >
+            **[Beta]** Custom schedule for when people see this ad group
+            campaign.
+          type: array
+          items:
+            $ref: '#/components/schemas/Daypart'
+        bidType:
+          $ref: '#/components/schemas/BidType'
+        bidMinRoas:
+          $ref: '#/components/schemas/BidMinRoas'
+        interestTargets:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterestTarget'
+    AdGroupResponse:
+      required:
+        - campaignId
+        - adGroupId
+        - name
+        - status
+        - statusDescription
+        - startDate
+        - endDate
+      properties:
+        campaignId:
+          $ref: '#/components/schemas/CampaignId'
+        adGroupId:
+          $ref: '#/components/schemas/AdGroupId'
+        name:
+          $ref: '#/components/schemas/Name'
+        status:
+          $ref: '#/components/schemas/StatusRead'
+        statusDescription:
+          $ref: '#/components/schemas/StatusDescription'
+        startDate:
+          $ref: '#/components/schemas/StartDate'
+        endDate:
+          $ref: '#/components/schemas/EndDate'
+        automaticBid:
+          allOf:
+            - $ref: '#/components/schemas/BidRead'
+            - type: object
+              description: Bid for all ad group placement types
+        code:
+          $ref: '#/components/schemas/Code'
+        codeDescription:
+          $ref: '#/components/schemas/CodeDescription'
+        manualTargets:
+          type: array
+          items:
+            $ref: '#/components/schemas/ManualTargetRead'
+        keywordsBidding:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeywordsBiddingRead'
+        targetBusinessIds:
+          $ref: '#/components/schemas/TargetBusinessIds'
+        behavioralTargets:
+          type: array
+          items:
+            $ref: '#/components/schemas/BehavioralTargetResponse'
+        dayparts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Daypart'
+        bidType:
+          $ref: '#/components/schemas/BidType'
+        bidMinRoas:
+          $ref: '#/components/schemas/BidMinRoas'
+        interestTargets:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterestTarget'
+    BidWrite:
+      required:
+        - price
+      properties:
+        price:
+          description: Integer representing a monetary value in cents.
+          properties:
+            unitAmount:
+              description: Integer representing a monetary value in cents.
+              type: number
+    BidRead:
+      required:
+        - price
+      properties:
+        price:
+          $ref: '#/components/schemas/MonetaryFieldsExtended'
+    AutomaticBidRequest:
+      allOf:
+        - $ref: '#/components/schemas/BidWrite'
+        - type: object
+          description: >
+            Bid for all ad group placement types. Either automaticBid OR
+            manualTargets must be set.
+
+
+            Bid unitAmount range per advertiser country code is outlined in the
+            following table. Ranges are presented as 'Minimum-Maximum'.
+
+
+            | Country code (currency) | Minimum-Maximum |
+
+            |-------------------|-----------------|
+
+            | US (USD) | 80-10,000 |
+
+            | CA (CAD) | 80-10,000 |
+
+            | AU (AUD) | 80-10,000 |
+    ManualTargetsRequest:
+      type: array
+      items:
+        $ref: '#/components/schemas/ManualTargetWrite'
+      description: >
+        **Sponsored Products only.** Bid for specific ad group placement types.
+        Either automaticBid OR manualTargets must be set. 
+
+
+        Supported ad group placement type combinations are represented in the
+        following table.
+
+
+        | Valid combinations |
+
+        |-------------------|
+
+        | CATEGORIES, COLLECTION, SEARCH, and DOUBLEDASH |
+
+        | CATEGORIES, COLLECTION, and SEARCH |
+
+        | DOUBLEDASH only |
+
+
+        Bid unitAmount range per advertiser country code per placement type is
+        outlined in the following table. Ranges are presented as
+        'Minimum-Maximum'.
+
+
+        | Placement type | US (USD) | CA (CAD) | AU (AUD) |
+
+        |-------------------|-------------------|-------------------|-------------------|
+
+        | CATEGORIES | 40-10,000 | 30-10,000 | 40-10,000 |
+
+        | COLLECTION | 30-10,000 | 40-10,000 | 50-10,000 |
+
+        | SEARCH | 60-10,000 | 40-10,000 | 50-10,000 |
+
+        | DOUBLEDASH | 80-10,000 | 80-10,000 | 80-10,000 |
+    ManualTargetWrite:
+      required:
+        - bid
+        - placement
+      properties:
+        bid:
+          allOf:
+            - $ref: '#/components/schemas/BidWrite'
+            - type: object
+              description: Bid for a specific ad group placement type
+        placement:
+          $ref: '#/components/schemas/Placement'
+    ManualTargetRead:
+      required:
+        - bid
+        - placement
+      properties:
+        bid:
+          allOf:
+            - $ref: '#/components/schemas/BidRead'
+            - type: object
+              description: Bid for a specific ad group placement type
+        placement:
+          $ref: '#/components/schemas/Placement'
+    KeywordsBiddingRequest:
+      description: >
+        **Sponsored Products only.** Keyword search bidding configuration to
+        customize the audience of this ad group campaign.
+      type: array
+      items:
+        $ref: '#/components/schemas/KeywordsBiddingWrite'
+    KeywordsBiddingWrite:
+      required:
+        - bid
+        - placement
+        - targetKeywords
+      properties:
+        bid:
+          allOf:
+            - $ref: '#/components/schemas/BidWrite'
+            - type: object
+              description: >-
+                Bid for list of keywords under a specific ad group placement
+                type. Zero unit amount will be excluded keywords.
+        placement:
+          $ref: '#/components/schemas/Placement'
+        targetKeywords:
+          type: array
+          minItems: 1
+          maxItems: 40
+          items:
+            type: string
+    KeywordsBiddingRead:
+      required:
+        - bid
+        - placement
+        - targetKeywords
+      properties:
+        bid:
+          allOf:
+            - $ref: '#/components/schemas/BidRead'
+            - type: object
+              description: >-
+                Bid for list of keywords under a specific ad group placement
+                type. Zero unit amount will be excluded keywords.
+        placement:
+          $ref: '#/components/schemas/Placement'
+        targetKeywords:
+          type: array
+          minItems: 1
+          maxItems: 40
+          items:
+            type: string
+    BehavioralTargetsRequest:
+      type: array
+      items:
+        $ref: '#/components/schemas/BehavioralTargetWrite'
+      description: >
+        Behavioral targeting configuration to customize the audience of this ad
+        group campaign.
+    BehavioralTargetWrite:
+      required:
+        - action
+        - resources
+      properties:
+        action:
+          $ref: '#/components/schemas/TargetingAction'
+        resources:
+          type: object
+          properties:
+            type:
+              $ref: '#/components/schemas/ResourceType'
+            ids:
+              type: array
+              items:
+                type: number
+    BehavioralTargetResponse:
+      required:
+        - action
+        - resources
+      properties:
+        action:
+          $ref: '#/components/schemas/TargetingAction'
+        resources:
+          type: object
+          properties:
+            type:
+              $ref: '#/components/schemas/ResourceType'
+            objects:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                      - INELIGIBLE
+    TargetingAction:
+      type: string
+      enum:
+        - LAPSED
+        - INCLUDE_ANY
+        - EXCLUDE_ANY
+    TimeOfDay:
+      type: object
+      properties:
+        hours:
+          type: number
+        minutes:
+          type: number
+        seconds:
+          type: number
+        nanos:
+          type: number
+    TimeOfDayOfWeek:
+      type: object
+      properties:
+        dayOfWeek:
+          $ref: '#/components/schemas/DayOfWeek'
+        timeOfDay:
+          $ref: '#/components/schemas/TimeOfDay'
+    DayOfWeek:
+      type: string
+      enum:
+        - MONDAY
+        - TUESDAY
+        - WEDNESDAY
+        - THURSDAY
+        - FRIDAY
+        - SATURDAY
+        - SUNDAY
+        - UNSPECIFIED
+    Daypart:
+      type: object
+      properties:
+        startTimeOfDayOfWeek:
+          $ref: '#/components/schemas/TimeOfDayOfWeek'
+        endTimeOfDayOfWeek:
+          $ref: '#/components/schemas/TimeOfDayOfWeek'
+    TargetBusinessIds:
+      type: array
+      items:
+        type: string
+      description: |
+        Business IDs for merchant targeting (domestic, non-alcohol only).
+    BidType:
+      type: string
+      enum:
+        - AUTOMATED
+        - MANUAL
+      description: >
+        **Sponsored Products US market only.**
+
+        Configure the AUTOMATED BidType to enable a new bidding strategy:
+        Automatic Bidding. This strategy automatically sets and adjusts your
+        bids in real-time to maximize clicks at the lowest cost.
+
+
+        When choosing Automatic Bidding with the AUTOMATED BidType,
+        manualTargets must be set. Bid in manualTargets is not required.
+
+
+        All ad groups within the same campaign must use the same BidType.
+        Specifying different BidTypes is not allowed.
+    BidMinRoas:
+      minimum: 0.1
+      exclusiveMinimum: false
+      maximum: 6
+      exclusiveMaximum: false
+      type: double
+      example: 2
+      description: >
+        Specify the BidMinRoas value when configuring the Automatic Bidding
+        strategy.
+
+
+        Choose a minimum ROAS that aligns with your campaign goals. If not
+        specified, a default minimum guardrail of 2.0x will be applied.
+
+
+        All ad groups within the same campaign must use the same bidMinRoas.
+        Although bidMinRoas is set at the ad group level, it is applied at the
+        campaign level — updating bidMinRoas on any ad group will set the same
+        value across all ad groups within the campaign.
+    InterestTarget:
+      type: object
+      required:
+        - labels
+        - type
+      properties:
+        labels:
+          type: array
+          items:
+            type: string
+        type:
+          type: string
+          enum:
+            - DISH
+    CreateProductAdRequest:
+      required:
+        - campaignId
+        - adGroupId
+        - idType
+        - productId
+      properties:
+        campaignId:
+          $ref: '#/components/schemas/CampaignId'
+        adGroupId:
+          $ref: '#/components/schemas/AdGroupId'
+        idType:
+          $ref: '#/components/schemas/ProductIdType'
+        productId:
+          $ref: '#/components/schemas/ProductId'
+        isPriority:
+          $ref: '#/components/schemas/IsPriority'
+    ProductAdResponse:
+      required:
+        - campaignId
+        - adGroupId
+        - idType
+        - productId
+        - ddSic
+        - upcs
+        - gtin14s
+      properties:
+        campaignId:
+          $ref: '#/components/schemas/CampaignId'
+        adGroupId:
+          $ref: '#/components/schemas/AdGroupId'
+        idType:
+          $ref: '#/components/schemas/ProductIdType'
+        productId:
+          $ref: '#/components/schemas/ProductId'
+        ddSic:
+          description: DoorDash product identifier.
+          type: string
+        isPriority:
+          $ref: '#/components/schemas/IsPriority'
+        upcs:
+          type: array
+          items:
+            type: string
+        gtin14s:
+          type: array
+          items:
+            type: string
+    DeleteProductAdResponse:
+      required:
+        - campaignId
+        - adGroupId
+        - idType
+        - productId
+        - code
+        - codeDescription
+        - ddSic
+        - upcs
+        - gtin14s
+      properties:
+        campaignId:
+          $ref: '#/components/schemas/CampaignId'
+        adGroupId:
+          $ref: '#/components/schemas/AdGroupId'
+        idType:
+          $ref: '#/components/schemas/ProductIdType'
+        productId:
+          $ref: '#/components/schemas/ProductId'
+        ddSic:
+          description: DoorDash product identifier.
+          type: string
+        code:
+          $ref: '#/components/schemas/Code'
+        codeDescription:
+          $ref: '#/components/schemas/CodeDescription'
+        upcs:
+          type: array
+          items:
+            type: string
+        gtin14s:
+          type: array
+          items:
+            type: string
+    IsPriority:
+      description: Indicates pinned product for Sponsored Brand campaigns.
+      type: boolean
+      default: false
+    CatalogValidationResponse:
+      required:
+        - idType
+        - productId
+        - isEligible
+      properties:
+        idType:
+          $ref: '#/components/schemas/ProductIdType'
+        productId:
+          $ref: '#/components/schemas/ProductId'
+        isEligible:
+          description: whether a product is eligible in DoorDash
+          type: boolean
+        brandName:
+          description: product's brand name
+          type: string
+        productName:
+          description: name of a product
+          type: string
+        imageUrl:
+          description: product image url
+          type: string
+        ddSic:
+          description: DoorDash product identifier.
+          type: string
+        upcs:
+          type: array
+          items:
+            type: string
+        gtin14s:
+          type: array
+          items:
+            type: string
+    GetRecommendedKeywordsRequest:
+      required:
+        - placements
+        - products
+      properties:
+        placements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Placement'
+          description: Placement type must be 'SEARCH' for recommended keywords.
+        products:
+          description: List of product IDs
+          type: array
+          items:
+            properties:
+              idType:
+                $ref: '#/components/schemas/ProductIdType'
+              productId:
+                $ref: '#/components/schemas/ProductId'
+    RecommendedKeywordsResponse:
+      required:
+        - recommendedKeywords
+      properties:
+        recommendedKeywords:
+          type: object
+          properties:
+            SEARCH:
+              type: array
+              items:
+                type: string
+          required:
+            - SEARCH
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    RecommendedKeywordsStatusResponse:
+      required:
+        - recommendedKeywords
+      properties:
+        recommendedKeywords:
+          type: object
+          properties:
+            SEARCH:
+              type: array
+              items:
+                $ref: '#/components/schemas/KeywordStatus'
+          required:
+            - SEARCH
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/KeywordStatus'
+    KeywordStatus:
+      properties:
+        keyword:
+          type: string
+        status:
+          type: string
+          enum:
+            - NEW
+    CreateReportRequest:
+      required:
+        - reportName
+        - startDate
+        - endDate
+      properties:
+        reportName:
+          description: Name of the report
+          type: string
+        fileType:
+          $ref: '#/components/schemas/FileType'
+        startDate:
+          $ref: '#/components/schemas/Date'
+        endDate:
+          $ref: '#/components/schemas/Date'
+        segment:
+          $ref: '#/components/schemas/Segment'
+        groupBys:
+          description: >
+            - <code>"CATEGORY"</code> only available for Nielsen Category Share
+            reports for Alcohol and non-US advertisers, and Circana Category
+            Share reports for US advertisers.
+
+            - <code>"RETAILER"</code> only available to Product Sales and
+            Category Share reports for Diamond and Gold tier advertisers.
+
+            - <code>"RETAILER"</code> and <code>"VERTICAL"</code> cannot be both
+            requested in the same report.
+
+            - <code>"DISH"</code> only available for Interest Insights reports.
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupBy'
+        timeGranularity:
+          $ref: '#/components/schemas/TimeGranularity'
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogReportFilter'
+        campaignTypes:
+          $ref: '#/components/schemas/ReportCampaignTypes'
+        categoryProvider:
+          $ref: '#/components/schemas/CategoryProvider'
+    CreateReportResponse:
+      required:
+        - reportId
+      properties:
+        reportId:
+          $ref: '#/components/schemas/ReportId'
+    DownloadReportResponse:
+      required:
+        - reportId
+        - url
+        - name
+        - requestedAt
+        - reportExpiresAt
+        - status
+      properties:
+        reportId:
+          $ref: '#/components/schemas/ReportId'
+        url:
+          type: string
+          description: >-
+            URL to download the report. This URL expires approximately 30
+            minutes after it is generated, so download the report within that
+            window. Once the URL has expired, accessing it returns an
+            `ExpiredToken` error ("The provided token has expired"). To obtain a
+            fresh URL, call the download report endpoint again.
+          example: >-
+            https://doordash-marketing-save-report-prod.s3.us-west-2.amazonaws.com/...
+        name:
+          $ref: '#/components/schemas/Name'
+        requestedAt:
+          $ref: '#/components/schemas/Date'
+        reportExpiresAt:
+          $ref: '#/components/schemas/Date'
+        status:
+          $ref: '#/components/schemas/ReportStatus'
+        recordType:
+          $ref: '#/components/schemas/RecordType'
+        groupBys:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupBy'
+        timeGranularity:
+          $ref: '#/components/schemas/TimeGranularity'
+        campaignTypes:
+          $ref: '#/components/schemas/ReportCampaignTypes'
+        categoryProvider:
+          $ref: '#/components/schemas/CategoryProvider'
+    ListReportsResponse:
+      properties:
+        totalCount:
+          type: integer
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportResponse'
+    ReportResponse:
+      required:
+        - reportId
+        - name
+        - status
+        - startDate
+        - endDate
+        - dateGenerated
+      properties:
+        reportId:
+          $ref: '#/components/schemas/ReportId'
+        name:
+          $ref: '#/components/schemas/Name'
+        status:
+          $ref: '#/components/schemas/ReportStatus'
+        recordType:
+          $ref: '#/components/schemas/RecordType'
+        segment:
+          $ref: '#/components/schemas/Segment'
+        groupBys:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupBy'
+        startDate:
+          $ref: '#/components/schemas/Date'
+        endDate:
+          $ref: '#/components/schemas/Date'
+        dateGenerated:
+          $ref: '#/components/schemas/Date'
+        categoryProvider:
+          $ref: '#/components/schemas/CategoryProvider'
+    ReportId:
+      description: Unique report identifier.
+      type: string
+    RecordType:
+      type: string
+      enum:
+        - CAMPAIGN
+        - ADGROUP
+        - PRODUCT
+        - KEYWORD
+        - PRODUCT_SALES
+        - CATEGORY_SHARE
+        - CATALOG
+        - INTEREST_INSIGHTS
+    FileType:
+      description: Report file type.
+      type: string
+      enum:
+        - CSV
+    Segment:
+      description: A secondary dimension used to further segment certain types of reports.
+      type: string
+      enum:
+        - PLACEMENT
+        - NONE
+    GroupBy:
+      type: string
+      enum:
+        - BRAND
+        - VERTICAL
+        - CATEGORY
+        - ITEM
+        - RETAILER
+        - DISH
+    TimeGranularity:
+      description: |
+        - HOUR (for dayparted reports) is currently in **Beta**.
+        - Category Share supports Week or Month grain
+        - Product Sales supports Day, Week, or Month grain
+      type: string
+      enum:
+        - HOUR
+        - DAY
+        - WEEK
+        - MONTH
+        - NONE
+    CategoryProvider:
+      description: >-
+        Data provider for product category definitions. Only applicable for
+        Category Share reports. Note that Circana is only available to US
+        advertisers.
+      type: string
+      enum:
+        - NIELSEN
+        - CIRCANA
+      example: CIRCANA
+    CatalogReportFilter:
+      type: object
+      properties:
+        field:
+          description: Product filter types for catalog reporting.
+          type: string
+          enum:
+            - L1_BRAND
+            - STATUS
+            - SEARCH_TERM
+        terms:
+          type: array
+          items:
+            type: string
+    ReportStatus:
+      type: string
+      enum:
+        - SCHEDULED
+        - PROCESSING
+        - COMPLETED
+        - ERROR
+      example: COMPLETED
+    ResourcesSearchRequest:
+      type: object
+      required:
+        - classificationType
+      properties:
+        classificationType:
+          $ref: '#/components/schemas/ClassificationType'
+        resourceTypes:
+          allOf:
+            - type: array
+            - items:
+                $ref: '#/components/schemas/ResourceType'
+            - description: >
+                When classificationType = BRAND, resourceTypes must be at least
+                one of [L1_BRAND].
+
+
+                When classificationType = CATEGORY, resourceTypes must be at
+                least one of [L1_CATEGORY, L2_CATEGORY].
+
+
+                When not provided, will return only L1s for the provided
+                classification. 
+
+
+                When provided, will returns associated resources of the provided
+                classification type.
+        searchAfter:
+          type: string
+          description: >
+            Null when results included all matching resources. Base64 encoded
+            string of the request payload when there are additional resources
+            not included within the current result set.
+        limit:
+          type: number
+          default: 10
+    ResourcesSearchResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CpgResource'
+        searchAfter:
+          type: string
+    ResourceType:
+      type: string
+      enum:
+        - L1_BRAND
+        - L1_CATEGORY
+        - L2_CATEGORY
+    ClassificationType:
+      type: string
+      enum:
+        - BRAND
+        - CATEGORY
+    CpgResource:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/ResourceType'
+        l1Id:
+          type: string
+        l1name:
+          type: string
+    AssetType:
+      type: string
+      enum:
+        - IMAGE
+        - VIDEO
+      description: Type of the asset
+    AssetState:
+      type: string
+      enum:
+        - PENDING_REGISTRATION
+        - REGISTERED
+        - ACTIVE
+        - INVALID
+        - ERROR
+        - ARCHIVED
+      description: Current state of the asset
+    Asset:
+      type: object
+      required:
+        - id
+        - name
+        - state
+        - type
+        - width
+        - height
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the asset
+        name:
+          type: string
+          description: Name of the asset
+        state:
+          $ref: '#/components/schemas/AssetState'
+          description: Current state of the asset
+        type:
+          $ref: '#/components/schemas/AssetType'
+          description: Type of the asset (image or video)
+        width:
+          type: integer
+          description: Width of the asset in pixels
+        height:
+          type: integer
+          description: Height of the asset in pixels
+        cdnUrl:
+          type: string
+          description: CDN URL of the asset
+    BrandCreative:
+      type: object
+      required:
+        - type
+        - title
+        - description
+        - logoContentUrl
+      properties:
+        type:
+          type: string
+          enum:
+            - BRAND
+          description: Type of creative
+        title:
+          type: string
+          description: Title of the creative
+        description:
+          type: string
+          description: Description of the creative
+        logoContentUrl:
+          type: string
+          description: URL of the logo content
+    BrandHeaderImageCreative:
+      type: object
+      required:
+        - type
+        - title
+        - description
+        - logoContentUrl
+      properties:
+        type:
+          type: string
+          enum:
+            - BRAND_HEADER_IMAGE
+          description: Type of creative
+        title:
+          type: string
+          description: Title of the creative
+        description:
+          type: string
+          description: Description of the creative
+        logoContentUrl:
+          type: string
+          description: URL of the logo content
+        headerImageUrlMobile:
+          type: string
+          description: URL of the header image for mobile
+        headerImageUrlWeb:
+          type: string
+          description: URL of the header image for web
+        headerVideoUrlMobile:
+          type: string
+          description: URL of the header video for mobile
+        headerVideoUrlWeb:
+          type: string
+          description: URL of the header video for web
+    BrandLandingPageCreative:
+      type: object
+      required:
+        - type
+        - title
+        - description
+        - logoContentUrl
+        - headerImageUrls
+        - headerImageUrlsWeb
+      properties:
+        type:
+          type: string
+          enum:
+            - BRAND_LANDING_PAGE
+          description: Type of creative
+        title:
+          type: string
+          description: Title of the creative
+        description:
+          type: string
+          description: Description of the creative
+        logoContentUrl:
+          type: string
+          description: URL of the logo content
+        headerImageUrls:
+          type: array
+          items:
+            type: string
+          description: Array of header image URLs
+        headerImageUrlsWeb:
+          type: array
+          items:
+            type: string
+          description: Array of header image URLs for web
+    DishLabelResponse:
+      type: object
+      required:
+        - name
+        - type
+        - children
+      properties:
+        name:
+          type: string
+          description: Name of the menu label
+        type:
+          type: string
+          enum:
+            - DISH
+          description: Type of label
+        description:
+          type: string
+          description: Description for the label
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/DishLabelResponse'
+      example:
+        name: Main Dishes
+        type: DISH
+        children:
+          - name: Burgers
+            type: DISH
+            description: Some description
+          - name: Pizza
+            type: Dish
+    AudienceEstimateResponse:
+      type: object
+      required:
+        - reach
+      properties:
+        reach:
+          type: string
+          enum:
+            - TOO_NARROW
+            - NARROW
+            - MODERATE
+            - BROAD
+            - ALL_AUDIENCES
+          description: Expected reach for campaign
+        estimatedSize:
+          $ref: '#/components/schemas/EstimatedSize'
+          description: Expected size of audience
+        description:
+          type: string
+          description: Description for the label
+    EstimatedSize:
+      type: object
+      required:
+        - low
+        - high
+      properties:
+        low:
+          type: integer
+          description: Estimated lower bound for audience size
+        high:
+          type: integer
+          description: Estimated upper bound for audience size
+    TargetingFilters:
+      type: object
+      required:
+        - field
+        - values
+      properties:
+        field:
+          type: string
+          enum:
+            - L1_BRANDS_EXISTING
+            - L1_BRANDS_NEW
+            - L1_CATEGORY_EXISTING
+            - L1_CATEGORY_LAPSED
+            - L1_CATEGORY_NEW
+            - L2_CATEGORY_EXISTING
+            - L2_CATEGORY_LAPSED
+            - L2_CATEGORY_NEW
+            - BOUGHT_FROM_RETAILER
+            - L2_DISH_INTEREST
+            - PLACEMENT
+            - CAMPAIGN_TYPE
+          description: Targeting field to be specified
+        values:
+          type: array
+          minItems: 1
+          items:
+            type: string

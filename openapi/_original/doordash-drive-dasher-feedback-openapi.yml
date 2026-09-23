@@ -1,0 +1,410 @@
+openapi: 3.0.0
+info:
+  title: Drive Dasher Feedback API Specification
+  x-logo:
+    url: >-
+      https://doordash-static.s3-us-west-2.amazonaws.com/media/drive/drive-logo.png
+    backgroundColor: '#FFFFFF'
+    altText: Doordash Drive
+    href: https://developer.doordash.com/
+  version: 0.0.1
+  description: |
+    Last updated: December 8, 2022
+
+    ### Release Notes
+
+    ### 0.0.1 (internal release)
+    - initial version
+    - added dasher feedback api
+servers:
+  - url: https://openapi.doordash.com
+    variables: {}
+paths:
+  /drive/v2/deliveries/{external_delivery_id}/assignments:
+    get:
+      summary: Get Assignments
+      tags:
+        - DasherFeedback
+      description: Get the dasher assignment history of the delivery that you created.
+      operationId: GetAssignments
+      parameters:
+        - $ref: '#/components/parameters/ExternalDeliveryIdPath'
+      responses:
+        '200':
+          description: Ok
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DasherAssignments'
+        '400':
+          description: Request Validation Failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validation_field_error'
+        '401':
+          description: Request unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authentication_error'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authorization_error'
+        '404':
+          description: Unknown delivery ID
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unknown_delivery_error'
+        '409':
+          description: Cancel is not allowed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelNotAllowedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      deprecated: false
+  /drive/v2/deliveries/{external_delivery_id}/dashers/{dasher_id}/rating:
+    post:
+      summary: Rate Dasher
+      tags:
+        - DasherFeedback
+      description: Get the dasher assignment history of the delivery that you created.
+      operationId: RateDasher
+      parameters:
+        - $ref: '#/components/parameters/ExternalDeliveryIdPath'
+        - $ref: '#/components/parameters/DasherIdPath'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RateDasherInput'
+        required: true
+      responses:
+        '200':
+          description: Ok
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: string
+                example: SUCCESS
+        '400':
+          description: Request Validation Failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validation_field_error'
+        '401':
+          description: Request unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authentication_error'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authorization_error'
+        '404':
+          description: Unknown delivery ID
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unknown_delivery_error'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      deprecated: false
+    components:
+      schemas:
+        RateDasherInput: &ref_1
+          title: RateDasherInput
+          description: Request body for rate dasher endpoint
+          type: object
+          required:
+            - rating
+          properties:
+            rating:
+              type: integer
+              format: int32
+              description: Rating for the Dasher.
+              minimum: -1
+              maximum: 1
+              example: 0
+            feedback_reason:
+              type: string
+              enum:
+                - EQUIPPED
+                - ON_TIME
+                - PATIENT_RESPECTFUL
+                - INSTRUCTIONS_FOLLOWED
+                - GREAT_COMMUNICATION
+                - CHECKED_ITEMS
+                - DASHER_UNPROFESSIONAL
+                - INSTRUCTIONS_NOT_FOLLOWED
+                - NOT_EQUIPPED
+                - STOLE_ORDER
+                - DASHER_SOMEONE_ELSE
+                - MISHANDLED_ORDER
+                - EARLY_LATE_FOR_PICKUP
+                - DASHER_NEVER_ARRIVED
+                - OTHER
+                - HARASSED_STAFF_OR_CUSTOMERS
+                - INAPPROPRIATE_BEHAVIOR
+                - UNDER_THE_INFLUENCE
+                - OTHER_BLOCK
+              description: Enum to specify dasher feedback reason.
+              example: UNDER_THE_INFLUENCE
+            comment:
+              type: string
+              description: Additional comment.
+components:
+  parameters:
+    ExternalDeliveryIdPath:
+      name: external_delivery_id
+      in: path
+      description: Unique (per developer) ID of the delivery.
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: string
+        pattern: /[a-zA-Z0-9-._~]+/
+        description: Unique ID generated by the caller for the delivery.
+        example: D-1763
+    DasherIdPath:
+      name: dasher_id
+      in: path
+      description: Unique (per dasher) ID of the dasher.
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: integer
+        description: Unique dasher ID for the delivery.
+        example: 1232142
+  schemas:
+    DasherHistory:
+      title: DasherHistory
+      description: Details about the Dasher assigned to this delivery.
+      type: object
+      required:
+        - dasher_id
+        - first_name
+        - last_name
+      properties:
+        dasher_id:
+          type: integer
+          description: Unique identifier for the Dasher.
+          format: int32
+          example: 1232142
+        first_name:
+          type: string
+          description: First name of the Dasher.
+          example: John
+        last_name:
+          type: string
+          description: Last name of the Dasher.
+          example: D.
+        dasher_at_store_time:
+          type: string
+          description: DateTime in ISO8601 format of when the dasher arrived at store.
+          example: '2023-08-22T17:20:28Z'
+        unassigned_time:
+          type: string
+          description: >-
+            DateTime in ISO8601 format of when the dasher was unassigned from
+            this delivery.
+          example: '2023-08-22T17:23:28Z'
+        unassigned_reason:
+          type: string
+          description: The reason of dasher being unassigned from this delivery.
+          example: order too small
+    DasherAssignments:
+      title: DasherAssignments
+      description: Dasher assignment history for this delivery.
+      type: object
+      properties:
+        dashers:
+          type: array
+          description: Dashers assigned to this delivery.
+          items:
+            $ref: '#/components/schemas/DasherHistory'
+    FieldError: &ref_0
+      title: FieldError
+      type: object
+      description: A field whose value couldn't be validated.
+      required:
+        - field
+        - error
+      properties:
+        field:
+          type: string
+          description: Name of the field whose value couldn't be validated.
+          example: pickup_phone_number
+        error:
+          type: string
+          description: The error that was encountered when validating the field's value.
+          example: Invalid phone number format
+    validation_field_error:
+      x-error: true
+      title: ValidationFieldError
+      type: object
+      description: One or more request values couldn't be validated.
+      required:
+        - code
+        - message
+        - field_errors
+      properties:
+        code:
+          type: string
+          enum:
+            - validation_error
+        message:
+          type: string
+          description: One or more request values couldn't be validated.
+          example: One or more request values couldn't be validated.
+        field_errors:
+          type: array
+          description: >-
+            The list of fields whose values couldn't be validated. See more
+            [error
+            examples](https://developer.doordash.com/en-US/docs/drive/reference/errors)
+          items:
+            $ref: '#/components/schemas/FieldError'
+          nullable: false
+          readOnly: true
+      components:
+        schemas:
+          FieldError: *ref_0
+    authentication_error:
+      x-error: true
+      type: object
+      description: >-
+        Authentication error: the token provided with the request doesn't work
+        for the requested operation
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - authentication_error
+          default: authentication_error
+        message:
+          type: string
+          example: The [exp] is in the past; the JWT is expired
+          default: The [exp] is in the past; the JWT is expired
+    authorization_error:
+      x-error: true
+      type: object
+      description: >-
+        Authorization error: the credentials provided with the request don't
+        work for the requested operation
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - authorization_error
+          default: authorization_error
+        message:
+          type: string
+          example: >-
+            Authorization error: the credentials provided with the request don't
+            work for the requested operation
+          default: >-
+            Authorization error: the credentials provided with the request don't
+            work for the requested operation
+    ExternalDeliveryId:
+      type: string
+      pattern: /[a-zA-Z0-9-._~]+/
+      description: Unique ID generated by the caller for the delivery.
+      example: D-1763
+    unknown_delivery_error:
+      x-error: true
+      type: object
+      description: External delivery ID was not found.
+      required:
+        - code
+        - message
+        - external_delivery_id
+      properties:
+        code:
+          type: string
+          enum:
+            - unknown_delivery_id
+        message:
+          type: string
+          example: External delivery ID was not found
+        external_delivery_id:
+          $ref: '#/components/schemas/ExternalDeliveryId'
+    CancelNotAllowedError:
+      x-error: true
+      required:
+        - code
+        - message
+        - reason
+      properties:
+        code:
+          type: string
+          enum:
+            - cancel_not_allowed
+        message:
+          type: string
+          example: Cancellation is no longer possible
+        reason:
+          type: string
+          enum:
+            - delivery_abandoned
+            - delivery_cancelled
+            - delivery_completed
+            - delivery_creation_in_progress
+            - delivery_picked_up
+            - cancellation_window_closed
+            - duplicate_request
+    server_fault:
+      x-error: true
+      type: object
+      description: Internal service failure, please try again later.
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - service_fault
+          default: service_fault
+        message:
+          type: string
+          example: Internal service failure, please try again later.
+          default: Internal service failure, please try again later.
+    RateDasherInput: *ref_1

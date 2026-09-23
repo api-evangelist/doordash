@@ -1,0 +1,90 @@
+generated: '2026-09-17'
+method: searched
+source: https://developer.doordash.com/en-US/docs/drive/how_to/use_delivery_simulator, https://developer.doordash.com/en-US/docs/drive/overview/faqs, https://developer.doordash.com/en-US/docs/drive/tutorials/get_started/
+provider: doordash
+description: >-
+  DoorDash ships a genuine self-serve sandbox and a hosted Delivery Simulator, which is the single
+  most agent-relevant thing about this platform: the whole delivery lifecycle - including every
+  webhook - can be rehearsed end to end without dispatching a Dasher or spending money. The
+  sandbox is separated from production by which access key signs the JWT, not by hostname, so the
+  base URL is identical in both environments.
+available: true
+self_serve: true
+signup:
+  url: https://developer.doordash.com/portal
+  requirements:
+  - name
+  - phone number
+  - email
+  note: >-
+    Signup is self-serve for sandbox. Production is not: Drive production access is restricted
+    pending a certification review with no published timeline, and Marketplace APIs are not
+    generally available. Testing outside the US needs additional configuration.
+environments:
+- name: Sandbox
+  base_url: https://openapi.doordash.com
+  separation: access key
+  cost: free
+  dispatch: none - deliveries are simulated and never sent to a Dasher
+  rate_limit: same ~300 requests / 60 seconds as production
+- name: Production
+  base_url: https://openapi.doordash.com
+  separation: access key
+  access: restricted
+credentials:
+  model: >-
+    An access key is a triple (developer_id, key_id, signing_secret) created in the Developer
+    Portal Credentials section and bound to one environment. There is no test-vs-live key PREFIX to
+    inspect - unlike a Stripe-style sk_test_/sk_live_ scheme, a DoorDash key carries no visible
+    marker of which environment it belongs to, so a caller must track that itself.
+  prefixes: []
+test_values:
+  published: false
+  note: >-
+    DoorDash publishes no magic test addresses, test phone numbers, test cards or fixture
+    identifiers. Test data is whatever the caller sends; the sandbox simply does not dispatch it.
+tooling:
+- name: Delivery Simulator
+  type: hosted console tool
+  url: https://developer.doordash.com/en-US/docs/drive/how_to/use_delivery_simulator
+  description: >-
+    A Developer Portal tool that creates test deliveries and advances an existing test delivery
+    through its lifecycle states. Each state change is reflected in the API response and, in Drive
+    (classic), fires the matching webhook to the configured sandbox endpoint - which makes it the
+    webhook test harness as well.
+  entry_points:
+  - Create a delivery through the Developer Portal UI.
+  - Create a delivery through the API using a sandbox key.
+  states:
+  - Created
+  - Dasher confirmed
+  - Dasher Arrived at Pickup
+  - Delivery Picked Up
+  - Dasher Arrived at Dropoff
+  - Delivered
+  - Cancelled
+  constraints:
+  - Only valid next states are offered; the dropdown populates with legal transitions.
+  - Test deliveries are automatically cancelled after one hour.
+  - Not all valid webhooks can be simulated (Drive classic).
+- name: Production test orders
+  type: console feature
+  url: https://developer.doordash.com/en-US/docs/marketplace/overview/release_notes
+  description: >-
+    Marketplace test-ordering functionality, extended to production stores in the 2024-02-22
+    release. Lets a partner place a test order against a live store.
+- name: Event Log
+  type: console feature
+  description: >-
+    Developer Portal log of API calls and webhook deliveries, filterable by date and time, with
+    onboarding API/webhook events included since the 2024-02-22 release. This is the closest thing
+    DoorDash offers to request tracing, since no request-id header is returned.
+- name: Simplified Menu Updates
+  type: console feature
+  description: Triggers menu updates from the Developer Portal for both test and production stores.
+time_simulation:
+  available: true
+  mechanism: manual state advancement in the Delivery Simulator
+  note: >-
+    Not a test clock. States are advanced by hand (or by tool) rather than by moving simulated time,
+    and a test delivery is force-cancelled after one real hour.

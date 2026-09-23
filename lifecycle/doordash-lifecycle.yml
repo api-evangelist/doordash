@@ -1,0 +1,110 @@
+generated: '2026-09-17'
+method: searched
+source: https://developer.doordash.com/en-US/docs/drive/overview/release_notes, https://www.doordashstatus.com, https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+provider: doordash
+description: >-
+  DoorDash versions each API in its URL path (drive/v1, drive/v2, marketplace/api/v1,
+  marketplace/api/v2, dataexchange/v1) and tracks changes on per-product release-notes pages. There
+  is a real, public status page. What DoorDash does NOT publish is a deprecation policy: no Sunset
+  or Deprecation response headers are documented, no retirement dates are given for Drive (classic)
+  or the legacy Marketplace API, and no OpenAPI operation in the harvested specs carries
+  deprecated: true.
+versioning:
+  strategy: url-path
+  pattern: https://openapi.doordash.com/{product}/{version}
+  versions:
+  - product: Drive
+    version: v2
+    base: https://openapi.doordash.com/drive/v2
+    status: current
+  - product: Drive (classic)
+    version: v1
+    base: https://openapi.doordash.com/drive/v1
+    status: superseded-but-supported
+    note: >-
+      Referred to throughout the docs as "Drive (classic)" with its own parallel reference tree.
+      No end-of-life date is published.
+  - product: Marketplace
+    version: v1
+    base: https://openapi.doordash.com/marketplace/api/v1
+    status: current
+  - product: Item Management
+    version: v2
+    base: https://openapi.doordash.com/marketplace/api/v2
+    status: current
+  - product: Reporting (dataexchange)
+    version: v1
+    base: https://openapi.doordash.com/dataexchange/v1
+    status: current
+  report_versioning: >-
+    The Reporting API additionally versions individual report shapes (report_version 2/3/4/5), and
+    the release notes state that legacy report versions stay supported but receive no new fields.
+deprecation:
+  policy_published: false
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  deprecated_operations: []
+  note: >-
+    No deprecation or sunset policy is published on developer.doordash.com, and no RFC 8594 Sunset
+    or Deprecation header is documented anywhere in the reference. The Marketplace docs carry a
+    "legacy partner migration" FAQ and a marketplace_legacy API reference, which implies a
+    migration path exists, but no dated retirement is stated. Zero of the 42 operations in the
+    harvested OpenAPI definitions are marked deprecated.
+status_page:
+  published: true
+  url: https://www.doordashstatus.com
+  vendor: Atlassian Statuspage
+  api: https://doordash.statuspage.io/api/v2/status.json
+  probed: '2026-09-17'
+  http_status: 200
+  machine_readable: true
+  components_observed:
+  - Drive API
+  - Drive
+  - Drive Order Fulfillment
+  - Drive Delivery Tracking Page
+  - Developer Portal
+  - Merchant - Marketplace
+  - Merchant Portal
+  - Orders
+  - Menu Updates
+  - Catalog
+  - Inventory
+  - Online Ordering (Storefront)
+  - DoorDash Commerce Platform
+  note: >-
+    A per-component status page that names the Drive API and the Developer Portal as distinct
+    components, with a public Statuspage v2 JSON API an agent can poll. Subscription by email is
+    offered from the developer FAQ.
+sla:
+  published: false
+  note: >-
+    No uptime SLA is published on the developer site. The Drive FAQ states production access
+    requests are reviewed in 5-10 days, which is an onboarding target, not an availability
+    commitment.
+release_notes:
+- api: Drive
+  url: https://developer.doordash.com/en-US/docs/drive/overview/release_notes
+  last_updated: '2023-01-12'
+- api: Drive (classic)
+  url: https://developer.doordash.com/en-US/docs/drive_classic/overview/release_notes
+  last_updated: '2022-02-28'
+- api: Marketplace
+  url: https://developer.doordash.com/en-US/docs/marketplace/overview/release_notes
+  last_updated: '2024-02-22'
+- api: Reporting
+  url: https://developer.doordash.com/en-US/docs/reporting/overview/release_notes
+  last_updated: '2026-05-21'
+access_lifecycle:
+  production_access: gated
+  note: >-
+    Drive API production access is explicitly restricted: "Production access to the Drive API is
+    currently restricted, and we cannot provide a timeline for certification following
+    development." Marketplace APIs are "not yet generally available" and require an application
+    from the Developer Portal Integrations tab. Sandbox access is self-serve.
+  evidence:
+  - url: https://developer.doordash.com/en-US/docs/drive/how_to/use_delivery_simulator
+    status: 200
+  - url: https://developer.doordash.com/en-US/docs/marketplace/overview/release_notes
+    status: 200

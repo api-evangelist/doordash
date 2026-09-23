@@ -1,0 +1,192 @@
+generated: '2026-09-17'
+method: searched
+source: https://developer.doordash.com/redocusaurus/plugin-redoc-<n>.yaml
+discovery: STEP 0b contract discovery. developer.doordash.com is a Docusaurus site using Redocusaurus,
+  and every API reference page is rendered from a real first-party OpenAPI that DoorDash serves as a plain
+  YAML file at https://developer.doordash.com/redocusaurus/plugin-redoc-<n>.yaml. Nothing on the site
+  links to these files and no download button is rendered; the mapping from an /en-US/api/<product> page
+  to its plugin index was read out of the Docusaurus route manifest in /en-US/assets/js/main.9dbb22e9.js.
+  Indices 0-27 answer 200; 28+ answer 404. Indices 1-13 are historical versions of the Ads API kept as
+  versioned pages, and indices 26-27 are duplicate Item Management 2.8 documents behind two unlisted sitemap
+  routes; only the document served at each product's canonical route is saved here.
+ownership: 'Ownership confirmed on the spec''s own evidence, not the fetch URL: every document declares
+  servers[] on openapi.doordash.com (Marketplace legacy on pointofsale.doordash.com, also DoorDash), info.title
+  names a DoorDash product, and the auth scheme is the DoorDash HS256 JWT documented at developer.doordash.com/en-US/docs/drive/reference/JWTs.'
+note: Saved byte-verbatim. These REPLACE the five previously-archived _original documents, which described
+  an older path layout (/deliveries, /businesses under drive/v2) that the live API no longer serves; the
+  real specs carry the version prefix in the path against a bare https://openapi.doordash.com server.
+  Every path in the superseded documents is covered by an equivalent path here, and the harvest adds 99
+  operations (42 -> 141). The refined per-tag splits in openapi/ still derive from the SUPERSEDED documents
+  - refine-openapis must be re-run for the split layer to reflect this harvest.
+documents:
+- file: doordash-ads-openapi.yml
+  title: DoorDash Ads API
+  version: 1.0.29
+  openapi: 3.1.0
+  operations: 27
+  paths: 20
+  servers:
+  - https://openapi.doordash.com
+  source_url: https://developer.doordash.com/redocusaurus/plugin-redoc-0.yaml
+  http_status: 200
+  rendered_at: https://developer.doordash.com/en-US/api/ads
+  sha256: a5f0572b18c651b0a730eb0fab897ccf92ee8d71542b82c36ed7ebb1c89d5435
+  bytes: 91691
+- file: doordash-drive-openapi.yml
+  title: Drive API
+  version: 2.1.59
+  openapi: 3.0.0
+  operations: 18
+  paths: 13
+  servers:
+  - https://openapi.doordash.com
+  source_url: https://developer.doordash.com/redocusaurus/plugin-redoc-16.yaml
+  http_status: 200
+  rendered_at: https://developer.doordash.com/en-US/api/drive
+  sha256: 6aaf859a22ded46ee2b427964c0c940d4ef59ca585481f61e31a43e791935bac
+  bytes: 144781
+- file: doordash-drive-classic-openapi.yml
+  title: Drive (classic) API Specification
+  version: 0.4.8
+  openapi: 3.0.0
+  operations: 14
+  paths: 9
+  servers:
+  - https://openapi.doordash.com
+  source_url: https://developer.doordash.com/redocusaurus/plugin-redoc-14.yaml
+  http_status: 200
+  rendered_at: https://developer.doordash.com/en-US/api/drive_classic
+  sha256: 3d8027a0c6917f4eb6d009d479a1e922de59e9645dadffa9d577656031240d25
+  bytes: 111813
+- file: doordash-drive-dasher-feedback-openapi.yml
+  title: Drive Dasher Feedback API Specification
+  version: 0.0.1
+  openapi: 3.0.0
+  operations: 2
+  paths: 2
+  servers:
+  - https://openapi.doordash.com
+  source_url: https://developer.doordash.com/redocusaurus/plugin-redoc-21.yaml
+  http_status: 200
+  rendered_at: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  sha256: d023cb15b215616fcfd00de313bc356b45c717df544ba3a0638bee0159537627
+  bytes: 12501
+- file: doordash-drive-redelivery-openapi.yml
+  title: Drive Redelivery API Specification
+  version: 0.0.1
+  openapi: 3.0.0
+  operations: 1
+  paths: 1
+  servers:
+  - https://openapi.doordash.com
+  source_url: https://developer.doordash.com/redocusaurus/plugin-redoc-23.yaml
+  http_status: 200
+  rendered_at: https://developer.doordash.com/en-US/api/drive_redelivery
+  sha256: 0f3e5d56fcb84dae70e706c5795c64226027913bf670c9d4fbcdd3df1dc2873c
+  bytes: 82227
+- file: doordash-drive-refunds-openapi.yml
+  title: Drive Refunds API Specification
+  version: 0.0.3
+  openapi: 3.0.0
+  operations: 1
+  paths: 1
+  servers:
+  - https://openapi.doordash.com
+  source_url: https://developer.doordash.com/redocusaurus/plugin-redoc-20.yaml
+  http_status: 200
+  rendered_at: https://developer.doordash.com/en-US/api/drive_refunds
+  sha256: 0430aa23156b94b714e113be9d7b047afa6a50f9f5f0adc260b9a0f7b005193f
+  bytes: 10127
+- file: doordash-parcel-openapi.yml
+  title: Parcel API
+  version: 0.3.6
+  openapi: 3.0.0
+  operations: 5
+  paths: 5
+  servers:
+  - https://openapi.doordash.com
+  source_url: https://developer.doordash.com/redocusaurus/plugin-redoc-24.yaml
+  http_status: 200
+  rendered_at: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  sha256: e1ce7106155a4ae9907b82591b3948974a6b2a1b53f876f3c318d998019c9dd6
+  bytes: 86069
+- file: doordash-external-checkout-openapi.yml
+  title: DoorDash Checkout API Interface
+  version: 0.1.6
+  openapi: 3.0.0
+  operations: 2
+  paths: 2
+  servers: []
+  source_url: https://developer.doordash.com/redocusaurus/plugin-redoc-22.yaml
+  http_status: 200
+  rendered_at: https://developer.doordash.com/en-US/api/external_checkout
+  sha256: 69621e78f3fb3011340cfa04d7e649c639355afc2afd5eb7d17db641746694ec
+  bytes: 20972
+- file: doordash-marketplace-openapi.yml
+  title: Marketplace API Specification
+  version: 1.0.0
+  openapi: 3.0.0
+  operations: 15
+  paths: 15
+  servers:
+  - https://openapi.doordash.com/marketplace
+  source_url: https://developer.doordash.com/redocusaurus/plugin-redoc-17.yaml
+  http_status: 200
+  rendered_at: https://developer.doordash.com/en-US/api/marketplace
+  sha256: e32c7365e1e5602c940a894d181b5a16dc375906bfed1f59fb37b1fbdd339597
+  bytes: 63317
+- file: doordash-marketplace-legacy-openapi.yml
+  title: Marketplace (legacy) API Specification
+  version: 1.0.0
+  openapi: 3.0.0
+  operations: 12
+  paths: 12
+  servers:
+  - https://pointofsale.doordash.com
+  source_url: https://developer.doordash.com/redocusaurus/plugin-redoc-18.yaml
+  http_status: 200
+  rendered_at: https://developer.doordash.com/en-US/api/marketplace_legacy
+  sha256: 186fcb9435ae67c3870269cb78712e4e88adcf4c53c51ab62de92a43efb060bc
+  bytes: 50010
+- file: doordash-item-management-openapi.yml
+  title: Doordash Item management API Specification
+  version: '2.0'
+  openapi: 3.0.0
+  operations: 13
+  paths: 10
+  servers:
+  - https://openapi.doordash.com/marketplace
+  source_url: https://developer.doordash.com/redocusaurus/plugin-redoc-25.yaml
+  http_status: 200
+  rendered_at: https://developer.doordash.com/en-US/api/marketplace_v2
+  sha256: b466df4cf41144018f535231a62e13ad804fffc51b806f7c1b8a873c143e52a3
+  bytes: 94687
+- file: doordash-reporting-openapi.yml
+  title: Reporting APIs
+  version: 1.0.0
+  openapi: 3.0.3
+  operations: 2
+  paths: 2
+  servers:
+  - https://openapi.doordash.com
+  source_url: https://developer.doordash.com/redocusaurus/plugin-redoc-15.yaml
+  http_status: 200
+  rendered_at: https://developer.doordash.com/en-US/api/reporting
+  sha256: 9ff27ba6764e6ed59015d79e2ea6e75710f0efd7f5ae728d4942816ba35d02f1
+  bytes: 4481
+- file: doordash-storefront-openapi.yml
+  title: Storefront V1 API Specification
+  version: 1.0.0
+  openapi: 3.0.0
+  operations: 29
+  paths: 29
+  servers:
+  - https://openapi.doordash.com
+  source_url: https://developer.doordash.com/redocusaurus/plugin-redoc-19.yaml
+  http_status: 200
+  rendered_at: https://developer.doordash.com/en-US/api/storefront
+  sha256: 9c5afc7ad92e2ba802bd65644ee53945a3f81384ece02f2311b4f53b7347bdf8
+  bytes: 105543
+totals:
+  documents: 13
+  operations: 141

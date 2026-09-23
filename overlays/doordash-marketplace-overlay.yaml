@@ -1,0 +1,73 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay for DoorDash Marketplace API Specification
+  version: 1.0.0
+extends: ./../openapi/_original/doordash-marketplace-openapi.yml
+x-provenance:
+  generated: '2026-09-17'
+  method: generated
+  source: openapi/_original/doordash-marketplace-openapi.yml (DoorDash Marketplace API Specification 1.0.0),
+    plus developer.doordash.com reference docs
+  note: Additive only. This overlay never rewrites a provider field; every action adds an x- extension
+    or a contact block the original omits.
+actions:
+- target: $.info
+  description: Record who wrote this overlay and what the original contract is, so a consumer can tell
+    provider content from API Evangelist enrichment.
+  update:
+    x-api-evangelist:
+      profile: https://apis.io/provider/doordash/
+      overlay-generated: '2026-09-17'
+      original: openapi/_original/doordash-marketplace-openapi.yml
+      original-source: https://developer.doordash.com/redocusaurus/
+      note: The original document is DoorDash's own, saved byte-verbatim. Every field this overlay adds
+        is API Evangelist enrichment, never provider content.
+- target: $.info
+  description: Attach the developer support and documentation contact DoorDash publishes on its docs site
+    but omits from the contract.
+  update:
+    contact:
+      name: DoorDash Developer Support
+      url: https://developer.doordash.com/portal/support
+- target: $.info
+  description: 'Cross-link the derived runtime-semantics artifacts that this contract does not carry:
+    the error envelope, the retry and idempotency rules, the auth profile, the published rate limit and
+    the lifecycle/status surface.'
+  update:
+    x-artifacts:
+      authentication: authentication/doordash-authentication.yml
+      conventions: conventions/doordash-conventions.yml
+      errors: errors/doordash-problem-types.yml
+      lifecycle: lifecycle/doordash-lifecycle.yml
+      rate-limits: rate-limits/doordash-rate-limits.yml
+      sandbox: sandbox/doordash-sandbox.yml
+      data-model: data-model/doordash-data-model.yml
+      conformance: conformance/doordash-conformance.yml
+- target: $.info
+  description: State the published rate limit and the retry policy on the contract itself; DoorDash documents
+    both in prose only and returns no rate-limit response headers.
+  update:
+    x-rate-limit:
+      limit: 300
+      window-seconds: 60
+      scope: access key
+      status-on-exhaustion: 429
+      headers: []
+      retry: exponential backoff with jitter, 3 attempts, 1s-5s delay
+      source: https://developer.doordash.com/en-US/docs/drive/overview/faqs
+- target: $.info
+  description: State the authentication model the operations require. Most DoorDash documents declare
+    no securitySchemes at all, so a client generated from the raw contract would send unauthenticated
+    requests.
+  update:
+    x-authentication:
+      type: self-signed JWT bearer
+      algorithm: HS256
+      header: 'Authorization: Bearer <JWT>'
+      claims:
+      - aud=doordash
+      - iss=developer_id
+      - kid=key_id
+      - iat
+      - exp (max iat+1800s)
+      docs: https://developer.doordash.com/en-US/docs/drive/reference/JWTs

@@ -1,36 +1,53 @@
 {
   "provider": "doordash",
   "sources": [
-    "doordash-addresses-api-openapi.yml",
-    "doordash-businesses-api-openapi.yml",
-    "doordash-catalog-api-openapi.yml",
-    "doordash-deliveries-api-openapi.yml",
-    "doordash-inventory-api-openapi.yml",
-    "doordash-items-api-openapi.yml",
-    "doordash-menus-api-openapi.yml",
-    "doordash-orders-api-openapi.yml",
-    "doordash-promotions-api-openapi.yml",
-    "doordash-quotes-api-openapi.yml",
-    "doordash-reports-api-openapi.yml",
-    "doordash-stores-api-openapi.yml"
+    "_original/doordash-drive-classic-openapi.yml",
+    "_original/doordash-drive-openapi.yml",
+    "_original/doordash-item-management-openapi.yml",
+    "_original/doordash-marketplace-openapi.yml",
+    "_original/doordash-reporting-openapi.yml"
   ],
   "outputs": [
-    "doordash-addresses-api-openapi.yml",
     "doordash-businesses-api-openapi.yml",
-    "doordash-catalog-api-openapi.yml",
     "doordash-deliveries-api-openapi.yml",
+    "doordash-stores-api-openapi.yml",
+    "doordash-addresses-api-openapi.yml",
+    "doordash-quotes-api-openapi.yml",
+    "doordash-catalog-api-openapi.yml",
     "doordash-inventory-api-openapi.yml",
+    "doordash-promotions-api-openapi.yml",
     "doordash-items-api-openapi.yml",
     "doordash-menus-api-openapi.yml",
     "doordash-orders-api-openapi.yml",
-    "doordash-promotions-api-openapi.yml",
-    "doordash-quotes-api-openapi.yml",
-    "doordash-reports-api-openapi.yml",
-    "doordash-stores-api-openapi.yml"
+    "doordash-reports-api-openapi.yml"
   ],
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (5 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "doordash-drive-classic-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "doordash-drive-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "doordash-item-management-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "doordash-marketplace-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "doordash-reporting-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "tag 'Businesses' spans 2 source specs (doordash-drive-classic-openapi.yml, doordash-drive-openapi.yml): per-path servers applied",
+    "tag 'Deliveries' spans 2 source specs (doordash-drive-classic-openapi.yml, doordash-drive-openapi.yml): per-path servers applied",
+    "tag 'Stores' spans 3 source specs (doordash-drive-classic-openapi.yml, doordash-drive-openapi.yml, doordash-marketplace-openapi.yml): per-path servers applied",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "doordash-addresses-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "doordash-businesses-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "doordash-catalog-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "doordash-deliveries-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "doordash-inventory-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "doordash-items-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "doordash-menus-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "doordash-orders-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "doordash-promotions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "doordash-quotes-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "doordash-reports-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "doordash-stores-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

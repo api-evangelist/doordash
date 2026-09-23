@@ -1,0 +1,684 @@
+openapi: 3.0.0
+info:
+  title: DoorDash Checkout API Interface
+  x-logo:
+    url: >-
+      https://doordash-static.s3-us-west-2.amazonaws.com/media/drive/drive-logo.png
+    backgroundColor: '#FFFFFF'
+    altText: Doordash Drive
+    href: https://www.doordash.com/drive/portal/discover
+  version: 0.1.6
+  contact:
+    name: Drive API Support
+    email: drive-api-support@doordash.com
+  description: >
+    Last updated: Apr 20, 2021
+
+    ### Release Notes
+
+
+    #### v0.1.8 (effective Apr 20, 2021)
+
+    - Clean up Introduction section
+
+    - Create Order Session
+      - Update Extra.tax_excluded_price to now allow negative values
+      - Update Option.tax_excluded_price to now allow negative values
+      - Add field_errors.code field
+      - Remove unused scheduled_delivery_time field
+    - Get Checkout Page
+      - Remove content body for 400 bad request (incorrect content)
+
+    #### v0.1.7 (effective Mar 10, 2021)
+
+    - Added first_name and last_name on consumer object
+
+
+    #### v0.1.6 (effective Feb 16, 2021)
+
+    - Changed checkout endpoint to be https://order.online/embed/v1/checkout/
+
+
+    #### v0.1.5 (effective Feb 08, 2021)
+
+    - Added scheduled_delivery_time, cart.items.item.special_instructions,
+    external_order_id, dropoff_preference
+
+    - Renamed for cart items, extras, and options: price is now
+    tax_excluded_price
+
+    - Updated descriptions
+
+    - Updated Error Response for 400 Bad request cases
+
+
+    #### v0.1.4 (effective Feb 02, 2021)
+
+    - Added webhook type and payload
+
+
+    #### v0.1.3 (effective Jan 28, 2021)
+
+    - Removed tip, pickup_address, pickup_time, delivery_time, provider_type
+
+
+    #### v0.1.2 (effective Jan 26, 2021)
+
+    - Modifying Options and Extras to be arrays
+
+    - Removed external_business_name
+
+    - Added provider_type
+
+
+    #### v0.1.1 (effective Jan 19, 2021)
+
+    - Modified field: Currency, Option, Extra, Tip
+
+
+    #### v0.1.0 (effective Jan 13, 2021)
+
+    - First pass
+
+
+    # Introduction
+
+
+    Welcome to Drive's payment integration platform. Using this API, you can
+    leverage our payment processing and checkout flow, along with order
+    creation, order tracking, SaaS capabilities, and payment reporting.
+
+
+    Requirements:
+
+    * Store must be an existing store on DoorDash Marketplace
+
+    * Items passed in must reflect menu items existing on Marketplace store
+
+    * Must pass consumer email to us for storing Stripe profile on DoorDash's
+    end
+
+
+    Here is the typical flow:
+
+
+    1. Once items on external end are ready for checkout, request an
+    `order_session_id` by passing those items and prices, along with consumer
+    data, delivery data, to our API.
+
+    1. Request a secure HTML checkout page to open in a webview on your app
+    using the `order_session_id` from the previous step.
+
+    1. When consumer finished checkout flow, the order should either be
+    successfully created or an error will be returned.
+
+    1. The delivery is executed.
+
+
+    A delivery is created in a scheduled state with the event
+    "delivery_created". The end state is either "delivered" or "cancelled".
+    Notable events will change delivery state and/or dasher state.
+
+
+    # Requests and Responses
+
+
+    - Interface is REST-based
+
+    - POST data is application/json
+
+    - Request and response HTTP header “Content-type” is always
+    “application/json”
+
+    - We use normal HTTP status codes
+
+
+    ## CURL example:
+
+    You will have to replace ${apiKey} `curl  -H "Authorization: Bearer
+    ${apikey}" -v https://api.doordash.com/drive/v1/...`
+
+    with your specific API key. If you need an api key, contact
+    [drive-api-support@doordash.com](mailto:drive-api-support@doordash.com).
+
+
+    ## Important notes:
+
+    **<h2 style="color:#FB2720">Please retry all 50x response status codes as
+    the error could be transient. We recommend up to 3 retries with some
+    exponential backoff delay between requests.</h2>
+
+    When providing a time to any of the below APIs (i.e. `pickup_time` or
+    `delivery_time`), the format must be UTC.**
+
+
+    </aside>
+
+
+    # Webhooks
+
+    If you need updates on various stages of a delivery, please provide us with
+    a url endpoint that you would like to receive webhook events.
+
+    The webhook events we send to your endpoint will have an **Authorization**
+    header with value **Bearer {API_KEY}**, while {API_KEY} is the api key we
+    provided you.
+
+
+    Currently, we send out the following events:
+
+
+    - `delivery_created`: We accepted your order and a delivery has been created
+    for it.
+
+
+    ## Frequency of webhook events
+
+    - `delivery_created`: This event will occur once, after the delivery is
+    created.
+
+
+    ## Sample payload
+
+    ```json
+
+    {
+      "external_order_id": "1234-abcd",
+      "event_category": "delivery_created",
+      "tracking_url": "https://www.doordash.com/XXX",
+      "created_at": "2021-02-01T02:01:00.000Z"
+    }
+
+    ```
+paths:
+  https://api.doordash.com/drive/v1/checkout:
+    post:
+      summary: Create Order Session
+      description: >-
+        Create the order session by passing in order details to receive a
+        order_session_id, which is used to open the Checkout Page webview.
+      operationId: CreateCheckoutPost
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - consumer
+                - cart
+                - currency
+                - delivery_address
+                - external_store_id
+              type: object
+              properties:
+                cart:
+                  $ref: '#/components/schemas/Cart'
+                currency:
+                  type: string
+                  enum:
+                    - USD
+                    - AUD
+                    - CAD
+                    - JPY
+                  description: Type of currency of the payment.
+                  example: USD
+                consumer:
+                  $ref: '#/components/schemas/Consumer'
+                delivery_address:
+                  $ref: '#/components/schemas/DeliveryAddress'
+                external_order_id:
+                  type: string
+                  description: Merchant's unique identifier for the order.
+                  example: aer5-ufc9-7865-45ng8-iuywq
+                external_store_id:
+                  type: string
+                  description: >-
+                    Merchant's unique identifier for a store that this delivery
+                    is for.
+                  example: '148767394'
+                dropoff_preference:
+                  $ref: '#/components/schemas/DropoffPreference'
+        required: true
+        description: Request body for checkout endpoint
+      responses:
+        '200':
+          description: Checkout token returned with the given parameters
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderSessionIdResponse'
+        '400':
+          description: Bad request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldErrorResponse'
+        5XX:
+          description: >
+            - Please retry all 50x response status codes as the error could be
+            transient. We recommend up to 3 retries with some exponential
+            backoff delay between requests.
+
+            - When providing a time to any of the below APIs (i.e.
+            `scheduled_delivery_time`), the format must be UTC.
+      deprecated: false
+      security:
+        - Drive API Key Authentication: []
+  https://order.online/embed/v1/checkout/:
+    get:
+      summary: Get Checkout Page
+      description: Get .html page to open in webview
+      operationId: GetCheckoutPage
+      parameters:
+        - name: order_session_id
+          in: query
+          description: >-
+            UUID of the order session that was created via the Create Checkout
+            call.
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: HTML of webview
+          headers: {}
+          content:
+            application/html:
+              schema:
+                $ref: '#/components/schemas/CheckoutPageResponse'
+        '400':
+          description: Bad request
+          headers: {}
+        5XX:
+          description: >
+            - Please retry all 50x response status codes as the error could be
+            transient. We recommend up to 3 retries with some exponential
+            backoff delay between requests.
+      deprecated: false
+      security:
+        - Drive API Key Authentication: []
+components:
+  schemas:
+    DeliveryAddress:
+      title: The address where the order needs to be dropped off.
+      description: The address where the order needs to be dropped off.
+      required:
+        - street
+        - city
+        - state
+        - zip_code
+        - country
+      type: object
+      properties:
+        street:
+          type: string
+          description: Street for the delivery address
+          example: 901 Market Street
+          nullable: false
+        unit:
+          type: string
+          description: Suite, Apartment or Unit number of the address.
+          example: 'Suite #600'
+          nullable: true
+        city:
+          type: string
+          description: City for the delivery address.
+          example: San Francisco
+          nullable: false
+        state:
+          type: string
+          description: State for the delivery address.
+          example: California
+          nullable: false
+        zip_code:
+          type: string
+          description: Zipcode for the address.
+          example: '94105'
+          nullable: false
+        country:
+          type: string
+          description: Country of the address.
+          example: USA
+          nullable: false
+    Consumer:
+      title: Consumer
+      description: Consumer information.
+      required:
+        - external_consumer_id
+        - email
+        - phone_number
+        - address
+        - first_name
+        - last_name
+      type: object
+      properties:
+        external_consumer_id:
+          type: string
+          description: Merchant's identifier for consumer.
+          example: '12345678'
+        email:
+          type: string
+          description: The email of the consumer.
+          example: tonyxu22@doordash.com
+        phone_number:
+          type: string
+          description: Phone number of the consumer.
+          example: '+16505555555'
+        address:
+          type: string
+          description: Formatted address string.
+          example: 12345 Oakview Drive, San Francisco, CA 94108
+        first_name:
+          type: string
+          description: >-
+            Given/first name of the customer creating the delivery; cannot
+            contain ~, `, @, #, $, %, ^, &, *, +, =, ?, ;, [, {, ], }
+          example: Jane
+        last_name:
+          type: string
+          description: >-
+            Family/last name of the customer creating the delivery; cannot
+            contain ~, `, @, #, $, %, ^, &, *, +, =, ?, ;, [, {, ], }
+          example: Goodall
+    Cart:
+      title: The consumer's cart containing their order.
+      description: >-
+        An object that represents the cart of order items and which menu type /
+        category the order belongs to.
+      required:
+        - category_name
+        - items
+      type: object
+      properties:
+        category_name:
+          type: string
+          description: >-
+            Category name / menu type e.g. ALLDAY, BREAKFAST, LUNCH, DINNER,
+            etc.
+          example: BREAKFAST
+        items:
+          $ref: '#/components/schemas/Items'
+    Items:
+      title: An array of Item objects for an order.
+      description: >-
+        An array of Item objects for an order. There must be at least one item
+        for a valid order.
+      type: array
+      items:
+        $ref: '#/components/schemas/Item'
+    Item:
+      title: Item
+      description: Item object
+      required:
+        - merchant_supplied_id
+        - quantity
+        - tax_excluded_price
+        - extras
+      type: object
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: Merchant's id for the Item.
+          example: DELUXE_AMERICAN
+        quantity:
+          type: integer
+          format: int32
+          example: 3
+          description: Quantity of Item being ordered.
+        tax_excluded_price:
+          type: integer
+          format: int64
+          example: 899
+          description: Tax-excluded price of the Item in cents. Must be 0 or greater.
+        special_instructions:
+          type: string
+          example: Please add any sauces to the side.
+          description: >-
+            Any special instructions for this item, typically submitted by the
+            consumer.
+        extras:
+          $ref: '#/components/schemas/Extras'
+    Extras:
+      title: An array of Extra objects for an order.
+      description: >-
+        An array of Extra objects for an order. If there are no Extras, set this
+        field to an empty array.
+      type: array
+      items:
+        $ref: '#/components/schemas/Extra'
+    Extra:
+      title: Item extra
+      description: >-
+        Item extra e.g. Choice of Sauce, Choice of toppings, etc. -
+        merchant_supplied_id - quantity - tax_excluded_price - options
+      type: object
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: Merchant's id for the Item Extra.
+          example: BREAKFAST_CONDIMENTS
+        quantity:
+          type: integer
+          format: int32
+          example: 0
+          description: Quantity of Extra being ordered.
+        tax_excluded_price:
+          type: integer
+          format: int64
+          example: 0
+          description: Tax-excluded price of the Item Extra in cents.
+        options:
+          $ref: '#/components/schemas/Options'
+    Options:
+      title: null
+      description: >-
+        An array of Option objects for an order. If there are no Options, set
+        this field to an empty array.
+      type: array
+      items:
+        $ref: '#/components/schemas/Option'
+    Option:
+      title: null
+      description: An array of Option objects of an Extra
+      required:
+        - merchant_supplied_id
+        - quantity
+        - tax_excluded_price
+      type: object
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: Merchant's id for the Item Extra Option.
+          example: ADD_KETCHUP
+        quantity:
+          type: integer
+          format: int32
+          example: 1
+          description: Quantity of Option being ordered.
+        tax_excluded_price:
+          type: integer
+          format: int64
+          example: 50
+          description: Tax-excluded price of the Item Extra Option in cents.
+        extras:
+          $ref: '#/components/schemas/Extras'
+    DropoffPreference:
+      title: null
+      description: >-
+        Details on how Dasher should dropoff to the consumer; consumer
+        preference for their delivery getting dropped off.
+      type: object
+      properties:
+        option:
+          description: Method of dropoff.
+          type: string
+          enum:
+            - LEAVE_AT_DOOR
+            - HAND_TO_CONSUMER
+          example: LEAVE_AT_DOOR
+        dasher_instructions:
+          description: >-
+            Any additional instructions for Dasher to follow when dropping off
+            the delivery.
+          type: string
+          example: >-
+            This is a gated community. Just head over to the gate entrance and
+            on the left there should be a mail package area where you can drop
+            off the order. Thanks!
+    OrderSessionIdResponse:
+      title: Order Session ID
+      type: object
+      properties:
+        order_session_id:
+          type: string
+          example: 24ac000c-3934-11eb-adc1-0242ac120002
+          description: Order Session ID to open checkout in webview
+          nullable: false
+    CheckoutPageResponse:
+      title: Webview HTML
+      description: HTML of checkout screen to be opened in CFA webview
+      type: .html page
+    ValidationFieldErrorResponse:
+      title: ValidationFieldErrorResponse
+      type: object
+      description: >-
+        The response returned when validation for input field errors are
+        encountered.
+      nullable: true
+      readOnly: true
+      properties:
+        errors:
+          $ref: '#/components/schemas/ErrorResponse'
+    ErrorResponse:
+      title: ErrorResponse
+      description: Error response captured when attempting to process the request.
+      type: object
+      required:
+        - code
+        - summary
+        - message
+        - field_errors
+      properties:
+        code:
+          type: string
+          description: Error code/category of error encountered.
+          example: INVALID_MONETARY_FIELD
+        summary:
+          type: string
+          description: 1-line summary of error that occurred.
+          example: Tax-excluded price must not be negative.
+        message:
+          type: string
+          description: Any additional information e.g. suggestions on how to resolve error.
+          example: >-
+            Tax-excluded price must not be negative. Please ensure all prices
+            are 0 or greater (in cents).
+        field_errors:
+          $ref: '#/components/schemas/FieldErrors'
+    FieldErrors:
+      title: Field Errors
+      description: List of field errors detected to have caused the error.
+      type: array
+      items:
+        $ref: '#/components/schemas/FieldError'
+    FieldError:
+      title: FieldError
+      type: object
+      description: Single field that is believed to have caused the error.
+      required:
+        - field
+      properties:
+        code:
+          type: string
+          description: error code that categorizes the issue causing the error
+          nullable: true
+          example: invalid_monetary_field
+        field:
+          type: string
+          description: Input field that has been believed to have caused the error.
+          example: tax_excluded_price
+        input_value:
+          type: string
+          description: Value of the input field that is causing the error.
+          nullable: true
+          example: -10
+        message:
+          type: string
+          description: Any additional messaging around this field causing the error.
+          example: >-
+            item.tax_excluded_price must be greater than or equal to 0. Make
+            sure this field is non-negative.
+          nullable: true
+    ItemRequest:
+      title: Item
+      description: Items in the delivery
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: Mega Bean and Cheese Burrito
+          description: Name of the item being delivered.
+        description:
+          type: string
+          example: >-
+            Mega Burrito contains the biggest beans of the land with extra
+            cheese.
+          description: Description of the item being delivered
+        barcode:
+          type: string
+          example: '12342830041'
+          description: Barcode identifying the item.
+        quantity:
+          type: int
+          example: 2
+          description: Quantity of the item being delivered.
+        external_id:
+          type: string
+          example: 123-123443434b
+          description: External name/id for the item as setup by the merchant.
+        volume:
+          type: int
+          example: 5.3
+          description: >-
+            Volumetric size of the package being delivered. The unit is merchant
+            specific. It can be an int or a float.
+        weight:
+          type: int
+          example: 2.8
+          description: >-
+            Weight of the package being delivered in lbs. It can be an int or a
+            float.
+    DuplicateDeliveryError:
+      title: DuplicateDeliveryError
+      type: object
+      description: >-
+        Error returned with the submitted delivery creation request is a
+        duplicate and has a delivery already created for it.
+      required:
+        - field
+        - error
+      properties:
+        delivery_id:
+          type: int
+          description: Id of the delivery that is already created
+          example: 1123214424
+        external_delivery_id:
+          type: string
+          description: Merchant provided delivery id
+          example: '142355213'
+  securitySchemes:
+    Drive API Key Authentication:
+      type: apiKey
+      scheme: bearer
+      in: header
+      name: Authorization
+      description: >-
+        We will be using stateful token based API keys to authenticate clients,
+        passed in the 'Authorization' header as 'Bearer {API_KEY}'.
+tags: []

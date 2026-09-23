@@ -1,14 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DoorDash Drive Classic Addresses Reports API
-  description: The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.
+  title: DoorDash Reporting Reports API
+  description: The DoorDash Reporting API provides approved partners with access to standardized financial, operations, menu, and feedback reporting data. It offers a POST endpoint for creating report requests and a GET endpoint for retrieving report download links. Reports are generated asynchronously and partners are notified via webhook when reports are ready for download.
   version: '1.0'
   contact:
     name: DoorDash Developer Support
     url: https://developer.doordash.com/en-US/
   termsOfService: https://www.doordash.com/terms/
 servers:
-- url: https://openapi.doordash.com/drive/v1
+- url: https://openapi.doordash.com/dataexchange/v1
   description: Production Server
 security:
 - bearerAuth: []
@@ -140,6 +140,46 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    ReportLinkResponse:
+      type: object
+      properties:
+        report_id:
+          type: string
+          description: The unique identifier for the report.
+          example: D-12345
+        status:
+          type: string
+          description: The current processing status of the report.
+          enum:
+          - PENDING
+          - PROCESSING
+          - SUCCEEDED
+          - FAILED
+          example: PENDING
+        download_url:
+          type: string
+          format: uri
+          description: A temporary URL to download the report. Only present when status is SUCCEEDED.
+          example: https://example.com/path/abc123
+        report_type:
+          type: string
+          description: The type of report that was generated.
+          enum:
+          - financial
+          - operations
+          - menu
+          - feedback
+          example: financial
+        created_at:
+          type: string
+          format: date-time
+          description: When the report request was created.
+          example: '2026-06-02T14:30:00Z'
+        completed_at:
+          type: string
+          format: date-time
+          description: When the report generation was completed. Only present when status is SUCCEEDED.
+          example: '2026-06-02T14:30:00Z'
     ReportRequestResponse:
       type: object
       properties:
@@ -189,46 +229,6 @@ components:
             type: string
           example:
           - example
-    ReportLinkResponse:
-      type: object
-      properties:
-        report_id:
-          type: string
-          description: The unique identifier for the report.
-          example: D-12345
-        status:
-          type: string
-          description: The current processing status of the report.
-          enum:
-          - PENDING
-          - PROCESSING
-          - SUCCEEDED
-          - FAILED
-          example: PENDING
-        download_url:
-          type: string
-          format: uri
-          description: A temporary URL to download the report. Only present when status is SUCCEEDED.
-          example: https://example.com/path/abc123
-        report_type:
-          type: string
-          description: The type of report that was generated.
-          enum:
-          - financial
-          - operations
-          - menu
-          - feedback
-          example: financial
-        created_at:
-          type: string
-          format: date-time
-          description: When the report request was created.
-          example: '2026-06-02T14:30:00Z'
-        completed_at:
-          type: string
-          format: date-time
-          description: When the report generation was completed. Only present when status is SUCCEEDED.
-          example: '2026-06-02T14:30:00Z'
     Error:
       type: object
       properties:
@@ -253,7 +253,7 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: JWT token signed with your DoorDash developer credentials.
+      description: JWT Bearer token for authenticating with the DoorDash Reporting API.
 externalDocs:
-  description: DoorDash Drive Classic API Documentation
-  url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+  description: DoorDash Reporting API Documentation
+  url: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/

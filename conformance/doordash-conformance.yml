@@ -1,0 +1,132 @@
+generated: '2026-09-17'
+method: derived
+source: openapi/_original/, https://developer.doordash.com/en-US/docs/drive/reference/JWTs, https://developer.doordash.com/en-US/docs/drive/reference/errors, security/doordash-trust-center.yml
+provider: doordash
+description: >-
+  Cross-cutting standards the DoorDash developer APIs actually conform to, asserted from the
+  published contracts and reference docs rather than from marketing claims. The pattern is a
+  platform that adopts the transport standards (OpenAPI, JWT, bearer auth, ISO-8601, E.164) and
+  none of the API-semantic ones (no RFC 9457 problem details, no RFC 8594 sunset, no OAuth, no
+  standard pagination, no idempotency header).
+conformance:
+- id: openapi-3.0
+  name: OpenAPI Specification 3.0
+  conforms: true
+  evidence: >-
+    Eleven of the thirteen first-party documents declare openapi 3.0.0 or 3.0.3, published at
+    https://developer.doordash.com/redocusaurus/plugin-redoc-<n>.yaml
+- id: openapi-3.1
+  name: OpenAPI Specification 3.1
+  conforms: true
+  evidence: >-
+    The Ads API documents declare openapi 3.1.0 (openapi/_original/doordash-ads-openapi.yml)
+- id: json-schema
+  name: JSON Schema
+  conforms: true
+  evidence: components.schemas across all thirteen published documents
+- id: rfc7519-jwt
+  name: 'RFC 7519: JSON Web Token'
+  conforms: true
+  evidence: https://developer.doordash.com/en-US/docs/drive/reference/JWTs
+  detail: >-
+    Standard aud/iss/iat/exp claims plus a vendor "dd-ver" header claim (DD-JWT-V1). Self-signed by
+    the caller with HS256, exp capped at 1800 seconds past iat.
+- id: rfc7515-jws-hs256
+  name: 'RFC 7515: JSON Web Signature (HS256)'
+  conforms: true
+  evidence: https://developer.doordash.com/en-US/docs/drive/reference/JWTs
+- id: rfc6750-bearer
+  name: 'RFC 6750: Bearer Token Usage'
+  conforms: true
+  evidence: 'Authorization: Bearer [JWT] - https://developer.doordash.com/en-US/docs/drive/reference/JWTs'
+- id: oauth2
+  name: OAuth 2.0
+  conforms: false
+  evidence: >-
+    No securityScheme of type oauth2 in any published document; /.well-known/oauth-authorization-server
+    returned 404 on openapi.doordash.com and on developer.doordash.com. OAuth appears only as an
+    option for DoorDash to authenticate to a PARTNER's webhook endpoint.
+- id: oidc
+  name: OpenID Connect
+  conforms: false
+  evidence: /.well-known/openid-configuration returned 404 on every probed host, 2026-09-17
+- id: rfc9457-problem-details
+  name: 'RFC 9457: Problem Details for HTTP APIs'
+  conforms: false
+  evidence: >-
+    The documented envelope is {code, message, field_errors[]} served as application/json, with no
+    type URI, title or instance member.
+    https://developer.doordash.com/en-US/docs/drive/reference/errors
+- id: rfc8594-sunset
+  name: 'RFC 8594: The Sunset HTTP Header Field'
+  conforms: false
+  evidence: >-
+    No Sunset or Deprecation header is documented on any operation, and no deprecation policy is
+    published. One operation in thirteen documents carries deprecated:true
+    (getAccountBalance, Storefront V1).
+- id: idempotency
+  name: Idempotent write semantics
+  conforms: partial
+  evidence: >-
+    external_delivery_id acts as the replay key on delivery creation only (5 of 94 write
+    operations); no Idempotency-Key header exists.
+    https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+- id: pagination
+  name: Documented collection pagination
+  conforms: false
+  evidence: >-
+    No cursor/page/offset parameter and no link fields on any collection endpoint across the
+    thirteen published documents.
+- id: rfc3339-iso8601
+  name: ISO-8601 / RFC 3339 timestamps
+  conforms: true
+  evidence: >-
+    "All time fields are sent as ISO-8601 date-times in UTC" (webhook contract); the Drive classic
+    release notes record a fix to suffix timestamp examples with "Z" for clarity.
+- id: e164
+  name: 'ITU-T E.164 telephone numbering'
+  conforms: true
+  evidence: >-
+    dropoff_phone_number is required in E.164 format; a non-E.164 value is a documented 400.
+    https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+- id: webhooks
+  name: Outbound webhook event delivery
+  conforms: true
+  evidence: >-
+    Documented event surface with at-most-3 delivery attempts, 200-OK success signal and Basic
+    Auth / OAuth endpoint protection.
+    https://developer.doordash.com/en-US/docs/drive/how_to/webhooks
+  detail: >-
+    No payload signing. DoorDash does not sign webhook bodies, so authenticity rests entirely on
+    credentials the partner configures on its own endpoint.
+- id: asyncapi
+  name: AsyncAPI
+  conforms: false
+  evidence: >-
+    DoorDash publishes no AsyncAPI document; the event surface is prose plus payload samples. The
+    asyncapi/ documents in this repository are API Evangelist derivations, not provider artifacts.
+domain_standards:
+  searched: true
+  found: []
+  note: >-
+    REWARD-ONLY check, deliberately left empty. On-demand local delivery and restaurant/grocery POS
+    integration have no widely-adopted open contract standard that DoorDash could declare, and
+    nothing in any of the thirteen documents references one - no schema URN, no $metadata surface,
+    no EDI/X12 message type, no OpenRTB shape in the Ads API (which uses its own campaign/ad-group
+    model rather than an RTB bid endpoint). Nothing is asserted here rather than inventing a
+    conformance to fill the slot.
+compliance:
+  published: true
+  source: https://trust.doordash.com/
+  probed: '2026-09-17'
+  http_status: 403
+  probe_note: >-
+    trust.doordash.com answers a Cloudflare bot interstitial ("Just a moment...", HTTP 403) to a
+    plain curl with a browser User-Agent, so the page could not be read that way this pass. The
+    certification list below comes from security/doordash-trust-center.yml, which
+    probe-security-programs.py re-ran and re-stamped on 2026-09-17 with the same two certifications
+    it recorded on 2026-07-11. Treat the certifications as carried forward, and the 403 as an edge
+    policy rather than evidence the page is gone.
+  certifications:
+  - SOC 2
+  - PCI DSS

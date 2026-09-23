@@ -1,0 +1,151 @@
+generated: '2026-09-17'
+method: searched
+source: https://developer.doordash.com/en-US/docs/drive/reference/errors, https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling, openapi/_original/
+provider: doordash
+format: custom
+rfc9457: false
+description: >-
+  DoorDash publishes a single cross-endpoint error contract for the Drive API and repeats the same
+  envelope in the harvested OpenAPI components. It is NOT RFC 9457 problem+json: the envelope is a
+  bare JSON object with `code` (machine-readable enum), `message` (human-readable, "included for
+  debug purposes" only) and, on validation failures, a `field_errors[]` array of {field, error}.
+  There is no `type` URI, no `title`, no `instance`, and responses are served as application/json
+  rather than application/problem+json.
+envelope:
+  media_type: application/json
+  fields:
+  - name: code
+    type: string
+    required: true
+    description: Machine-readable enum. Specific values are operation-specific.
+  - name: message
+    type: string
+    required: true
+    description: >-
+      Human-readable explanation in English. DoorDash states it is "only included for debug
+      purposes" — an agent should branch on `code`, never on `message`.
+  - name: field_errors
+    type: array
+    required: false
+    description: Present on validation errors. Array of {field, error}.
+    items:
+    - name: field
+      type: string
+      description: >-
+        The field name, the parameter name, or the literal "body" when no specific field can be
+        attributed.
+    - name: error
+      type: string
+      description: Human-readable explanation, debug only.
+  example:
+    code: validation_error
+    message: Validation Failed
+    field_errors:
+    - field: order_value
+      error: Numeric value (100000000000) out of range of int (-2147483648 - 2147483647)
+  item_level_envelope:
+    schema: ItemError
+    fields:
+    - merchant_supplied_id
+    - message
+    - code
+    note: >-
+      The Item Management and Marketplace APIs return a per-item error object keyed on
+      merchant_supplied_id so a partial batch failure can be attributed to the offending item.
+status_codes:
+- status: 200
+  meaning: everything is ok
+- status: 202
+  meaning: accepted - used by the Reporting API createReport operation
+  source: openapi/_original/doordash-reporting-openapi.yml
+- status: 400
+  meaning: >-
+    The request was syntactically invalid and could not be processed; often caused by missing
+    parameters, or parameters with wrong value types.
+  retry: false
+  remediation: Fix the request. Retrying without changes produces the same outcome.
+  envelope: code + message + field_errors
+- status: 401
+  meaning: >-
+    Authentication error. Most likely cause is a bad or expired JWT token, meaning DoorDash was
+    unable to securely verify the identity of the caller.
+  retry: false
+  remediation: >-
+    Re-mint the JWT. DoorDash JWTs are short-lived (exp = now + 300 seconds) and signed HS256 with
+    the base64-decoded signing secret; see authentication/doordash-authentication.yml.
+- status: 403
+  meaning: >-
+    Authorization error. Identity was securely verified, but the supplied identity does not permit
+    the requested operation or data access.
+  retry: false
+- status: 404
+  meaning: >-
+    Resource does not exist. Caused by calling a wrong URL, or by looking up a delivery that does
+    not exist.
+  retry: false
+- status: 409
+  meaning: >-
+    System state does not allow the operation to proceed. Most often caused by creating a new
+    delivery with a duplicate ID, or trying to cancel a delivery that is not active.
+  retry: false
+  agent_note: >-
+    This is the idempotency collision signal. A 409 on createDelivery means the
+    external_delivery_id was reused with DIFFERENT data; a replay with identical data returns the
+    existing delivery instead.
+- status: 422
+  meaning: >-
+    Logical validation error. The request was properly formatted but the operation is not possible
+    to execute - for example, requesting a delivery outside the coverage area.
+  retry: false
+  examples:
+  - Address is out of service coverage.
+  - Driving distance too long.
+  - Delivery window impossible.
+- status: 429
+  meaning: Too many requests sent in a short timespan.
+  retry: true
+  remediation: >-
+    Wait and try again. DoorDash documents "retry after at least 1 second; avoid bursts of
+    requests". Limit is ~300 requests in any 60-second window; exceeding it alerts DoorDash
+    engineering and credentials may be disabled.
+- status: 5xx
+  meaning: Operation failed due to a temporary DoorDash failure.
+  retry: true
+  remediation: >-
+    Retry with exponential backoff and jitter, 3 retries, 1s-5s delay. Do not retry indefinitely
+    and do not amplify retries at multiple layers.
+codes:
+- code: validation_error
+  status: 400
+  title: Validation Failed
+  source: https://developer.doordash.com/en-US/docs/drive/reference/errors
+  note: The only error `code` value DoorDash publishes verbatim in the shared reference.
+field_errors_registry:
+  source: https://developer.doordash.com/en-US/docs/drive/reference/errors
+  note: >-
+    DoorDash publishes a table of field errors reused across endpoints where the field is relevant.
+    Captured verbatim; this is not an exhaustive registry - DoorDash states "depending on the
+    specific input it may not be possible to return all the validation errors".
+  entries:
+  - field: pickup_external_business_id
+    error: missing pickup_external_business_id
+  - field: substitution_preference
+    error: >-
+      When substitution_preference is passed as "substitute", then substitute_item_ids cannot be
+      null or empty
+  - field: substitution_preference
+    error: The substitution_preference cannot be "contact" if customer communication is suppressed
+  - field: item external_id
+    error: 'The following external ids were not found: [1234567890]'
+  - field: item external_id
+    error: 'Item: 123456 is suspended and not available'
+gaps:
+- >-
+  No enumerated registry of `code` values. DoorDash documents the envelope and the status-code
+  semantics precisely but publishes only one concrete code (validation_error), so an agent cannot
+  branch exhaustively on code without observing production traffic.
+- >-
+  The harvested OpenAPI definitions declare 400/401/404 responses but never 403, 409, 422 or 429,
+  which the prose reference documents as cross-endpoint. The spec under-describes the real error
+  surface.
+- No 5xx response is declared on any of the 42 operations in the harvested specs.

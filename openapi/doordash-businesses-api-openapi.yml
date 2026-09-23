@@ -1,14 +1,16 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DoorDash Drive Classic Addresses Businesses API
-  description: The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.
-  version: '1.0'
+  title: Doordash Businesses API
   contact:
     name: DoorDash Developer Support
     url: https://developer.doordash.com/en-US/
   termsOfService: https://www.doordash.com/terms/
+  version: '1.0'
+  description: 'Operations tagged Businesses across 2 of this provider''s published API definitions: doordash-drive-classic-openapi.yml, doordash-drive-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://openapi.doordash.com/drive/v1
+  description: Production Server
+- url: https://openapi.doordash.com/drive/v2
   description: Production Server
 security:
 - bearerAuth: []
@@ -129,6 +131,9 @@ paths:
       x-microcks-operation:
         delay: 0
         dispatcher: FALLBACK
+    servers:
+    - url: https://openapi.doordash.com/drive/v1
+      description: Production Server
   /businesses/{external_business_id}:
     get:
       operationId: getBusiness
@@ -276,16 +281,26 @@ paths:
       x-microcks-operation:
         delay: 0
         dispatcher: FALLBACK
+    servers:
+    - url: https://openapi.doordash.com/drive/v1
+      description: Production Server
 components:
-  parameters:
-    ExternalBusinessId:
-      name: external_business_id
-      in: path
-      required: true
-      description: The unique external identifier for the business.
-      schema:
-        type: string
   schemas:
+    Business:
+      type: object
+      properties:
+        external_business_id:
+          type: string
+          description: The unique external identifier for the business.
+          example: D-12345
+        name:
+          type: string
+          description: The name of the business.
+          example: Acme Pickup Store
+        description:
+          type: string
+          description: A description of the business.
+          example: Leave at the front desk.
     BusinessRequest:
       type: object
       required:
@@ -327,27 +342,43 @@ components:
               error:
                 type: string
                 description: The error message.
-    Business:
+    Error_2:
       type: object
       properties:
-        external_business_id:
+        field_errors:
+          type: array
+          description: A list of field-level validation errors.
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: The name of the field with the error.
+              error:
+                type: string
+                description: The error message for the field.
+        message:
           type: string
-          description: The unique external identifier for the business.
-          example: D-12345
-        name:
+          description: A human-readable error message.
+          example: example
+        code:
           type: string
-          description: The name of the business.
-          example: Acme Pickup Store
-        description:
-          type: string
-          description: A description of the business.
-          example: Leave at the front desk.
+          description: A machine-readable error code.
+          example: ABC123
+  parameters:
+    ExternalBusinessId:
+      name: external_business_id
+      in: path
+      required: true
+      description: The unique external identifier for the business.
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
       description: JWT token signed with your DoorDash developer credentials.
-externalDocs:
-  description: DoorDash Drive Classic API Documentation
-  url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+x-refined-from:
+- doordash-drive-classic-openapi.yml
+- doordash-drive-openapi.yml

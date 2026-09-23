@@ -1,14 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DoorDash Drive Classic Addresses Menus API
-  description: The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.
+  title: DoorDash Marketplace Menus API
+  description: The DoorDash Marketplace API allows merchants and third-party providers to integrate directly with the DoorDash marketplace for order management, menu synchronization, and store operations. It supports receiving orders from DoorDash, updating order statuses, and managing menu availability in real time. Access is granted through a selective partner program.
   version: '1.0'
   contact:
     name: DoorDash Developer Support
     url: https://developer.doordash.com/en-US/
   termsOfService: https://www.doordash.com/terms/
 servers:
-- url: https://openapi.doordash.com/drive/v1
+- url: https://openapi.doordash.com/marketplace/api/v1
   description: Production Server
 security:
 - bearerAuth: []
@@ -169,29 +169,6 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    MenuOption:
-      type: object
-      required:
-      - id
-      - name
-      - price
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this option.
-          example: D-12345
-        name:
-          type: string
-          description: The display name of the option.
-          example: Acme Pickup Store
-        price:
-          type: integer
-          description: The additional price for this option in cents.
-          example: 42
-        is_active:
-          type: boolean
-          description: Whether the option is currently available.
-          example: true
     MenuItem:
       type: object
       required:
@@ -233,17 +210,29 @@ components:
           description: Option groups (modifiers) for this item.
           items:
             $ref: '#/components/schemas/OptionGroup'
-    Error:
+    MenuOption:
       type: object
+      required:
+      - id
+      - name
+      - price
       properties:
-        message:
+        id:
           type: string
-          description: A human-readable error message.
-          example: example
-        code:
+          description: The unique identifier for this option.
+          example: D-12345
+        name:
           type: string
-          description: A machine-readable error code.
-          example: ABC123
+          description: The display name of the option.
+          example: Acme Pickup Store
+        price:
+          type: integer
+          description: The additional price for this option in cents.
+          example: 42
+        is_active:
+          type: boolean
+          description: Whether the option is currently available.
+          example: true
     OptionGroup:
       type: object
       required:
@@ -289,6 +278,22 @@ components:
           description: The menu categories containing items.
           items:
             $ref: '#/components/schemas/MenuCategory'
+    MenuResponse:
+      type: object
+      properties:
+        menu_id:
+          type: string
+          description: The unique identifier for the menu request.
+          example: D-12345
+        status:
+          type: string
+          description: The processing status of the menu request.
+          enum:
+          - received
+          - processing
+          - completed
+          - failed
+          example: received
     MenuCategory:
       type: object
       required:
@@ -317,22 +322,17 @@ components:
           description: The items in this category.
           items:
             $ref: '#/components/schemas/MenuItem'
-    MenuResponse:
+    Error:
       type: object
       properties:
-        menu_id:
+        message:
           type: string
-          description: The unique identifier for the menu request.
-          example: D-12345
-        status:
+          description: A human-readable error message.
+          example: example
+        code:
           type: string
-          description: The processing status of the menu request.
-          enum:
-          - received
-          - processing
-          - completed
-          - failed
-          example: received
+          description: A machine-readable error code.
+          example: ABC123
   parameters:
     MenuId:
       name: menu_id
@@ -346,7 +346,7 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: JWT token signed with your DoorDash developer credentials.
+      description: JWT Bearer token for authenticating with the DoorDash Marketplace API.
 externalDocs:
-  description: DoorDash Drive Classic API Documentation
-  url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+  description: DoorDash Marketplace API Documentation
+  url: https://developer.doordash.com/en-US/docs/marketplace/overview/about_marketplace/

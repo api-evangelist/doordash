@@ -1,0 +1,167 @@
+generated: '2026-09-17'
+method: derived
+source: openapi/_original/doordash-drive-openapi.yml, openapi/_original/doordash-marketplace-openapi.yml, openapi/_original/doordash-item-management-openapi.yml, openapi/_original/doordash-reporting-openapi.yml
+provider: doordash
+status: candidate
+description: >-
+  DoorDash publishes NO Model Context Protocol server. Nothing on developer.doordash.com mentions
+  MCP (415 sitemap URLs checked, zero matches), no /mcp endpoint exists on openapi.doordash.com,
+  and every DoorDash MCP server on the registries - amannm/doordash-mcp, SpunkySarb/doordash-mcp,
+  jordandalton's Drive server, @striderlabs/mcp-doordash - is a third-party wrapper, two of which
+  drive DoorDash's unpublished consumer GraphQL through a browser session rather than the
+  documented API. DoorDash does run MCP internally: its engineering blog describes a centralized
+  gateway giving internal AI agents access to internal APIs and SaaS tools, which is an employee
+  surface, not a partner one. The tools below are a CANDIDATE set derived from the operations
+  DoorDash does publish, so an implementer has a starting shape. Nothing here is served by DoorDash.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: searched
+  note: >-
+    mode:none means no MCP server exists to reach - not that one exists and we failed to find it.
+    Probed 2026-09-17: no MCP path on openapi.doordash.com, no reference in the developer docs
+    sitemap, no announcement on the developer blog.
+third_party_servers:
+- name: amannm/doordash-mcp
+  url: https://github.com/amannm/doordash-mcp
+  official: false
+  surface: DoorDash Drive API (documented)
+  auth: DOORDASH_DEVELOPER_ID / DOORDASH_KEY_ID / DOORDASH_SIGNING_SECRET
+- name: SpunkySarb/doordash-mcp
+  url: https://github.com/SpunkySarb/doordash-mcp
+  official: false
+  surface: DoorDash consumer GraphQL, reverse-engineered from web traffic via a Playwright session
+  note: >-
+    Its own README states it is not affiliated with or endorsed by DoorDash and that endpoints may
+    change without notice. Recorded as a risk signal, not as an agent surface.
+- name: '@striderlabs/mcp-doordash'
+  url: https://github.com/markswendsen-code/mcp-doordash
+  official: false
+  surface: consumer ordering
+candidate_tools:
+- name: doordash_create_delivery_quote
+  category: delivery
+  rest: DeliveryQuote
+  method: POST
+  path: /drive/v2/quotes
+  description: Price and serviceability check for a pickup/dropoff pair. Creates no delivery.
+  consequence: read-only
+- name: doordash_accept_delivery_quote
+  category: delivery
+  rest: DeliveryQuoteAccept
+  method: POST
+  path: /drive/v2/quotes/{external_delivery_id}/accept
+  description: Commit a previously created quote into a real delivery, optionally with a tip.
+  consequence: spends money
+- name: doordash_create_delivery
+  category: delivery
+  rest: CreateDelivery
+  method: POST
+  path: /drive/v2/deliveries
+  description: Create a delivery in one call, skipping the quote step.
+  consequence: spends money
+  idempotent: true
+  idempotency_key: external_delivery_id
+- name: doordash_get_delivery
+  category: delivery
+  rest: GetDelivery
+  method: GET
+  path: /drive/v2/deliveries/{external_delivery_id}
+  consequence: read-only
+- name: doordash_update_delivery
+  category: delivery
+  rest: UpdateDelivery
+  method: PATCH
+  path: /drive/v2/deliveries/{external_delivery_id}
+  consequence: mutating
+- name: doordash_cancel_delivery
+  category: delivery
+  rest: CancelDelivery
+  method: PUT
+  path: /drive/v2/deliveries/{external_delivery_id}/cancel
+  description: >-
+    Reversal for create_delivery. Only works before a Dasher is assigned; afterwards DoorDash
+    creates a return delivery billed at 60% of the original fee.
+  consequence: mutating
+- name: doordash_check_serviceability
+  category: delivery
+  rest: CheckServiceability
+  method: POST
+  path: /drive/v2/serviceability
+  consequence: read-only
+- name: doordash_autocomplete_address
+  category: address
+  rest: GetAddressAutoComplete
+  method: POST
+  path: /drive/v2/address/auto_complete
+  consequence: read-only
+- name: doordash_get_substitution_recommendation
+  category: delivery
+  rest: GetItemsSubstitutionRecommendation
+  method: POST
+  path: /drive/v2/items_substitution_recommendation
+  consequence: read-only
+- name: doordash_list_businesses
+  category: merchant
+  rest: ListBusiness
+  method: GET
+  path: /developer/v1/businesses
+  consequence: read-only
+- name: doordash_list_stores
+  category: merchant
+  rest: ListStore
+  method: GET
+  path: /developer/v1/businesses/{external_business_id}/stores
+  consequence: read-only
+- name: doordash_create_store
+  category: merchant
+  rest: CreateStore
+  method: POST
+  path: /developer/v1/businesses/{external_business_id}/stores
+  consequence: mutating
+- name: doordash_get_store_menu
+  category: marketplace
+  rest: getStoreMenu
+  method: GET
+  path: /marketplace/api/v1/stores/{merchant_supplied_id}/store_menu
+  consequence: read-only
+- name: doordash_confirm_order
+  category: marketplace
+  rest: confirmOrder
+  method: PATCH
+  path: /marketplace/api/v1/orders/{id}
+  consequence: mutating
+- name: doordash_cancel_order
+  category: marketplace
+  rest: cancelOrder
+  method: PATCH
+  path: /marketplace/api/v1/orders/{id}/cancellation
+  consequence: mutating
+- name: doordash_activate_item
+  category: marketplace
+  rest: itemActivation
+  method: PUT
+  path: /marketplace/api/v1/stores/{merchant_supplied_id}/items/status
+  consequence: mutating
+- name: doordash_request_report
+  category: reporting
+  rest: createReport
+  method: POST
+  path: /dataexchange/v1/reports
+  consequence: mutating
+- name: doordash_get_report_link
+  category: reporting
+  rest: getReportLink
+  method: GET
+  path: /dataexchange/v1/reports/{report_id}/reportlink
+  consequence: read-only
+notes:
+- >-
+  Every candidate tool inherits its input schema from the named OpenAPI operation in
+  openapi/_original/ - nothing here invents a parameter.
+- >-
+  A real implementation must mint a fresh HS256 JWT per call window (max 1800s) rather than hold a
+  static key, and must treat external_delivery_id as the replay key on the three creation tools.

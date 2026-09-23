@@ -1,14 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DoorDash Drive Classic Addresses Inventory API
-  description: The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.
-  version: '1.0'
+  title: DoorDash Item Management Inventory API
+  description: The DoorDash Item Management API enables merchants and integration partners to programmatically manage their item catalogs, inventory levels, pricing, and promotions on the DoorDash platform.
+  version: '2.0'
   contact:
     name: DoorDash Developer Support
     url: https://developer.doordash.com/en-US/
   termsOfService: https://www.doordash.com/terms/
 servers:
-- url: https://openapi.doordash.com/drive/v1
+- url: https://openapi.doordash.com/marketplace/api/v2
   description: Production Server
 security:
 - bearerAuth: []
@@ -190,7 +190,51 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
+  parameters:
+    StoreLocationId:
+      name: store_location_id
+      in: path
+      required: true
+      description: The unique identifier for the store location.
+      schema:
+        type: string
   schemas:
+    ItemError:
+      type: object
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: The item identifier that had an error.
+          example: D-12345
+        message:
+          type: string
+          description: The error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+    StoreItemsRequest:
+      type: object
+      required:
+      - items
+      properties:
+        items:
+          type: array
+          description: The store-level item inventory and pricing data.
+          items:
+            $ref: '#/components/schemas/StoreItem'
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
     StoreItemsResponse:
       type: object
       properties:
@@ -237,56 +281,12 @@ components:
           type: string
           description: The shelf location of the item in the store.
           example: example
-    StoreItemsRequest:
-      type: object
-      required:
-      - items
-      properties:
-        items:
-          type: array
-          description: The store-level item inventory and pricing data.
-          items:
-            $ref: '#/components/schemas/StoreItem'
-    ItemError:
-      type: object
-      properties:
-        merchant_supplied_id:
-          type: string
-          description: The item identifier that had an error.
-          example: D-12345
-        message:
-          type: string
-          description: The error message.
-          example: example
-        code:
-          type: string
-          description: A machine-readable error code.
-          example: ABC123
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: A human-readable error message.
-          example: example
-        code:
-          type: string
-          description: A machine-readable error code.
-          example: ABC123
-  parameters:
-    StoreLocationId:
-      name: store_location_id
-      in: path
-      required: true
-      description: The unique identifier for the store location.
-      schema:
-        type: string
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: JWT token signed with your DoorDash developer credentials.
+      description: JWT Bearer token for authenticating with the DoorDash Item Management API.
 externalDocs:
-  description: DoorDash Drive Classic API Documentation
-  url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+  description: DoorDash Item Management API Documentation
+  url: https://developer.doordash.com/en-US/api/marketplace_v2/

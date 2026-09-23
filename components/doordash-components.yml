@@ -1,0 +1,51 @@
+generated: '2026-09-17'
+method: searched
+source: https://developer.doordash.com/en-US/docs/drive/reference/embedding_delivery_tracking, openapi/_original/doordash-item-management-openapi.yml, openapi/_original/doordash-storefront-openapi.yml
+provider: doordash
+description: >-
+  DoorDash ships no client-side component library - no npm element package, no web components, no
+  embeddable JS SDK. What it does ship are two HOSTED surfaces a partner embeds by URL: a delivery
+  tracking page designed to be loaded in a WebView, and a generated merchant-onboarding URL that
+  hands the partner's merchant off to a DoorDash-run flow. Both are real embedded surfaces; neither
+  is a library a developer installs.
+component_libraries: []
+hosted_surfaces:
+- name: Delivery tracking page
+  family: delivery
+  type: hosted page / WebView embed
+  url_pattern: https://doordash.com/tracking?id={tracking_id}
+  docs: https://developer.doordash.com/en-US/docs/drive/reference/embedding_delivery_tracking
+  access: >-
+    Gated. The doc opens with "If you want to embed the tracking page, please reach out to our
+    team by emailing" a DoorDash address - so embedding is a conversation, not a self-serve key.
+  integration:
+    ios: WKWebView
+    android: WebView
+  requirements:
+  - Fully responsive across screen sizes and orientations.
+  - Accessible, including VoiceOver support.
+  - HTTPS only.
+  - Navigation bar styled to match the host app; back or close button required.
+  - Full-page scrolling with correct content insets and safe-area handling.
+  - URL allow-listing restricted to the specified third-party URL and its subdomains.
+  note: >-
+    DoorDash handles the loading indicator inside the embedded page. The tracking URL also appears
+    as tracking_url on the delivery resource in the Drive contract.
+- name: Managed merchant connect URL
+  family: onboarding
+  type: generated hosted flow
+  operation: createManagedMerchantConnectUrl
+  rest: POST /marketplace/api/v2/managed_merchant_connect_url
+  source: openapi/_original/doordash-item-management-openapi.yml
+  description: >-
+    Generates a DoorDash-hosted merchant onboarding URL the partner redirects its merchant into -
+    the same pattern as a hosted-onboarding flow in payments.
+- name: Storefront
+  family: commerce
+  type: hosted white-label ordering site
+  docs: https://developer.doordash.com/en-US/api/storefront
+  description: >-
+    DoorDash Storefront is a hosted online-ordering experience on the merchant's own site, with a
+    29-path Storefront V1 API behind it. It is configured, not embedded as a component, and the
+    status page tracks it as "Online Ordering (Storefront)".
+libraries: []

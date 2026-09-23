@@ -1,0 +1,45 @@
+generated: '2026-09-17'
+method: generated
+source: openapi/_original/ (13 first-party DoorDash OpenAPI documents) + developer.doordash.com reference docs
+provider: doordash
+description: >-
+  Packaged Agent Skills for the DoorDash developer platform, one per marquee flow. Every operationId
+  named in these skills was grepped out of a DoorDash-published OpenAPI document in
+  openapi/_original/ - none is invented. The runtime rules each skill carries (JWT lifetime, the
+  external_delivery_id replay key, the cancel-before-Dasher-assignment window, the per-item batch
+  error shape, the 202 on report creation) come from DoorDash's own reference pages.
+skills:
+- name: doordash-create-and-track-a-delivery
+  file: doordash-create-and-track-a-delivery.md
+  api: DoorDash Drive API
+  operations: 8
+  consequence: spends money
+  note: The marquee flow. Carries the idempotency key and the cancellation window.
+- name: doordash-onboard-a-business-and-store
+  file: doordash-onboard-a-business-and-store.md
+  api: DoorDash Drive API
+  operations: 8
+  consequence: mutating
+  note: No idempotency and no reversal on this surface - read before write.
+- name: doordash-accept-and-fulfil-a-marketplace-order
+  file: doordash-accept-and-fulfil-a-marketplace-order.md
+  api: DoorDash Marketplace API
+  operations: 6
+  consequence: mutating
+  access: gated - Marketplace APIs are not generally available
+- name: doordash-sync-a-catalog-and-availability
+  file: doordash-sync-a-catalog-and-availability.md
+  api: DoorDash Item Management API + Marketplace API
+  operations: 15
+  consequence: mutating
+  note: Writes land on a live consumer storefront and have no undo.
+- name: doordash-request-and-download-a-report
+  file: doordash-request-and-download-a-report.md
+  api: DoorDash Reporting API
+  operations: 2
+  consequence: mutating
+  note: Asynchronous; createReport returns 202 and cannot be cancelled.
+not_covered:
+- DoorDash Ads API - a full campaign/ad-group/creative surface, no skill written this pass.
+- Storefront V1 API - 29 paths including loyalty and cart, no skill written this pass.
+- Parcel, Drive Refunds, Drive Redelivery, Drive Dasher Feedback, Checkout, Marketplace (legacy).

@@ -1,827 +1,2939 @@
-openapi: 3.1.0
+openapi: 3.0.0
 info:
-  title: DoorDash Item Management API
-  description: >-
-    The DoorDash Item Management API enables merchants and integration partners
-    to programmatically manage their item catalogs, inventory levels, pricing,
-    and promotions on the DoorDash platform. It provides endpoints for creating
-    and updating item data across stores, with separate endpoints for catalog
-    management, inventory and pricing updates, and promotion management. This
-    API is particularly useful for retail and grocery partners who need to keep
-    large catalogs synchronized between their own systems and DoorDash.
+  description: API to manage item catalog, inventory, pricing and other attributes.
   version: '2.0'
-  contact:
-    name: DoorDash Developer Support
-    url: https://developer.doordash.com/en-US/
-  termsOfService: https://www.doordash.com/terms/
-externalDocs:
-  description: DoorDash Item Management API Documentation
-  url: https://developer.doordash.com/en-US/api/marketplace_v2/
+  title: Doordash Item management API Specification
+  x-logo:
+    url: https://cdn.doordash.com/static/img/merchant/logo-red@3x.png
+    backgroundColor: '#FFFFFF'
+    altText: Doordash Marketplace
+    href: https://developer.doordash.com/
 servers:
-- url: https://openapi.doordash.com/marketplace/api/v2
-  description: Production Server
+  - url: https://openapi.doordash.com/marketplace
 tags:
-- name: Catalog
-  description: >-
-    Manage the item catalog including adding new items and updating existing
-    item information such as names, descriptions, images, and attributes.
-- name: Inventory
-  description: >-
-    Manage store-level inventory, pricing, and other in-store attributes
-    for items on the DoorDash platform.
-- name: Promotions
-  description: >-
-    Manage item-level promotions at the store level, including adding and
-    updating promotional pricing.
-security:
-- bearerAuth: []
+  - name: ItemManagementEndpoints
+    x-displayName: Item Management Endpoints
+    description: Endpoints for item management
+  - name: StoreManagementEndpoints
+    x-displayName: Store Management Endpoints
+    description: Endpoints for managing stores
+  - name: InventoryManagementEndpoints
+    x-displayName: Inventory/Pricing Management Endpoints
+    description: >-
+      Endpoints to manage inventory/pricing and other item attributes specific
+      to this store
+  - name: JobManagementEndpoints
+    x-displayName: Job Management endpoints
+    description: Endpoints to create jobs to support pull request flows.
+  - name: PromotionManagementEndpoints
+    x-displayName: Promotion Management Endpoints
+    description: Endpoints for promotion management
+  - name: NewVerticalsSelfServeIntegrationEndpoints
+    x-displayName: New Verticals Self-Serve Integration Onboarding
+    description: Endpoints for new verticals self-serve integration onboarding
+  - name: CheckoutManagementEndpoints
+    x-displayName: Checkout Management Endpoints
+    description: Endpoints for managing checkout and transactions
+  - name: ItemManagementModels
+    x-displayName: Models
+    description: >
+      ## Item
+
+      <SchemaDefinition schemaRef="#/components/schemas/Item" />
+
+
+      ## Store
+
+      <SchemaDefinition schemaRef="#/components/schemas/Store" />
+
+
+      ## StoreItem
+
+      <SchemaDefinition schemaRef="#/components/schemas/StoreItem" />
+
+
+      ## Promotion
+
+      <SchemaDefinition schemaRef="#/components/schemas/Promotion" />
+
+
+      ## BatchAddOrUpdateItemRequest
+
+      <SchemaDefinition
+      schemaRef="#/components/schemas/BatchAddOrUpdateItemRequest" />
+
+
+      ## BatchAddOrUpdateStoreItemRequest
+
+      <SchemaDefinition
+      schemaRef="#/components/schemas/BatchAddOrUpdateStoreItemRequest" />
+
+
+      ## UpdateItemsInBusinessRequest
+
+      <SchemaDefinition
+      schemaRef="#/components/schemas/UpdateItemsInBusinessRequest" />
+
+
+      ## CreateJobRequest
+
+      <SchemaDefinition schemaRef="#/components/schemas/CreateJobRequest" />
+
+
+      ## CreatePullStoreItemsJobParameters
+
+      <SchemaDefinition
+      schemaRef="#/components/schemas/PullStoreItemsJobParameters" />
+
+
+      ## BatchAddOrUpdatePromotionRequest
+           <SchemaDefinition schemaRef="#/components/schemas/BatchAddOrUpdatePromotionRequest" />
+  - name: CheckoutManagementModels
+    x-displayName: Checkout Models
+    description: >
+      ## BatchAddTransactionRequest
+
+      <SchemaDefinition
+      schemaRef="#/components/schemas/BatchAddTransactionRequest" />
+
+
+      ## CardTransactionInfo
+
+      <SchemaDefinition schemaRef="#/components/schemas/CardTransactionInfo" />
+
+
+      ## DiscountInfo
+
+      <SchemaDefinition schemaRef="#/components/schemas/DiscountInfo" />
+
+
+      ## FeeInfo
+
+      <SchemaDefinition schemaRef="#/components/schemas/FeeInfo" />
+
+
+      ## LoyaltyMemberInfo
+
+      <SchemaDefinition schemaRef="#/components/schemas/LoyaltyMemberInfo" />
+
+
+      ## OtherIdentifier
+
+      <SchemaDefinition schemaRef="#/components/schemas/OtherIdentifier" />
+
+
+      ## TaxInfo
+
+      <SchemaDefinition schemaRef="#/components/schemas/TaxInfo" />
+
+
+      ## Tender
+
+      <SchemaDefinition schemaRef="#/components/schemas/Tender" />
+
+
+      ## Transaction
+
+      <SchemaDefinition schemaRef="#/components/schemas/Transaction" />
+
+
+      ## TransactionAuditResult
+
+      <SchemaDefinition schemaRef="#/components/schemas/TransactionAuditResult"
+      />
+
+
+      ## TransactionAuthRequest
+
+      <SchemaDefinition schemaRef="#/components/schemas/TransactionAuthRequest"
+      />
+
+
+      ## TransactionAuthResponse
+
+      <SchemaDefinition schemaRef="#/components/schemas/TransactionAuthResponse"
+      />
+
+
+      ## TransactionContent
+
+      <SchemaDefinition schemaRef="#/components/schemas/TransactionContent" />
+
+
+      ## TransactionLineItem
+
+      <SchemaDefinition schemaRef="#/components/schemas/TransactionLineItem" />
+
+
+      ## TransactionSummary
+
+      <SchemaDefinition schemaRef="#/components/schemas/TransactionSummary" />
 paths:
-  /items:
+  /api/v2/items:
     post:
-      operationId: createItems
-      summary: DoorDash Add Items to Catalog
-      description: >-
-        Adds new items to the DoorDash item catalog. Each item is identified
-        by a unique Merchant Supplied Item ID (MSID). Items added through this
-        endpoint become available for inventory and pricing management at
-        individual stores.
       tags:
-      - Catalog
+        - ItemManagementEndpoints
+      summary: Add new items
+      description: >-
+        Add new items managed by business. Items sold across all stores must be
+        added to business first. Items must be uniquely identifiable across
+        stores. As of now, only one businessId must be specified. Request
+        validation will fail if no businessId or multiple businessIds are
+        specified.
+      operationId: batchAddItems
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CatalogItemsRequest'
-            examples:
-              CreateItemsRequestExample:
-                summary: Default createItems request
-                x-microcks-default: true
-                value:
-                  items:
-                  - merchant_supplied_id: {}
-                    name: {}
-                    description: {}
-                    image_url: {}
-                    brand: {}
-                    upc: {}
-                    category: {}
-                    subcategory: {}
-                    weight: {}
-                    weight_unit: {}
-                    is_alcohol: {}
+              $ref: '#/components/schemas/BatchAddOrUpdateItemRequest'
       responses:
-        '200':
-          description: Items added to catalog successfully
+        '201':
+          description: Ok
+          headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CatalogItemsResponse'
-              examples:
-                CreateItems200Example:
-                  summary: Default createItems 200 response
-                  x-microcks-default: true
-                  value:
-                    status: active
-                    items_processed: 42
-                    errors:
-                    - merchant_supplied_id: {}
-                      message: {}
-                      code: {}
+                $ref: '#/components/schemas/AsyncOperationResponse'
         '400':
-          description: Invalid item data
+          description: Request Validation Failed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                CreateItems400Example:
-                  summary: Default createItems 400 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
+                $ref: '#/components/schemas/ValidationFieldError'
         '401':
-          description: Authentication failed
+          description: Request unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                CreateItems401Example:
-                  summary: Default createItems 401 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-      x-microcks-operation:
-        delay: 0
-        dispatcher: FALLBACK
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: Request Entity Too Large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestNotProcessError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      x-codegen-request-body-name: body
+      deprecated: false
     patch:
-      operationId: updateItems
-      summary: DoorDash Update Items in Catalog
-      description: >-
-        Updates information about existing items in the catalog. Uses the same
-        validation as the create endpoint. Items are matched by their Merchant
-        Supplied Item ID.
       tags:
-      - Catalog
+        - ItemManagementEndpoints
+      summary: Update existing items
+      description: Update existing items managed by business.
+      operationId: batchUpdateItems
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CatalogItemsRequest'
-            examples:
-              UpdateItemsRequestExample:
-                summary: Default updateItems request
-                x-microcks-default: true
-                value:
-                  items:
-                  - merchant_supplied_id: {}
-                    name: {}
-                    description: {}
-                    image_url: {}
-                    brand: {}
-                    upc: {}
-                    category: {}
-                    subcategory: {}
-                    weight: {}
-                    weight_unit: {}
-                    is_alcohol: {}
+              $ref: '#/components/schemas/BatchAddOrUpdateItemRequest'
       responses:
         '200':
-          description: Items updated successfully
+          description: Ok
+          headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CatalogItemsResponse'
-              examples:
-                UpdateItems200Example:
-                  summary: Default updateItems 200 response
-                  x-microcks-default: true
-                  value:
-                    status: active
-                    items_processed: 42
-                    errors:
-                    - merchant_supplied_id: {}
-                      message: {}
-                      code: {}
+                $ref: '#/components/schemas/AsyncOperationResponse'
         '400':
-          description: Invalid item data
+          description: Request Validation Failed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                UpdateItems400Example:
-                  summary: Default updateItems 400 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
+                $ref: '#/components/schemas/ValidationFieldError'
         '401':
-          description: Authentication failed
+          description: Request unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                UpdateItems401Example:
-                  summary: Default updateItems 401 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-      x-microcks-operation:
-        delay: 0
-        dispatcher: FALLBACK
-  /stores/{store_location_id}/items:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: Request Entity Too Large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestNotProcessError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      x-codegen-request-body-name: body
+      deprecated: false
+  /api/v2/stores/{store_location_id}/items:
     post:
-      operationId: createStoreInventory
-      summary: DoorDash Add Inventory and Pricing for Items at a Store
-      description: >-
-        Adds inventory, pricing, and other in-store attributes for items at a
-        specific store location. Items must already exist in the catalog before
-        inventory can be set at the store level.
       tags:
-      - Inventory
+        - InventoryManagementEndpoints
+      summary: >-
+        Add inventory/pricing and other in-store attributes of new item that is
+        made available for sale in the store.
+      description: >-
+        Add inventory/pricing and other in-store attributes of new item that is
+        made available for sale in the store. base_price and status must be
+        specified first time when an item is made available for sale in a store.
+        At this time, item with extras/options is supported only via job
+        management endpoint. Request validation will fail if extras/options are
+        present in POST/PATCH.
+      operationId: batchAddStoreItem
       parameters:
-      - $ref: '#/components/parameters/StoreLocationId'
+        - name: store_location_id
+          in: path
+          description: ID of store where the item is physically sourced.
+          required: true
+          schema:
+            type: string
+            format: string
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StoreItemsRequest'
-            examples:
-              CreateStoreInventoryRequestExample:
-                summary: Default createStoreInventory request
-                x-microcks-default: true
-                value:
-                  items:
-                  - merchant_supplied_id: {}
-                    price: {}
-                    in_stock: {}
-                    quantity_on_hand: {}
-                    aisle: {}
-                    shelf: {}
+              $ref: '#/components/schemas/BatchAddOrUpdateStoreItemRequest'
       responses:
-        '200':
-          description: Store inventory created successfully
+        '202':
+          description: operation successfully queued
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StoreItemsResponse'
-              examples:
-                CreateStoreInventory200Example:
-                  summary: Default createStoreInventory 200 response
-                  x-microcks-default: true
-                  value:
-                    status: active
-                    items_processed: 42
-                    errors:
-                    - merchant_supplied_id: {}
-                      message: {}
-                      code: {}
+                $ref: '#/components/schemas/AsyncOperationResponse'
         '400':
-          description: Invalid inventory data
+          description: Request Validation Failed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                CreateStoreInventory400Example:
-                  summary: Default createStoreInventory 400 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
+                $ref: '#/components/schemas/ValidationFieldError'
         '401':
-          description: Authentication failed
+          description: Request unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                CreateStoreInventory401Example:
-                  summary: Default createStoreInventory 401 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
         '404':
-          description: Store not found
+          description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                CreateStoreInventory404Example:
-                  summary: Default createStoreInventory 404 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-      x-microcks-operation:
-        delay: 0
-        dispatcher: FALLBACK
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: Request Entity Too Large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestNotProcessError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      x-codegen-request-body-name: body
     patch:
-      operationId: updateStoreInventory
-      summary: DoorDash Update Inventory and Pricing for Items at a Store
-      description: >-
-        Updates inventory, pricing, and other in-store attributes for existing
-        items at a specific store location. Changes are typically reflected
-        within minutes.
       tags:
-      - Inventory
+        - InventoryManagementEndpoints
+      summary: >-
+        Update inventory/pricing and other in-store attributes of item that is
+        already sold in the store.
+      description: >-
+        At this time, item with extras/options is supported only via job
+        management endpoint. Request validation will fail if extras/options are
+        present in POST/PATCH.
+      operationId: batchUpdateStoreItem
       parameters:
-      - $ref: '#/components/parameters/StoreLocationId'
+        - name: store_location_id
+          in: path
+          description: ID of store where the item is physically sourced.
+          required: true
+          schema:
+            type: string
+            format: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchAddOrUpdateStoreItemRequest'
+      responses:
+        '202':
+          description: operation successfully queued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+        '400':
+          description: Request Validation Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: Request Entity Too Large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestNotProcessError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      x-codegen-request-body-name: body
+  /api/v2/businesses/{business_id}/items:
+    patch:
+      tags:
+        - InventoryManagementEndpoints
+      summary: >-
+        Update inventory/pricing of items that are already sold by a business
+        for all stores
+      description: >-
+        At this time, only basic pricing updates are available. Validation will
+        fail if unsupported fields are included in the payload.
+      operationId: updateItemsInBusiness
+      parameters:
+        - name: business_id
+          in: path
+          description: ID of the business that manages the items.
+          required: true
+          schema:
+            type: string
+            format: string
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StoreItemsRequest'
-            examples:
-              UpdateStoreInventoryRequestExample:
-                summary: Default updateStoreInventory request
-                x-microcks-default: true
-                value:
-                  items:
-                  - merchant_supplied_id: {}
-                    price: {}
-                    in_stock: {}
-                    quantity_on_hand: {}
-                    aisle: {}
-                    shelf: {}
+              $ref: '#/components/schemas/UpdateItemsInBusinessRequest'
       responses:
-        '200':
-          description: Store inventory updated successfully
+        '202':
+          description: operation successfully queued
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StoreItemsResponse'
-              examples:
-                UpdateStoreInventory200Example:
-                  summary: Default updateStoreInventory 200 response
-                  x-microcks-default: true
-                  value:
-                    status: active
-                    items_processed: 42
-                    errors:
-                    - merchant_supplied_id: {}
-                      message: {}
-                      code: {}
+                $ref: '#/components/schemas/AsyncOperationResponse'
         '400':
-          description: Invalid inventory data
+          description: Request Validation Failed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                UpdateStoreInventory400Example:
-                  summary: Default updateStoreInventory 400 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
+                $ref: '#/components/schemas/ValidationFieldError'
         '401':
-          description: Authentication failed
+          description: Request unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                UpdateStoreInventory401Example:
-                  summary: Default updateStoreInventory 401 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
         '404':
-          description: Store not found
+          description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                UpdateStoreInventory404Example:
-                  summary: Default updateStoreInventory 404 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-      x-microcks-operation:
-        delay: 0
-        dispatcher: FALLBACK
-  /promotions/stores/{store_location_id}:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: Request Entity Too Large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestNotProcessError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      x-codegen-request-body-name: body
+      deprecated: false
+  /api/v2/jobs:
     post:
-      operationId: createStorePromotions
-      summary: DoorDash Add Promotions for Items at a Store
-      description: >-
-        Adds item-level promotions for items at a specific store location.
-        Promotions allow partners to set promotional pricing for their items
-        on the DoorDash platform.
       tags:
-      - Promotions
-      parameters:
-      - $ref: '#/components/parameters/StoreLocationId'
+        - JobManagementEndpoints
+      summary: >-
+        Create jobs to trigger various pull request flows. Job parameters should
+        confirm to the schema defined for specific job.
+      operationId: createJobs
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PromotionsRequest'
-            examples:
-              CreateStorePromotionsRequestExample:
-                summary: Default createStorePromotions request
-                x-microcks-default: true
-                value:
-                  promotions:
-                  - merchant_supplied_id: {}
-                    promotional_price: {}
-                    start_date: {}
-                    end_date: {}
-                    description: {}
+              $ref: '#/components/schemas/CreateJobRequest'
       responses:
         '200':
-          description: Promotions created successfully
+          description: Request to create job recevied.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PromotionsResponse'
-              examples:
-                CreateStorePromotions200Example:
-                  summary: Default createStorePromotions 200 response
-                  x-microcks-default: true
-                  value:
-                    status: active
-                    promotions_processed: 42
-                    errors:
-                    - merchant_supplied_id: {}
-                      message: {}
-                      code: {}
+                $ref: '#/components/schemas/PullStoreItemsJobResponse'
         '400':
-          description: Invalid promotion data
+          description: Request Validation Failed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                CreateStorePromotions400Example:
-                  summary: Default createStorePromotions 400 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
+                $ref: '#/components/schemas/ValidationFieldError'
         '401':
-          description: Authentication failed
+          description: Request unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                CreateStorePromotions401Example:
-                  summary: Default createStorePromotions 401 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
         '404':
-          description: Store not found
+          description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                CreateStorePromotions404Example:
-                  summary: Default createStorePromotions 404 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-      x-microcks-operation:
-        delay: 0
-        dispatcher: FALLBACK
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: Request Entity Too Large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestNotProcessError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+  /api/v2/stores/{store_location_id}:
     patch:
-      operationId: updateStorePromotions
-      summary: DoorDash Update Promotions for Items at a Store
-      description: >-
-        Updates existing item-level promotions at a specific store location.
       tags:
-      - Promotions
+        - StoreManagementEndpoints
+      summary: Update existing store
+      operationId: updateStore
       parameters:
-      - $ref: '#/components/parameters/StoreLocationId'
+        - name: store_location_id
+          in: path
+          description: ID of store to be updated
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        '200':
+          description: store updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Store'
+        '400':
+          description: Request Validation Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: Request Entity Too Large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestNotProcessError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      requestBody:
+        description: update existing store
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Store'
+  /api/v2/promotions/stores/{store_location_id}:
+    post:
+      tags:
+        - PromotionManagementEndpoints
+      summary: Create new promotion for store
+      operationId: createPromotion
+      parameters:
+        - name: store_location_id
+          in: path
+          description: location ID of store
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        '202':
+          description: Accepted
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+        '400':
+          description: Request Validation Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: Request Entity Too Large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestNotProcessError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      requestBody:
+        description: create new promotion
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Promotion'
+    patch:
+      tags:
+        - PromotionManagementEndpoints
+      summary: Update promotions in store
+      operationId: updatePromotions
+      parameters:
+        - name: store_location_id
+          in: path
+          description: location ID of store to be updated
+          required: true
+          schema:
+            type: string
+            format: string
+      responses:
+        '202':
+          description: Accepted
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+        '400':
+          description: Request Validation Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: Request Entity Too Large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestNotProcessError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      requestBody:
+        description: update promotions in store
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Promotion'
+  /api/v2/managed_merchant_connect_url:
+    post:
+      tags:
+        - NewVerticalsSelfServeIntegrationEndpoints
+      summary: Generate managed merchant onboarding URL
+      description: >-
+        Creates a managed merchant onboarding URL for NV SSIO partner-initiated
+        merchant onboarding. The partner must redirect the merchant to the
+        returned URL, where DoorDash hosts and manages the full onboarding flow
+        including authentication, store creation, and provider linking.
+      operationId: createManagedMerchantConnectUrl
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PromotionsRequest'
-            examples:
-              UpdateStorePromotionsRequestExample:
-                summary: Default updateStorePromotions request
-                x-microcks-default: true
-                value:
-                  promotions:
-                  - merchant_supplied_id: {}
-                    promotional_price: {}
-                    start_date: {}
-                    end_date: {}
-                    description: {}
+              $ref: '#/components/schemas/ManagedMerchantConnectRequest'
       responses:
         '200':
-          description: Promotions updated successfully
+          description: Successfully generated managed merchant connect URL
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PromotionsResponse'
-              examples:
-                UpdateStorePromotions200Example:
-                  summary: Default updateStorePromotions 200 response
-                  x-microcks-default: true
-                  value:
-                    status: active
-                    promotions_processed: 42
-                    errors:
-                    - merchant_supplied_id: {}
-                      message: {}
-                      code: {}
+                $ref: '#/components/schemas/ManagedMerchantConnectResponse'
         '400':
-          description: Invalid promotion data
+          description: Request Validation Failed
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                UpdateStorePromotions400Example:
-                  summary: Default updateStorePromotions 400 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
+                $ref: '#/components/schemas/ValidationFieldError'
         '401':
-          description: Authentication failed
+          description: Request unauthorized
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                UpdateStorePromotions401Example:
-                  summary: Default updateStorePromotions 401 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-        '404':
-          description: Store not found
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                UpdateStorePromotions404Example:
-                  summary: Default updateStorePromotions 404 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-      x-microcks-operation:
-        delay: 0
-        dispatcher: FALLBACK
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
+                $ref: '#/components/schemas/AuthorizationError'
+        '409':
+          description: Conflict - Store already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreAlreadyExistsError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      x-codegen-request-body-name: body
+      deprecated: false
+  /api/v2/nv_multi_location_onboarding_intent:
+    post:
+      tags:
+        - NewVerticalsSelfServeIntegrationEndpoints
+      summary: Submit onboarding intent for multiple store locations in a single batch
       description: >-
-        JWT Bearer token for authenticating with the DoorDash Item Management API.
-  parameters:
-    StoreLocationId:
-      name: store_location_id
-      in: path
-      required: true
-      description: >-
-        The unique identifier for the store location.
-      schema:
-        type: string
-  schemas:
-    CatalogItemsRequest:
-      type: object
-      required:
-      - items
-      properties:
-        items:
-          type: array
+        Batch sibling of managed_merchant_connect_url for NV SSIO
+        partner-initiated merchant onboarding - submits onboarding intent for
+        multiple store locations in one call. Unlike
+        managed_merchant_connect_url, no onboarding URL is returned; onboarding
+        completion for accepted locations is a manual DoorDash-rep follow-up.
+        Each location in the batch is processed independently, so a per-location
+        failure does not fail the rest of the batch - see the results array in
+        the response.
+      operationId: submitMultiLocationOnboardingIntent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MultiLocationOnboardingIntentRequest'
+      responses:
+        '200':
           description: >-
-            The items to add or update in the catalog.
-          items:
-            $ref: '#/components/schemas/CatalogItem'
-    CatalogItem:
-      type: object
-      required:
-      - merchant_supplied_id
-      - name
+            Batch received - see the per-location results array for individual
+            outcomes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MultiLocationOnboardingIntentResponse'
+        '400':
+          description: Request Validation Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      x-codegen-request-body-name: body
+      deprecated: false
+  /api/v2/stores/{store_location_id}/checkout/transactions/auth:
+    post:
+      tags:
+        - CheckoutManagementEndpoints
+      summary: Authorize a checkout transaction
+      description: >-
+        Authorize a transaction for checkout. Only supported when transaction
+        method is DOORDASH_DIRECT. Transaction authorization retries will be
+        successful only when the checkout session is in active state. The
+        checkout session will be closed once the Dasher is able to proceed to
+        checkout or when Mx sends a transaction complete signal to the Events
+        API.
+      operationId: authorizeTransaction
+      parameters:
+        - name: store_location_id
+          in: path
+          description: ID of store where checkout is occurring
+          required: true
+          schema:
+            type: string
+            format: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionAuthRequest'
+      responses:
+        '200':
+          description: Transaction authorization response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionAuthResponse'
+        '400':
+          description: Request Validation Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreLocationNotFoundError'
+        '409':
+          description: Checkout already authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '422':
+          description: Request Entity Too Large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestNotProcessError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      x-codegen-request-body-name: body
+  /api/v2/stores/{store_location_id}/checkout/transactions:
+    post:
+      tags:
+        - CheckoutManagementEndpoints
+      summary: Batch add checkout transactions
+      description: Submit multiple transactions for checkout
+      operationId: batchAddTransactions
+      parameters:
+        - name: store_location_id
+          in: path
+          description: ID of store where checkout is occurring
+          required: true
+          schema:
+            type: string
+            format: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchAddTransactionRequest'
+      responses:
+        '200':
+          description: Transactions added successfully
+        '400':
+          description: Request Validation Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreLocationNotFoundError'
+        '422':
+          description: Request Entity Too Large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestNotProcessError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    Item:
+      title: Item
+      description: >-
+        Item to be managed by doordash. Should be unique across stores within
+        business.
       properties:
-        merchant_supplied_id:
+        merchant_supplied_item_id:
           type: string
           description: >-
-            The unique merchant-supplied item identifier (MSID).
-          example: D-12345
+            Merchant supplied Id to identify an item uniquely within business
+            across all stores. Every item that is shopable by CX must be
+            represented as an unique item
         name:
           type: string
-          description: >-
-            The display name of the item.
-          example: Acme Pickup Store
+          description: Name of the item
         description:
           type: string
+          description: Description of the item
+        product_traits:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductTrait'
           description: >-
-            A description of the item.
-          example: Leave at the front desk.
-        image_url:
-          type: string
-          format: uri
-          description: >-
-            A URL to an image of the item.
-          example: https://example.com/path/abc123
-        brand:
-          type: string
-          description: >-
-            The brand name of the item.
-          example: example
-        upc:
-          type: string
-          description: >-
-            The Universal Product Code for the item.
-          example: example
-        category:
-          type: string
-          description: >-
-            The category the item belongs to.
-          example: example
-        subcategory:
-          type: string
-          description: >-
-            The subcategory the item belongs to.
-          example: example
-        weight:
-          type: number
-          description: >-
-            The weight of the item.
-          example: 12.5
-        weight_unit:
-          type: string
-          description: >-
-            The unit of weight measurement.
-          enum:
-          - oz
-          - lb
-          - g
-          - kg
-          example: oz
-        is_alcohol:
-          type: boolean
-          description: >-
-            Whether the item contains alcohol.
-          example: true
-    CatalogItemsResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          description: >-
-            The processing status of the request.
-          example: active
-        items_processed:
-          type: integer
-          description: >-
-            The number of items processed.
-          example: 42
-        errors:
+            Specifies type of product(s) represented by the item. These
+            attributes will be used to validate product specific attributes in
+            request and apply product specific business logic internally. For
+            example, when WEIGHTED is specified as one of the product trait,
+            presence of weighted_item_info will be validated in the request
+            payload
+        other_identifiers:
+          type: array
+          description: Other identifiers associated with item.
+          items:
+            type: object
+            properties:
+              identifier_type:
+                type: string
+                description: >-
+                  Identifier type for item. Note: NSC2 and GTIN are not fully
+                  supported yet. Please contact support if you need to use these
+                  identifiers.
+                enum:
+                  - UPC
+                  - PLU
+                  - NSC2
+                  - GTIN
+              identifier_value:
+                type: string
+                description: identifier value
+        images:
+          type: array
+          description: Images of the item, atleast one image must be specified
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              sort_id:
+                type: integer
+                description: >-
+                  order in which images should be displayed, 0 will be the
+                  primary image
+        size:
+          type: object
+          description: size of the item
+          properties:
+            details:
+              $ref: '#/components/schemas/SizeInfo'
+            pack_size_details:
+              type: object
+              description: item size details per pack
+              properties:
+                count_per_pack:
+                  description: Count per pack
+                  type: integer
+                per_item_size_details:
+                  $ref: '#/components/schemas/SizeInfo'
+        weighted_item_info:
+          type: object
+          description: attributes related to items that are sold by weights
+          properties:
+            average_weight_per_each:
+              type: number
+              description: Average weight per each item or pack
+            average_weight_measurement_unit:
+              type: string
+              enum:
+                - ea
+                - kg
+                - lb
+                - gm
+                - oz
+              default: ea
+              description: unit of measurement (ea, kg, lb, gm, oz)
+            shop_by_measurement_unit:
+              type: string
+              enum:
+                - ea
+                - kg
+                - lb
+                - gm
+                - oz
+              description: How the item is shown to customers
+            price_by_measurement_unit:
+              type: string
+              enum:
+                - ea
+                - kg
+                - lb
+                - gm
+                - oz
+              description: How the item is priced
+        brand_info:
+          type: object
+          description: brand of the item if applicable
+          properties:
+            name:
+              type: string
+              description: Name of the brand
+        program_eligibility:
+          type: array
+          description: Program eligibility of the item
+          items:
+            $ref: '#/components/schemas/ProgramEligibility'
+        item_categorizations:
+          type: array
+          description: One or more categories associated with the item
+          items:
+            type: object
+            properties:
+              category:
+                $ref: '#/components/schemas/Category'
+        product_attributes:
           type: array
           description: >-
-            Any errors encountered during processing.
+            product_attributes allow us to infer everything about an item
+            necessary for customers to shop, dasher to fulfill, merchants to
+            merchandise, and advertisers to advertise. See supported full
+            attribute list:
+            https://developer.doordash.com/en-US/docs/marketplace/retail/catalog_management/supported_attribute
           items:
-            $ref: '#/components/schemas/ItemError'
-    StoreItemsRequest:
+            $ref: '#/components/schemas/ProductAttributes'
+    ProductTrait:
+      type: string
+      enum:
+        - ALCOHOL
+        - MEDICATION
+        - WEIGHTED
+    ProgramEligibility:
+      description: Eligibility to items for various programs
+      type: string
+      enum:
+        - SNAP
+        - HSA
+        - FSA
+    TimeBlock:
+      type: object
+      properties:
+        day_index:
+          type: string
+          enum:
+            - MON
+            - TUE
+            - WED
+            - THU
+            - FRI
+            - SAT
+            - SUN
+        start_time:
+          type: string
+          format: HH:MM:SS
+        end_time:
+          type: string
+          format: HH:MM:SS
+        start_date:
+          type: string
+        end_date:
+          type: string
+    ItemLocation:
+      type: object
+      description: >-
+        Default location of an item in the store across business. Can be
+        specified at store level for any store specific customizations.
+      properties:
+        aisle:
+          type: string
+        zone:
+          type: string
+        shelf:
+          type: string
+        side:
+          type: string
+        additional_details:
+          type: string
+        coordinates:
+          type: object
+          properties:
+            x:
+              type: integer
+            'y':
+              type: integer
+        raw_text:
+          description: Raw text is the unparsed raw data that comes from merchants.
+          type: string
+        section:
+          description: Section is where the item is located at.
+          type: string
+    SizeInfo:
+      type: object
+      properties:
+        dimensions:
+          type: object
+          properties:
+            length:
+              type: object
+              properties:
+                value:
+                  type: number
+                unit:
+                  type: string
+                  enum:
+                    - inch
+                    - ft
+                    - cm
+                    - m
+            width:
+              type: object
+              properties:
+                value:
+                  type: number
+                unit:
+                  type: string
+                  enum:
+                    - inch
+                    - ft
+                    - cm
+                    - m
+            height:
+              type: object
+              properties:
+                value:
+                  type: number
+                unit:
+                  type: string
+                  enum:
+                    - inch
+                    - ft
+                    - cm
+                    - m
+        weight:
+          type: object
+          properties:
+            value:
+              type: number
+            unit:
+              type: string
+              enum:
+                - lbs
+                - gm
+                - kg
+                - ea
+                - oz
+        volume:
+          type: object
+          properties:
+            value:
+              type: number
+            unit:
+              type: string
+              enum:
+                - oz
+                - mL
+                - L
+        product_specific_size_definition:
+          type: object
+          description: >-
+            Product-specific size information with separate numeric value and
+            unit of measurement
+          properties:
+            value:
+              type: string
+              description: Numeric value only
+              example: '400'
+            description:
+              type: string
+              description: Unit of measurement only
+              example: g
+    StoreItem:
+      properties:
+        merchant_supplied_item_id:
+          type: string
+        item_availability:
+          type: string
+          enum:
+            - ACTIVE
+            - INACTIVE
+        balance_on_hand:
+          type: integer
+        funding_source:
+          type: string
+          enum:
+            - MERCHANT
+            - CPG
+        last_sold_datetime:
+          type: string
+          description: >-
+            DateTime in ISO8601 format of when the item was last sold at the
+            store.
+        price_info:
+          $ref: '#/components/schemas/PriceInfo'
+        location:
+          $ref: '#/components/schemas/ItemLocation'
+        item_special_hours:
+          type: array
+          description: Special hours on when item will be available
+          items:
+            $ref: '#/components/schemas/TimeBlock'
+        program_eligibility:
+          type: array
+          description: Program eligibility of the item
+          items:
+            $ref: '#/components/schemas/ProgramEligibility'
+        extras:
+          type: array
+          items:
+            $ref: '#/components/schemas/Extra'
+      type: object
+    StoreItemExtras:
+      type: object
+      properties:
+        merchant_supplied_extras_id:
+          type: string
+        options:
+          type: array
+          items:
+            type: object
+            properties:
+              merchant_supplied_id:
+                type: string
+              price_info:
+                $ref: '#/components/schemas/PriceInfo'
+    _StoreItemExtras:
+      type: object
+      properties:
+        merchant_supplied_extras_id:
+          type: string
+        options:
+          type: array
+          items:
+            type: object
+            properties:
+              merchant_supplied_id:
+                type: string
+              price_info:
+                $ref: '#/components/schemas/PriceInfo'
+    PriceInfo:
+      type: object
+      properties:
+        base_price:
+          description: base price in cents. For example, 12.99$ should be specified as 1299
+          type: number
+        sale_price:
+          description: sale price in cents, For example, 8.50$ should be specified as 850
+          type: number
+        tax_rate:
+          description: >-
+            tax rate as percent value. For example, Tax rate of seven and a half
+            percent must be specified as 7.5.
+          type: number
+        bottle_fee_deposit:
+          description: >-
+            bottle fee deposit in cents. For example, 1.25$ must be specified as
+            125
+          type: number
+        base_price_per_measurement_unit:
+          description: base price per measurement unit(kg, lb) in cents for weighted items
+          type: number
+        loyalty_price:
+          description: price in cents for loyalty members
+          type: number
+        loyalty_price_per_measurement_unit:
+          description: >-
+            loyalty price in cents per measurement unit(kg, lb) in cents for
+            weighted items
+          type: number
+        sale_price_per_measurement_unit:
+          description: >-
+            sale price in cents per measurement unit(kg, lb) in cents for
+            weighted items
+          type: number
+    OptionPriceInfo:
+      type: object
+      properties:
+        base_price:
+          description: base price in cents. For example, 12.99$ should be specified as 1299
+          type: number
+    Store:
+      title: Store
+      description: Store associated with the business.
+      required:
+        - open_hours
+      properties:
+        merchant_supplied_store_id:
+          type: string
+        open_hours:
+          type: array
+          items:
+            type: object
+            properties:
+              day_index:
+                type: string
+                enum:
+                  - MON
+                  - TUE
+                  - WED
+                  - THU
+                  - FRI
+                  - SAT
+                  - SUN
+              start_time:
+                type: string
+                format: HH:MM:SS
+              end_time:
+                type: string
+                format: HH:MM:SS
+        special_hours:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+              start_time:
+                type: string
+                format: HH:MM:SS
+              end_time:
+                type: string
+                format: HH:MM:SS
+              closed:
+                type: boolean
+    Category:
+      type: object
+      properties:
+        name:
+          type: string
+        sub_category:
+          $ref: '#/components/schemas/Category'
+    ProductAttributes:
+      type: object
+      properties:
+        attribute_name:
+          type: string
+          description: attribute name
+        attribute_value:
+          description: attribute value
+          oneOf:
+            - $ref: '#/components/schemas/SingleSelectBool'
+            - $ref: '#/components/schemas/MultiSelectString'
+            - $ref: '#/components/schemas/MultiSelectDouble'
+    SingleSelectBool:
+      type: object
+      properties:
+        single_select_bool:
+          type: boolean
+    MultiSelectString:
+      type: object
+      properties:
+        multi_select_string:
+          type: array
+          items:
+            type: string
+    MultiSelectDouble:
+      type: object
+      properties:
+        multi_select_double:
+          type: array
+          description: array of double
+          items:
+            type: number
+    Promotion:
+      title: Promotion
+      description: Promotion to be managed by doordash.
+      properties:
+        promotion_id:
+          type: string
+          description: 'Promotion Id to identify a promotion uniquely with a Mx. Required. '
+        promotion_type:
+          type: string
+          description: Promotion types
+          enum:
+            - BUY_X_FOR_Y
+            - BUY_X_SAVE_Y
+            - BUY_X_GET_Y_Z_PERCENT_OFF
+        funding_source:
+          type: string
+          description: Funding source type
+          enum:
+            - MERCHANT
+            - CPG
+        purchase_criteria:
+          type: object
+          description: Purchase criteria to redeem this promotion
+          properties:
+            purchase_items:
+              description: List of MSIDs that need to be purchased to redeem this promotion
+              type: array
+              items:
+                type: string
+            purchase_quantity:
+              type: integer
+              description: The number required for purchasing to redeem this promotion
+        redemption_limit:
+          type: object
+          description: Purchase criteria to redeem this promotion
+          properties:
+            limit_per_order:
+              type: integer
+              description: >-
+                The maximum number of times this promotion can be redeemed per
+                order, default to 3
+        discount_options:
+          type: object
+          description: Purchase criteria to redeem this promotion
+          properties:
+            discount_total_price:
+              type: number
+              description: >-
+                The total price in cents for this promotion after discount if
+                promotion type is BUY_X_FOR_Y
+            discount_price_off:
+              type: number
+              description: >-
+                The discount price in cents when applying this promotion if
+                promotion type is BUY_X_SAVE_Y
+            discount_percentage:
+              type: number
+              description: >-
+                The percentage of discount when applying this promotion if
+                promotion type is BUY_X_GET_Y_Z_PERCENT_OFF
+            discount_quantity:
+              type: number
+              description: >-
+                The discount quantity when applying this promotion if promotion
+                type is BUY_X_GET_Y_Z_PERCENT_OFF
+        promotion_options:
+          type: object
+          description: The options to represent for what and how a promotion can be defined
+          properties:
+            promotion_conditions:
+              type: array
+              description: >-
+                The conditional options that can be configured for a promotion.
+                For example, MIX_AND_MATCH indicate that the supplied purchase
+                items can be used in a Mix-and-Match deal.
+              items:
+                type: string
+                enum:
+                  - MIX_AND_MATCH
+        start_time:
+          type: string
+          format: yyyy-MM-ddTHH:mm:ssXXX
+          description: >-
+            required, start time of the promotion with local timezone, example
+            2024-04-03T10:15:30Z
+            https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#ISO_ZONED_DATE_TIME
+        end_time:
+          type: string
+          format: yyyy-MM-ddTHH:mm:ssXXX
+          description: >-
+            required, end time of the promotion with local timezone
+            https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#ISO_ZONED_DATE_TIME
+    CalorificInfo:
+      type: object
+      properties:
+        display_type:
+          type: string
+          description: Controls what display lable want to use(e.g cal)
+        lower_range:
+          type: integer
+          description: Controls to show the lower range for caloric information
+        higher_range:
+          type: integer
+          description: Controls to show the higher range for caloric information
+    ClassificationInfo:
+      type: object
+      properties:
+        classification_traits:
+          type: array
+          items:
+            type: string
+            enum:
+              - HAS_SIDE
+              - IS_HOT
+              - IS_ENTREE
+              - HAS_ALCOHOLIC_ITEMS
+        service_types:
+          type: array
+          items:
+            type: string
+        classification_tags:
+          type: array
+          items:
+            type: string
+            enum:
+              - TAG_KEY_DIETARY_VEGETARIAN
+              - TAG_KEY_DIETARY_VEGAN
+              - TAG_KEY_DIETARY_GLUTEN_FREE
+    DishInfo:
+      type: object
+      properties:
+        nutritional_info:
+          $ref: '#/components/schemas/NutritionalInfo'
+        classification_info:
+          $ref: '#/components/schemas/ClassificationInfo'
+    NutritionalInfo:
+      type: object
+      properties:
+        calorific_info:
+          $ref: '#/components/schemas/CalorificInfo'
+    QuantityInfo:
+      type: object
+      properties:
+        default_quantity:
+          type: integer
+          description: >-
+            Recipes logic can be used in cases where you wish to specify
+            option.default_quantity > 1 for options
+        charge_above:
+          type: integer
+          description: >-
+            Can be used to specify a charge_above quantity for an option so that
+            customers are only charged for the option once the charge_above
+            quantity is exceeded.
+    Extra:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Given name of this instance
+        merchant_supplied_id:
+          type: string
+          description: ID as it's stored in your system
+        description:
+          type: string
+          description: Description of the extra
+        availability:
+          type: string
+          enum:
+            - ACTIVE
+            - INACTIVE
+          default: ACTIVE
+        sort_id:
+          type: integer
+          description: >-
+            Dictates extra sort order. DD now sorts required modifiers to the
+            top of the item page. If there are multiple required modifiers, they
+            will be sorted using their extra.sort_id
+        min_num_options:
+          type: integer
+          description: >-
+            Controls the number of distinct options within the extra that must
+            be added to the item. This input also controls the subtext that is
+            displayed under the extra name (e.g “Select at least 1”).
+        max_num_options:
+          type: integer
+          description: >-
+            Controls the number of distinct options within the extra that can be
+            added to the item.
+        num_free_options:
+          type: integer
+          description: >-
+            Number of distinct options that the Consumer can add to the item for
+            free.
+        min_option_choice_quantity:
+          type: integer
+          description: >-
+            Controls the quantity of an individual option within the extra that
+            must be added to the item.
+        max_option_choice_quantity:
+          type: integer
+          description: >-
+            Controls the quantity of an individual option within the extra that
+            can be added to the item.
+        min_aggregate_options_quantity:
+          type: integer
+          description: >-
+            Limits the quantity of a single option that can be added within the
+            extra To offer quantity selectors as the selection method, this must
+            be specified.
+        max_aggregate_options_quantity:
+          type: integer
+          description: >-
+            Limits the quantity of a single option that can be added within the
+            extra To offer quantity selectors as the selection method, this must
+            be specified.
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/Option'
+    Option:
+      type: object
+      properties:
+        merchant_supplied_item_id:
+          type: string
+          description: Merchant supplied Id to identify the option inside the extra.
+        name:
+          type: string
+          description: Name of the option
+        availability:
+          type: string
+          enum:
+            - ACTIVE
+            - INACTIVE
+          default: ACTIVE
+        price_info:
+          $ref: '#/components/schemas/OptionPriceInfo'
+        item_extra_option_special_hours:
+          type: array
+          description: Special hours on when option will be available
+          items:
+            $ref: '#/components/schemas/TimeBlock'
+        description:
+          type: string
+          description: Description of the option
+        default:
+          type: boolean
+          description: >-
+            Controls whether the option is pre-selected or not.  For options
+            that have quantity selectors, if option.default:true, then the
+            pre-selected quantity will be 1
+        sort_id:
+          type: integer
+          description: >-
+            Dictates option sort order, DoorDash sorts options based in
+            ascending order by referencing this field (i.e. sort_id does not
+            have to be 0 in order for option to be sorted to the top)
+        extras:
+          type: array
+          items:
+            $ref: '#/components/schemas/Extra'
+    NestedExtra:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Given name of this instance
+        merchant_supplied_id:
+          type: string
+          description: ID as it's stored in your system
+        description:
+          type: string
+          description: Description of the extra
+        availability:
+          type: string
+          enum:
+            - ACTIVE
+            - INACTIVE
+          default: ACTIVE
+        sort_id:
+          type: integer
+          description: >-
+            Dictates extra sort order. DD now sorts required modifiers to the
+            top of the item page. If there are multiple required modifiers, they
+            will be sorted using their extra.sort_id
+        min_num_options:
+          type: integer
+          description: >-
+            Controls the number of distinct options within the extra that must
+            be added to the item. This input also controls the subtext that is
+            displayed under the extra name (e.g “Select at least 1”).
+        max_num_options:
+          type: integer
+          description: >-
+            Controls the number of distinct options within the extra that can be
+            added to the item.
+        num_free_options:
+          type: integer
+          description: >-
+            Number of distinct options that the Consumer can add to the item for
+            free.
+        min_option_choice_quantity:
+          type: integer
+          description: >-
+            Controls the quantity of an individual option within the extra that
+            must be added to the item.
+        max_option_choice_quantity:
+          type: integer
+          description: >-
+            Controls the quantity of an individual option within the extra that
+            can be added to the item.
+        min_aggregate_options_quantity:
+          type: integer
+          description: >-
+            Limits the quantity of a single option that can be added within the
+            extra To offer quantity selectors as the selection method, this must
+            be specified.
+        max_aggregate_options_quantity:
+          type: integer
+          description: >-
+            Limits the quantity of a single option that can be added within the
+            extra To offer quantity selectors as the selection method, this must
+            be specified.
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedOption'
+    NestedOption:
+      type: object
+      properties:
+        merchant_supplied_item_id:
+          type: string
+          description: Merchant supplied Id to identify the option inside the extra.
+        name:
+          type: string
+          description: Name of the option
+        availability:
+          type: string
+          enum:
+            - ACTIVE
+            - INACTIVE
+          default: ACTIVE
+        price_info:
+          $ref: '#/components/schemas/PriceInfo'
+        item_extra_option_special_hours:
+          type: array
+          description: Special hours on when option will be available
+          items:
+            $ref: '#/components/schemas/TimeBlock'
+        description:
+          type: string
+          description: Description of the option
+        default:
+          type: boolean
+          description: >-
+            Controls whether the option is pre-selected or not.  For options
+            that have quantity selectors, if option.default:true, then the
+            pre-selected quantity will be 1
+        sort_id:
+          type: integer
+          description: >-
+            Dictates option sort order, DoorDash sorts options based in
+            ascending order by referencing this field (i.e. sort_id does not
+            have to be 0 in order for option to be sorted to the top)
+        operation_context:
+          type: array
+          description: >-
+            Controls whether the option is part of the recipe or not. Must
+            contain “RECIPE” in order for default_quantity and charge_above to
+            work as expected
+          items:
+            type: string
+        quantity_info:
+          type: object
+          $ref: '#/components/schemas/QuantityInfo'
+        dish_info:
+          type: object
+          description: Dietary information
+          $ref: '#/components/schemas/DishInfo'
+        extras:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedL2Extra'
+    NestedL2Extra:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Given name of this instance
+        merchant_supplied_id:
+          type: string
+          description: ID as it's stored in your system
+        description:
+          type: string
+          description: Description of the extra
+        availability:
+          type: string
+          enum:
+            - ACTIVE
+            - INACTIVE
+          default: ACTIVE
+        sort_id:
+          type: integer
+          description: >-
+            Dictates extra sort order. DD now sorts required modifiers to the
+            top of the item page. If there are multiple required modifiers, they
+            will be sorted using their extra.sort_id
+        min_num_options:
+          type: integer
+          description: >-
+            Controls the number of distinct options within the extra that must
+            be added to the item. This input also controls the subtext that is
+            displayed under the extra name (e.g “Select at least 1”).
+        max_num_options:
+          type: integer
+          description: >-
+            Controls the number of distinct options within the extra that can be
+            added to the item.
+        num_free_options:
+          type: integer
+          description: >-
+            Number of distinct options that the Consumer can add to the item for
+            free.
+        min_option_choice_quantity:
+          type: integer
+          description: >-
+            Controls the quantity of an individual option within the extra that
+            must be added to the item.
+        max_option_choice_quantity:
+          type: integer
+          description: >-
+            Controls the quantity of an individual option within the extra that
+            can be added to the item.
+        min_aggregate_options_quantity:
+          type: integer
+          description: >-
+            Limits the quantity of a single option that can be added within the
+            extra To offer quantity selectors as the selection method, this must
+            be specified.
+        max_aggregate_options_quantity:
+          type: integer
+          description: >-
+            Limits the quantity of a single option that can be added within the
+            extra To offer quantity selectors as the selection method, this must
+            be specified.
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedL2Option'
+    NestedL2Option:
+      type: object
+      properties:
+        merchant_supplied_item_id:
+          type: string
+          description: Merchant supplied Id to identify the option inside the extra.
+        name:
+          type: string
+          description: Name of the option
+        availability:
+          type: string
+          enum:
+            - ACTIVE
+            - INACTIVE
+          default: ACTIVE
+        price_info:
+          $ref: '#/components/schemas/PriceInfo'
+        item_extra_option_special_hours:
+          type: array
+          description: Special hours on when option will be available
+          items:
+            $ref: '#/components/schemas/TimeBlock'
+        description:
+          type: string
+          description: Description of the option
+        default:
+          type: boolean
+          description: >-
+            Controls whether the option is pre-selected or not.  For options
+            that have quantity selectors, if option.default:true, then the
+            pre-selected quantity will be 1
+        sort_id:
+          type: integer
+          description: >-
+            Dictates option sort order, DoorDash sorts options based in
+            ascending order by referencing this field (i.e. sort_id does not
+            have to be 0 in order for option to be sorted to the top)
+        operation_context:
+          type: array
+          description: >-
+            Controls whether the option is part of the recipe or not. Must
+            contain “RECIPE” in order for default_quantity and charge_above to
+            work as expected
+          items:
+            type: string
+        quantity_info:
+          type: object
+          $ref: '#/components/schemas/QuantityInfo'
+        dish_info:
+          type: object
+          description: Dietary information
+          $ref: '#/components/schemas/DishInfo'
+    BatchAddOrUpdateItemRequest:
+      type: object
+      properties:
+        scope:
+          type: object
+          properties:
+            business_ids:
+              type: array
+              items:
+                type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+    BatchAddOrUpdateStoreItemRequest:
+      type: object
+      properties:
+        meta:
+          type: object
+          description: Only need this information when you use paginated pull workflow
+          properties:
+            current_page:
+              type: integer
+              description: optional
+            page_size:
+              type: integer
+              description: optional
+            total_page:
+              type: integer
+              description: required
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoreItem'
+    UpdateItemsInBusinessRequest:
       type: object
       required:
-      - items
+        - items
       properties:
         items:
           type: array
           description: >-
-            The store-level item inventory and pricing data.
+            Items whose business-level attributes should be updated across every
+            live store in the business.
           items:
             $ref: '#/components/schemas/StoreItem'
-    StoreItem:
-      type: object
-      required:
-      - merchant_supplied_id
-      properties:
-        merchant_supplied_id:
-          type: string
-          description: >-
-            The unique merchant-supplied item identifier.
-          example: D-12345
-        price:
-          type: integer
-          description: >-
-            The item price in cents at this store.
-          example: 42
-        in_stock:
-          type: boolean
-          description: >-
-            Whether the item is currently in stock at this store.
-          example: true
-        quantity_on_hand:
-          type: integer
-          description: >-
-            The current quantity available at this store.
-          minimum: 0
-          example: 0
-        aisle:
-          type: string
-          description: >-
-            The aisle location of the item in the store.
-          example: example
-        shelf:
-          type: string
-          description: >-
-            The shelf location of the item in the store.
-          example: example
-    StoreItemsResponse:
+    CreateJobRequest:
       type: object
       properties:
-        status:
+        job_type:
           type: string
+          enum:
+            - PULL_STORE_ITEMS
+            - PULL_STORE_ITEMS_WITH_PAGINATION
           description: >-
-            The processing status of the request.
-          example: active
-        items_processed:
-          type: integer
-          description: >-
-            The number of items processed.
-          example: 42
-        errors:
-          type: array
-          description: >-
-            Any errors encountered during processing.
-          items:
-            $ref: '#/components/schemas/ItemError'
-    PromotionsRequest:
+            Use PULL_STORE_ITEMS if you can return all items in one pull call
+            for one store, otherwise use PULL_STORE_ITEMS_WITH_PAGINATION which
+            is paginated version pull.
+        job_parameters:
+          type: object
+          additionalProperties:
+            type: string
+    BatchAddOrUpdatePromotionRequest:
       type: object
-      required:
-      - promotions
       properties:
         promotions:
           type: array
-          description: >-
-            The promotions to add or update.
           items:
             $ref: '#/components/schemas/Promotion'
-    Promotion:
+    PullStoreItemsJobParameters:
+      type: object
+      properties:
+        store_location_id:
+          type: string
+        pull_mode:
+          type: string
+          enum:
+            - REPLACE
+        merchant_supplied_page_size:
+          type: integer
+    AsyncOperationResponse:
+      type: object
+      properties:
+        operation_id:
+          type: string
+        operation_status:
+          type: string
+          enum:
+            - QUEUED
+            - IN_PROGRESS
+            - SUCCESS
+            - FAILED
+            - PARTIAL_SUCCESS
+        message:
+          type: string
+    PullStoreItemsJobResponse:
+      type: object
+      properties:
+        operation_id:
+          type: string
+        operation_status:
+          type: string
+          enum:
+            - QUEUED
+            - IN_PROGRESS
+            - SUCCESS
+            - FAILED
+            - PARTIAL_SUCCESS
+        message:
+          type: string
+        max_page_size:
+          type: integer
+    ManagedMerchantConnectRequest:
       type: object
       required:
-      - merchant_supplied_id
-      - promotional_price
+        - location_id
+        - location_group_id
+        - store_name
+        - address
+        - first_name
+        - last_name
+        - email
+        - merchant_decision_maker_email
+        - order_protocol
+        - fulfillment_protocol
+        - locale
       properties:
-        merchant_supplied_id:
+        location_id:
           type: string
           description: >-
-            The merchant-supplied item identifier for the promoted item.
-          example: D-12345
-        promotional_price:
-          type: integer
-          description: >-
-            The promotional price in cents.
-          example: 42
-        start_date:
+            Unique identifier of the store in partner system (becomes
+            location_id in API calls)
+        location_group_id:
           type: string
-          format: date-time
-          description: >-
-            The start date of the promotion in UTC ISO-8601 format.
-          example: '2026-06-02T14:30:00Z'
-        end_date:
+          description: Unique identifier of the parent business in partner system
+        store_name:
           type: string
-          format: date-time
-          description: >-
-            The end date of the promotion in UTC ISO-8601 format.
-          example: '2026-06-02T14:30:00Z'
-        description:
+          description: Customer-facing name of the store (e.g., "Burger Shack")
+        location_name:
           type: string
+          description: Location-specific context (e.g., "Burger Shack - Las Vegas")
+        address:
+          $ref: '#/components/schemas/MerchantAddress'
+        first_name:
+          type: string
+          description: First name of user on partner side initiating request
+        last_name:
+          type: string
+          description: Last name of user on partner side
+        email:
+          type: string
+          format: email
+          description: Email for user on partner side (receives status updates)
+        business_phone:
+          type: string
+          description: Phone number for requestor
+        expected_go_live_date:
+          type: string
+          format: date
+          description: Expected activation date (YYYY-MM-DD, best effort)
+          example: '2026-01-15'
+        merchant_decision_maker_email:
+          type: string
+          format: email
+          description: Merchant email (must be Business Admin in DoorDash Merchant Portal)
+        order_protocol:
+          type: string
+          enum:
+            - POS
+            - TABLET
           description: >-
-            A description of the promotion.
-          example: Leave at the front desk.
-    PromotionsResponse:
+            POS - Merchant receives and fulfills orders via their POS; TABLET -
+            Merchant will be sent a DD tablet and orders will not go to their
+            POS
+        fulfillment_protocol:
+          type: string
+          enum:
+            - MERCHANT_PICK
+            - DASHER_PICK
+          description: >-
+            MERCHANT_PICK - merchant picks; DASHER_PICK - dasher shops and
+            delivers
+        locale:
+          type: string
+          enum:
+            - en-US
+          description: Locale for the merchant onboarding experience
+    MerchantAddress:
+      type: object
+      required:
+        - line_1
+        - city
+        - state
+        - zip
+      properties:
+        line_1:
+          type: string
+          description: Street address
+        line_2:
+          type: string
+          description: Apartment, suite, etc.
+        city:
+          type: string
+          description: City
+        state:
+          type: string
+          description: State (2-letter code)
+          pattern: ^[A-Z]{2}$
+        zip:
+          type: string
+          description: ZIP/postal code
+    ManagedMerchantConnectResponse:
       type: object
       properties:
-        status:
+        managed_merchant_connect_url:
+          type: string
+          format: uri
+          description: >-
+            Managed Merchant Onboarding URL. The partner must redirect the
+            merchant to this URL where DoorDash hosts the full onboarding flow.
+            After completion, DoorDash displays a confirmation page and the
+            merchant should close the tab and return to the partner portal.
+    MultiLocationOnboardingIntentRequest:
+      type: object
+      required:
+        - requests
+      properties:
+        requests:
+          type: array
+          minItems: 1
+          maxItems: 100
+          description: >-
+            One onboarding intent request per store location, submitted as a
+            single batch
+          items:
+            $ref: '#/components/schemas/ManagedMerchantConnectRequest'
+    MultiLocationOnboardingIntentResult:
+      type: object
+      properties:
+        location_id:
+          type: string
+          description: Echoes the location_id from the corresponding request
+        code:
           type: string
           description: >-
-            The processing status of the request.
-          example: active
-        promotions_processed:
-          type: integer
-          description: >-
-            The number of promotions processed.
-          example: 42
-        errors:
+            gRPC status code name. "OK" means DoorDash accepted the onboarding
+            intent for this location. No managed_merchant_connect_url is ever
+            returned by this endpoint - onboarding completion for accepted
+            locations is a manual follow-up.
+          example: OK
+        error:
+          type: string
+          description: Present only when code is not "OK"
+    MultiLocationOnboardingIntentResponse:
+      type: object
+      properties:
+        results:
           type: array
           description: >-
-            Any errors encountered during processing.
+            One result per submitted location, positionally matching the request
+            list and identifiable by location_id. Per-location business failures
+            (e.g. invalid address) do not fail the whole batch.
           items:
-            $ref: '#/components/schemas/ItemError'
-    ItemError:
+            $ref: '#/components/schemas/MultiLocationOnboardingIntentResult'
+    StoreAlreadyExistsError:
+      x-error: true
       type: object
+      description: Store with the provided partner_store_id is already onboarded
+      required:
+        - code
+        - message
       properties:
-        merchant_supplied_id:
-          type: string
-          description: >-
-            The item identifier that had an error.
-          example: D-12345
-        message:
-          type: string
-          description: >-
-            The error message.
-          example: example
         code:
           type: string
-          description: >-
-            A machine-readable error code.
-          example: ABC123
-    Error:
-      type: object
-      properties:
+          enum:
+            - store_already_exists
+          default: store_already_exists
         message:
           type: string
-          description: >-
-            A human-readable error message.
-          example: example
-        code:
+          example: Store with partner_store_id 'shopify_store_456' is already onboarded
+    TaxInfo:
+      type: object
+      description: Tax information for line items or transaction
+      properties:
+        amount:
+          type: number
+          description: Tax amount in minor units of the specified currency
+        tax_type:
+          type: string
+          description: Type of tax applied
+          enum:
+            - SALES_TAX
+            - VAT
+            - GST
+            - EXCISE_TAX
+            - TAX_ON_FEES
+            - TAX_ON_SUBTOTAL
+            - OTHER
+        tax_type_other:
+          type: string
+          description: Additional details when tax_type is OTHER
+    DiscountInfo:
+      type: object
+      description: Discount information for line items or transaction
+      properties:
+        amount:
+          type: number
+          description: Discount amount in minor units of the specified currency
+        discount_type:
+          type: string
+          description: Type of discount applied
+          enum:
+            - MEMBER_SAVINGS
+            - MX_PROMO
+            - CPG_PROMO
+            - OTHER
+        discount_type_other:
+          type: string
+          description: Additional details when discount_type is OTHER
+    FeeInfo:
+      type: object
+      description: Fee information for transaction
+      properties:
+        fee_amount:
+          type: number
+          description: Fee amount in minor units of the specified currency
+        fee_type:
+          type: string
+          description: Type of fee applied
+          enum:
+            - ECO_FEE
+            - BAG_FEE
+            - BOTTLE_DEPOSIT_FEE
+            - OTHER
+        fee_type_other:
+          type: string
+          description: Additional details when fee_type is OTHER
+    OtherIdentifier:
+      type: object
+      description: Additional identifiers for items
+      properties:
+        name:
+          type: string
+          description: Identifier name
+        value:
+          type: string
+          description: Identifier value
+    TransactionLineItem:
+      type: object
+      description: Individual line item in the transaction
+      properties:
+        line_id:
+          type: string
+          description: Unique identifier for the line item
+        merchant_supplied_item_id:
+          type: string
+          description: Merchant supplied item identifier
+        quantity:
+          type: number
+          description: Quantity of the item
+        measurement_unit:
           type: string
           description: >-
-            A machine-readable error code.
-          example: ABC123
+            Unit of measurement for the item; accepted in either lower or upper
+            case (e.g., 'ea' or 'EA')
+          enum:
+            - ea
+            - kg
+            - lb
+            - gm
+            - oz
+        name:
+          type: string
+          description: Name of the item
+        category:
+          type: string
+          description: Category of the item
+        other_identifiers:
+          type: array
+          description: Other identifiers associated with the item
+          items:
+            $ref: '#/components/schemas/OtherIdentifier'
+        scan_code:
+          type: string
+          description: Barcode or scan code for the item
+        program_eligibility:
+          type: array
+          description: Program eligibility of the item
+          items:
+            $ref: '#/components/schemas/ProgramEligibility'
+        price:
+          type: number
+          nullable: true
+          description: >-
+            Price per unit in minor units of the specified currency; null when
+            the line item does not represent a priced unit (e.g.,
+            variable-measure)
+        net_price:
+          type: number
+          description: Total net price in minor units of the specified currency
+        price_per_measurement_unit:
+          type: number
+          nullable: true
+          description: >-
+            Price per measurement unit in minor units of the specified currency;
+            null when not applicable (e.g., line item is not measured-by-unit)
+        net_price_per_measurement_unit:
+          type: number
+          description: >-
+            Net price per measurement unit in minor units of the specified
+            currency
+        discounts:
+          $ref: '#/components/schemas/DiscountInfo'
+        taxes:
+          type: array
+          nullable: true
+          description: >-
+            Tax information for this line item; omit, use [], or null when not
+            applicable
+          items:
+            $ref: '#/components/schemas/TaxInfo'
+    TransactionSummary:
+      type: object
+      nullable: true
+      description: >-
+        Summary of transaction totals; the property may be omitted, sent as an
+        empty object, or sent as null when not applicable
+      properties:
+        subtotal:
+          type: number
+          description: >-
+            Subtotal amount in minor units of the specified currency before tax
+            and fees
+        tax:
+          type: number
+          description: Total tax amount in minor units of the specified currency
+        fees:
+          type: number
+          description: Total fees amount in minor units of the specified currency
+        discount:
+          type: number
+          description: Total discount amount in minor units of the specified currency
+    CardTransactionInfo:
+      type: object
+      description: Card transaction information
+      properties:
+        bin:
+          type: string
+          description: Bank Identification Number (first 6 digits of card)
+        card_holder_name:
+          type: string
+          description: Name of the card holder
+        last_four_digits:
+          type: string
+          description: Last four digits of the card number
+        card_type:
+          type: string
+          description: Type of card
+          enum:
+            - CREDIT
+            - OTHER
+        card_type_other:
+          type: string
+          description: Additional details when card_type is OTHER
+        approval_code:
+          type: string
+          description: Authorization or approval code from the card network or processor
+        card_transaction_status:
+          type: string
+          description: Status of the card transaction
+    Tender:
+      type: object
+      description: >-
+        Payment tender information. When tender_type is DOORDASH_DIRECT,
+        doordash_direct_scan_code is populated with the scanned barcode or QR
+        code value.
+      required:
+        - doordash_direct_scan_code
+      properties:
+        tender_type:
+          type: string
+          description: Type of tender used
+          enum:
+            - CARD
+            - DOORDASH_DIRECT
+            - HSA_FSA
+            - SNAP
+            - EBT
+            - OTHER
+        tender_type_other:
+          type: string
+          description: Additional details when tender_type is OTHER
+        amount:
+          type: number
+          description: >-
+            Amount paid with this tender in minor units of the specified
+            currency
+        card_info:
+          $ref: '#/components/schemas/CardTransactionInfo'
+        doordash_direct_scan_code:
+          type: string
+          description: Scanned barcode or QR code value when tender_type is DOORDASH_DIRECT
+    Transaction:
+      type: object
+      title: Transaction
+      description: Complete transaction with identifier, contents, and timestamp
+      required:
+        - merchant_supplied_transaction_id
+        - in_store_transaction_contents
+      properties:
+        merchant_supplied_transaction_id:
+          type: string
+          description: Merchant supplied transaction identifier
+        in_store_transaction_contents:
+          $ref: '#/components/schemas/TransactionContent'
+        marketplace_transaction_contents:
+          $ref: '#/components/schemas/TransactionContent'
+        transaction_timestamp:
+          type: string
+          format: date-time
+          description: Timestamp when the transaction occurred in ISO8601 format
+    BatchAddTransactionRequest:
+      type: object
+      description: Request to add multiple transactions
+      properties:
+        transactions:
+          type: array
+          description: List of transactions to add
+          items:
+            $ref: '#/components/schemas/Transaction'
+    TransactionContent:
+      type: object
+      description: Transaction details without merchant-supplied transaction identifier
+      required:
+        - total
+        - currency_code
+      properties:
+        total:
+          type: number
+          description: Total transaction amount in minor units of the specified currency
+        currency_code:
+          type: string
+          description: Currency code for the transaction
+          enum:
+            - USD
+            - AUD
+        summary:
+          $ref: '#/components/schemas/TransactionSummary'
+        items:
+          type: array
+          description: List of line items in the transaction
+          items:
+            $ref: '#/components/schemas/TransactionLineItem'
+        discounts:
+          type: array
+          description: Transaction-level discounts
+          items:
+            $ref: '#/components/schemas/DiscountInfo'
+        taxes:
+          type: array
+          nullable: true
+          description: Transaction-level taxes; omit, use [], or null when not applicable
+          items:
+            $ref: '#/components/schemas/TaxInfo'
+        fees:
+          type: array
+          description: Transaction-level fees
+          items:
+            $ref: '#/components/schemas/FeeInfo'
+        loyalty:
+          type: object
+          description: Loyalty information for transaction
+          properties:
+            member_info:
+              $ref: '#/components/schemas/LoyaltyMemberInfo'
+            points_awarded:
+              type: number
+              description: Points awarded from this transaction
+        tenders:
+          type: array
+          minItems: 1
+          maxItems: 1
+          description: >-
+            List of payment tenders used in this transaction. Exactly one tender
+            must be provided per transaction; requests with zero or multiple
+            tenders are rejected.
+          items:
+            $ref: '#/components/schemas/Tender'
+    TransactionAuthRequest:
+      type: object
+      description: Request to authorize a transaction
+      required:
+        - dd_direct_scan_code
+        - transaction_contents
+      properties:
+        checkout_id:
+          type: string
+          description: >-
+            DoorDash checkout identifier (optional; authoritative checkout id is
+            parsed from dd_direct_scan_code)
+        client_txn_context_id:
+          type: string
+          description: >-
+            Client-supplied context id for this transaction; server echoes it
+            back in the response
+        dd_direct_scan_code:
+          type: string
+          description: DoorDash Direct scan code for the transaction
+        transaction_contents:
+          $ref: '#/components/schemas/TransactionContent'
+        client_request_time:
+          type: string
+          format: date-time
+          description: Timestamp when the client initiated the request in ISO8601 format
+    LoyaltyMemberInfo:
+      type: object
+      description: >-
+        Loyalty member information. Mx can utilize this information to apply
+        membership benefits.
+      properties:
+        member_id:
+          type: string
+          description: Loyalty member identifier
+        scan_type:
+          type: string
+          description: Type of scan method used for loyalty
+          enum:
+            - QR_CODE
+            - BARCODE
+            - NA
+        scan_payload:
+          type: string
+          description: Scanned loyalty payload value
+    TransactionAuditResult:
+      type: object
+      description: Audit result for transaction authorization
+      properties:
+        reason_code:
+          type: string
+          description: Reason code for audit result
+          enum:
+            - INVALID_SCAN_CODE
+            - CHECKOUT_NOT_ACTIVE
+            - UNKNOWN_CHECKOUT_ID
+            - OTHER
+            - TRANSACTION_TOTAL_MISMATCH
+        message:
+          type: string
+          description: Detailed message for the audit result
+    TransactionAuthResponse:
+      type: object
+      title: TransactionAuthResponse
+      description: Response for transaction authorization
+      properties:
+        client_txn_context_id:
+          type: string
+          description: >-
+            Client-supplied context id for this transaction (echoed from
+            request)
+        order_uuid:
+          type: string
+          description: DoorDash order UUID
+        delivery_uuid:
+          type: string
+          description: DoorDash delivery UUID
+        approval_status:
+          type: string
+          description: Overall approval status of the transaction
+          enum:
+            - APPROVED
+            - APPROVED_WITH_CONDITIONS
+            - DENIED
+        audit_results:
+          type: array
+          description: >-
+            List of audit results explaining why the transaction was approved
+            with conditions or denied; empty when approval_status is APPROVED
+          items:
+            $ref: '#/components/schemas/TransactionAuditResult'
+    FieldError:
+      title: FieldError
+      type: object
+      description: A field whose value couldn't be validated.
+      required:
+        - field
+        - error
+      properties:
+        field:
+          type: string
+          description: Name of the field whose value couldn't be validated.
+          example: pickup_phone_number
+        error:
+          type: string
+          description: The error that was encountered when validating the field's value.
+          example: Invalid phone number format
+    ValidationFieldError:
+      x-error: true
+      title: ValidationFieldError
+      type: object
+      description: One or more request values couldn't be validated.
+      required:
+        - code
+        - message
+        - field_errors
+      properties:
+        code:
+          type: string
+          enum:
+            - validation_error
+        message:
+          type: string
+          description: One or more request values couldn't be validated.
+          example: One or more request values couldn't be validated.
+        field_errors:
+          type: array
+          description: >-
+            The list of fields whose values couldn't be validated. See more
+            [error
+            examples](https://developer.doordash.com/en-US/docs/drive/reference/errors)
+          items:
+            $ref: '#/components/schemas/FieldError'
+          nullable: false
+          readOnly: true
+    AuthenticationError:
+      x-error: true
+      type: object
+      description: >-
+        Authentication error: the token provided with the request doesn't work
+        for the requested operation
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - authentication_error
+          default: authentication_error
+        message:
+          type: string
+          example: The [exp] is in the past; the JWT is expired
+          default: The [exp] is in the past; the JWT is expired
+    AuthorizationError:
+      x-error: true
+      type: object
+      description: >-
+        Authorization error: the credentials provided with the request don't
+        work for the requested operation
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - authorization_error
+          default: authorization_error
+        message:
+          type: string
+          example: >-
+            Authorization error: the credentials provided with the request don't
+            work for the requested operation
+          default: >-
+            Authorization error: the credentials provided with the request don't
+            work for the requested operation
+    NotFoundError:
+      x-error: true
+      type: object
+      description: Request entity was not found.
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - unknown_business_id
+        message:
+          type: string
+          example: Entity was not found
+    RequestNotProcessError:
+      x-error: true
+      type: object
+      description: Request was not process.
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - request_rate_limited
+        message:
+          type: string
+          example: Request was not process. Request entity may be too large.
+    RequestRateLimitedError:
+      x-error: true
+      type: object
+      description: Request was rate limited.
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - request_rate_limited
+        message:
+          type: string
+          example: >-
+            Request was rate limited. You may be calling the API too much in a
+            short time.
+    server_fault:
+      x-error: true
+      type: object
+      description: Internal service failure, please try again later.
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - service_fault
+          default: service_fault
+        message:
+          type: string
+          example: Internal service failure, please try again later.
+          default: Internal service failure, please try again later.
+    StoreLocationNotFoundError:
+      x-error: true
+      type: object
+      description: The store location could not be found.
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - unknown_store_location_id
+        message:
+          type: string
+          example: The store location could not be found
+    ConflictError:
+      x-error: true
+      type: object
+      description: The checkout has already been authorized and cannot be authorized again.
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - checkout_already_authorized
+        message:
+          type: string
+          example: >-
+            The checkout has already been authorized and cannot be authorized
+            again.
+  requestBodies:
+    BatchAddOrUpdateItem:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BatchAddOrUpdateItemRequest'
+    BatchAddOrUpdateStoreItem:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BatchAddOrUpdateStoreItemRequest'
+    BatchAddOrUpdatePromotion:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BatchAddOrUpdatePromotionRequest'

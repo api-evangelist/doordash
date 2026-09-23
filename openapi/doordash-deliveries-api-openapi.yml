@@ -1,14 +1,16 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DoorDash Drive Classic Addresses Deliveries API
-  description: The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.
-  version: '1.0'
+  title: Doordash Deliveries API
   contact:
     name: DoorDash Developer Support
     url: https://developer.doordash.com/en-US/
   termsOfService: https://www.doordash.com/terms/
+  version: '1.0'
+  description: 'Operations tagged Deliveries across 2 of this provider''s published API definitions: doordash-drive-classic-openapi.yml, doordash-drive-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://openapi.doordash.com/drive/v1
+  description: Production Server
+- url: https://openapi.doordash.com/drive/v2
   description: Production Server
 security:
 - bearerAuth: []
@@ -90,6 +92,9 @@ paths:
       x-microcks-operation:
         delay: 0
         dispatcher: FALLBACK
+    servers:
+    - url: https://openapi.doordash.com/drive/v1
+      description: Production Server
   /deliveries:
     post:
       operationId: createDelivery
@@ -189,6 +194,9 @@ paths:
       x-microcks-operation:
         delay: 0
         dispatcher: FALLBACK
+    servers:
+    - url: https://openapi.doordash.com/drive/v1
+      description: Production Server
   /deliveries/{external_delivery_id}:
     get:
       operationId: getDelivery
@@ -362,6 +370,9 @@ paths:
       x-microcks-operation:
         delay: 0
         dispatcher: FALLBACK
+    servers:
+    - url: https://openapi.doordash.com/drive/v1
+      description: Production Server
   /deliveries/{external_delivery_id}/cancel:
     put:
       operationId: cancelDelivery
@@ -450,6 +461,9 @@ paths:
       x-microcks-operation:
         delay: 0
         dispatcher: FALLBACK
+    servers:
+    - url: https://openapi.doordash.com/drive/v1
+      description: Production Server
   /checkout_audit_signal:
     post:
       operationId: sendCheckoutAuditSignal
@@ -508,112 +522,74 @@ paths:
       x-microcks-operation:
         delay: 0
         dispatcher: FALLBACK
+    servers:
+    - url: https://openapi.doordash.com/drive/v2
+      description: Production Server
 components:
+  parameters:
+    ExternalDeliveryId:
+      name: external_delivery_id
+      in: path
+      required: true
+      description: The unique external delivery ID provided when creating the delivery.
+      schema:
+        type: string
+    ExternalDeliveryId_2:
+      name: external_delivery_id
+      in: path
+      required: true
+      description: The unique external delivery ID provided when creating the delivery or quote.
+      schema:
+        type: string
   schemas:
-    Error_2:
-      type: object
-      properties:
-        field_errors:
-          type: array
-          description: A list of field-level validation errors.
-          items:
-            type: object
-            properties:
-              field:
-                type: string
-                description: The name of the field with the error.
-              error:
-                type: string
-                description: The error message for the field.
-        message:
-          type: string
-          description: A human-readable error message.
-          example: example
-        code:
-          type: string
-          description: A machine-readable error code.
-          example: ABC123
-    ClassicDeliveryRequest:
+    EstimateRequest:
       type: object
       required:
-      - external_delivery_id
       - pickup_address
       - dropoff_address
       properties:
-        external_delivery_id:
-          type: string
-          description: A unique identifier for this delivery.
-          example: D-12345
         pickup_address:
           type: string
           description: The full street address for the pickup location.
           example: 901 Market St, San Francisco, CA 94105
-        pickup_business_name:
-          type: string
-          description: The business name at the pickup location.
-          example: Acme Pickup Store
-        pickup_phone_number:
-          type: string
-          description: The phone number at the pickup location.
-          example: '+15555551234'
-        pickup_instructions:
-          type: string
-          description: Special instructions for the Dasher at pickup.
-          example: Leave at the front desk.
         dropoff_address:
           type: string
           description: The full street address for the dropoff location.
           example: 901 Market St, San Francisco, CA 94105
-        dropoff_business_name:
+        pickup_time:
           type: string
-          description: The business name at the dropoff location.
-          example: Acme Pickup Store
-        dropoff_phone_number:
-          type: string
-          description: The phone number at the dropoff location.
-          example: '+15555551234'
-        dropoff_instructions:
-          type: string
-          description: Special instructions for the Dasher at dropoff.
-          example: Leave at the front desk.
-        dropoff_contact_given_name:
-          type: string
-          description: The first name of the dropoff contact.
-          example: Acme Pickup Store
-        dropoff_contact_family_name:
-          type: string
-          description: The last name of the dropoff contact.
-          example: Acme Pickup Store
+          format: date-time
+          description: The requested pickup time in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
         order_value:
           type: integer
           description: The total value of the order in cents.
           example: 42
-        tip:
+    Estimate:
+      type: object
+      properties:
+        fee:
           type: integer
-          description: The tip amount in cents.
+          description: The estimated delivery fee in cents.
           example: 42
+        currency:
+          type: string
+          description: The currency code for the fee amount.
+          example: USD
         pickup_time:
           type: string
           format: date-time
-          description: The requested pickup time in UTC.
+          description: The estimated pickup time.
           example: '2026-06-02T14:30:00Z'
         dropoff_time:
           type: string
           format: date-time
-          description: The requested dropoff time in UTC.
+          description: The estimated dropoff time.
           example: '2026-06-02T14:30:00Z'
-        contains_alcohol:
-          type: boolean
-          description: Whether the order contains alcohol.
-          example: true
-        external_business_id:
-          type: string
-          description: The external business ID to associate with this delivery.
-          example: D-12345
-        external_store_id:
-          type: string
-          description: The external store ID to associate with this delivery.
-          example: D-12345
+        delivery_duration:
+          type: integer
+          description: The estimated delivery duration in seconds.
+          example: 42
     ClassicDelivery:
       type: object
       properties:
@@ -699,80 +675,6 @@ components:
           format: date-time
           description: When the delivery was last updated.
           example: '2026-06-02T14:30:00Z'
-    Estimate:
-      type: object
-      properties:
-        fee:
-          type: integer
-          description: The estimated delivery fee in cents.
-          example: 42
-        currency:
-          type: string
-          description: The currency code for the fee amount.
-          example: USD
-        pickup_time:
-          type: string
-          format: date-time
-          description: The estimated pickup time.
-          example: '2026-06-02T14:30:00Z'
-        dropoff_time:
-          type: string
-          format: date-time
-          description: The estimated dropoff time.
-          example: '2026-06-02T14:30:00Z'
-        delivery_duration:
-          type: integer
-          description: The estimated delivery duration in seconds.
-          example: 42
-    ClassicDeliveryUpdateRequest:
-      type: object
-      properties:
-        tip:
-          type: integer
-          description: Updated tip amount in cents.
-          example: 42
-        dropoff_instructions:
-          type: string
-          description: Updated dropoff instructions.
-          example: Leave at the front desk.
-        dropoff_phone_number:
-          type: string
-          description: Updated dropoff phone number.
-          example: '+15555551234'
-    EstimateRequest:
-      type: object
-      required:
-      - pickup_address
-      - dropoff_address
-      properties:
-        pickup_address:
-          type: string
-          description: The full street address for the pickup location.
-          example: 901 Market St, San Francisco, CA 94105
-        dropoff_address:
-          type: string
-          description: The full street address for the dropoff location.
-          example: 901 Market St, San Francisco, CA 94105
-        pickup_time:
-          type: string
-          format: date-time
-          description: The requested pickup time in UTC ISO-8601 format.
-          example: '2026-06-02T14:30:00Z'
-        order_value:
-          type: integer
-          description: The total value of the order in cents.
-          example: 42
-    CheckoutAuditSignal:
-      type: object
-      properties:
-        external_delivery_id:
-          type: string
-          description: The external delivery ID associated with this checkout event.
-          example: D-12345
-        event_type:
-          type: string
-          description: The type of checkout audit event.
-          example: example
     Error:
       type: object
       properties:
@@ -796,20 +698,423 @@ components:
               error:
                 type: string
                 description: The error message.
-  parameters:
-    ExternalDeliveryId:
-      name: external_delivery_id
-      in: path
-      required: true
-      description: The unique external delivery ID provided when creating the delivery.
-      schema:
-        type: string
+    ClassicDeliveryRequest:
+      type: object
+      required:
+      - external_delivery_id
+      - pickup_address
+      - dropoff_address
+      properties:
+        external_delivery_id:
+          type: string
+          description: A unique identifier for this delivery.
+          example: D-12345
+        pickup_address:
+          type: string
+          description: The full street address for the pickup location.
+          example: 901 Market St, San Francisco, CA 94105
+        pickup_business_name:
+          type: string
+          description: The business name at the pickup location.
+          example: Acme Pickup Store
+        pickup_phone_number:
+          type: string
+          description: The phone number at the pickup location.
+          example: '+15555551234'
+        pickup_instructions:
+          type: string
+          description: Special instructions for the Dasher at pickup.
+          example: Leave at the front desk.
+        dropoff_address:
+          type: string
+          description: The full street address for the dropoff location.
+          example: 901 Market St, San Francisco, CA 94105
+        dropoff_business_name:
+          type: string
+          description: The business name at the dropoff location.
+          example: Acme Pickup Store
+        dropoff_phone_number:
+          type: string
+          description: The phone number at the dropoff location.
+          example: '+15555551234'
+        dropoff_instructions:
+          type: string
+          description: Special instructions for the Dasher at dropoff.
+          example: Leave at the front desk.
+        dropoff_contact_given_name:
+          type: string
+          description: The first name of the dropoff contact.
+          example: Acme Pickup Store
+        dropoff_contact_family_name:
+          type: string
+          description: The last name of the dropoff contact.
+          example: Acme Pickup Store
+        order_value:
+          type: integer
+          description: The total value of the order in cents.
+          example: 42
+        tip:
+          type: integer
+          description: The tip amount in cents.
+          example: 42
+        pickup_time:
+          type: string
+          format: date-time
+          description: The requested pickup time in UTC.
+          example: '2026-06-02T14:30:00Z'
+        dropoff_time:
+          type: string
+          format: date-time
+          description: The requested dropoff time in UTC.
+          example: '2026-06-02T14:30:00Z'
+        contains_alcohol:
+          type: boolean
+          description: Whether the order contains alcohol.
+          example: true
+        external_business_id:
+          type: string
+          description: The external business ID to associate with this delivery.
+          example: D-12345
+        external_store_id:
+          type: string
+          description: The external store ID to associate with this delivery.
+          example: D-12345
+    ClassicDeliveryUpdateRequest:
+      type: object
+      properties:
+        tip:
+          type: integer
+          description: Updated tip amount in cents.
+          example: 42
+        dropoff_instructions:
+          type: string
+          description: Updated dropoff instructions.
+          example: Leave at the front desk.
+        dropoff_phone_number:
+          type: string
+          description: Updated dropoff phone number.
+          example: '+15555551234'
+    Location:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Latitude coordinate.
+          example: 37.422
+        lng:
+          type: number
+          format: double
+          description: Longitude coordinate.
+          example: -122.084
+    DeliveryRequest:
+      type: object
+      required:
+      - external_delivery_id
+      - pickup_address
+      - dropoff_address
+      properties:
+        external_delivery_id:
+          type: string
+          description: A unique identifier for this delivery, provided by the caller.
+          example: D-12345
+        pickup_address:
+          type: string
+          description: The full street address for the pickup location.
+          example: 901 Market St, San Francisco, CA 94105
+        pickup_business_name:
+          type: string
+          description: The business name at the pickup location.
+          example: Acme Pickup Store
+        pickup_phone_number:
+          type: string
+          description: The phone number at the pickup location.
+          example: '+15555551234'
+        pickup_instructions:
+          type: string
+          description: Special instructions for the Dasher at the pickup location.
+          example: Leave at the front desk.
+        pickup_reference_tag:
+          type: string
+          description: A reference tag for the pickup, such as an order number.
+          example: example
+        dropoff_address:
+          type: string
+          description: The full street address for the dropoff location.
+          example: 901 Market St, San Francisco, CA 94105
+        dropoff_business_name:
+          type: string
+          description: The business name at the dropoff location.
+          example: Acme Pickup Store
+        dropoff_phone_number:
+          type: string
+          description: The phone number of the recipient at the dropoff location.
+          example: '+15555551234'
+        dropoff_instructions:
+          type: string
+          description: Special instructions for the Dasher at the dropoff location.
+          example: Leave at the front desk.
+        dropoff_contact_given_name:
+          type: string
+          description: The first name of the dropoff contact.
+          example: Acme Pickup Store
+        dropoff_contact_family_name:
+          type: string
+          description: The last name of the dropoff contact.
+          example: Acme Pickup Store
+        order_value:
+          type: integer
+          description: The total value of the order in cents.
+          example: 42
+        tip:
+          type: integer
+          description: The tip amount in cents.
+          example: 42
+        pickup_time:
+          type: string
+          format: date-time
+          description: The requested pickup time in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
+        dropoff_time:
+          type: string
+          format: date-time
+          description: The requested dropoff time in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
+        contains_alcohol:
+          type: boolean
+          description: Whether the order contains alcohol, which requires age verification.
+          example: true
+        force_batch_id:
+          type: string
+          description: An identifier to group deliveries together for batch assignment to the same Dasher.
+          example: D-12345
+        external_business_id:
+          type: string
+          description: The external business ID to associate with this delivery.
+          example: D-12345
+        external_store_id:
+          type: string
+          description: The external store ID to associate with this delivery.
+          example: D-12345
+        items:
+          type: array
+          description: List of items included in the delivery.
+          items:
+            $ref: '#/components/schemas/DeliveryItem'
+    DeliveryItem:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the item.
+          example: Acme Pickup Store
+        description:
+          type: string
+          description: A description of the item.
+          example: Leave at the front desk.
+        quantity:
+          type: integer
+          description: The quantity of this item.
+          minimum: 1
+          example: 1
+        external_id:
+          type: string
+          description: An external identifier for the item.
+          example: D-12345
+        price:
+          type: integer
+          description: The price of the item in cents.
+          example: 42
+    CheckoutAuditSignal:
+      type: object
+      properties:
+        external_delivery_id:
+          type: string
+          description: The external delivery ID associated with this checkout event.
+          example: D-12345
+        event_type:
+          type: string
+          description: The type of checkout audit event.
+          example: example
+    Error_2:
+      type: object
+      properties:
+        field_errors:
+          type: array
+          description: A list of field-level validation errors.
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: The name of the field with the error.
+              error:
+                type: string
+                description: The error message for the field.
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+    DeliveryUpdateRequest:
+      type: object
+      properties:
+        tip:
+          type: integer
+          description: Updated tip amount in cents.
+          example: 42
+        dropoff_instructions:
+          type: string
+          description: Updated dropoff instructions for the Dasher.
+          example: Leave at the front desk.
+        dropoff_phone_number:
+          type: string
+          description: Updated phone number for the dropoff contact.
+          example: '+15555551234'
+    Delivery:
+      type: object
+      properties:
+        external_delivery_id:
+          type: string
+          description: The unique external delivery ID.
+          example: D-12345
+        delivery_status:
+          type: string
+          description: The current status of the delivery.
+          enum:
+          - created
+          - confirmed
+          - enroute_to_pickup
+          - arrived_at_pickup
+          - picked_up
+          - enroute_to_dropoff
+          - arrived_at_dropoff
+          - delivered
+          - cancelled
+          - returned
+          example: created
+        fee:
+          type: integer
+          description: The delivery fee in cents.
+          example: 42
+        currency:
+          type: string
+          description: The currency code for monetary amounts.
+          example: USD
+        tip:
+          type: integer
+          description: The tip amount in cents.
+          example: 42
+        order_value:
+          type: integer
+          description: The total value of the order in cents.
+          example: 42
+        pickup_address:
+          type: string
+          description: The full street address for the pickup location.
+          example: 901 Market St, San Francisco, CA 94105
+        pickup_business_name:
+          type: string
+          description: The business name at the pickup location.
+          example: Acme Pickup Store
+        pickup_phone_number:
+          type: string
+          description: The phone number at the pickup location.
+          example: '+15555551234'
+        pickup_instructions:
+          type: string
+          description: Special instructions for pickup.
+          example: Leave at the front desk.
+        pickup_time_estimated:
+          type: string
+          format: date-time
+          description: The estimated pickup time in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
+        pickup_time_actual:
+          type: string
+          format: date-time
+          description: The actual pickup time in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
+        dropoff_address:
+          type: string
+          description: The full street address for the dropoff location.
+          example: 901 Market St, San Francisco, CA 94105
+        dropoff_business_name:
+          type: string
+          description: The business name at the dropoff location.
+          example: Acme Pickup Store
+        dropoff_phone_number:
+          type: string
+          description: The phone number at the dropoff location.
+          example: '+15555551234'
+        dropoff_instructions:
+          type: string
+          description: Special instructions for dropoff.
+          example: Leave at the front desk.
+        dropoff_time_estimated:
+          type: string
+          format: date-time
+          description: The estimated dropoff time in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
+        dropoff_time_actual:
+          type: string
+          format: date-time
+          description: The actual dropoff time in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
+        dropoff_contact_given_name:
+          type: string
+          description: The first name of the dropoff contact.
+          example: Acme Pickup Store
+        dropoff_contact_family_name:
+          type: string
+          description: The last name of the dropoff contact.
+          example: Acme Pickup Store
+        dasher_id:
+          type: integer
+          description: The unique identifier for the assigned Dasher.
+          example: 42
+        dasher_name:
+          type: string
+          description: The first name of the assigned Dasher.
+          example: Acme Pickup Store
+        dasher_phone_number:
+          type: string
+          description: The phone number of the assigned Dasher.
+          example: '+15555551234'
+        dasher_location:
+          $ref: '#/components/schemas/Location'
+        tracking_url:
+          type: string
+          format: uri
+          description: A URL for tracking the delivery in real time.
+          example: https://example.com/path/abc123
+        contains_alcohol:
+          type: boolean
+          description: Whether the order contains alcohol.
+          example: true
+        force_batch_id:
+          type: string
+          description: The batch identifier for grouped deliveries.
+          example: D-12345
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the delivery was created.
+          example: '2026-06-02T14:30:00Z'
+        updated_at:
+          type: string
+          format: date-time
+          description: The timestamp when the delivery was last updated.
+          example: '2026-06-02T14:30:00Z'
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
       description: JWT token signed with your DoorDash developer credentials.
-externalDocs:
-  description: DoorDash Drive Classic API Documentation
-  url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+x-refined-from:
+- doordash-drive-classic-openapi.yml
+- doordash-drive-openapi.yml

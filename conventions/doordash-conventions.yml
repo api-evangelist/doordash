@@ -1,0 +1,192 @@
+generated: '2026-09-17'
+method: searched
+source: https://developer.doordash.com/en-US/docs/drive/reference/errors, https://developer.doordash.com/en-US/docs/drive/reference/retry_pattern, https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling, https://developer.doordash.com/en-US/docs/drive/reference/JWTs, openapi/_original/
+provider: doordash
+description: >-
+  Cross-cutting runtime semantics for the DoorDash developer APIs, read from the docs and from the
+  thirteen first-party OpenAPI documents. The shape of the platform is consistent: a self-signed
+  short-lived JWT, a small shared error envelope, caller-supplied external identifiers that double
+  as the replay key on the delivery surface, and no response-header signalling of any kind - no
+  rate-limit headers, no request-id header, no Sunset or Deprecation headers are documented
+  anywhere.
+authentication:
+  style: self-signed HS256 JWT as Authorization bearer
+  scopes: false
+  see: authentication/doordash-authentication.yml
+idempotency:
+  coverage: partial
+  mechanism: caller-supplied external identifier, not an Idempotency-Key header
+  header: null
+  key_field: external_delivery_id
+  retention: not published
+  docs: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  description: >-
+    DoorDash treats external_delivery_id as the idempotent key on delivery creation. Retrying the
+    same create-delivery request with the same external_delivery_id returns the existing delivery
+    rather than creating a second one; reusing the id with DIFFERENT data is rejected with a 409.
+    The 409 semantics are restated in the shared error reference ("system state doesn't allow
+    operation to proceed - most often caused by creating new delivery with duplicate ID"). There is
+    NO Idempotency-Key request header anywhere on the platform and no replay protection is
+    documented for any other write.
+  scope:
+  - CreateDelivery (POST /drive/v2/deliveries)
+  - DeliveryPost (POST /drive/v1/deliveries)
+  - CreateDelivery (POST /drive/v2/deliveries, Parcel)
+  - AcceptQuote (POST /drive/v2/quotes/{external_delivery_id}/accept)
+  - CreateQuote (POST /drive/v2/quotes)
+  coverage_note: >-
+    5 of the 94 write operations across the thirteen published specifications. Every Marketplace,
+    Item Management, Storefront, Ads and Reporting write - menu creation, inventory and price
+    updates, promotions, order adjustment, report generation - has no documented replay protection.
+    An agent retrying a timed-out POST /api/v2/items or POST dataexchange/v1/reports has no way to
+    know whether the first attempt landed.
+reversibility:
+  overall: verified
+  description: >-
+    The delivery surface has a real, documented reversal path with a stated boundary, which is the
+    single most important reversibility fact for an agent on this platform: a created delivery can
+    be cancelled, but only before a Dasher is assigned. After assignment the reversal changes shape
+    entirely - DoorDash creates a RETURN delivery rather than cancelling, and bills for it.
+  surfaces:
+  - write: CreateDelivery (POST /drive/v2/deliveries)
+    reversal: CancelDelivery
+    operation: PUT /drive/v2/deliveries/{external_delivery_id}/cancel
+    grade: verified
+    window: >-
+      Before a Dasher is assigned. Quoted from the contract: "Deliveries can't be cancelled after a
+      Dasher is assigned. For cold chain compliance use-cases, we create return deliveries instead
+      as items are already picked up."
+    window_source: openapi/_original/doordash-drive-openapi.yml (paths./drive/v2/deliveries/{external_delivery_id}/cancel.put.description)
+    failure_mode: >-
+      Cancelling an inactive or already-assigned delivery returns 409 per the shared error
+      reference ("trying to cancel delivery that isn't active").
+    cost: >-
+      A return-to-pickup delivery is billed at 60% of the original delivery fee.
+      (https://developer.doordash.com/en-US/docs/drive/overview/pricing_payment)
+  - write: DeliveryPost (POST /drive/v1/deliveries, Drive classic)
+    reversal: DeliveryCancelPut
+    operation: PUT /drive/v1/deliveries/{delivery_id}/cancel
+    grade: documented
+    window: null
+    note: The classic contract states no cancellation boundary.
+  - write: CreateDelivery (Drive/Parcel)
+    reversal: CreateRedelivery
+    operation: POST /drive/v2/deliveries/{external_delivery_id}/redelivery
+    grade: documented
+    window: null
+    note: >-
+      A redelivery is a forward correction rather than an undo - it re-attempts a failed delivery.
+      Recorded here because it is the documented remedy for an unrecoverable dropoff.
+  - write: any Drive delivery
+    reversal: ProcessRefund
+    operation: POST /drive/v2/deliveries/{external_delivery_id}/refunds
+    grade: documented
+    window: null
+    note: >-
+      "The API will determine whether the refund should be granted or rejected" - the caller cannot
+      predict the outcome and no eligibility window is published. The pricing page adds that
+      DoorDash Support may also issue refunds out of band against a per-business refund matrix.
+  - write: order acceptance (Marketplace)
+    reversal: cancelOrder
+    operation: PATCH /marketplace/api/v1/orders/{id}/cancellation
+    grade: documented
+    window: null
+  - write: order acceptance (Marketplace)
+    reversal: adjustOrderItems
+    operation: PATCH /marketplace/api/v1/orders/{id}/adjustment
+    grade: documented
+    window: null
+    note: Cancel/Adjust/Substitute Items on a live order.
+  - write: order acceptance (Marketplace, retail)
+    reversal: returnOrder
+    operation: POST /marketplace/api/v1/orders/{id}/return
+    grade: documented
+    window: null
+  irreversible:
+  - >-
+    Menu, item, inventory and promotion writes (createMenu, updateMenu, createItems,
+    updateStoreInventory, createStorePromotions and their v2 equivalents) have no reversal
+    operation. They are last-write-wins upserts against live merchant storefronts; the only way
+    back is another write carrying the previous state, which the caller must have kept.
+  - Reporting createReport has no cancellation; a requested report runs to completion.
+dry_run_mode:
+  available: partial
+  description: >-
+    There is no dry-run flag on any operation. The rehearsal surface is environmental instead: a
+    self-serve Sandbox where deliveries are created but never dispatched to a Dasher, plus a
+    Delivery Simulator in the Developer Portal that advances a test delivery through its states and
+    fires the matching webhooks. CreateQuote (POST /drive/v2/quotes) and the classic
+    DeliveryEstimate serve as a pre-commit price/serviceability check that creates no delivery, and
+    /drive/v2/serviceability answers the coverage question on its own.
+  see: sandbox/doordash-sandbox.yml
+pagination:
+  style: none-documented
+  description: >-
+    No cursor, page or offset parameter is documented on any collection endpoint, and no
+    next/previous link field appears in any response schema. The collection endpoints that exist
+    (List Businesses, List Stores) return a bare array. This is a real gap for an agent enumerating
+    a large merchant estate.
+field_expansion:
+  supported: false
+sparse_fieldsets:
+  supported: false
+metadata:
+  supported: partial
+  description: >-
+    No generic metadata bag. DoorDash instead threads caller-supplied external identifiers through
+    every resource - external_delivery_id, external_business_id, external_store_id,
+    merchant_supplied_id, store_location_id - which is how a partner correlates DoorDash objects
+    back to its own system of record.
+request_tracing:
+  request_id_header: null
+  correlation: external_delivery_id / merchant_supplied_id
+  description: >-
+    No X-Request-Id, X-Correlation-Id or trace header is documented on request or response. When a
+    partner needs DoorDash to look something up, the docs direct them to the Developer Portal Event
+    Log and to support with the external identifier.
+versioning:
+  style: url-path
+  see: lifecycle/doordash-lifecycle.yml
+error_envelope:
+  format: custom
+  rfc9457: false
+  fields:
+  - code
+  - message
+  - field_errors[]
+  see: errors/doordash-problem-types.yml
+rate_limit_signaling:
+  headers: []
+  documented_headers: false
+  status_on_exhaustion: 429
+  limit: ~300 requests per 60 seconds per access key
+  guidance: >-
+    "429 - Retry after at least 1 second; avoid bursts of requests." DoorDash publishes the number
+    in prose but returns no RateLimit-* or X-RateLimit-* headers and no Retry-After that is
+    documented, so a client cannot read its remaining budget at runtime - it can only count its own
+    calls.
+  see: rate-limits/doordash-rate-limits.yml
+retry_policy:
+  docs: https://developer.doordash.com/en-US/docs/drive/reference/retry_pattern
+  strategy: exponential backoff with jitter
+  attempts: 3
+  delay: 1s to 5s
+  retryable:
+  - 429 (after at least 1 second)
+  - 5xx
+  non_retryable:
+  - 4xx other than 429
+  - 422
+  cautions:
+  - Do not retry indefinitely.
+  - Do not perform an immediate retry more than once.
+  - Do not amplify retries by issuing them at multiple levels.
+webhook_conventions:
+  delivery_attempts: up to 3
+  success_signal: HTTP 200 OK
+  retry_trigger: any response other than 200 OK, or no response
+  payload: all available delivery details at time of sending; empty fields omitted
+  time_format: ISO-8601 UTC
+  endpoints_per_environment: 1
+  signature_verification: false
+  see: asyncapi/doordash-drive-webhooks-asyncapi.yml

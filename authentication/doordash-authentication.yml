@@ -1,19 +1,145 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/doordash-drive-classic-openapi.yml, openapi/doordash-drive-openapi.yml, openapi/doordash-item-management-openapi.yml,
-  openapi/doordash-marketplace-openapi.yml, openapi/doordash-reporting-openapi.yml
+generated: '2026-09-17'
+method: searched
+source: https://developer.doordash.com/en-US/docs/drive/reference/JWTs, https://developer.doordash.com/en-US/docs/drive/tutorials/get_started/, openapi/_original/
+provider: doordash
+description: >-
+  Every DoorDash developer API authenticates with a self-signed JSON Web Token presented as a
+  bearer token. There is no OAuth flow, no token endpoint and no refresh: the caller mints a
+  short-lived HS256 JWT locally from three credentials issued in the Developer Portal
+  (developer_id, key_id, signing_secret) and signs it with the base64-decoded secret. Sandbox and
+  production are separated by which access key is used, not by hostname. The Ads API and the legacy
+  Marketplace API are the exceptions - both declare a plain apiKey-in-Authorization scheme in their
+  own OpenAPI rather than the DoorDash JWT.
 summary:
   types:
   - http
+  - apiKey
+  primary: self-signed HS256 JWT presented as an Authorization bearer token
+  oauth2: false
+  openid_connect: false
+  mtls: false
+  scopes: false
+  note: >-
+    No OAuth 2.0 or OpenID Connect surface exists anywhere on the estate; the
+    /.well-known/oauth-authorization-server and /.well-known/openid-configuration probes returned
+    404 on openapi.doordash.com and on the docs host. OAuth appears only in the opposite direction -
+    DoorDash can authenticate ITSELF to a partner's webhook endpoint using Basic Auth or OAuth
+    credentials the partner configures in the Developer Portal.
 schemes:
-- name: bearerAuth
+- name: DoorDash JWT (bearer)
   type: http
   scheme: bearer
   bearerFormat: JWT
-  description: JWT token signed with your DoorDash developer credentials.
-  sources:
-  - openapi/doordash-drive-classic-openapi.yml
-  - openapi/doordash-drive-openapi.yml
-  - openapi/doordash-item-management-openapi.yml
-  - openapi/doordash-marketplace-openapi.yml
-  - openapi/doordash-reporting-openapi.yml
+  header: 'Authorization: Bearer [JWT]'
+  applies_to:
+  - Drive API
+  - Drive (classic) API
+  - Marketplace API
+  - Item Management API
+  - Reporting API
+  - Parcel API
+  - Drive Refunds API
+  - Drive Redelivery API
+  - Drive Dasher Feedback API
+  - Storefront API
+  docs: https://developer.doordash.com/en-US/docs/drive/reference/JWTs
+  credential_source: >-
+    Developer Portal > Credentials. An access key is a triple of developer_id, key_id and
+    signing_secret. Keys are scoped to an environment (Sandbox or Production).
+  token:
+    self_signed: true
+    algorithm: HS256
+    signing_key: the signing_secret, base64-decoded before use
+    header_claims:
+      alg: HS256
+      typ: JWT
+      dd-ver: DD-JWT-V1
+    payload_claims:
+    - name: aud
+      value: doordash
+      description: Audience. Always the literal string "doordash".
+    - name: iss
+      description: Issuer. The Developer ID (UUID).
+    - name: kid
+      description: Key ID (UUID) of the key used to sign the JWT.
+    - name: iat
+      description: Issued At, seconds from the epoch. Cannot be in the future.
+    - name: exp
+      description: >-
+        Expiration, seconds from the epoch. Maximum 30 minutes (1800 seconds) beyond iat. The
+        get-started tutorial signs tokens with exp = iat + 300.
+    max_lifetime_seconds: 1800
+  agent_note: >-
+    Because the token is minted locally and expires in at most 30 minutes, an agent must re-sign
+    per session rather than cache a long-lived credential, and a 401 is almost always an expired
+    token rather than a revoked key.
+- name: Ads API Key Authentication
+  type: apiKey
+  in: header
+  header_name: Authorization
+  scheme_hint: bearer
+  applies_to:
+  - DoorDash Ads API
+  source: openapi/_original/doordash-ads-openapi.yml
+  note: >-
+    Declared in the Ads OpenAPI as apiKey-in-header with the value carried as a bearer token. The
+    Ads API is a separate advertising product surface from the logistics APIs.
+- name: Drive API Key Authentication
+  type: apiKey
+  in: header
+  header_name: Authorization
+  applies_to:
+  - DoorDash Checkout API Interface
+  source: openapi/_original/doordash-external-checkout-openapi.yml
+- name: Authorization
+  type: apiKey
+  in: header
+  header_name: Authorization
+  applies_to:
+  - Marketplace (legacy) API
+  source: openapi/_original/doordash-marketplace-legacy-openapi.yml
+  note: Served from pointofsale.doordash.com; the legacy POS integration surface.
+- name: BearerAuth
+  type: http
+  scheme: bearer
+  applies_to:
+  - Storefront V1 API
+  source: openapi/_original/doordash-storefront-openapi.yml
+environments:
+- name: Sandbox
+  self_serve: true
+  separation: by access key, not by hostname
+  note: >-
+    Self-serve signup requires only name, phone number and email. Sandbox deliveries are simulated
+    and are never dispatched to a Dasher.
+- name: Production
+  self_serve: false
+  separation: by access key, not by hostname
+  note: >-
+    Production access to the Drive API is restricted and requires a certification review; DoorDash
+    states it cannot provide a timeline. Marketplace APIs are not generally available and require
+    an application from the Developer Portal Integrations tab.
+webhook_authentication:
+  direction: DoorDash -> partner
+  docs: https://developer.doordash.com/en-US/docs/drive/how_to/webhooks
+  requirements:
+  - The receiving endpoint must be HTTPS.
+  - One endpoint per environment (Sandbox and Production each support exactly one).
+  methods:
+  - name: Basic Auth
+    description: The partner supplies the exact contents DoorDash should send in the Authorization header.
+  - name: OAuth
+    description: >-
+      The partner supplies a client ID, client secret, a token URL DoorDash requests a token from,
+      and an optional scope.
+  signature_verification: false
+  note: >-
+    DoorDash does NOT sign webhook payloads with a shared secret or an HMAC header. Authenticity is
+    established by the partner requiring credentials on its own endpoint, which means a partner who
+    leaves the endpoint open has no cryptographic way to verify a payload came from DoorDash.
+gaps:
+- >-
+  Nine of the thirteen published OpenAPI documents declare no securitySchemes at all - the JWT
+  requirement lives only in prose on the docs site, so a client generated from the Drive,
+  Marketplace, Item Management, Reporting or Parcel spec alone would emit unauthenticated requests.
+- No published key-rotation policy, no token revocation endpoint, and no documented scope surface.

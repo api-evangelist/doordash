@@ -1,0 +1,3419 @@
+openapi: 3.0.0
+info:
+  title: Storefront V1 API Specification
+  version: 1.0.0
+  contact:
+    name: Storefront API Support
+    email: storefront-api-support@doordash.com
+servers:
+  - url: https://openapi.doordash.com
+    variables: {}
+security:
+  - BearerAuth: []
+tags:
+  - name: Business & Store
+    description: Endpoints for retrieving business & store information
+  - name: Search
+    description: Endpoints for store searches
+  - name: Address
+    description: Endpoints for address related information
+  - name: Loyalty
+    description: Endpoints for loyalty related resources
+  - name: JWT
+    description: Endpoints for JWT resources
+  - name: Order
+    description: Endpoints for order resources
+  - name: App
+    description: Endpoints for mobile app related information
+paths:
+  /storefront/api/v1/addresses/autocomplete:
+    get:
+      tags:
+        - Address
+      summary: Get address suggestions for an input string
+      description: >-
+        Retrieve a list of address suggestions based on the user input and
+        optional geographic bounds.
+      operationId: GetAutocompleteSuggestionsForAddressInput
+      parameters:
+        - $ref: '#/components/parameters/IntegrationId'
+        - $ref: '#/components/parameters/IntegrationType'
+        - name: input
+          in: query
+          schema:
+            type: string
+          required: true
+        - name: lat
+          in: query
+          description: latitude
+          schema:
+            $ref: '#/components/schemas/Latitude'
+        - name: lon
+          in: query
+          description: longitude
+          schema:
+            $ref: '#/components/schemas/Longitude'
+        - $ref: '#/components/parameters/CountryCode'
+        - name: search_radius
+          in: query
+          description: >-
+            Define the distance in meters within which to return results.
+            Results outside of the defined area may still be displayed.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100000
+        - $ref: '#/components/parameters/Language'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutocompleteSuggestionsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      deprecated: false
+  /storefront/api/v1/addresses/details:
+    get:
+      tags:
+        - Address
+      summary: Get address details with an id
+      description: Request more details about an address given an id
+      operationId: GetAddressDetailsById
+      parameters:
+        - $ref: '#/components/parameters/IntegrationId'
+        - $ref: '#/components/parameters/IntegrationType'
+        - name: source_place_id
+          in: query
+          schema:
+            type: string
+          required: true
+        - $ref: '#/components/parameters/CountryCode'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressDetailsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      deprecated: false
+  /storefront/api/v1/addresses/reverse_geocode:
+    get:
+      tags:
+        - Address
+      summary: Get list of addresses with latitude and longitude
+      description: Find addresses closest to a location on the map
+      operationId: GetAddressesByGeocode
+      parameters:
+        - $ref: '#/components/parameters/IntegrationId'
+        - $ref: '#/components/parameters/IntegrationType'
+        - $ref: '#/components/parameters/Latitude'
+        - $ref: '#/components/parameters/Longitude'
+        - $ref: '#/components/parameters/Language'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReverseGeocodeResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      deprecated: false
+  /storefront/api/v1/addresses/create:
+    post:
+      tags:
+        - Address
+      summary: Get or create address details with a full qualified address string.
+      description: >-
+        Get or create address details based on a formatted_address,  e.g. "1234
+        Main St., Sacramento, CA 95814"
+      operationId: GetOrCreateAddress
+      requestBody:
+        description: >-
+          request body which should contain formatted address, integration id
+          and type.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetOrCreateAddressRequest'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressDetailsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      deprecated: false
+  /storefront/api/v1/businesses/{business_id}/stores:
+    get:
+      tags:
+        - Business & Store
+      summary: Get stores by business
+      description: >-
+        Retrieve a list of stores that are currently active on storefront and
+        owned by a business. Search results will be sorted by store id.
+      operationId: ListStoresByBusinessId
+      parameters:
+        - $ref: '#/components/parameters/BusinessId'
+        - $ref: '#/components/parameters/PaginationToken'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/ShouldSendStoreDetails'
+      responses:
+        '200':
+          description: Ok
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoresResponse'
+        '400':
+          description: Request Validation Failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      deprecated: false
+  /storefront/api/v1/business_groups/{business_group_id}/stores:
+    get:
+      tags:
+        - Business & Store
+      summary: Get stores by business group
+      description: >-
+        Retrieve a list of stores that are currently active on storefront and
+        owned by a business group. Search results will be sorted by store id.
+      operationId: ListStoresByBusinessGroupId
+      parameters:
+        - $ref: '#/components/parameters/BusinessGroupId'
+        - $ref: '#/components/parameters/PaginationToken'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/ShouldSendStoreDetails'
+      responses:
+        '200':
+          description: Ok
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoresResponse'
+        '400':
+          description: Request Validation Failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessGroupResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      deprecated: false
+  /storefront/api/v1/businesses/{business_id}/stores/nearby_search:
+    get:
+      tags:
+        - Search
+      summary: Search nearby stores by business
+      description: >-
+        Search for stores that are currently active on storefront and within a
+        specified area given business id and location. Search results can be
+        refined by providing additional keywords and the result will be sorted
+        by distance.
+      operationId: NearbyStoresByBusinessId
+      parameters:
+        - $ref: '#/components/parameters/BusinessId'
+        - $ref: '#/components/parameters/Latitude'
+        - $ref: '#/components/parameters/Longitude'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/OpenAt'
+        - $ref: '#/components/parameters/IsPickup'
+        - $ref: '#/components/parameters/SearchRadius'
+        - $ref: '#/components/parameters/ShouldSendStoreDetails'
+      responses:
+        '200':
+          description: Ok
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NearByStoresResponse'
+        '400':
+          description: Request Validation Failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      deprecated: false
+  /storefront/api/v1/business_groups/{business_group_id}/stores/nearby_search:
+    get:
+      tags:
+        - Search
+      summary: Search nearby stores by business group
+      description: >-
+        Search for stores that are currently active on storefront and within a
+        specified area given business group id and location. Search results can
+        be refined by providing additional keywords and the result will be
+        sorted by distance.
+      operationId: NearbyStoresByBusinessGroupId
+      parameters:
+        - $ref: '#/components/parameters/BusinessGroupId'
+        - $ref: '#/components/parameters/Latitude'
+        - $ref: '#/components/parameters/Longitude'
+        - $ref: '#/components/parameters/Limit'
+        - $ref: '#/components/parameters/OpenAt'
+        - $ref: '#/components/parameters/IsPickup'
+        - $ref: '#/components/parameters/SearchRadius'
+        - $ref: '#/components/parameters/ShouldSendStoreDetails'
+      responses:
+        '200':
+          description: Ok
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NearByStoresResponse'
+        '400':
+          description: Request Validation Failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessGroupResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      deprecated: false
+  /storefront/api/v1/stores/{store_id}:
+    get:
+      tags:
+        - Business & Store
+      summary: Get store details
+      description: Request more details about a single store given store id
+      operationId: GetStoreDetailsById
+      parameters:
+        - $ref: '#/components/parameters/StoreId'
+      responses:
+        '200':
+          description: Ok
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreDetails'
+        '400':
+          description: Request Validation Failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      deprecated: false
+  /storefront/api/v1/stores/{store_id}/item:
+    post:
+      tags:
+        - Menu Item
+      summary: Get store menu item.
+      description: Get store menu item
+      operationId: GetStoreMenuItem
+      parameters:
+        - $ref: '#/components/parameters/StoreId'
+      requestBody:
+        description: request body which should contain item id
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetStoreMenuItemRequest'
+      responses:
+        '200':
+          description: Ok
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      deprecated: false
+  /storefront/api/v1/stores/{store_id}/v2/menu:
+    post:
+      tags:
+        - Menu V2
+      summary: Get store menu v2.
+      description: Get store menu v2
+      operationId: GetStoreMenuV2
+      parameters:
+        - $ref: '#/components/parameters/StoreId'
+      requestBody:
+        description: request body which should contain store id
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetStoreMenuV2Request'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStoreMenuV2Response'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      deprecated: false
+  /storefront/api/v1/stores/{store_id}/menus:
+    get:
+      tags:
+        - Business & Store
+      summary: Get store menus by store id
+      operationId: getMenu
+      parameters:
+        - $ref: '#/components/parameters/StoreId'
+      responses:
+        '200':
+          description: Successfully retrieved menu details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStoreMenusResponse'
+        '400':
+          description: Request Validation Failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreMenuResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+  /storefront/api/v1/stores/{store_id}/menus/all:
+    get:
+      tags:
+        - Business & Store
+      summary: Get all active store menus by store id
+      operationId: getMenuAll
+      parameters:
+        - $ref: '#/components/parameters/StoreId'
+      responses:
+        '200':
+          description: Successfully retrieved menu details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAllStoreMenusResponse'
+        '400':
+          description: Request Validation Failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreMenuResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+  /storefront/api/v1/orders/order_session:
+    post:
+      tags:
+        - Order
+      summary: Create storefront order session from external cart.
+      operationId: CreateStorefrontOrderSessionFromExternalCartId
+      requestBody:
+        description: >-
+          request body which should contain menu ids, menu item ids and other
+          relevant details needed in external cart.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StorefrontOrderSessionRequest'
+      responses:
+        '200':
+          description: Successfully created order session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorefrontOrderSessionResponse'
+        '400':
+          description: Request Validation Failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreMenuResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+  /storefront/api/v1/orders/order_session_to_cart:
+    post:
+      tags:
+        - Order
+      summary: Create cart from order session.
+      operationId: CreateCartFromOrderSession
+      requestBody:
+        description: >-
+          Internal use only. request body which should contain all the relevant
+          details needed to create cart from order session.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StorefrontCreateCartFromOrderSessionRequest'
+      responses:
+        '200':
+          description: Successfully created order session
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/StorefrontCreateCartFromOrderSessionResponse
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '422':
+          description: Request Entity Too Large
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/orders/order_history:
+    post:
+      tags:
+        - Order
+      summary: Get order history of a consumer
+      operationId: getOrderHistory
+      requestBody:
+        description: request body which should contain user's identification details.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyUserSessionRequest'
+      responses:
+        '200':
+          description: Successfully retrieved order history
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStorefrontOrderHistoryResponse'
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '422':
+          description: Request Entity Too Large
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/orders/order_status:
+    post:
+      tags:
+        - Order
+      summary: Get order status given a order id
+      operationId: getOrderStatus
+      requestBody:
+        description: request body which should integration id, type and order id.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetStorefrontOrderStatusRequest'
+      responses:
+        '200':
+          description: Successfully retrieved order status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStorefrontOrderStatusResponse'
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '422':
+          description: Request Entity Too Large
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/jwt:
+    post:
+      tags:
+        - JWT
+      summary: >-
+        Create JWT for the integration_id which could be business, business
+        group or store id
+      description: Create JWT for a onboarded integration id.
+      operationId: CreateJWTForIntegrationId
+      requestBody:
+        description: request body which should contain integration_id.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StorefrontCreateJWTRequest'
+      responses:
+        '200':
+          description: Ok
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StorefrontCreateJWTResponse'
+        '400':
+          description: Request Validation Failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      deprecated: false
+  /storefront/api/v1/loyalty/get_balance:
+    get:
+      deprecated: true
+      tags:
+        - Loyalty
+      summary: Get loyalty account balance of the user
+      operationId: getAccountBalance
+      parameters:
+        - $ref: '#/components/parameters/ExternalUserId'
+        - $ref: '#/components/parameters/Provider'
+        - $ref: '#/components/parameters/ProviderEnvironment'
+        - $ref: '#/components/parameters/IntegrationId'
+        - $ref: '#/components/parameters/ProviderReferenceId'
+      responses:
+        '200':
+          description: Successfully retrieved order history
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/GetStorefrontLoyaltyAccountBalanceResponse
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '422':
+          description: Request Entity Too Large
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/loyalty/profile:
+    post:
+      tags:
+        - Loyalty
+      summary: Get loyalty member profile of the user
+      operationId: getMemberProfile
+      requestBody:
+        description: request body which should contain user's identification details.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyMemberProfileRequest'
+      responses:
+        '200':
+          description: >-
+            Successfully retrieved member profile information with the loyalty
+            provider
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoyaltyMemberProfileResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/loyalty/revoke_session:
+    post:
+      tags:
+        - Loyalty
+      summary: Revoke a user's session with the loyalty provider
+      operationId: revokeUserSession
+      requestBody:
+        description: request body which should contain user's identification details.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyUserSessionRequest'
+      responses:
+        '200':
+          description: Successfully revoked user session with the loyalty provider
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/loyalty/delete_account:
+    post:
+      tags:
+        - Loyalty
+      summary: Delete a user's account.
+      operationId: deleteUserAccount
+      requestBody:
+        description: request body which should contain user's identification details.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyUserSessionRequest'
+      responses:
+        '200':
+          description: Successfully deleted account.
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/loyalty/session:
+    post:
+      tags:
+        - Loyalty
+      summary: Retrieve a user's session info with the loyalty provider
+      operationId: getUserSession
+      requestBody:
+        description: request body which should contain user's identification details.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyUserSessionRequest'
+      responses:
+        '200':
+          description: Successfully retrieved user session info with the loyalty provider
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoyaltyUserSessionResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/loyalty/qr_code:
+    post:
+      tags:
+        - Loyalty
+      summary: Get QR code for user loyalty account.
+      operationId: GenerateStorefrontUserQrCode
+      requestBody:
+        description: request body which should contain user's identification details.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateStorefrontUserQrCodeRequest'
+      responses:
+        '200':
+          description: >-
+            Successfully retrieved member profile information with the loyalty
+            provider
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerateStorefrontUserQrCodeResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/loyalty/get_user_rewards:
+    post:
+      tags:
+        - Loyalty
+      summary: Retrieve user loyalty rewards.
+      operationId: LoyaltyRetrieveRewards
+      requestBody:
+        description: request body which should contain user's identification details.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyRetrieveRewardsRequest'
+      responses:
+        '200':
+          description: Successfully retrieved rewards
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/loyalty/store/check_in:
+    post:
+      tags:
+        - Loyalty
+      summary: Check a user in to earn loyalty points for visiting a store location.
+      operationId: LoyaltyCheckIn
+      requestBody:
+        description: request body which should contain user's identification details.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyCheckInRequest'
+      responses:
+        '200':
+          description: Successfully checked in to store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoyaltyCheckInResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/loyalty/store/redeem:
+    post:
+      tags:
+        - Loyalty
+      summary: Redeem a customer's loyalty reward in store.
+      operationId: LoyaltyRedeemReward
+      requestBody:
+        description: request body which should contain user's identification details.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyRedeemRewardRequest'
+      responses:
+        '200':
+          description: Successfully redeemed reward
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoyaltyRedeemRewardResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/app/get_minimum_version:
+    get:
+      tags:
+        - App
+      summary: Get minimum application version required for the mobile apps to operate
+      operationId: getMinimumApplicationVersion
+      parameters:
+        - $ref: '#/components/parameters/AppPlatform'
+        - $ref: '#/components/parameters/OptionalIntegrationId'
+      responses:
+        '200':
+          description: >-
+            Successfully retrieved minimum version required for the app to work
+            correctly.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/GetStorefrontMinimumApplicationVersionResponse
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '422':
+          description: Request Entity Too Large
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/app/metadata:
+    get:
+      tags:
+        - App
+      summary: Get app metadata for the mobile apps to operate
+      operationId: getAppMetadata
+      parameters:
+        - $ref: '#/components/parameters/IntegrationId'
+        - $ref: '#/components/parameters/IntegrationType'
+      responses:
+        '200':
+          description: Successfully retrieved metadata for the app.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStorefrontAppMetadataResponse'
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '422':
+          description: Request Entity Too Large
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+components:
+  parameters:
+    Language:
+      name: language
+      in: query
+      description: ISO 639-1 language code
+      schema:
+        $ref: '#/components/schemas/Language'
+    CountryCode:
+      name: country_code
+      in: query
+      description: ISO 3166-1 alpha-2 country code
+      schema:
+        $ref: '#/components/schemas/CountryCode'
+    ProviderReferenceId:
+      name: provider_reference_id
+      in: query
+      description: >-
+        merchant id or any other id which loyalty provider uses to uniquely
+        identify the business/merchant.
+      required: true
+      schema:
+        $ref: '#/components/schemas/ProviderReferenceId'
+    Code:
+      name: code
+      in: query
+      description: code to get user's information on their behalf
+      required: true
+      schema:
+        $ref: '#/components/schemas/Code'
+    ProviderEnvironment:
+      name: provider_environment
+      in: query
+      description: which environment of the loyalty provider needs to be used.
+      required: true
+      schema:
+        $ref: '#/components/schemas/ProviderEnvironment'
+    AppPlatform:
+      name: app_platform
+      in: query
+      description: operating system like android or ios.
+      required: true
+      schema:
+        $ref: '#/components/schemas/AppPlatform'
+    Provider:
+      name: provider
+      in: query
+      description: loyalty provider of the user
+      required: true
+      schema:
+        $ref: '#/components/schemas/Provider'
+    ExternalUserId:
+      name: external_user_id
+      in: query
+      description: External User id, user identifier of the external loyalty provider
+      required: true
+      schema:
+        $ref: '#/components/schemas/ExternalUserId'
+    IntegrationId:
+      name: integration_id
+      in: query
+      description: business id, business group id or store id
+      required: true
+      schema:
+        $ref: '#/components/schemas/IntegrationId'
+    OptionalIntegrationId:
+      name: integration_id
+      in: query
+      description: business id, business group id or store id
+      schema:
+        $ref: '#/components/schemas/IntegrationId'
+    IntegrationType:
+      name: integration_type
+      in: query
+      description: business id, business group id or store id
+      schema:
+        $ref: '#/components/schemas/IntegrationType'
+    ConsumerId:
+      name: consumer_id
+      in: query
+      description: Consumer id
+      required: true
+      schema:
+        $ref: '#/components/schemas/ConsumerId'
+    StoreId:
+      name: store_id
+      in: path
+      description: Store id
+      required: true
+      schema:
+        $ref: '#/components/schemas/StoreId'
+    BusinessId:
+      name: business_id
+      in: path
+      description: Business id used for filtering stores
+      required: true
+      schema:
+        $ref: '#/components/schemas/BusinessId'
+    BusinessGroupId:
+      name: business_group_id
+      in: path
+      description: Business group id used for filtering stores
+      required: true
+      schema:
+        $ref: '#/components/schemas/BusinessGroupId'
+    Latitude:
+      name: lat
+      in: query
+      description: latitude
+      required: true
+      schema:
+        $ref: '#/components/schemas/Latitude'
+    Longitude:
+      name: lon
+      in: query
+      description: longitude
+      required: true
+      schema:
+        $ref: '#/components/schemas/Longitude'
+    PaginationToken:
+      name: pagination_token
+      in: query
+      description: The pagination token to retrieve the previous/next page of results.
+      schema:
+        $ref: '#/components/schemas/PaginationToken'
+    NextToken:
+      name: next_token
+      in: query
+      description: The pagination token to retrieve the next page of results.
+      schema:
+        $ref: '#/components/schemas/PaginationToken'
+    Limit:
+      name: limit
+      in: query
+      description: >-
+        Specify the maximum number of items that may be returned for a single
+        request.
+      schema:
+        $ref: '#/components/schemas/Limit'
+    OpenAt:
+      name: open_at
+      in: query
+      description: >-
+        If specified, only stores that are open for business at the specified
+        time are returned. Possible values is future UTC timestamp in ISO-8601
+        format within seven days from current time.
+      schema:
+        $ref: '#/components/schemas/OpenAt'
+    IsPickup:
+      name: is_pickup
+      in: query
+      description: >-
+        If true, return stores based on store pick up radius. Otherwise, return
+        stores based on delivery radius. The default value is true.
+      schema:
+        $ref: '#/components/schemas/IsPickup'
+    ShouldSendStoreDetails:
+      name: should_send_store_details
+      in: query
+      description: >-
+        If true, return stores details for each store in the list. The default
+        value is false.
+      schema:
+        $ref: '#/components/schemas/ShouldSendStoreDetails'
+    SearchRadius:
+      name: search_radius
+      in: query
+      description: >-
+        Define the distance in meters within which to return store results. The
+        default value is 1000. Search radius is only applicable to pick ups.
+      schema:
+        $ref: '#/components/schemas/StoreRadius'
+  schemas:
+    Language:
+      type: string
+      pattern: ^[a-z]{2}$
+      description: Language code in ISO 639-1 format
+      example: en
+    CountryCode:
+      type: string
+      pattern: ^[A-Z]{2}$
+      description: Country code in ISO 3166-1 alpha-2 format
+      example: US
+    OrderStatus:
+      type: string
+      enum:
+        - unspecified
+        - order_placed
+        - delivery_created
+        - order_completed
+        - order_cancelled
+        - store_confirmed_order
+        - store_confirmed_ready_for_pickup
+        - dasher_confirmed_assignment
+        - dasher_arriving_at_store
+        - dasher_confirmed_at_store
+        - dasher_arriving_at_consumer
+        - dasher_confirmed_at_consumer
+        - order_picked_up
+      example: order_placed
+    CreatedAt:
+      type: string
+      pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(.[0-9]{3,})?Z$
+      description: UTC Timestamp in ISO-8601 format
+      example: 2018-08-22T17:20:28Z or 2018-08-22T17:20:28.123Z
+    UpdatedAt:
+      type: string
+      pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(.[0-9]{3,})?Z$
+      description: UTC Timestamp in ISO-8601 format
+      example: 2018-08-22T17:20:28Z or 2018-08-22T17:20:28.123Z
+    ProviderReferenceId:
+      type: string
+      pattern: ^([a-zA-Z1-9][:_a-zA-Z0-9]*)$
+      description: Unique ID for a external user.
+      example: '123:12'
+    Code:
+      type: string
+      description: >-
+        code which the user has received from the provider to get their
+        information.
+      example: wewe023kwewo0
+    ProviderEnvironment:
+      type: string
+      enum:
+        - prod
+        - staging
+      example: staging
+      description: which provider environment user has logged in to.
+    SessionId:
+      type: string
+      description: id of the application session
+    CartId:
+      type: string
+      description: id of the cart.
+    GetLoyaltyInfo:
+      type: boolean
+      description: if true, return loyalty account information for the user.
+      default: false
+    AppPlatform:
+      type: string
+      enum:
+        - android
+        - ios
+      example: android
+      description: operating system of the application.
+    Provider:
+      type: string
+      enum:
+        - paytronix
+        - spendgo
+      example: spendgo
+      description: which provider the user has logged in to
+    ExternalUserId:
+      type: string
+      pattern: ^([a-zA-Z1-9][a-zA-Z0-9]*)$
+      description: Unique ID for a external user.
+      example: asAZ123
+    ConsumerId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for a doordash consumer.
+      example: '123'
+    QRCodeEnabled:
+      type: boolean
+      description: if true, return then the mx is enabled show qr code option.
+      default: false
+    QRCode:
+      type: string
+      description: base 64 encoded QR code for user's account.
+    Width:
+      type: integer
+      description: expected width of the qr code
+      example: 300
+      default: 256
+      minimum: 1
+      maximum: 1024
+    Height:
+      type: integer
+      description: expected height of the qr code
+      example: 300
+      default: 256
+      minimum: 1
+      maximum: 1024
+    IntegrationId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the business, business group or store.
+      example: '987654'
+    IntegrationType:
+      type: string
+      enum:
+        - BUSINESS
+        - BUSINESS_GROUP
+        - STORE
+      example: store
+      default: business
+      description: Type of the integration id
+    SupportedAccountType:
+      type: string
+      enum:
+        - SF_ACCOUNT
+        - SF_ACCOUNT_LOYALTY
+        - EXTERNAL_ACCOUNT
+      example: SF_ACCOUNT
+      description: what kind of account it is for logged in user.
+    GenerateStorefrontUserQrCodeRequest:
+      type: object
+      properties:
+        session:
+          $ref: '#/components/schemas/LoyaltyUserSessionRequest'
+        store_id:
+          $ref: '#/components/schemas/StoreId'
+        width:
+          $ref: '#/components/schemas/Width'
+        height:
+          $ref: '#/components/schemas/Height'
+      required:
+        - session
+        - store_id
+    GenerateStorefrontUserQrCodeResponse:
+      type: object
+      properties:
+        qr_code:
+          $ref: '#/components/schemas/QRCode'
+      required:
+        - qr_code
+    LoyaltyRetrieveRewardsRequest:
+      type: object
+      properties:
+        integration_id:
+          $ref: '#/components/schemas/IntegrationId'
+        integration_type:
+          $ref: '#/components/schemas/IntegrationType'
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        store_id:
+          $ref: '#/components/schemas/StoreId'
+      required:
+        - session_id
+        - store_id
+        - integration_id
+        - integration_type
+    LoyaltyCheckInRequest:
+      type: object
+      properties:
+        session:
+          $ref: '#/components/schemas/LoyaltyUserSessionRequest'
+        store_id:
+          $ref: '#/components/schemas/StoreId'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+      required:
+        - session
+        - store_id
+    LoyaltyCheckInResponse:
+      type: object
+      properties:
+        earned_reward:
+          $ref: '#/components/schemas/Reward'
+    LoyaltyRedeemRewardRequest:
+      type: object
+      properties:
+        session:
+          $ref: '#/components/schemas/LoyaltyUserSessionRequest'
+        promotion_id:
+          type: string
+          description: Unique identifier for the reward
+          example: 2d3eddf8-2723-434d-81d5-920eac66a61c
+      required:
+        - session
+        - promotion_id
+    LoyaltyRedeemRewardResponse:
+      type: object
+      properties:
+        applied_redemption:
+          type: array
+          items:
+            $ref: '#/components/schemas/Redemption'
+        rejected_redemption:
+          type: array
+          items:
+            $ref: '#/components/schemas/Redemption'
+    LoyaltyUserSessionRequest:
+      type: object
+      properties:
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        integration_id:
+          $ref: '#/components/schemas/IntegrationId'
+        integration_type:
+          $ref: '#/components/schemas/IntegrationType'
+      required:
+        - session_id
+        - integration_id
+        - integration_type
+    LoyaltyMemberProfileRequest:
+      type: object
+      properties:
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        integration_id:
+          $ref: '#/components/schemas/IntegrationId'
+        integration_type:
+          $ref: '#/components/schemas/IntegrationType'
+        get_loyalty_info:
+          $ref: '#/components/schemas/GetLoyaltyInfo'
+      required:
+        - session_id
+        - integration_id
+        - integration_type
+    LoyaltyMemberProfileResponse:
+      type: object
+      title: LoyaltyMemberProfileResponse
+      description: Loyalty member profile
+      required:
+        - profile
+      properties:
+        profile:
+          $ref: '#/components/schemas/LoyaltyMemberProfile'
+    LoyaltyMemberProfile:
+      type: object
+      properties:
+        external_user_id:
+          type: string
+          description: Member id with the loyalty provider
+          example: '123'
+        first_name:
+          type: string
+          description: First name
+          example: John
+        last_name:
+          type: string
+          description: Last name
+          example: Doe
+        email:
+          type: string
+          description: Email
+          example: john.doe@email.com
+        phone_number:
+          type: string
+          description: Phone number
+          example: '1234567890'
+        loyalty_points:
+          type: integer
+          description: Balance of loyalty points
+          example: 100
+        loyalty_tier:
+          type: string
+          description: Loyalty tier
+          example: Gold
+        in_store_rewards:
+          $ref: '#/components/schemas/InStoreRewards'
+    InStoreRewards:
+      type: object
+      properties:
+        rewards_progress:
+          $ref: '#/components/schemas/RewardsProgress'
+        available_rewards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rewards'
+        unavailable_rewards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reward'
+        activated_rewards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reward'
+        past_rewards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reward'
+        card_linking_payment_methods:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardLinkingPaymentMethod'
+    RewardsProgress:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title describing rewards progress
+          example: 2 orders away from your next reward
+        subtitle:
+          type: string
+          description: Optional subtitle describing rewards progress
+          example: Earn $5 for every 5 orders
+        current_points:
+          type: integer
+          description: Balance of loyalty points
+          example: 5
+        target_points:
+          type: integer
+          description: Loyalty points needed to earn the next reward
+          example: 10
+    Reward:
+      type: object
+      properties:
+        reward_id:
+          type: string
+          description: Unique identifier for the reward
+          example: 2d3eddf8-2723-434d-81d5-920eac66a61c
+        name:
+          type: string
+          description: User facing description of the reward
+          example: $5 off your order
+        description:
+          type: string
+          description: Used to provide any additional description about the reward
+          example: No minimum spend
+        redemption:
+          $ref: '#/components/schemas/Redemption'
+    Rewards:
+      type: array
+      items:
+        $ref: '#/components/schemas/Redemption'
+    Redemption:
+      type: object
+      properties:
+        reward_id:
+          type: string
+          description: Unique identifier for the reward
+          example: 2d3eddf8-2723-434d-81d5-920eac66a61c
+        redeemed:
+          type: boolean
+          description: Whether or not the redemption has taken place
+          example: true
+        message:
+          type: string
+          description: A message to show the user describing the redemption
+          example: $5 reward
+        description:
+          type: string
+          description: A confirmation message to show the user when redeeming a reward
+          example: You have two hours to redeem your reward in-store before it expires.
+        redemption_time:
+          type: string
+          pattern: >-
+            ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(.[0-9]{3,})?Z$
+          description: UTC Timestamp in ISO-8601 format
+          example: '2018-08-22T17:20:28Z'
+        expiration_time:
+          type: string
+          pattern: >-
+            ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(.[0-9]{3,})?Z$
+          description: UTC Timestamp in ISO-8601 format
+          example: '2018-08-22T17:20:28Z'
+    CardLinkingPaymentMethod:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the payment method
+          example: 2d3eddf8-2723-434d-81d5-920eac66a61c
+        last4:
+          type: string
+          description: Last 4 digits of the payment method
+          example: '1234'
+        brand:
+          type: string
+          description: Card brand
+          example: Visa
+        exp_month:
+          type: string
+          description: Expiration month for the payment method
+          example: '2'
+        exp_year:
+          type: string
+          description: Expiration year for the payment method
+          example: '2030'
+        link_state:
+          $ref: '#/components/schemas/LinkState'
+    LinkState:
+      type: object
+      properties:
+        linked:
+          type: boolean
+          description: Whether or not the payment method has been card linked
+          example: true
+        error:
+          type: string
+          description: Error message when linking or unlinking a payment method fails
+          example: We were unable to link your payment method. Please try again.
+    LoyaltyUserSessionResponse:
+      type: object
+      title: LoyaltyUserSessionResponse
+      description: Loyalty user session info
+      required:
+        - session
+      properties:
+        session:
+          $ref: '#/components/schemas/LoyaltyUserSession'
+    LoyaltyUserSession:
+      type: object
+      properties:
+        is_session_active:
+          type: boolean
+          description: Whether user session is active or not
+          example: true
+        external_user_id:
+          type: string
+          description: Member id with the external loyalty provider
+          example: '123'
+        consumer_id:
+          type: string
+          description: Consumer id with Storefront
+          example: '321'
+    StoreId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the store.
+      example: '123'
+    BusinessId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the business.
+      example: '123'
+    BusinessGroupId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the business.
+      example: '123'
+    Latitude:
+      type: string
+      pattern: >-
+        ^(\+|-)?(?:90(?:(?:\.0{1,7})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,7})?))$
+      example: -32.1234537
+    Longitude:
+      type: string
+      pattern: >-
+        ^(\+|-)?(?:180(?:(?:\.0{1,7})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,7})?))$
+      example: -156.1234538
+    PaginationToken:
+      type: string
+      description: Resource results starting point
+      example: pre1111
+    Limit:
+      type: integer
+      pattern: ^(0|[1-9][0-9]*)$
+      description: Resource results size limit
+      default: 10
+      minimum: 1
+      maximum: 200
+    OpenAt:
+      type: string
+      pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(.[0-9]{3,})?Z$
+      description: UTC Timestamp in ISO-8601 format, or string "now"
+      example: 2018-08-22T17:20:28Z or 2018-08-22T17:20:28.123Z
+    IsPickup:
+      type: boolean
+      default: true
+    ShouldSendStoreDetails:
+      type: boolean
+      default: false
+    ShouldDeleteExistingCarts:
+      type: boolean
+      default: true
+    StoreRadius:
+      type: integer
+      default: 1000
+      minimum: 1
+      maximum: 100000
+    StoresResponse:
+      type: object
+      title: BusinessStoresResponse
+      description: List of stores with basic information.
+      required:
+        - stores
+      properties:
+        stores:
+          type: array
+          items:
+            $ref: '#/components/schemas/BasicStoreInfo'
+        prev_token:
+          type: string
+          description: >-
+            Indicate the starting point to the previous page within the
+            collection of resource results
+          example: '239843'
+        next_token:
+          type: string
+          description: >-
+            Indicate the starting point to the next page within the collection
+            of resource results
+          example: '239886'
+    BasicStoreInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Store name
+          example: test
+        id:
+          type: string
+          description: Store id
+          example: '123'
+        address:
+          type: string
+          description: Store address
+          example: 123 Street Apt123, 98101
+        status:
+          type: object
+          description: Store activation status
+          properties:
+            storefront:
+              $ref: '#/components/schemas/StoreStatus'
+        store_properties:
+          type: object
+          description: Store properties indicating available services
+          properties:
+            curbside:
+              type: boolean
+              description: Whether the store offers curbside pickup
+              example: true
+              default: false
+            drivethru:
+              type: boolean
+              description: Whether the store has a drive-thru
+              example: false
+              default: false
+    NearByStoresResponse:
+      type: object
+      title: BusinessStoresResponse
+      description: List of stores with basic information.
+      required:
+        - stores
+      properties:
+        stores:
+          type: array
+          items:
+            $ref: '#/components/schemas/NearbyStoreInfo'
+    NearbyStoreInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Store name
+          example: test
+        id:
+          type: string
+          description: Store id
+          example: '123'
+        address:
+          type: string
+          description: Store address
+          example: 123 Street Apt123, 98101
+        distance:
+          type: number
+          format: double
+          description: Distance from store to given location in miles
+          example: 1.2
+        average_eta:
+          type: number
+          format: integer
+          description: >-
+            Average store ETA based on the requested fulfillment type, whether
+            it's pick up or delivery. Value in minutes.
+          example: 35
+        store_details:
+          $ref: '#/components/schemas/StoreDetails'
+    StoreDetails:
+      type: object
+      title: StoreDetails
+      description: Store details
+      properties:
+        id:
+          type: string
+          description: Store id
+          example: '123'
+        name:
+          type: string
+          description: Store name
+          example: Example Store
+        address:
+          type: string
+          description: Store address
+          example: 123 Street Apt123, WA
+        phone_number:
+          type: string
+          description: Store phone number
+          example: '1233333456'
+        time_zone:
+          type: string
+          description: Store time zone
+          example: US/New York
+        status:
+          type: object
+          description: Store activation status
+          properties:
+            storefront:
+              $ref: '#/components/schemas/StoreStatus'
+        store_hours:
+          type: object
+          description: Store hours
+          properties:
+            storefront:
+              $ref: '#/components/schemas/StorefrontStoreHours'
+        store_special_hours:
+          type: object
+          description: Special service hours for a specific day
+          properties:
+            storefront:
+              $ref: '#/components/schemas/StorefrontStoreSpecialHours'
+        minimum_order_value:
+          type: number
+          format: integer
+          description: >-
+            The minimum amount that the consumers need to spend. Value in minor
+            units.
+          example: 0
+        delivery_fee:
+          type: number
+          format: integer
+          description: Order delivery fee. Value in minor units.
+          example: 399
+        average_delivery_time:
+          type: number
+          format: integer
+          description: Average store ETA for delivery orders. Value in minutes.
+          example: 20
+        average_pickup_time:
+          type: number
+          format: integer
+          description: Average store ETA for pickup orders. Value in minutes.
+          example: 10
+        special_instructions_max_length:
+          type: number
+          format: integer
+          description: >-
+            Maximum length of special instructions. if <= 0 then it means
+            merchant does not allow it.
+          example: 10
+        should_show_delivery_fee:
+          type: boolean
+          description: whether to show delivery fee.
+          example: true
+          default: true
+        store_properties:
+          type: object
+          description: Store properties indicating available services
+          properties:
+            curbside:
+              type: boolean
+              description: Whether the store offers curbside pickup
+              example: true
+              default: false
+            drivethru:
+              type: boolean
+              description: Whether the store has a drive-thru
+              example: false
+              default: false
+    StorefrontStoreSpecialHours:
+      type: object
+      properties:
+        date:
+          type: string
+          description: In yyyy-mm-dd format
+          example: '2018-01-12'
+        hours:
+          $ref: '#/components/schemas/StoreHours'
+    StorefrontStoreHours:
+      type: object
+      properties:
+        monday:
+          $ref: '#/components/schemas/StoreHours'
+        tuesday:
+          $ref: '#/components/schemas/StoreHours'
+        wednesday:
+          $ref: '#/components/schemas/StoreHours'
+        thursday:
+          $ref: '#/components/schemas/StoreHours'
+        friday:
+          $ref: '#/components/schemas/StoreHours'
+        saturday:
+          $ref: '#/components/schemas/StoreHours'
+        sunday:
+          $ref: '#/components/schemas/StoreHours'
+    StoreStatus:
+      type: string
+      description: store activation status
+      enum:
+        - open
+        - closed
+        - inactive
+        - paused
+        - deactivated
+      example: open
+    StoreHours:
+      type: object
+      properties:
+        closed:
+          type: boolean
+          example: false
+        asap_pickup:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoreIntervals'
+        asap_delivery:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoreIntervals'
+        scheduled_pickup:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoreIntervals'
+        scheduled_delivery:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoreIntervals'
+    StoreIntervals:
+      type: object
+      properties:
+        start:
+          type: string
+          description: Store open time
+          example: 9am
+        end:
+          type: string
+          description: Store close time
+          example: 10pm
+        start_seconds:
+          type: integer
+          description: >-
+            number of seconds since the beginning of the day e.g. 3600 means
+            1am. 39600 means 11 am and 89100 means 12:45 am.
+          example: 39600
+        end_seconds:
+          type: integer
+          description: >-
+            number of seconds since the beginning of the day e.g.3600 means 1am.
+            39600 means 11 am and 89100 means 12:45 am.
+          example: 89100
+    StorefrontCreateJWTRequest:
+      type: object
+      required:
+        - integration_id
+      properties:
+        integration_id:
+          $ref: '#/components/schemas/IntegrationId'
+        integration_type:
+          $ref: '#/components/schemas/IntegrationType'
+    StorefrontCreateJWTResponse:
+      type: object
+      required:
+        - jwt
+        - expires_in
+      properties:
+        jwt:
+          type: string
+          description: jwt
+        expires_in:
+          type: number
+          format: integer
+          description: minutes after which generated jwt will expire.
+    StorefrontOrderSessionRequest:
+      type: object
+      required:
+        - store_id
+        - menu_id
+        - fulfillment_type
+        - items
+      properties:
+        store_id:
+          type: string
+        menu_id:
+          type: string
+        fulfillment_type:
+          $ref: '#/components/schemas/FulfillmentType'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalCartItem'
+        delivery_details:
+          $ref: '#/components/schemas/DeliveryDetails'
+        scheduled_time:
+          type: string
+          pattern: >-
+            ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(.[0-9]{3,})?Z$
+          description: UTC Timestamp in ISO-8601 format
+          example: 2018-08-22T17:20:28Z or 2018-08-22T17:20:28.123Z
+    StorefrontOrderSessionResponse:
+      type: object
+      required:
+        - order_session_id
+        - checkout_url
+      properties:
+        order_session_id:
+          type: string
+        checkout_url:
+          type: string
+    FulfillmentType:
+      type: string
+      enum:
+        - delivery
+        - pickup
+      example: pickup
+    AutocompleteSuggestionsResponse:
+      type: object
+      title: AutocompleteSuggestionsResponse
+      description: List of suggested addresses based on the input
+      required:
+        - suggestions
+      properties:
+        suggestions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AutocompleteSuggestion'
+    AutocompleteSuggestion:
+      type: object
+      properties:
+        source_place_id:
+          type: string
+          description: Source place id
+          example: ChIJQdd29XuAhYARlLzH0JbNTyQ
+        formatted_address:
+          type: string
+          description: Short displayable address
+          example: 303 2nd Street, San Francisco, CA, USA
+        formatted_address_segmented:
+          type: array
+          description: Address segmented into two strings
+          example:
+            - 303 2nd Street
+            - San Francisco, CA, USA
+          items:
+            type: string
+    GetOrCreateAddressRequest:
+      type: object
+      required:
+        - integration_id
+        - integration_type
+        - formatted_address
+      properties:
+        integration_id:
+          $ref: '#/components/schemas/IntegrationId'
+        integration_type:
+          $ref: '#/components/schemas/IntegrationType'
+        formatted_address:
+          type: string
+          description: Short displayable address
+          example: 303 2nd Street, San Francisco, CA, USA
+        country_code:
+          $ref: '#/components/schemas/CountryCode'
+    GetStoreMenuV2Request:
+      type: object
+      required:
+        - integration_id
+        - integration_type
+      properties:
+        integration_id:
+          $ref: '#/components/schemas/IntegrationId'
+        integration_type:
+          $ref: '#/components/schemas/IntegrationType'
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        menu_id:
+          type: string
+        fulfillment_type:
+          $ref: '#/components/schemas/FulfillmentType'
+        country_code:
+          $ref: '#/components/schemas/CountryCode'
+    Business:
+      type: object
+      title: Business
+      description: Business Info
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        differential_pricing_enabled:
+          type: boolean
+    StoreHeader:
+      type: object
+      title: StoreHeader
+      description: StoreHeader
+      properties:
+        business:
+          $ref: '#/components/schemas/Business'
+    PrimaryMenu:
+      type: object
+      title: PrimaryMenu
+      description: The default menu to be shown on the store page
+    GetStoreMenuV2Response:
+      type: object
+      title: GetStoreMenuV2Response
+      description: Store menu v2
+      properties:
+        store_header:
+          $ref: '#/components/schemas/StoreHeader'
+        primary_menu:
+          $ref: '#/components/schemas/PrimaryMenu'
+    AddressDetailsResponse:
+      type: object
+      title: AddressDetailsResponse
+      description: Address details
+      required:
+        - address
+      properties:
+        address:
+          $ref: '#/components/schemas/AddressDetails'
+    ReverseGeocodeResponse:
+      type: object
+      title: ReverseGeocodeResponse
+      description: List of addresses closest to the given location
+      required:
+        - addresses
+      properties:
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressDetails'
+    AddressDetails:
+      type: object
+      properties:
+        address_id:
+          type: string
+          example: '123'
+        formatted_address:
+          type: string
+          example: 303 2nd Street, San Francisco, CA, USA
+        lat:
+          type: number
+          example: 37.7856757
+        lon:
+          type: number
+          example: -122.3958433
+        locality:
+          type: string
+          example: San Francisco
+        administrative_area:
+          type: string
+          example: CA
+        postal_code:
+          type: string
+          example: '94107'
+        country:
+          type: string
+          example: USA
+    Address:
+      type: object
+      properties:
+        address_id:
+          type: string
+          pattern: ^([1-9][0-9]*)$
+          example: '1234567'
+        apartment_number:
+          type: string
+          example: '123'
+      required:
+        - address_id
+    DeliveryDetails:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/Address'
+        delivery_option:
+          $ref: '#/components/schemas/DeliveryOption'
+        delivery_instruction:
+          type: string
+          description: Delivery instructions if any.
+      required:
+        - address
+    DeliveryOption:
+      type: string
+      description: >-
+        one of two options which user can chose for delivery, leave at my door
+        or hand it to me
+      enum:
+        - hand_it_to_me
+        - leave_at_my_door
+      default: leave_at_my_door
+      example: leave_at_my_door
+    ExternalCartItem:
+      type: object
+      required:
+        - id
+        - quantity
+        - price
+      properties:
+        id:
+          type: string
+          description: The id of this instance
+        quantity:
+          type: integer
+          description: quantity for this item
+        price:
+          $ref: '#/components/schemas/Price'
+        special_instructions:
+          type: string
+        extras:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalCartItemExtra'
+    ExternalCartItemExtra:
+      type: object
+      required:
+        - id
+        - quantity
+        - price
+      properties:
+        id:
+          type: string
+          description: The id of this instance
+        quantity:
+          type: integer
+          description: quantity for this item
+        price:
+          $ref: '#/components/schemas/Price'
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalCartItem'
+    Day:
+      type: array
+      items:
+        type: string
+      maxItems: 7
+      example:
+        - monday
+        - tuesday
+    Menu:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          description: Menu name
+          type: string
+        id:
+          description: Doordash Menu Id
+          type: string
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/MenuCategory'
+        menu_hours:
+          $ref: '#/components/schemas/MenuHours'
+    MenuHours:
+      type: object
+      description: Menu Category Available Hours
+      required:
+        - days_bit_array
+        - start_time
+        - end_time
+      properties:
+        days_bit_array:
+          type: array
+          description: >-
+            Represents day of week from Monday to Sunday. When it's not empty,
+            must have length = 7
+          items:
+            type: boolean
+          maxLength: 7
+          example:
+            - true
+            - true
+            - false
+            - true
+            - true
+            - true
+            - false
+        start_time:
+          type: number
+          description: start_time is milliseconds, represents a period in a day.
+        end_time:
+          type: number
+          description: >-
+            end_time is milliseconds, represents a period in a day. 0 <=
+            start_time <= end_time < 24*60*60*1000
+    MenuCategory:
+      type: object
+      required:
+        - name
+        - id
+      properties:
+        name:
+          type: string
+          description: Menu Category Name
+        id:
+          type: string
+          description: Menu Category Id
+        description:
+          type: string
+          description: Menu Category description
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+    Item:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Item name
+        description:
+          type: string
+          description: Item description
+        id:
+          type: string
+          description: Item id
+        price:
+          $ref: '#/components/schemas/Price'
+        special_hours:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemSpecialHour'
+        extras:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemExtra'
+        original_image_url:
+          type: string
+          description: >-
+            Item image URL in JPG|JPEG|PNG format, min resolution (1600w x
+            800h), aspect ratio 16:9 and max size 2MB. Initial image ingestion
+            will go through approval process
+    Price:
+      type: object
+      required:
+        - value
+        - currency
+      properties:
+        value:
+          type: integer
+          description: Price of this instance in minor units
+          example: 399
+        currency:
+          type: string
+          description: ISO 4217 - currency codes
+          example: USD
+    ItemExtra:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Extra Name
+        description:
+          type: string
+          description: Extra Description
+        id:
+          type: string
+          description: Extra Id
+        min_num_options:
+          description: Minimum number of total options that must be selected
+          type: integer
+        max_num_options:
+          description: Maximum number of total options that must be selected
+          type: integer
+        num_free_options:
+          description: Maximum number of options that are free
+          type: integer
+        min_option_choice_quantity:
+          description: Minimum quantity of a single option that must be selected
+          type: integer
+        max_option_choice_quantity:
+          description: Maximum quantity of a single option that can be selected
+          type: integer
+        min_aggregate_options_quantity:
+          description: Minimum combined quantity of all options that must be selected
+          type: integer
+        max_aggregate_options_quantity:
+          description: Maximum combined quantity of all options that can be selected
+          type: integer
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemExtraOption'
+    ItemExtraOption:
+      type: object
+      required:
+        - name
+        - price
+      properties:
+        name:
+          type: string
+          description: Item Extra Option Name
+        description:
+          type: string
+          description: Item Extra Option Description
+        id:
+          type: string
+          description: Item Extra Option Id
+        price:
+          $ref: '#/components/schemas/Price'
+        special_hours:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemSpecialHour'
+        extras:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedItemExtra'
+        original_image_url:
+          type: string
+          description: >-
+            Item image URL in JPG|JPEG|PNG format, min resolution (1600w x
+            800h), aspect ratio 16:9 and max size 2MB. Initial image ingestion
+            will go through approval process
+        default_on:
+          type: boolean
+          description: Whether this option is default selected
+    NestedItemExtra:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: The given name of this instance
+        description:
+          type: string
+          description: The description of this instance
+        id:
+          type: string
+          description: The id of this instance
+        min_num_options:
+          description: Minimum number of total options that must be selected
+          type: integer
+        max_num_options:
+          description: Maximum number of total options that must be selected
+          type: integer
+        num_free_options:
+          description: Maximum number of options that are free
+          type: integer
+        min_option_choice_quantity:
+          description: Minimum quantity of a single option that must be selected
+          type: integer
+        max_option_choice_quantity:
+          description: Maximum quantity of a single option that can be selected
+          type: integer
+        min_aggregate_options_quantity:
+          description: Minimum combined quantity of all options that must be selected
+          type: integer
+        max_aggregate_options_quantity:
+          description: Maximum combined quantity of all options that can be selected
+          type: integer
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedItemExtraOption'
+    NestedItemExtraOption:
+      type: object
+      required:
+        - name
+        - price
+      properties:
+        name:
+          type: string
+          description: The given name of this instance
+        description:
+          type: string
+          description: The description of this instance
+        id:
+          type: string
+          description: The id of this instance
+        price:
+          $ref: '#/components/schemas/Price'
+        special_hours:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemSpecialHour'
+        extras:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedL2ItemExtra'
+        original_image_url:
+          type: string
+          description: >-
+            Item image URL in JPG|JPEG|PNG format, min resolution (1600w x
+            800h), aspect ratio 16:9 and max size 2MB. Initial image ingestion
+            will go through approval process
+        default_on:
+          type: boolean
+          description: Whether this option is default selected
+    NestedL2ItemExtra:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: The given name of this instance
+        description:
+          type: string
+          description: The description of this instance
+        id:
+          type: string
+          description: The id of this instance
+        min_num_options:
+          description: Minimum number of total options that must be selected
+          type: integer
+        max_num_options:
+          description: Maximum number of total options that must be selected
+          type: integer
+        num_free_options:
+          description: Maximum number of options that are free
+          type: integer
+        min_option_choice_quantity:
+          description: Minimum quantity of a single option that must be selected
+          type: integer
+        max_option_choice_quantity:
+          description: Maximum quantity of a single option that can be selected
+          type: integer
+        min_aggregate_options_quantity:
+          description: Minimum combined quantity of all options that must be selected
+          type: integer
+        max_aggregate_options_quantity:
+          description: Maximum combined quantity of all options that can be selected
+          type: integer
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedL2ItemExtraOption'
+    NestedL2ItemExtraOption:
+      type: object
+      required:
+        - name
+        - price
+      properties:
+        name:
+          type: string
+          description: The given name of this instance
+        description:
+          type: string
+        id:
+          type: string
+        price:
+          $ref: '#/components/schemas/Price'
+        special_hours:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemSpecialHour'
+        original_image_url:
+          type: string
+          description: >-
+            Item image URL in JPG|JPEG|PNG format, min resolution (1600w x
+            800h), aspect ratio 16:9 and max size 2MB. Initial image ingestion
+            will go through approval process
+        default_on:
+          type: boolean
+          description: Whether this option is default selected
+    ItemSpecialHour:
+      type: object
+      description: Special time period that the item is being offered
+      properties:
+        start_date:
+          description: Start date in format yyyy-mm-dd if specified
+          type: string
+          example: '2021-06-05'
+        end_date:
+          description: End date in format yyyy-mm-dd if specified
+          type: string
+          example: '2021-07-05'
+        hours:
+          description: Special hours
+          type: array
+          items:
+            $ref: '#/components/schemas/Hour'
+    Hour:
+      type: object
+      description: Special hours that the item is being offered
+      properties:
+        day:
+          $ref: '#/components/schemas/Day'
+        start_time:
+          type: string
+          description: Start time in format HH:MM:SS
+          example: '13:00:00'
+        end_time:
+          type: string
+          description: End time in format HH:MM:SS
+          example: '18:00:00'
+    StorefrontCreateCartFromOrderSessionRequest:
+      type: object
+      required:
+        - integration_id
+        - integration_type
+        - order_session_id
+        - consumer_id
+        - session_id
+      properties:
+        integration_id:
+          $ref: '#/components/schemas/IntegrationId'
+        integration_type:
+          $ref: '#/components/schemas/IntegrationType'
+        order_session_id:
+          type: string
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        consumer_id:
+          $ref: '#/components/schemas/ConsumerId'
+        should_delete_existing_carts:
+          $ref: '#/components/schemas/ShouldDeleteExistingCarts'
+    StorefrontCreateCartFromOrderSessionResponse:
+      type: object
+      required:
+        - cart_id
+      properties:
+        cart_id:
+          $ref: '#/components/schemas/CartId'
+    GetStorefrontOrderHistoryResponse:
+      type: object
+      title: GetStorefrontOrderHistoryResponse
+      description: List of past orders of a user.
+      required:
+        - orders
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+    GetStorefrontOrderStatusRequest:
+      type: object
+      required:
+        - integration_id
+        - integration_type
+        - order_id
+      properties:
+        integration_id:
+          $ref: '#/components/schemas/IntegrationId'
+        integration_type:
+          $ref: '#/components/schemas/IntegrationType'
+        order_id:
+          type: string
+          description: unique id for this order
+    GetStorefrontOrderStatusResponse:
+      type: object
+      title: GetStorefrontOrderStatusResponse
+      description: order status for an order id.
+      required:
+        - order
+      properties:
+        order:
+          $ref: '#/components/schemas/Order'
+    GetStorefrontLoyaltyAccountBalanceResponse:
+      type: object
+      title: GetStorefrontLoyaltyAccountBalanceResponse
+      description: get loyalty account balance of the user.
+      required:
+        - balance
+      properties:
+        balance:
+          type: number
+          description: total account balance of the user.
+          example: '1234'
+    GetStorefrontMinimumApplicationVersionResponse:
+      type: object
+      title: GetStorefrontMinimumApplicationVersionResponse
+      description: minimum version for the given platform/os.
+      required:
+        - version
+      properties:
+        version:
+          type: string
+          description: minimum version of the app.
+          example: '1234'
+    GetStorefrontAppMetadataResponse:
+      type: object
+      title: GetStorefrontAppMetadataResponse
+      description: all the metadata needed for the app to function.
+      required:
+        - login_url
+        - edit_profile_url
+      properties:
+        login_url:
+          type: string
+          description: oauth url to use to sign in users.
+          example: https://oauth.com
+        edit_profile_url:
+          type: string
+          description: oauth url to use to sign in users.
+          example: https://edit-profile.com
+        oauth_state:
+          type: string
+          description: state which needs to be validated after oauth redirect.
+          example: some random string
+        privacy_url:
+          type: string
+          description: privacy url for the mx.
+          example: https://some-random-privacy-url.com
+        terms_of_use_url:
+          type: string
+          description: terms of use url for the mx.
+          example: https://some-random-terms-of-use-url.com
+        rewards_background_image_url:
+          type: string
+          description: rewards background image url.
+          example: https://reward_backround.png
+        rewards_header_bottom_sheet_image_url:
+          type: string
+          description: rewards bottom sheet image url.
+          example: https://reward_header_bottom_sheet_url.png
+        rewards_logo_url:
+          type: string
+          description: rewards logo url.
+          example: https://rewards_logo.png
+        signup_header_image_url:
+          type: string
+          description: signup header logo url.
+          example: https://signup_header.png
+        rewards_points:
+          type: string
+          description: rewards points.
+          example: 5,000 points = 1 Steamed Rice
+        rewards_points_details:
+          type: array
+          description: rewards points details.
+          example:
+            - 5,000 points = 1 Steamed Rice
+            - Enjoy a special treat on your birthday!
+            - Earn points for every $1 spent on qualifying purchases.
+          items:
+            type: string
+        supported_account_type:
+          $ref: '#/components/schemas/SupportedAccountType'
+        qr_code_enabled:
+          $ref: '#/components/schemas/QRCodeEnabled'
+        qr_code_title:
+          type: string
+          description: QR Code Title.
+          example: Earn 1 point
+        qr_code_subtitle:
+          type: string
+          description: qr code subtitle.
+          example: For Every $1 spent
+        qr_code_rewards_title:
+          type: string
+          description: QR Code Rewards Title.
+          example: Scan to earn
+        qr_code_rewards_subtitle:
+          type: string
+          description: QR Code Rewards Subtitle.
+          example: details of how it works.
+        how_rewards_work:
+          type: array
+          items:
+            $ref: '#/components/schemas/HowRewardsWorkSection'
+        client_id:
+          type: string
+          description: oauth client id
+          example: '1791203948'
+        card_linking_enabled:
+          type: boolean
+          description: whether card linking is enabled or not.
+          example: true
+    HowRewardsWorkSection:
+      type: object
+      properties:
+        title:
+          type: string
+          description: title of the section
+          example: You can earn on our DoorDash store by linking your DoorDash account.
+        icon:
+          type: string
+          description: icon to use as a bullet point for the section
+          example: logo/doordash
+    Order:
+      type: object
+      required:
+        - order_id
+        - fulfillment_type
+        - created_at
+        - updated_at
+        - order_status
+      properties:
+        order_id:
+          type: string
+          description: unique id for this order
+        tracking_url:
+          type: string
+          description: tracking url for this order if available
+        eta:
+          type: integer
+          description: eta in minutes
+        fulfillment_type:
+          $ref: '#/components/schemas/FulfillmentType'
+        created_at:
+          $ref: '#/components/schemas/CreatedAt'
+        updated_at:
+          $ref: '#/components/schemas/UpdatedAt'
+        order_status:
+          $ref: '#/components/schemas/OrderStatus'
+        help_url:
+          type: string
+          description: help url for this order if available
+    GetAllStoreMenusResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/GetStoreMenusResponse'
+    GetStoreMenusResponse:
+      type: object
+      required:
+        - store
+        - open_hours
+        - special_hours
+      properties:
+        menu:
+          $ref: '#/components/schemas/Menu'
+    AuthenticationError:
+      x-error: true
+      type: object
+      description: >-
+        Authorization error, available credentials don't match requested
+        operation
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - authentication_error
+        message:
+          type: string
+          example: Request does not contain a JWT.
+    AuthorizationError:
+      x-error: true
+      type: object
+      description: >-
+        Authorization error, available credentials don't match requested
+        operation
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - authorization_error
+        message:
+          type: string
+          example: You are not authorized to perform this action.
+    ValidationFieldError:
+      x-error: true
+      title: ValidationFieldError
+      type: object
+      description: The response returned when validation for field errors are encountered.
+      required:
+        - code
+        - message
+        - field_errors
+      properties:
+        code:
+          type: string
+          enum:
+            - validation_error
+        message:
+          type: string
+          example: Request validation failed.
+        errors:
+          type: string
+          example: Missing business/store id.
+    StoreMenuResourceNotFoundError:
+      x-error: true
+      title: StoreMenuResourceNotFoundError
+      type: object
+      description: The response returned when requested resource is not found/available.
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - not_found
+        message:
+          type: string
+          example: Failed to fetch store menus for store 123.
+    AddressResourceNotFoundError:
+      x-error: true
+      title: AddressResourceNotFoundError
+      type: object
+      description: The response returned when requested resource is not found/available.
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - not_found
+        message:
+          type: string
+          example: Address is not found.
+    BusinessResourceNotFoundError:
+      x-error: true
+      title: BusinessResourceNotFoundError
+      type: object
+      description: The response returned when requested resource is not found/available.
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - not_found
+        message:
+          type: string
+          example: Business is inactive/invalid.
+    BusinessGroupResourceNotFoundError:
+      x-error: true
+      title: BusinessResourceNotFoundError
+      type: object
+      description: The response returned when requested resource is not found/available.
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - not_found
+        message:
+          type: string
+          example: Business group is inactive/invalid.
+    StoreResourceNotFoundError:
+      x-error: true
+      title: StoreResourceNotFoundError
+      type: object
+      description: The response returned when requested resource is not found/available.
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - not_found
+        message:
+          type: string
+          example: Store is inactive/invalid.
+    RateLimitedError:
+      x-error: true
+      title: RateLimitedError
+      type: object
+      description: Rate limited.
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - rate_limit_error
+        message:
+          type: string
+          example: Developer account endpoint rate limit exceeded.
+    InternalError:
+      x-error: true
+      title: InternalError
+      type: object
+      description: Internal errors that occur during the api call.
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - internal_service_error
+        message:
+          type: string
+          example: Internal Service Error.
+    GetStoreMenuItemRequest:
+      type: object
+      required:
+        - integration_id
+        - integration_type
+        - item_id
+        - menu_id
+      properties:
+        item_id:
+          type: string
+        menu_id:
+          type: string
+        integration_id:
+          $ref: '#/components/schemas/IntegrationId'
+        integration_type:
+          $ref: '#/components/schemas/IntegrationType'
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        fulfillment_type:
+          $ref: '#/components/schemas/FulfillmentType'
+        cursor:
+          type: string
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

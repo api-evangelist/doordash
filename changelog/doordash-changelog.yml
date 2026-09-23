@@ -1,0 +1,155 @@
+generated: '2026-09-17'
+method: searched
+source: https://developer.doordash.com/en-US/docs/drive/overview/release_notes
+provider: doordash
+description: >-
+  DoorDash publishes a separate dated release-notes page per API product rather than one platform
+  changelog. Four are public: Drive, Drive (classic), Marketplace and Reporting. Only the Reporting
+  page is still being updated (last updated May 21, 2026); the Drive page stops at January 2023 and
+  Drive (classic) at February 2022, which is the clearest published signal of where DoorDash is
+  still investing in its API surface.
+scheme: per-product semantic versions with an effective date
+feeds: []
+changelogs:
+- api: Reporting API
+  url: https://developer.doordash.com/en-US/docs/reporting/overview/release_notes
+  scheme: semver (0.x.y)
+  current_version: 0.2.3
+  last_updated: '2026-05-21'
+  dated_entries: false
+  entries:
+  - version: 0.2.3
+    breaking: false
+    additions:
+    - Added PROMOTION_PERFORMANCE and SPONSORED_LISTING_PERFORMANCE reports to Marketplace Merchant Pick reporting.
+  - version: 0.2.2
+    breaking: false
+    additions:
+    - Added is_storefront to PAYOUT_SUMMARY v2, TRANSACTION_DETAIL v3 and ORDER_ITEM v3.
+    - Added consumer_order_item_type to ORDER_ITEM v3.
+    note: Fields are not available in the legacy report version.
+  - version: 0.2.1
+    breaking: false
+    additions:
+    - Added delivery_created_time_local and card_system_trace_audit_number to TRANSACTION_DETAIL v2.
+    - Added delivery_created_time_local to ORDER_ITEM v2.
+  - version: 0.2.0
+    breaking: false
+    additions:
+    - CONSUMER_FEEDBACK updated to v5 with merchant_emoji_rating and merchant_tags for the new rating system.
+    effective: '2025-11-17'
+  - version: 0.1.9
+    breaking: false
+    highlights:
+    - Marketplace Dasher Pick reports moved to V3; the legacy version stays supported but receives no new fields.
+- api: Drive API
+  url: https://developer.doordash.com/en-US/docs/drive/overview/release_notes
+  scheme: semver (0.x.y) with release date
+  current_version: 0.2.5
+  last_updated: '2023-01-12'
+  dated_entries: true
+  entries:
+  - version: 0.2.5
+    date: '2023-01-12'
+    breaking: false
+    additions:
+    - Add dropoff_signature_image_url to API and webhook.
+  - version: 0.2.4
+    date: '2022-11-15'
+    breaking: false
+    additions:
+    - Support items.
+  - version: 0.2.3
+    date: '2022-10-12'
+    breaking: false
+    additions:
+    - Support dasher allowed vehicles.
+  - version: 0.2.2
+    date: '2022-08-15'
+    breaking: false
+    additions:
+    - Enabled alcohol delivery in drive v2.
+    - Incorporated Dasher details (name, location).
+  - version: 0.2.1
+    date: '2022-06-06'
+    breaking: false
+    additions:
+    - Adding pickup external store and external business ID.
+  - version: 0.2.0
+    date: '2022-04-11'
+    breaking: false
+    additions:
+    - Add action_if_unavailable to support returnable deliveries.
+- api: Drive (classic) API
+  url: https://developer.doordash.com/en-US/docs/drive_classic/overview/release_notes
+  scheme: semver (v0.x.y) with an effective date
+  current_version: v0.4.2
+  last_updated: '2022-02-28'
+  dated_entries: true
+  entries:
+  - version: v0.4.2
+    date: '2022-02-28'
+    breaking: false
+    additions:
+    - Added delivery_verification_image_url and pickup_verification_image_url to Delivery Details GET, Delivery Creation POST and Delivery Update PATCH.
+    - Added estimated_delivery_time and pickup_verification_image_url to the webhook payload example.
+  - version: v0.4.1
+    date: '2022-02-08'
+    breaking: false
+    highlights:
+    - Updated field description for promotion_id.
+  - version: v0.4.0
+    date: '2021-12-07'
+    breaking: false
+    additions:
+    - Added full_address fields to pickup_address and dropoff_address.
+    - Added locale field to customer.
+  - version: v0.3.1
+    date: '2021-11-12'
+    breaking: false
+    additions:
+    - Added promotion_id to delivery creation, delivery estimate and delivery validation requests.
+  - version: v0.3.0
+    date: '2021-10-15'
+    breaking: false
+    additions:
+    - Added refund reasons and currency mappings for the delivery_refunded webhook.
+- api: Marketplace API
+  url: https://developer.doordash.com/en-US/docs/marketplace/overview/release_notes
+  scheme: dated entries, no version numbers
+  last_updated: '2024-02-22'
+  dated_entries: true
+  access: >-
+    Limited. The page states Marketplace APIs are not yet generally available; prospective partners
+    apply for access through the Developer Portal Integrations tab.
+  entries:
+  - date: '2024-02-22'
+    breaking: false
+    highlights:
+    - Search AI tool added to the developer docs.
+    - Production test orders extended to production stores.
+    - Simplified menu updates from the Developer Portal for test and production stores.
+    - Event log filters now searchable by date and time, with onboarding API/webhook events added.
+    - Bulk onboarding via CSV upload for partners with multiple locations.
+  - date: '2023-08-29'
+    breaking: false
+    highlights:
+    - Special hours can now be used to extend regular store hours.
+  - date: '2023-07-21'
+    breaking: false
+    additions:
+    - Added GET Menu API to retrieve the active menu(s) of an onboarding or live merchant.
+    highlights:
+    - Menu creation flow modified to prevent duplicate menus for a store.
+  - date: '2023-03-01'
+    breaking: false
+    highlights:
+    - Order adjustment endpoints updated to include substitution support.
+  - date: '2023-02-01'
+    breaking: false
+    additions:
+    - Store deactivation webhook notifications.
+observations:
+- Four product-scoped changelogs, no single platform changelog and no RSS/Atom feed on any of them.
+- Reporting is the only surface with 2026 activity; Drive last published a release note in January 2023.
+- No entry on any of the four pages is marked breaking, and none announces a deprecation or sunset.

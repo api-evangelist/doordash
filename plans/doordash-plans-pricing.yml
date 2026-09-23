@@ -4,11 +4,17 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: doordash
 providerId: doordash
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-06-02'
+# Provenance: originally written by the API Evangelist bulk sweep dated 2026-05-04.
+# 2026-09-17 enrichment pass re-read developer.doordash.com/en-US/docs/drive/overview/pricing_payment
+# and .../drive_classic/overview/pricing_payment verbatim (both HTTP 200) and confirmed every figure
+# below - $9.75 base under 5 miles, +$0.75/mile to a 15-mile maximum, -$2.75 tip pass-through
+# discount, 60% return-to-pickup fee, and the $7.00 Drive (classic) flat fee. Upgraded generated ->
+# searched on that verification.
+method: searched
+modified: '2026-09-17'
+verified: '2026-09-17'
 reconciled: true
+plan_count: 3
 tags:
   - Delivery
   - Logistics
@@ -19,6 +25,7 @@ description: DoorDash Drive is priced per delivery rather than per API call. The
   end user pass through to the Dasher and are added to the merchant invoice. Sandbox use is free of charge.
 sources:
   - https://developer.doordash.com/en-US/docs/drive/overview/pricing_payment/
+  - https://developer.doordash.com/en-US/docs/drive_classic/overview/pricing_payment/
   - https://developer.doordash.com/en-US/docs/drive/overview/faqs/
   - https://developer.doordash.com/en-US/api/drive/
   - https://developer.doordash.com/en-US/api/drive_classic/
@@ -121,7 +128,10 @@ plans:
         userMultiplied: false
     elements:
       - name: Legacy endpoints
-      - name: Per-delivery billing at request time
+      - name: Billed by monthly invoice, paid via ACH/check
+      - name: Invoice auto-emailed on the 2nd/3rd of each month with a per-delivery CSV breakdown
+      - name: Rate assumes DoorDash is the exclusive delivery provider or has right of first refusal
+      - name: Any application using this API must solicit tips in its UI
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

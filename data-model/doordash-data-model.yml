@@ -1,0 +1,247 @@
+generated: '2026-09-17'
+method: derived
+source: openapi/_original/ (13 first-party OpenAPI documents, 526 component schemas, 141 operations)
+provider: doordash
+description: >-
+  The DoorDash resource graph as it appears across the thirteen published contracts. The defining
+  property is that almost every entity is keyed on a CALLER-SUPPLIED external identifier rather
+  than a DoorDash-issued one - external_business_id, external_store_id, external_delivery_id,
+  merchant_supplied_id, store_location_id. The partner names the objects; DoorDash stores them
+  under those names. That makes the graph easy to join against a partner's own system of record
+  and makes identifier collisions the platform's characteristic failure mode (a reused
+  external_delivery_id is the documented 409).
+identifiers:
+- field: merchant_supplied_id
+  scope: Marketplace, Item Management, Storefront
+  occurrences: 31
+  owner: partner
+  description: The partner's own id for a store or item, used as the path key on most Marketplace reads and writes.
+- field: external_delivery_id
+  scope: Drive, Drive (classic), Parcel, Refunds, Redelivery
+  occurrences: 9
+  owner: partner
+  description: >-
+    The delivery key AND the replay key. Reusing it with identical data returns the existing
+    delivery; reusing it with different data is a 409.
+- field: external_business_id
+  scope: Drive, Drive (classic)
+  occurrences: 5
+  owner: partner
+- field: external_store_id
+  scope: Drive, Drive (classic)
+  occurrences: 4
+  owner: partner
+- field: store_location_id
+  scope: Item Management
+  owner: partner
+- field: menu_id
+  scope: Marketplace
+  owner: doordash
+- field: promotion_id
+  scope: Item Management
+  owner: doordash
+- field: campaignId / adGroupId / productId
+  scope: Ads
+  owner: doordash
+- field: reportId
+  scope: Ads reporting
+  owner: doordash
+- field: report_id
+  scope: Reporting (dataexchange)
+  owner: doordash
+- field: dasher_id
+  scope: Drive
+  owner: doordash
+entities:
+- name: Business
+  domain: merchant
+  key: external_business_id
+  spec: doordash-drive-openapi.yml
+  description: The top of the merchant hierarchy on the Drive surface. Owns stores.
+- name: Store
+  domain: merchant
+  key: external_store_id (Drive) / merchant_supplied_id (Marketplace) / store_location_id (Item Management)
+  spec: doordash-drive-openapi.yml, doordash-marketplace-openapi.yml, doordash-item-management-openapi.yml
+  description: >-
+    The physical location. The single most fragmented entity on the platform - three products key
+    the same real-world store on three different caller-supplied identifiers.
+- name: Delivery
+  domain: logistics
+  key: external_delivery_id
+  spec: doordash-drive-openapi.yml
+  description: >-
+    The central Drive object. DeliveryResponse in the classic contract carries 48 properties and
+    DeliveryOutput in v2 carries 24; it composes pickup details, dropoff details, dasher details,
+    items and monetary fields.
+- name: Quote
+  domain: logistics
+  key: external_delivery_id
+  spec: doordash-drive-openapi.yml
+  description: A priced, serviceability-checked delivery that has not been committed yet.
+- name: Dasher
+  domain: logistics
+  key: dasher_id
+  spec: doordash-drive-openapi.yml, doordash-drive-dasher-feedback-openapi.yml
+  description: Read-only from the partner's side; surfaced on the delivery and in the feedback API.
+- name: DeliveryItem
+  domain: logistics
+  spec: doordash-drive-openapi.yml
+  description: Line item on a delivery; carries substitution preference and shopped/scanned state.
+- name: Menu
+  domain: catalog
+  key: menu_id
+  spec: doordash-marketplace-openapi.yml
+- name: MenuCategory
+  domain: catalog
+  spec: doordash-marketplace-legacy-openapi.yml
+- name: Item
+  domain: catalog
+  key: merchant_supplied_item_id
+  spec: doordash-item-management-openapi.yml
+- name: ItemExtra / Option
+  domain: catalog
+  spec: doordash-item-management-openapi.yml, doordash-marketplace-legacy-openapi.yml
+  description: >-
+    Modifier groups and options, nested to at least three levels (Extra -> NestedExtra ->
+    NestedL2Extra). The depth is fixed in the schema rather than recursive, which is a real
+    constraint on complex menus.
+- name: StoreItem
+  domain: catalog
+  spec: doordash-item-management-openapi.yml
+  description: The join between a catalog Item and a Store - price, inventory and availability at one location.
+- name: Promotion
+  domain: catalog
+  key: promotion_id
+  spec: doordash-item-management-openapi.yml
+- name: Order
+  domain: commerce
+  key: order id
+  spec: doordash-marketplace-openapi.yml, doordash-marketplace-legacy-openapi.yml
+- name: OrderItem
+  domain: commerce
+  spec: doordash-marketplace-legacy-openapi.yml
+- name: Transaction
+  domain: commerce
+  spec: doordash-item-management-openapi.yml
+  description: In-store checkout transactions with an authorization step (TransactionAuthRequest/Response).
+- name: Consumer / Customer
+  domain: commerce
+  spec: doordash-external-checkout-openapi.yml, doordash-drive-classic-openapi.yml
+- name: Address
+  domain: geo
+  spec: doordash-drive-openapi.yml
+  description: >-
+    Country-partitioned in v2 - DropoffAddressComponents_US / _CA / _AU / _NZ are separate schemas
+    rather than one address type with a country discriminator.
+- name: Report
+  domain: reporting
+  key: report_id
+  spec: doordash-reporting-openapi.yml
+  description: Asynchronous. createReport returns 202; getReportLink returns a signed download link.
+- name: Campaign / AdGroup / ProductAd / Creative / Keyword
+  domain: advertising
+  spec: doordash-ads-openapi.yml
+  description: A conventional campaign hierarchy; the only domain on the platform with DoorDash-issued ids throughout.
+- name: LoyaltyMemberProfile / Reward / Redemption
+  domain: storefront
+  spec: doordash-storefront-openapi.yml
+relationships:
+- from: Business
+  to: Store
+  type: has_many
+  via: external_business_id
+  evidence: GET /developer/v1/businesses/{external_business_id}/stores
+- from: Store
+  to: Menu
+  type: has_many
+  via: merchant_supplied_id
+  evidence: GET /marketplace/api/v1/stores/{merchant_supplied_id}/menu_details
+- from: Menu
+  to: MenuCategory
+  type: has_many
+  via: $ref
+- from: MenuCategory
+  to: Item
+  type: has_many
+  via: $ref
+- from: Item
+  to: ItemExtra
+  type: has_many
+  via: $ref
+- from: ItemExtra
+  to: NestedExtra
+  type: has_many
+  via: $ref
+- from: Store
+  to: StoreItem
+  type: has_many
+  via: store_location_id
+  evidence: POST /marketplace/api/v2/stores/{store_location_id}/items
+- from: Item
+  to: StoreItem
+  type: has_many
+  via: merchant_supplied_item_id
+- from: Store
+  to: Promotion
+  type: has_many
+  via: store_location_id
+  evidence: POST /marketplace/api/v2/promotions/stores/{store_location_id}
+- from: Store
+  to: Order
+  type: has_many
+  via: store id
+- from: Order
+  to: OrderItem
+  type: has_many
+  via: $ref
+- from: Quote
+  to: Delivery
+  type: becomes
+  via: external_delivery_id
+  evidence: POST /drive/v2/quotes/{external_delivery_id}/accept
+- from: Delivery
+  to: DeliveryItem
+  type: has_many
+  via: $ref
+- from: Delivery
+  to: Dasher
+  type: has_one
+  via: dasher details on the delivery response
+- from: Delivery
+  to: Business
+  type: belongs_to
+  via: pickup_external_business_id
+- from: Delivery
+  to: Store
+  type: belongs_to
+  via: pickup_external_store_id
+- from: Delivery
+  to: Refund
+  type: has_many
+  via: external_delivery_id
+  evidence: POST /drive/v2/deliveries/{external_delivery_id}/refunds
+- from: Delivery
+  to: Redelivery
+  type: has_many
+  via: external_delivery_id
+  evidence: POST /drive/v2/deliveries/{external_delivery_id}/redelivery
+- from: Campaign
+  to: AdGroup
+  type: has_many
+  via: campaignId
+- from: AdGroup
+  to: ProductAd
+  type: has_many
+  via: adGroupId
+- from: AdGroup
+  to: Keyword
+  type: has_many
+  via: adGroupId
+observations:
+- 526 component schemas across thirteen documents, with substantial duplication between Drive and Parcel and between Marketplace and Marketplace (legacy).
+- >-
+  There is no single canonical Store type. A partner integrating Drive AND Marketplace AND Item
+  Management maintains three identifiers for the same location and reconciles them itself.
+- >-
+  Address is modelled per country rather than generically, so adding a market means adding schemas
+  rather than a value.

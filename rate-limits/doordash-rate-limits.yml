@@ -4,11 +4,15 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: doordash
 providerId: doordash
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-06-02'
+# Provenance: originally written by the API Evangelist bulk sweep dated 2026-05-04.
+# 2026-09-17 enrichment pass re-read the Drive FAQ verbatim (HTTP 200) - "The limit is set to approx
+# 300 requests in a 60 second period" and the 3-day advance notice for load testing - and the retry
+# reference (HTTP 200) for the 429 guidance. Upgraded generated -> searched on that verification.
+method: searched
+modified: '2026-09-17'
+verified: '2026-09-17'
 reconciled: true
+limit_count: 1
 tags:
   - Delivery
   - Logistics
@@ -23,6 +27,14 @@ sources:
   - https://developer.doordash.com/en-US/blog/FAQ/
 responseCodes:
   throttled: 429
+headers:
+  request: []
+  response: []
+  documented: false
+  note: >-
+    DoorDash returns no RateLimit-*, X-RateLimit-* or documented Retry-After header. The limit is
+    published as a number in prose only, so a client cannot read its remaining budget at runtime -
+    it can only count its own calls. This is the single biggest runtime-signal gap on the platform.
 limits:
   - name: Drive API default
     scope: access-key
@@ -32,7 +44,15 @@ limits:
     notes: Documented as ~300 requests in any 60-second window. Same limit applies to sandbox and production.
 policies:
   - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter on 429 responses.
+    description: >-
+      DoorDash documents exponential backoff with jitter, 3 retries, 1s-5s delay. Its own guidance
+      on 429 is "Retry after at least 1 second; avoid bursts of requests"; on 5xx, "Retry with
+      exponential backoff and jitter"; on other 4xx, "Do not retry, need to fix the problem in the
+      code". Source: https://developer.doordash.com/en-US/docs/drive/reference/retry_pattern
+  - name: Credential Suspension
+    description: >-
+      More than 300 requests in 60 seconds alerts DoorDash engineering and credentials may be
+      disabled. Exceeding the limit is an account risk, not only a throttle.
   - name: Load Testing Coordination
     description: Notify DoorDash via the Support page at least 3 days before any load or resiliency testing
       so the rate limit can be adjusted.

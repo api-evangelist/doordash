@@ -1,14 +1,18 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DoorDash Drive Classic Addresses Stores API
-  description: The DoorDash Drive Classic API is the legacy version of the Drive API, designed for large enterprises and middleware providers who require extensive configuration and customizability for their delivery integrations. It provides endpoints for managing businesses, stores, and deliveries through DoorDash's logistics platform. While still supported, DoorDash recommends new integrations use the newer Drive API (v2) instead.
-  version: '1.0'
+  title: Doordash Stores API
   contact:
     name: DoorDash Developer Support
     url: https://developer.doordash.com/en-US/
   termsOfService: https://www.doordash.com/terms/
+  version: '1.0'
+  description: 'Operations tagged Stores across 3 of this provider''s published API definitions: doordash-drive-classic-openapi.yml, doordash-drive-openapi.yml, doordash-marketplace-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://openapi.doordash.com/drive/v1
+  description: Production Server
+- url: https://openapi.doordash.com/drive/v2
+  description: Production Server
+- url: https://openapi.doordash.com/marketplace/api/v1
   description: Production Server
 security:
 - bearerAuth: []
@@ -92,6 +96,9 @@ paths:
       x-microcks-operation:
         delay: 0
         dispatcher: FALLBACK
+    servers:
+    - url: https://openapi.doordash.com/drive/v1
+      description: Production Server
   /businesses/{external_business_id}/stores/{external_store_id}:
     get:
       operationId: getStore
@@ -246,6 +253,9 @@ paths:
       x-microcks-operation:
         delay: 0
         dispatcher: FALLBACK
+    servers:
+    - url: https://openapi.doordash.com/drive/v1
+      description: Production Server
   /stores/{merchant_supplied_id}/store_details:
     get:
       operationId: getStoreDetails
@@ -302,6 +312,9 @@ paths:
       x-microcks-operation:
         delay: 0
         dispatcher: FALLBACK
+    servers:
+    - url: https://openapi.doordash.com/marketplace/api/v1
+      description: Production Server
   /stores/{merchant_supplied_id}/menu_details:
     get:
       operationId: getMenuDetails
@@ -360,6 +373,9 @@ paths:
       x-microcks-operation:
         delay: 0
         dispatcher: FALLBACK
+    servers:
+    - url: https://openapi.doordash.com/marketplace/api/v1
+      description: Production Server
   /stores/{merchant_supplied_id}/status:
     patch:
       operationId: updateStoreStatus
@@ -427,20 +443,23 @@ paths:
       x-microcks-operation:
         delay: 0
         dispatcher: FALLBACK
+    servers:
+    - url: https://openapi.doordash.com/marketplace/api/v1
+      description: Production Server
 components:
   parameters:
-    ExternalBusinessId:
-      name: external_business_id
-      in: path
-      required: true
-      description: The unique external identifier for the business.
-      schema:
-        type: string
     ExternalStoreId:
       name: external_store_id
       in: path
       required: true
       description: The unique external identifier for the store.
+      schema:
+        type: string
+    ExternalBusinessId:
+      name: external_business_id
+      in: path
+      required: true
+      description: The unique external identifier for the business.
       schema:
         type: string
     MerchantSuppliedId:
@@ -451,6 +470,52 @@ components:
       schema:
         type: string
   schemas:
+    Store:
+      type: object
+      properties:
+        external_business_id:
+          type: string
+          description: The external business ID this store belongs to.
+          example: D-12345
+        external_store_id:
+          type: string
+          description: The unique external identifier for the store.
+          example: D-12345
+        name:
+          type: string
+          description: The name of the store.
+          example: Acme Pickup Store
+        phone_number:
+          type: string
+          description: The phone number for the store.
+          example: '+15555551234'
+        address:
+          type: string
+          description: The full street address of the store.
+          example: 901 Market St, San Francisco, CA 94105
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+        field_errors:
+          type: array
+          description: A list of field-level validation errors.
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: The field with the error.
+              error:
+                type: string
+                description: The error message.
     StoreRequest:
       type: object
       required:
@@ -474,32 +539,21 @@ components:
           type: string
           description: The full street address of the store.
           example: 901 Market St, San Francisco, CA 94105
-    MenuOption:
-      type: object
-      required:
-      - id
-      - name
-      - price
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this option.
-          example: D-12345
-        name:
-          type: string
-          description: The display name of the option.
-          example: Acme Pickup Store
-        price:
-          type: integer
-          description: The additional price for this option in cents.
-          example: 42
-        is_active:
-          type: boolean
-          description: Whether the option is currently available.
-          example: true
-    Error_3:
+    Error_2:
       type: object
       properties:
+        field_errors:
+          type: array
+          description: A list of field-level validation errors.
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: The name of the field with the error.
+              error:
+                type: string
+                description: The error message for the field.
         message:
           type: string
           description: A human-readable error message.
@@ -549,23 +603,29 @@ components:
           description: Option groups (modifiers) for this item.
           items:
             $ref: '#/components/schemas/OptionGroup'
-    StoreStatusUpdate:
+    MenuOption:
       type: object
       required:
-      - status
+      - id
+      - name
+      - price
       properties:
-        status:
+        id:
           type: string
-          description: The new store status.
-          enum:
-          - open
-          - closed
-          - temporarily_closed
-          example: open
-        reason:
+          description: The unique identifier for this option.
+          example: D-12345
+        name:
           type: string
-          description: The reason for the status change.
-          example: example
+          description: The display name of the option.
+          example: Acme Pickup Store
+        price:
+          type: integer
+          description: The additional price for this option in cents.
+          example: 42
+        is_active:
+          type: boolean
+          description: Whether the option is currently available.
+          example: true
     StoreDetails:
       type: object
       properties:
@@ -597,29 +657,23 @@ components:
           - closed
           - temporarily_closed
           example: open
-    Error:
+    MenuDetails:
       type: object
       properties:
-        message:
+        store_id:
           type: string
-          description: A human-readable error message.
-          example: example
-        code:
-          type: string
-          description: A machine-readable error code.
-          example: ABC123
-        field_errors:
+          description: The merchant-supplied store identifier.
+          example: D-12345
+        categories:
           type: array
-          description: A list of field-level validation errors.
+          description: The menu categories.
           items:
-            type: object
-            properties:
-              field:
-                type: string
-                description: The field with the error.
-              error:
-                type: string
-                description: The error message.
+            $ref: '#/components/schemas/MenuCategory'
+        last_updated:
+          type: string
+          format: date-time
+          description: When the menu was last updated.
+          example: '2026-06-02T14:30:00Z'
     OptionGroup:
       type: object
       required:
@@ -650,23 +704,6 @@ components:
           description: The available options in this group.
           items:
             $ref: '#/components/schemas/MenuOption'
-    MenuDetails:
-      type: object
-      properties:
-        store_id:
-          type: string
-          description: The merchant-supplied store identifier.
-          example: D-12345
-        categories:
-          type: array
-          description: The menu categories.
-          items:
-            $ref: '#/components/schemas/MenuCategory'
-        last_updated:
-          type: string
-          format: date-time
-          description: When the menu was last updated.
-          example: '2026-06-02T14:30:00Z'
     MenuCategory:
       type: object
       required:
@@ -695,35 +732,41 @@ components:
           description: The items in this category.
           items:
             $ref: '#/components/schemas/MenuItem'
-    Store:
+    Error_3:
       type: object
       properties:
-        external_business_id:
+        message:
           type: string
-          description: The external business ID this store belongs to.
-          example: D-12345
-        external_store_id:
+          description: A human-readable error message.
+          example: example
+        code:
           type: string
-          description: The unique external identifier for the store.
-          example: D-12345
-        name:
+          description: A machine-readable error code.
+          example: ABC123
+    StoreStatusUpdate:
+      type: object
+      required:
+      - status
+      properties:
+        status:
           type: string
-          description: The name of the store.
-          example: Acme Pickup Store
-        phone_number:
+          description: The new store status.
+          enum:
+          - open
+          - closed
+          - temporarily_closed
+          example: open
+        reason:
           type: string
-          description: The phone number for the store.
-          example: '+15555551234'
-        address:
-          type: string
-          description: The full street address of the store.
-          example: 901 Market St, San Francisco, CA 94105
+          description: The reason for the status change.
+          example: example
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
       description: JWT token signed with your DoorDash developer credentials.
-externalDocs:
-  description: DoorDash Drive Classic API Documentation
-  url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+x-refined-from:
+- doordash-drive-classic-openapi.yml
+- doordash-drive-openapi.yml
+- doordash-marketplace-openapi.yml

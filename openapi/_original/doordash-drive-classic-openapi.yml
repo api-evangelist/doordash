@@ -1,1411 +1,3004 @@
-openapi: 3.1.0
+openapi: 3.0.0
 info:
-  title: DoorDash Drive Classic API
-  description: >-
-    The DoorDash Drive Classic API is the legacy version of the Drive API,
-    designed for large enterprises and middleware providers who require
-    extensive configuration and customizability for their delivery
-    integrations. It provides endpoints for managing businesses, stores,
-    and deliveries through DoorDash's logistics platform. While still
-    supported, DoorDash recommends new integrations use the newer Drive
-    API (v2) instead.
-  version: '1.0'
-  contact:
-    name: DoorDash Developer Support
-    url: https://developer.doordash.com/en-US/
-  termsOfService: https://www.doordash.com/terms/
-externalDocs:
-  description: DoorDash Drive Classic API Documentation
-  url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
+  title: Drive (classic) API Specification
+  x-logo:
+    url: >-
+      https://doordash-static.s3-us-west-2.amazonaws.com/media/drive/drive-logo.png
+    backgroundColor: '#FFFFFF'
+    altText: Doordash Drive
+    href: https://www.doordash.com/drive/portal/discover
+  version: 0.4.8
+  description: null
 servers:
-- url: https://openapi.doordash.com/drive/v1
-  description: Production Server
+  - url: https://openapi.doordash.com
+    variables: {}
 tags:
-- name: Businesses
-  description: >-
-    Manage business entities that represent legal entities or owners.
-- name: Deliveries
-  description: >-
-    Create, retrieve, update, cancel, and estimate deliveries using the
-    classic API endpoints.
-- name: Stores
-  description: >-
-    Manage store locations associated with businesses.
-security:
-- bearerAuth: []
+  - name: Delivery
+    x-displayName: Delivery
+  - name: Business & Store
+    x-displayName: Business & Store
 paths:
-  /estimates:
+  /drive/v1/estimates:
     post:
-      operationId: createDeliveryEstimate
-      summary: DoorDash Create a Delivery Estimate
-      description: >-
-        Requests time and fee estimates for a delivery. Can also be used to
-        check if an area is serviced by DoorDash. Time values must be provided
-        in UTC ISO-8601 format.
+      summary: Delivery Estimate
       tags:
-      - Deliveries
+        - Delivery
+      description: >-
+        Request time and fee estimates for the delivery. The Estimates API can
+        also be used to check if an area is serviced.
+      operationId: DeliveryEstimatePost
+      parameters: []
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EstimateRequest'
-            examples:
-              CreateDeliveryEstimateRequestExample:
-                summary: Default createDeliveryEstimate request
-                x-microcks-default: true
-                value:
-                  pickup_address: 901 Market St, San Francisco, CA 94105
-                  dropoff_address: 901 Market St, San Francisco, CA 94105
-                  pickup_time: '2026-06-02T14:30:00Z'
-                  order_value: 42
-      responses:
-        '200':
-          description: Delivery estimate created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Estimate'
-              examples:
-                CreateDeliveryEstimate200Example:
-                  summary: Default createDeliveryEstimate 200 response
-                  x-microcks-default: true
-                  value:
-                    fee: 42
-                    currency: USD
-                    pickup_time: '2026-06-02T14:30:00Z'
-                    dropoff_time: '2026-06-02T14:30:00Z'
-                    delivery_duration: 42
-        '400':
-          description: Invalid request parameters
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                CreateDeliveryEstimate400Example:
-                  summary: Default createDeliveryEstimate 400 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-        '401':
-          description: Authentication failed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                CreateDeliveryEstimate401Example:
-                  summary: Default createDeliveryEstimate 401 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-      x-microcks-operation:
-        delay: 0
-        dispatcher: FALLBACK
-  /deliveries:
-    post:
-      operationId: createDelivery
-      summary: DoorDash Create a Delivery
-      description: >-
-        Creates a new delivery request. DoorDash will assign a Dasher to
-        fulfill the delivery. Time values must be provided in UTC format.
-        The API recommends up to 3 retries with exponential backoff.
-      tags:
-      - Deliveries
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ClassicDeliveryRequest'
-            examples:
-              CreateDeliveryRequestExample:
-                summary: Default createDelivery request
-                x-microcks-default: true
-                value:
-                  external_delivery_id: D-12345
-                  pickup_address: 901 Market St, San Francisco, CA 94105
-                  pickup_business_name: Acme Pickup Store
-                  pickup_phone_number: '+15555551234'
-                  pickup_instructions: Leave at the front desk.
-                  dropoff_address: 901 Market St, San Francisco, CA 94105
-                  dropoff_business_name: Acme Pickup Store
-                  dropoff_phone_number: '+15555551234'
-                  dropoff_instructions: Leave at the front desk.
-                  dropoff_contact_given_name: Acme Pickup Store
-                  dropoff_contact_family_name: Acme Pickup Store
-                  order_value: 42
-                  tip: 42
-                  pickup_time: '2026-06-02T14:30:00Z'
-                  dropoff_time: '2026-06-02T14:30:00Z'
-                  contains_alcohol: true
-                  external_business_id: D-12345
-                  external_store_id: D-12345
-      responses:
-        '200':
-          description: Delivery created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClassicDelivery'
-              examples:
-                CreateDelivery200Example:
-                  summary: Default createDelivery 200 response
-                  x-microcks-default: true
-                  value:
-                    external_delivery_id: D-12345
-                    delivery_status: created
-                    fee: 42
-                    currency: USD
-                    tip: 42
-                    pickup_address: 901 Market St, San Francisco, CA 94105
-                    dropoff_address: 901 Market St, San Francisco, CA 94105
-                    pickup_time_estimated: '2026-06-02T14:30:00Z'
-                    pickup_time_actual: '2026-06-02T14:30:00Z'
-                    dropoff_time_estimated: '2026-06-02T14:30:00Z'
-                    dropoff_time_actual: '2026-06-02T14:30:00Z'
-                    dasher_id: 42
-                    dasher_name: Acme Pickup Store
-                    tracking_url: https://example.com/path/abc123
-                    created_at: '2026-06-02T14:30:00Z'
-                    updated_at: '2026-06-02T14:30:00Z'
-        '400':
-          description: Invalid request parameters
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                CreateDelivery400Example:
-                  summary: Default createDelivery 400 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-        '401':
-          description: Authentication failed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                CreateDelivery401Example:
-                  summary: Default createDelivery 401 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-      x-microcks-operation:
-        delay: 0
-        dispatcher: FALLBACK
-  /deliveries/{external_delivery_id}:
-    get:
-      operationId: getDelivery
-      summary: DoorDash Get Delivery Details
-      description: >-
-        Retrieves the current details and status of a delivery using the
-        external delivery ID provided during creation.
-      tags:
-      - Deliveries
-      parameters:
-      - $ref: '#/components/parameters/ExternalDeliveryId'
-      responses:
-        '200':
-          description: Delivery details retrieved successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClassicDelivery'
-              examples:
-                GetDelivery200Example:
-                  summary: Default getDelivery 200 response
-                  x-microcks-default: true
-                  value:
-                    external_delivery_id: D-12345
-                    delivery_status: created
-                    fee: 42
-                    currency: USD
-                    tip: 42
-                    pickup_address: 901 Market St, San Francisco, CA 94105
-                    dropoff_address: 901 Market St, San Francisco, CA 94105
-                    pickup_time_estimated: '2026-06-02T14:30:00Z'
-                    pickup_time_actual: '2026-06-02T14:30:00Z'
-                    dropoff_time_estimated: '2026-06-02T14:30:00Z'
-                    dropoff_time_actual: '2026-06-02T14:30:00Z'
-                    dasher_id: 42
-                    dasher_name: Acme Pickup Store
-                    tracking_url: https://example.com/path/abc123
-                    created_at: '2026-06-02T14:30:00Z'
-                    updated_at: '2026-06-02T14:30:00Z'
-        '401':
-          description: Authentication failed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                GetDelivery401Example:
-                  summary: Default getDelivery 401 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-        '404':
-          description: Delivery not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                GetDelivery404Example:
-                  summary: Default getDelivery 404 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-      x-microcks-operation:
-        delay: 0
-        dispatcher: FALLBACK
-    patch:
-      operationId: updateDelivery
-      summary: DoorDash Update a Delivery
-      description: >-
-        Updates specified attributes of an existing delivery. Updates may be
-        restricted based on the current delivery status.
-      tags:
-      - Deliveries
-      parameters:
-      - $ref: '#/components/parameters/ExternalDeliveryId'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ClassicDeliveryUpdateRequest'
-            examples:
-              UpdateDeliveryRequestExample:
-                summary: Default updateDelivery request
-                x-microcks-default: true
-                value:
-                  tip: 42
-                  dropoff_instructions: Leave at the front desk.
-                  dropoff_phone_number: '+15555551234'
-      responses:
-        '200':
-          description: Delivery updated successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClassicDelivery'
-              examples:
-                UpdateDelivery200Example:
-                  summary: Default updateDelivery 200 response
-                  x-microcks-default: true
-                  value:
-                    external_delivery_id: D-12345
-                    delivery_status: created
-                    fee: 42
-                    currency: USD
-                    tip: 42
-                    pickup_address: 901 Market St, San Francisco, CA 94105
-                    dropoff_address: 901 Market St, San Francisco, CA 94105
-                    pickup_time_estimated: '2026-06-02T14:30:00Z'
-                    pickup_time_actual: '2026-06-02T14:30:00Z'
-                    dropoff_time_estimated: '2026-06-02T14:30:00Z'
-                    dropoff_time_actual: '2026-06-02T14:30:00Z'
-                    dasher_id: 42
-                    dasher_name: Acme Pickup Store
-                    tracking_url: https://example.com/path/abc123
-                    created_at: '2026-06-02T14:30:00Z'
-                    updated_at: '2026-06-02T14:30:00Z'
-        '400':
-          description: Invalid update parameters
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                UpdateDelivery400Example:
-                  summary: Default updateDelivery 400 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-        '401':
-          description: Authentication failed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                UpdateDelivery401Example:
-                  summary: Default updateDelivery 401 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-        '404':
-          description: Delivery not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                UpdateDelivery404Example:
-                  summary: Default updateDelivery 404 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-      x-microcks-operation:
-        delay: 0
-        dispatcher: FALLBACK
-  /deliveries/{external_delivery_id}/cancel:
-    put:
-      operationId: cancelDelivery
-      summary: DoorDash Cancel a Delivery
-      description: >-
-        Cancels an active delivery. Cancellation restrictions apply based on
-        the current delivery status.
-      tags:
-      - Deliveries
-      parameters:
-      - $ref: '#/components/parameters/ExternalDeliveryId'
-      responses:
-        '200':
-          description: Delivery cancelled successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClassicDelivery'
-              examples:
-                CancelDelivery200Example:
-                  summary: Default cancelDelivery 200 response
-                  x-microcks-default: true
-                  value:
-                    external_delivery_id: D-12345
-                    delivery_status: created
-                    fee: 42
-                    currency: USD
-                    tip: 42
-                    pickup_address: 901 Market St, San Francisco, CA 94105
-                    dropoff_address: 901 Market St, San Francisco, CA 94105
-                    pickup_time_estimated: '2026-06-02T14:30:00Z'
-                    pickup_time_actual: '2026-06-02T14:30:00Z'
-                    dropoff_time_estimated: '2026-06-02T14:30:00Z'
-                    dropoff_time_actual: '2026-06-02T14:30:00Z'
-                    dasher_id: 42
-                    dasher_name: Acme Pickup Store
-                    tracking_url: https://example.com/path/abc123
-                    created_at: '2026-06-02T14:30:00Z'
-                    updated_at: '2026-06-02T14:30:00Z'
-        '400':
-          description: Delivery cannot be cancelled in current state
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                CancelDelivery400Example:
-                  summary: Default cancelDelivery 400 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-        '401':
-          description: Authentication failed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                CancelDelivery401Example:
-                  summary: Default cancelDelivery 401 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-        '404':
-          description: Delivery not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                CancelDelivery404Example:
-                  summary: Default cancelDelivery 404 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-      x-microcks-operation:
-        delay: 0
-        dispatcher: FALLBACK
-  /businesses:
-    get:
-      operationId: listBusinesses
-      summary: DoorDash List Businesses
-      description: >-
-        Lists all businesses owned by the authenticated developer account.
-      tags:
-      - Businesses
-      responses:
-        '200':
-          description: List of businesses retrieved successfully
-          content:
-            application/json:
-              schema:
-                type: array
+              required:
+                - dropoff_address
+                - order_value
+              type: object
+              properties:
+                pickup_address:
+                  $ref: '#/components/schemas/PickupAddress'
+                dropoff_address:
+                  $ref: '#/components/schemas/DropoffAddress'
+                order_value:
+                  minimum: 0
+                  type: integer
+                  description: >-
+                    The subtotal for all items in the order, excluding tax/tip,
+                    in cents. i.e. $19.99 = 1999
+                  format: int32
+                  example: 1999
+                delivery_time:
+                  type: string
+                  description: >-
+                    The requested UTC date-time (in ISO-8601 format) at which
+                    the order should be delivered. If this field is specified,
+                    `pickup_time` cannot be specified.Must provide either a
+                    `pickup_time` or a `delivery_time` to pass validation.
+                  example: '2018-08-22T17:21:28Z'
+                pickup_time:
+                  type: string
+                  description: >-
+                    The requested UTC date-time (in ISO-8601 format) at which
+                    the order should be picked up. If this field is specified,
+                    `delivery_time` cannot be specified. Must provide either a
+                    `pickup_time` or a `delivery_time` to pass validation.
+                  example: '2018-08-22T17:20:28Z'
+                external_business_name:
+                  type: string
+                  description: >-
+                    A name used to group stores under a particular owner. For
+                    example, John Smith's Franchise Business. Required if
+                    `pickup_address` object is not passed in. If
+                    `external_business_name` is used, `external_store_id` is
+                    required. Can't be used with `external_business_id`.
+                  example: '1443432456'
+                external_business_id:
+                  type: string
+                  pattern: /^[A-Za-z0-9_-]{3,64}$/
+                  description: >-
+                    An unique, caller-selected ID of the business. Required if
+                    pickup_address object is not passed in. If
+                    `external_business_id` is used, `external_store_id` is
+                    required. Can't be used with `external_business_name`.
+                  example: a0720d55-7cbe-41ce-8185-58285b7985cd
+                external_store_id:
+                  type: string
+                  description: >-
+                    A unique identifier, defined by you, which can be used to
+                    track the specific store that the delivery is for. Required
+                    if `pickup_address` object is not passed in. If
+                    `external_store_id` is used, `external_business_name` is
+                    required.
+                  example: mega-corp-2340593
+                promotion_id:
+                  type: string
+                  description: >-
+                    The ID of the promotion that you want to apply to the
+                    delivery. The quoted fee in the response will reflect the
+                    promotion if this ID is valid. If the ID is invalid, field
+                    error will be returned. Contact your account manager for any
+                    configured promotion IDs.
+                  example: ee680b87-0016-496e-ac3c-d3f33ab54c1c
                 items:
-                  $ref: '#/components/schemas/Business'
-              examples:
-                ListBusinesses200Example:
-                  summary: Default listBusinesses 200 response
-                  x-microcks-default: true
-                  value:
-                  - external_business_id: D-12345
-                    name: Acme Pickup Store
-                    description: Leave at the front desk.
-        '401':
-          description: Authentication failed
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ItemRequest'
+        required: true
+        description: Request body for estimate endpoint
+      responses:
+        '200':
+          description: Estimate returned for the delivery with the given parameters
+          headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                ListBusinesses401Example:
-                  summary: Default listBusinesses 401 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-      x-microcks-operation:
-        delay: 0
-        dispatcher: FALLBACK
+                $ref: '#/components/schemas/DeliveryEstimate'
+        '400':
+          description: Bad request
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldErrorResponse'
+        5XX:
+          description: >
+            - Please retry all 50x response status codes as the error could be
+            transient. We recommend up to 3 retries with some exponential
+            backoff delay between requests.
+
+            - When providing a time to any of the below APIs (i.e. `pickup_time`
+            or `delivery_time`), the format must be UTC.'
+      deprecated: false
+  /drive/v1/validations:
     post:
-      operationId: createBusiness
-      summary: DoorDash Create a Business
-      description: >-
-        Creates a new Drive business entity representing a legal entity or
-        owner on the DoorDash platform.
+      summary: Delivery Validation
       tags:
-      - Businesses
+        - Delivery
+      description: >-
+        Validates input parameters for delivery and checks if the area is
+        serviceable. DoorDash recommends using the Estimates API instead.
+      operationId: DeliveryValidationPost
+      parameters: []
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/BusinessRequest'
-            examples:
-              CreateBusinessRequestExample:
-                summary: Default createBusiness request
-                x-microcks-default: true
-                value:
-                  external_business_id: D-12345
-                  name: Acme Pickup Store
-                  description: Leave at the front desk.
-      responses:
-        '200':
-          description: Business created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Business'
-              examples:
-                CreateBusiness200Example:
-                  summary: Default createBusiness 200 response
-                  x-microcks-default: true
-                  value:
-                    external_business_id: D-12345
-                    name: Acme Pickup Store
-                    description: Leave at the front desk.
-        '400':
-          description: Invalid request parameters
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                CreateBusiness400Example:
-                  summary: Default createBusiness 400 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-        '401':
-          description: Authentication failed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                CreateBusiness401Example:
-                  summary: Default createBusiness 401 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-      x-microcks-operation:
-        delay: 0
-        dispatcher: FALLBACK
-  /businesses/{external_business_id}:
-    get:
-      operationId: getBusiness
-      summary: DoorDash Get Business Details
-      description: >-
-        Retrieves the details of a specific business by its external ID.
-      tags:
-      - Businesses
-      parameters:
-      - $ref: '#/components/parameters/ExternalBusinessId'
-      responses:
-        '200':
-          description: Business details retrieved successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Business'
-              examples:
-                GetBusiness200Example:
-                  summary: Default getBusiness 200 response
-                  x-microcks-default: true
-                  value:
-                    external_business_id: D-12345
-                    name: Acme Pickup Store
-                    description: Leave at the front desk.
-        '401':
-          description: Authentication failed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                GetBusiness401Example:
-                  summary: Default getBusiness 401 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-        '404':
-          description: Business not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                GetBusiness404Example:
-                  summary: Default getBusiness 404 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-      x-microcks-operation:
-        delay: 0
-        dispatcher: FALLBACK
-    patch:
-      operationId: updateBusiness
-      summary: DoorDash Update a Business
-      description: >-
-        Updates the attributes of an existing business entity.
-      tags:
-      - Businesses
-      parameters:
-      - $ref: '#/components/parameters/ExternalBusinessId'
-      requestBody:
+              required:
+                - dropoff_address
+                - customer
+                - order_value
+              type: object
+              properties:
+                pickup_address:
+                  $ref: '#/components/schemas/PickupAddress'
+                pickup_phone_number:
+                  type: string
+                  description: >-
+                    The phone number for the Dasher to call, including country
+                    code, if there are any issues with the pick up. The phone
+                    number must be a valid phone number. Required unless your
+                    request includes an `external_store_id` that you've already
+                    used in at least one successful delivery request. If both
+                    `pickup_phone_number` and `external_store_id` are included,
+                    `pickup_phone_number` is ignored in favor of the existing
+                    phone number associated with the store.
+                  example: '+15555555555'
+                pickup_instructions:
+                  type: string
+                  description: Instruction for the dasher for the pickup location.
+                  example: Use the back alley of the store for pickup
+                dropoff_address:
+                  $ref: '#/components/schemas/DropoffAddress'
+                customer:
+                  $ref: '#/components/schemas/Customer'
+                dropoff_instructions:
+                  type: string
+                  description: Instruction for the dasher for the drop off location.
+                  example: Use the access code 420 to get into the building.
+                order_value:
+                  minimum: 0
+                  type: integer
+                  description: >-
+                    The subtotal for all items in the order, excluding tax/tip,
+                    in cents. i.e. $19.99 = 1999
+                  format: int32
+                  example: 1999
+                tip:
+                  type: integer
+                  description: The amount to tip the Dasher in cents i.e. $5.00 = 500
+                  format: int32
+                  example: 500
+                pickup_time:
+                  type: string
+                  description: >-
+                    The requested UTC date-time (in ISO-8601 format) at which
+                    the order should be picked up. If this field is specified,
+                    `delivery_time` cannot be specified.
+                  example: '2018-08-22T17:20:28Z'
+                delivery_time:
+                  type: string
+                  description: >-
+                    The requested UTC date-time (in ISO-8601 format) at which
+                    the order should be delivered. If this field is specified,
+                    `pickup_time` cannot be specified.
+                  example: '2018-08-22T17:21:28Z'
+                external_delivery_id:
+                  type: string
+                  description: >-
+                    A unique identifier across all store locations under a
+                    business, defined by the merchant, which can be used to
+                    track this specific delivery.
+                  example: 1342666-2420
+                contains_alcohol:
+                  type: boolean
+                  description: >-
+                    Set this to true if the order contains alcohol. Default
+                    value is false.
+                  example: true
+                barcode_scanning_required:
+                  type: boolean
+                  description: >-
+                    Set this to true if barcode scanning at both pickup and
+                    dropoff is required to complete the delivery. Default value
+                    is false.
+                  example: true
+                num_items:
+                  type: integer
+                  description: The total number of items in the order.
+                  format: int32
+                  example: 1
+                external_business_name:
+                  type: string
+                  description: >-
+                    A name used to group stores under a particular owner. For
+                    example, John Smith's Franchise Business. Required if
+                    `pickup_address` object is not passed in. If
+                    `external_business_name` is used, `external_store_id` is
+                    required. Can't be used with `external_business_id`.
+                  example: '1443432456'
+                external_business_id:
+                  type: string
+                  pattern: /^[A-Za-z0-9_-]{3,64}$/
+                  description: >-
+                    An unique, caller-selected ID of the business. Required if
+                    pickup_address object is not passed in. If
+                    `external_business_id` is used, `external_store_id` is
+                    required. Can't be used with `external_business_name`.
+                  example: a0720d55-7cbe-41ce-8185-58285b7985cd
+                external_store_id:
+                  type: string
+                  description: >-
+                    A unique identifier, defined by you, which can be used to
+                    track the specific store that the delivery is for. Required
+                    if `pickup_address` object is not passed in. If
+                    `external_store_id` is used, `external_business_name` is
+                    required.
+                  example: mega-corp-2340593
+                signature_required:
+                  type: boolean
+                  description: >-
+                    Set this to true if signature is required. Default value is
+                    false.
+                  example: true
+                promotion_id:
+                  type: string
+                  description: >-
+                    The ID of the promotion that you want to apply to the
+                    delivery. If the ID is invalid, field error will be
+                    returned. Contact your account manager for any configured
+                    promotion IDs.
+                  example: ee680b87-0016-496e-ac3c-d3f33ab54c1c
+                order_contains_list:
+                  type: array
+                  description: >-
+                    An object that specifies the restricted item(s) contained in
+                    this order. The values that can be specified are
+                    'tobacco_items' (delivery contains tobacco items, requires
+                    ID Verification), 'hemp_items' (delivery contains hemp
+                    items, requires ID Verification), 'otc_items' (delivery
+                    contains otc items, requires ID Verification)
+                  enum:
+                    - tobacco_items
+                    - hemp_items
+                    - otc_items
+                  example:
+                    - tobacco_items
+                    - hemp_items
+                    - otc_items
         required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BusinessRequest'
-            examples:
-              UpdateBusinessRequestExample:
-                summary: Default updateBusiness request
-                x-microcks-default: true
-                value:
-                  external_business_id: D-12345
-                  name: Acme Pickup Store
-                  description: Leave at the front desk.
       responses:
         '200':
-          description: Business updated successfully
+          description: Validity of the delivery
+          headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Business'
-              examples:
-                UpdateBusiness200Example:
-                  summary: Default updateBusiness 200 response
-                  x-microcks-default: true
-                  value:
-                    external_business_id: D-12345
-                    name: Acme Pickup Store
-                    description: Leave at the front desk.
+                $ref: '#/components/schemas/ValidDeliveryResponse'
         '400':
-          description: Invalid request parameters
+          description: Bad request
+          headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                UpdateBusiness400Example:
-                  summary: Default updateBusiness 400 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-        '401':
-          description: Authentication failed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                UpdateBusiness401Example:
-                  summary: Default updateBusiness 401 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-        '404':
-          description: Business not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                UpdateBusiness404Example:
-                  summary: Default updateBusiness 404 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-      x-microcks-operation:
-        delay: 0
-        dispatcher: FALLBACK
-  /businesses/{external_business_id}/stores:
+                $ref: '#/components/schemas/ValidationFieldErrorResponse'
+        5XX:
+          description: >
+            - Please retry all 50x response status codes as the error could be
+            transient. We recommend up to 3 retries with some exponential
+            backoff delay between requests.
+
+            - When providing a time to any of the below APIs (i.e. `pickup_time`
+            or `delivery_time`), the format must be UTC.'
+      deprecated: false
+  /drive/v1/deliveries:
     post:
-      operationId: createStore
-      summary: DoorDash Create a Store
-      description: >-
-        Creates a new store location associated with a business.
+      summary: Delivery Creation
       tags:
-      - Stores
-      parameters:
-      - $ref: '#/components/parameters/ExternalBusinessId'
+        - Delivery
+      description: Create a delivery
+      operationId: DeliveryListPost
+      parameters: []
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StoreRequest'
-            examples:
-              CreateStoreRequestExample:
-                summary: Default createStore request
-                x-microcks-default: true
-                value:
-                  external_store_id: D-12345
-                  name: Acme Pickup Store
-                  phone_number: '+15555551234'
-                  address: 901 Market St, San Francisco, CA 94105
+              required:
+                - dropoff_address
+                - customer
+                - order_value
+              type: object
+              properties:
+                pickup_address:
+                  $ref: '#/components/schemas/CreationPickupAddress'
+                pickup_phone_number:
+                  type: string
+                  description: >-
+                    The phone number for the Dasher to call, including country
+                    code, if there are any issues with the pick up. The phone
+                    number must be a valid US phone number. This field is not
+                    required for existing stores with a known
+                    `external_store_id` 
+                  example: '+16505555555'
+                dropoff_address:
+                  $ref: '#/components/schemas/DropoffAddress'
+                customer:
+                  $ref: '#/components/schemas/Customer'
+                order_value:
+                  minimum: 0
+                  type: integer
+                  description: >-
+                    The subtotal for all items in the order, excluding tax/tip,
+                    in cents. i.e. $19.99 = 1999
+                  format: int32
+                  example: 1999
+                pickup_time:
+                  type: string
+                  description: >-
+                    The requested UTC date-time (in ISO-8601 format) at which
+                    the order should be picked up. If this field is specified,
+                    `delivery_time` cannot be specified.
+                  example: '2018-08-22T17:20:28Z'
+                delivery_time:
+                  type: string
+                  description: >-
+                    The requested UTC date-time (in ISO-8601 format) at which
+                    the order should be delivered. If this field is specified,
+                    `pickup_time` cannot be specified.
+                  example: '2018-08-22T17:21:28Z'
+                pickup_window_start_time:
+                  type: string
+                  description: >-
+                    The UTC date-time (in ISO-8601 format) overrides
+                    `delivery_time` and `pickup_time` when all four parameters
+                    of the delivery window (i.e. `pickup_window_start_time` ,
+                    `pickup_window_end_time` , `delivery_window_start_time` ,
+                    `delivery_window_end_time` ) are provided.
+                  example: '2018-08-22T17:20:12Z'
+                pickup_window_end_time:
+                  type: string
+                  description: >-
+                    The UTC date-time (in ISO-8601 format) overrides
+                    `delivery_time` and `pickup_time` when all four parameters
+                    of the delivery window (i.e. `pickup_window_start_time` ,
+                    `pickup_window_end_time` , `delivery_window_start_time` ,
+                    `delivery_window_end_time` ) are provided.
+                  example: '2018-08-22T17:40:28Z'
+                delivery_window_start_time:
+                  type: string
+                  description: >-
+                    The UTC date-time (in ISO-8601 format) overrides
+                    `delivery_time` and `pickup_time` when all four parameters
+                    of the delivery window (i.e. `pickup_window_start_time` ,
+                    `pickup_window_end_time` , `delivery_window_start_time` ,
+                    `delivery_window_end_time` ) are provided.
+                  example: '2018-08-22T18:15:28Z'
+                delivery_window_end_time:
+                  type: string
+                  description: >-
+                    The UTC date-time (in ISO-8601 format) overrides
+                    `delivery_time` and `pickup_time` when all four parameters
+                    of the delivery window (i.e. `pickup_window_start_time` ,
+                    `pickup_window_end_time` , `delivery_window_start_time` ,
+                    `delivery_window_end_time` ) are provided.
+                  example: '2018-08-22T18:35:28Z'
+                items:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ItemRequest'
+                team_lift_required:
+                  type: boolean
+                  description: More than one dasher is required to complete the delivery
+                  example: true
+                barcode_scanning_required:
+                  type: boolean
+                  description: >-
+                    Barcode scanning at both pickup and dropoff is required to
+                    complete the delivery
+                  example: false
+                pickup_business_name:
+                  type: string
+                  description: >-
+                    The name of the business where the order should be picked up
+                    from.
+                  example: Chipotle
+                pickup_instructions:
+                  type: string
+                  description: >-
+                    Instructions for the Dasher to follow upon pickup of the
+                    order.
+                  example: Enter gate code 1234 on the callbox.
+                dropoff_instructions:
+                  type: string
+                  description: >-
+                    Instructions for the Dasher to follow upon delivery of the
+                    order.
+                  example: Lock the front door after delivering the food.
+                order_volume:
+                  minimum: 0
+                  type: integer
+                  description: >-
+                    Only supported for specific use cases. Provide a list of
+                    `items` with `weight` and `volume` instead or contact
+                    support to discuss the use of `order_volume`.
+                  format: int32
+                  example: 5
+                tip:
+                  type: integer
+                  description: The amount to tip the driver in cents i.e. $5.00 = 500
+                  format: int32
+                  example: 500
+                external_delivery_id:
+                  type: string
+                  description: >-
+                    A unique identifier across all store locations under a
+                    business, defined by the merchant, which can be used to
+                    track this specific delivery.
+                  example: 1342666-2420
+                driver_reference_tag:
+                  type: string
+                  description: >-
+                    The internal order identifier at the merchant, which the
+                    driver can use to pick up the order. One example of a value
+                    for this field is the number the cashier hands the customer
+                    at a counter-serve restaurant.
+                  example: '1'
+                external_business_name:
+                  type: string
+                  description: >-
+                    A name used to group stores under a particular owner. For
+                    example, John Smith's Franchise Business. Required if
+                    `pickup_address` object is not passed in. If
+                    `external_business_name` is used, `external_store_id` is
+                    required. Can't be used with `external_business_id`.
+                  example: '1443432456'
+                external_business_id:
+                  type: string
+                  pattern: /^[A-Za-z0-9_-]{3,64}$/
+                  description: >-
+                    An unique, caller-selected ID of the business. Required if
+                    pickup_address object is not passed in. If
+                    `external_business_id` is used, `external_store_id` is
+                    required. Can't be used with `external_business_name`.
+                  example: a0720d55-7cbe-41ce-8185-58285b7985cd
+                external_store_id:
+                  type: string
+                  description: >-
+                    A unique identifier, defined by you, which can be used to
+                    track the specific store that the delivery is for. Required
+                    if `pickup_address` object is not passed in. If
+                    `external_store_id` is used, `external_business_name` is
+                    required.
+                  example: mega-corp-2340593
+                contains_alcohol:
+                  type: boolean
+                  description: >-
+                    If true, flags the order as one that contains alcoholic
+                    beverages. This ensures that the driver will check the
+                    recipient's ID upon delivery.
+                  example: false
+                requires_catering_setup:
+                  type: boolean
+                  description: >-
+                    If true, flags the order as one that requires special setup
+                    at the consumer's location.
+                  example: true
+                num_items:
+                  type: integer
+                  description: The total number of items in the order.
+                  format: int32
+                  example: 1
+                signature_required:
+                  type: boolean
+                  description: >-
+                    If true, flags the order as one that requires a signature
+                    from the consumer. Cannot be true if
+                    `allow_unattended_delivery` is true.
+                  example: false
+                allow_unattended_delivery:
+                  type: boolean
+                  description: >-
+                    If true, flags the order as one that does not require the
+                    customer to be present to receive the delivery. Cannot be
+                    true if `signature_required` is true and/or contains
+                    restricted items.
+                  example: true
+                cash_on_delivery:
+                  type: integer
+                  minimum: 0
+                  description: >-
+                    Optional value in cents. Default is `None`. Cash orders must
+                    be contact not contactless orders and cash value must be
+                    greater than all fees. There maybe a limit up to a certain $
+                    amount depending on Mx
+                  example: 1000
+                delivery_metadata:
+                  type: object
+                  description: >-
+                    A JSON document that allows adding metadata about the
+                    delivery such as item weight, size, etc.
+                  example:
+                    foo: bar
+                allowed_vehicles:
+                  type: array
+                  description: >-
+                    An array of vehicles that are allowed to be used to complete
+                    this delivery. The only values that can be specified in the
+                    array are 'car', 'bicycle', or 'walker'.
+                  enum:
+                    - car
+                    - bicycle
+                    - walker
+                  example:
+                    - car
+                    - bicycle
+                is_contactless_delivery:
+                  type: boolean
+                  description: >-
+                    Allows for order to be dropped off without physically
+                    handing delivery to consumer
+                  example: false
+                promotion_id:
+                  type: string
+                  description: >-
+                    The ID of the promotion that you want to apply to the
+                    delivery. The fee in the response will reflect the promotion
+                    if this ID is valid. If the ID is invalid, field error will
+                    be returned. Contact your account manager for any configured
+                    promotion IDs.
+                  example: ee680b87-0016-496e-ac3c-d3f33ab54c1c
+                order_contains_list:
+                  type: array
+                  description: >-
+                    An object that specifies the restricted item(s) contained in
+                    this order. The values that can be specified are
+                    'pharmacy_items' (delivery contains pharmacy items),
+                    'age_restricted_pharmacy_items' (the order is an S3+
+                    pharmacy order which requires ID Verification and can only
+                    be delivered to 18+ year olds), 'tobacco_items' (delivery
+                    contains tobacco items, requires ID Verification),
+                    'hemp_items' (delivery contains hemp items, requires ID
+                    Verification), 'otc_items' (delivery contains otc items,
+                    requires ID Verification)
+                  enum:
+                    - pharmacy_items
+                    - age_restricted_pharmacy_items
+                    - tobacco_items
+                    - hemp_items
+                    - otc_items
+                  example:
+                    - pharmacy_items
+                    - age_restricted_pharmacy_items
+                    - tobacco_items
+                    - hemp_items
+                    - otc_items
+                pin_code_verification_metadata:
+                  type: object
+                  description: >-
+                    An object that contains dropoff pin code verification
+                    metadata. Please reach out to Doordash to enable this
+                    feature for your business.
+                  properties:
+                    pin_code_type:
+                      type: string
+                      description: >-
+                        An enum that specifies the pin code value type. The
+                        values that can be specified are `customer_phone_number`
+                        (pin code for dropoff verification is the customer phone
+                        number's last 4 digits), `merchant_provided_number` (pin
+                        code for dropoff verification is the merchant provided 4
+                        digit number), `random_number` (pin code for dropoff
+                        verification is the random 4 digit number generated by
+                        DD). Pin Code can be enabled only for orders that are
+                        non-contactless and not unattended deliveries
+                      enum:
+                        - customer_phone_number
+                        - merchant_provided_number
+                        - random_number
+                      example: customer_phone_number
+                    pin_code_value:
+                      type: string
+                      description: >-
+                        An object that contains pin code value, which should be
+                        a 4 digit number. This has to be sent only for the
+                        `merchant_provided_number` pin code type.
+                      pattern: /^\d{4}$/
+                      example: '1234'
+        required: true
       responses:
         '200':
-          description: Store created successfully
+          description: ''
+          headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Store'
-              examples:
-                CreateStore200Example:
-                  summary: Default createStore 200 response
-                  x-microcks-default: true
-                  value:
-                    external_business_id: D-12345
-                    external_store_id: D-12345
-                    name: Acme Pickup Store
-                    phone_number: '+15555551234'
-                    address: 901 Market St, San Francisco, CA 94105
+                $ref: '#/components/schemas/DeliveryResponse'
         '400':
-          description: Invalid request parameters
+          description: Bad request
+          headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                CreateStore400Example:
-                  summary: Default createStore 400 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-        '401':
-          description: Authentication failed
+                $ref: '#/components/schemas/ValidationFieldErrorResponse'
+        '409':
+          description: ''
+          headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                CreateStore401Example:
-                  summary: Default createStore 401 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-      x-microcks-operation:
-        delay: 0
-        dispatcher: FALLBACK
-  /businesses/{external_business_id}/stores/{external_store_id}:
+                $ref: '#/components/schemas/DuplicateDeliveryError'
+        5XX:
+          description: >
+            - Please retry all 50x response status codes as the error could be
+            transient. We recommend up to 3 retries with some exponential
+            backoff delay between requests.
+
+            - When providing a time to any of the below APIs (i.e. `pickup_time`
+            or `delivery_time`), the format must be UTC.'
+      deprecated: false
+  /drive/v1/deliveries/{delivery_id}:
     get:
-      operationId: getStore
-      summary: DoorDash Get Store Details
-      description: >-
-        Retrieves the details of a specific store within a business.
+      summary: Delivery Details
       tags:
-      - Stores
+        - Delivery
+      description: Get details for a delivery
+      operationId: DeliveryDetailGet
       parameters:
-      - $ref: '#/components/parameters/ExternalBusinessId'
-      - $ref: '#/components/parameters/ExternalStoreId'
+        - name: delivery_id
+          in: path
+          description: >-
+            Id of the delivery that was created via the Create Delivery API
+            call.
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+        - name: extra
+          in: query
+          schema:
+            type: string
+            enum:
+              - cash_on_delivery
+          type: string
+          description: Optional parameter requesting any cash on delivery details
       responses:
         '200':
-          description: Store details retrieved successfully
+          description: Delivery object by id
+          headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Store'
-              examples:
-                GetStore200Example:
-                  summary: Default getStore 200 response
-                  x-microcks-default: true
-                  value:
-                    external_business_id: D-12345
-                    external_store_id: D-12345
-                    name: Acme Pickup Store
-                    phone_number: '+15555551234'
-                    address: 901 Market St, San Francisco, CA 94105
-        '401':
-          description: Authentication failed
+                $ref: '#/components/schemas/DeliveryResponse'
+        '400':
+          description: Bad request
+          headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                GetStore401Example:
-                  summary: Default getStore 401 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-        '404':
-          description: Store or business not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                GetStore404Example:
-                  summary: Default getStore 404 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-      x-microcks-operation:
-        delay: 0
-        dispatcher: FALLBACK
+                $ref: '#/components/schemas/ValidationFieldErrorResponse'
+        5XX:
+          description: >
+            - Please retry all 50x response status codes as the error could be
+            transient. We recommend up to 3 retries with some exponential
+            backoff delay between requests.
+
+            - When providing a time to any of the below APIs (i.e. `pickup_time`
+            or `delivery_time`), the format must be UTC.'
+      deprecated: false
     patch:
-      operationId: updateStore
-      summary: DoorDash Update a Store
-      description: >-
-        Updates the attributes of an existing store location.
+      summary: Update Delivery
       tags:
-      - Stores
+        - Delivery
+      description: Update the time or address for a delivery
+      operationId: DeliveryDetailPatch
       parameters:
-      - $ref: '#/components/parameters/ExternalBusinessId'
-      - $ref: '#/components/parameters/ExternalStoreId'
+        - name: delivery_id
+          in: path
+          description: >-
+            Id of the delivery that was created via the Create Delivery API
+            call.
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/StoreRequest'
-            examples:
-              UpdateStoreRequestExample:
-                summary: Default updateStore request
-                x-microcks-default: true
-                value:
-                  external_store_id: D-12345
-                  name: Acme Pickup Store
-                  phone_number: '+15555551234'
-                  address: 901 Market St, San Francisco, CA 94105
+              type: object
+              properties:
+                pickup_business_name:
+                  type: string
+                  description: >-
+                    The name of the business where the order should be picked up
+                    from.
+                  example: Chipotle
+                pickup_instructions:
+                  type: string
+                  description: >-
+                    Instructions for the Dasher to follow upon pickup of the
+                    order.
+                  example: Enter gate code 1234 on the callbox.
+                pickup_phone_number:
+                  type: string
+                  description: >-
+                    The phone number for the Dasher to call, including country
+                    code, if there are any issues with the pick up. The phone
+                    number must be a valid US phone number.
+                  example: '+15555555555'
+                quoted_delivery_time:
+                  type: string
+                  description: >-
+                    The newly requested UTC date-time (in ISO-8601 format) at
+                    which the order should be delivered. If this field is
+                    specified, then `quoted_pickup_time` cannot be specified.
+                  example: '2018-08-22T17:21:28Z'
+                quoted_pickup_time:
+                  type: string
+                  description: >-
+                    The newly requested UTC date-time (in ISO-8601 format) at
+                    which the order should be picked up. If this field is
+                    specified, then `quoted_delivery_time` cannot be specified.
+                  example: '2018-08-22T17:20:28Z'
+                pickup_window_start_time:
+                  type: string
+                  description: >-
+                    The UTC date-time (in ISO-8601 format) overrides
+                    `delivery_time` and `pickup_time` when all four parameters
+                    of the delivery window (i.e. `pickup_window_start_time`,
+                    `pickup_window_end_time`, `delivery_window_start_time`,
+                    `delivery_window_end_time`) are provided.
+                  example: '2018-08-22T17:20:28Z'
+                pickup_window_end_time:
+                  type: string
+                  description: >-
+                    The UTC date-time (in ISO-8601 format) overrides
+                    `delivery_time` and `pickup_time` when all four parameters
+                    of the delivery window (i.e. `pickup_window_start_time`,
+                    `pickup_window_end_time`, `delivery_window_start_time`,
+                    `delivery_window_end_time`) are provided.
+                  example: '2018-08-22T17:21:28Z'
+                delivery_window_start_time:
+                  type: string
+                  description: >-
+                    The UTC date-time (in ISO-8601 format) overrides
+                    `delivery_time` and `pickup_time` when all four parameters
+                    of the delivery window (i.e. `pickup_window_start_time`,
+                    `pickup_window_end_time`, `delivery_window_start_time`,
+                    `delivery_window_end_time`) are provided.
+                  example: '2018-08-22T17:22:28Z'
+                delivery_window_end_time:
+                  type: string
+                  description: >-
+                    The UTC date-time (in ISO-8601 format) overrides
+                    `delivery_time` and `pickup_time` when all four parameters
+                    of the delivery window (i.e. `pickup_window_start_time`,
+                    `pickup_window_end_time`, `delivery_window_start_time`,
+                    `delivery_window_end_time`) are provided.
+                  example: '2018-08-22T17:23:28Z'
+                dropoff_address:
+                  $ref: '#/components/schemas/DropoffAddress'
+                first_name:
+                  type: string
+                  description: The customer's updated first name.
+                  example: John
+                last_name:
+                  type: string
+                  description: The customer's updated last name.
+                  example: Smith
+                business_name:
+                  type: string
+                  description: The customer's new business name.
+                  example: Some Company Inc
+                customer_phone_number:
+                  type: string
+                  description: The customer's new phone number including the country code.
+                  example: '+15555555555'
+                dropoff_special_instructions:
+                  type: string
+                  description: >-
+                    New instructions for the driver to follow upon delivery of
+                    the order.
+                  example: Lock the front door after delivering the food.
+                signature_required:
+                  type: boolean
+                  description: >-
+                    If true, flags the order as one that requires a signature
+                    from the consumer. Cannot be true if
+                    `allow_unattended_delivery` is true.
+                  example: false
+                allow_unattended_delivery:
+                  type: boolean
+                  description: >-
+                    If true, flags the order as one that does not require the
+                    customer to be present to receive the delivery. Cannot be
+                    true if `signature_required` is true and/or contain
+                    restricted items.
+                  example: false
+                contains_alcohol:
+                  type: boolean
+                  description: >-
+                    If true, flags the order as one that contains alcoholic
+                    beverages. This ensures that the driver will check the
+                    recipient's ID upon delivery.
+                  example: false
+                delivery_metadata:
+                  type: object
+                  description: >-
+                    A dictionary that allows adding metadata about the delivery
+                    such as item weight, size, etc.
+                  example:
+                    weight: foo
+                    volume: bar
+                    contains_batteries: true
+                allowed_vehicles:
+                  type: array
+                  description: >-
+                    An array of vehicles that are allowed to be used to complete
+                    this delivery. The only values that can be specified in the
+                    array are 'car', 'bicycle', or 'walker'.
+                  example:
+                    - car
+                    - bicycle
+                    - walker
+                tip:
+                  type: integer
+                  description: >-
+                    The tip (in cents) to be provided after the given delivery
+                    is completed.
+                  format: int32
+                  example: 1300
+                order_ready_time:
+                  type: string
+                  description: >-
+                    The UTC time at which the order was actually ready at the
+                    pickup location.
+                  example: '2018-08-22T17:20:28Z'
+                order_contains_list:
+                  type: array
+                  description: >-
+                    An object that specifies the restricted item(s) contained in
+                    this order. The values that can be specified are
+                    'tobacco_items' (delivery contains tobacco items, requires
+                    ID Verification), 'hemp_items' (delivery contains hemp
+                    items, requires ID Verification), 'otc_items' (delivery
+                    contains otc items, requires ID Verification)
+                  enum:
+                    - tobacco_items
+                    - hemp_items
+                    - otc_items
+                  example:
+                    - tobacco_items
+                    - hemp_items
+                    - otc_items
+        required: true
       responses:
         '200':
-          description: Store updated successfully
+          description: Updated delivery object
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryResponse'
+        '400':
+          description: Bad Request.
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryValidationResponse'
+        '404':
+          description: Delivery not found.
+        5XX:
+          description: >
+            - Please retry all 50x response status codes as the error could be
+            transient. We recommend up to 3 retries with some exponential
+            backoff delay between requests.
+
+            - When providing a time to any of the below APIs (i.e. `pickup_time`
+            or `delivery_time`), the format must be UTC.'
+      deprecated: false
+  /drive/v1/deliveries/{delivery_id}/cancel:
+    put:
+      summary: Cancel Delivery
+      tags:
+        - Delivery
+      description: Cancel OR initiate a return for a delivery
+      operationId: DeliveryCancelPut
+      parameters:
+        - name: delivery_id
+          in: path
+          description: >-
+            Id of the delivery that was created via the Create Delivery API
+            call.
+          required: true
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        description: >
+          OPTIONAL: should be left blank for normal cancellations. If cancelling
+          for a specific reason, provide a return code (Ex: to create a cold
+          chain return, return code should be "cold_chain".)
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason_code:
+                  type: string
+                  description: >-
+                    OPTIONAL: should be left blank for normal cancellations. If
+                    cancelling for a specific reason, provide a return code (Ex:
+                    to create a cold chain return, return code should be
+                    "cold_chain".)
+                  example: cold_chain
+        required: false
+      responses:
+        '200':
+          description: ''
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeliveryCancelResponse'
+        '400':
+          description: |
+            Delivery cannot be cancelled due to the following reasons
+            - Delivery already confirmed by restaurant
+            - Delivery can not be cancelled so close to estimated pickup time
+        '404':
+          description: Delivery not found
+        5XX:
+          description: >
+            - Please retry all 50x response status codes as the error could be
+            transient. We recommend up to 3 retries with some exponential
+            backoff delay between requests.
+
+            - When providing a time to any of the below APIs (i.e. `pickup_time`
+            or `delivery_time`), the format must be UTC.'
+      deprecated: false
+  /developer/v1/businesses/{external_business_id}:
+    get:
+      summary: Get Business
+      tags:
+        - Business & Store
+      description: Get the details of a business.
+      operationId: GetBusiness
+      parameters:
+        - $ref: '#/components/parameters/PathExternalBusinessId'
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+        '400':
+          description: Request validation failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validation_field_error'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authorization_error'
+        '404':
+          description: Unknown external business ID
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unknown_business_error'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      deprecated: false
+    patch:
+      summary: Update Business
+      tags:
+        - Business & Store
+      description: Update the attributes of a business.
+      operationId: UpdateBusiness
+      parameters:
+        - $ref: '#/components/parameters/PathExternalBusinessId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBusinessInput'
+        required: true
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+        '400':
+          description: Request validation failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validation_field_error'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authorization_error'
+        '404':
+          description: Unknown external business ID
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unknown_business_error'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      deprecated: false
+  /developer/v1/businesses:
+    post:
+      summary: Create Business
+      tags:
+        - Business & Store
+      description: >-
+        Create a Drive business. You cannot create a business with string
+        "default" as external_business_id. "default" is reserved for
+        automatically created business during developer onboarding.
+      operationId: CreateBusiness
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBusinessInput'
+        required: true
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Business'
+        '400':
+          description: Request validation failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validation_field_error'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authorization_error'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      deprecated: false
+    get:
+      summary: List Businesses
+      tags:
+        - Business & Store
+      description: List the businesses owned by a developer.
+      operationId: ListBusiness
+      parameters:
+        - in: query
+          name: activationStatus
+          schema:
+            $ref: '#/components/schemas/BusinessActivationStatus'
+        - in: query
+          name: continuationToken
+          schema:
+            type: string
+            description: >-
+              Opaque string that can be used to fetch next page of businesses,
+              the token value will be null if there are no more businesses to
+              fetch. Page size is 100 businesses.
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBusinessList'
+        '400':
+          description: Request validation failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validation_field_error'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authorization_error'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      deprecated: false
+  /developer/v1/businesses/{external_business_id}/stores/{external_store_id}:
+    get:
+      summary: Get Store
+      tags:
+        - Business & Store
+      description: Get the details of a store.
+      operationId: GetStore
+      parameters:
+        - $ref: '#/components/parameters/PathExternalBusinessId'
+        - $ref: '#/components/parameters/PathExternalStoreId'
+      responses:
+        '200':
+          description: OK
+          headers: {}
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Store'
-              examples:
-                UpdateStore200Example:
-                  summary: Default updateStore 200 response
-                  x-microcks-default: true
-                  value:
-                    external_business_id: D-12345
-                    external_store_id: D-12345
-                    name: Acme Pickup Store
-                    phone_number: '+15555551234'
-                    address: 901 Market St, San Francisco, CA 94105
         '400':
-          description: Invalid request parameters
+          description: Request validation failed
+          headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                UpdateStore400Example:
-                  summary: Default updateStore 400 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-        '401':
-          description: Authentication failed
+                $ref: '#/components/schemas/validation_field_error'
+        '403':
+          description: Operation not authorized
+          headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                UpdateStore401Example:
-                  summary: Default updateStore 401 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
+                $ref: '#/components/schemas/authorization_error'
         '404':
-          description: Store or business not found
+          description: Store not found under this external business ID
+          headers: {}
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                UpdateStore404Example:
-                  summary: Default updateStore 404 response
-                  x-microcks-default: true
-                  value:
-                    message: example
-                    code: ABC123
-                    field_errors:
-                    - field: example
-                      error: example
-      x-microcks-operation:
-        delay: 0
-        dispatcher: FALLBACK
+                $ref: '#/components/schemas/unknown_store_error'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      deprecated: false
+    patch:
+      summary: Update Store
+      tags:
+        - Business & Store
+      description: Update the attributes of a store.
+      operationId: UpdateStore
+      parameters:
+        - $ref: '#/components/parameters/PathExternalBusinessId'
+        - $ref: '#/components/parameters/PathExternalStoreId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateStoreInput'
+        required: true
+      responses:
+        '200':
+          description: Ok
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Store'
+        '400':
+          description: Request validation failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validation_field_error'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authorization_error'
+        '404':
+          description: Store not found under this external business ID
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unknown_store_error'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      deprecated: false
+  /developer/v1/businesses/{external_business_id}/stores:
+    post:
+      summary: Create Store
+      tags:
+        - Business & Store
+      description: >-
+        Create a Drive store. To create a store for your developer's default
+        business please create stores under "default" external_business_id. We
+        recommend this route if you are either an enterprise or a developer who
+        plan to manage only one business.
+      operationId: CreateStore
+      parameters:
+        - $ref: '#/components/parameters/PathExternalBusinessId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStoreInput'
+        required: true
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Store'
+        '400':
+          description: Request validation failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validation_field_error'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authorization_error'
+        '404':
+          description: Unknown external business ID
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unknown_business_error'
+        '424':
+          description: Missing dependency to set up stores
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/missing_dependency_error'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      deprecated: false
+    get:
+      summary: List Stores
+      tags:
+        - Business & Store
+      description: List the stores under a business.
+      operationId: ListStore
+      parameters:
+        - $ref: '#/components/parameters/PathExternalBusinessId'
+        - in: query
+          name: activationStatus
+          schema:
+            $ref: '#/components/schemas/StoreActivationStatus'
+        - in: query
+          name: continuationToken
+          schema:
+            type: string
+            description: >-
+              Opaque string that can be used to fetch next page of stores, the
+              token value will be null if there are no more stores to fetch.
+              Page size is 100 stores.
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedStoreList'
+        '400':
+          description: Request validation failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validation_field_error'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authorization_error'
+        '404':
+          description: Unknown external business ID
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/unknown_business_error'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      deprecated: false
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-      description: >-
-        JWT token signed with your DoorDash developer credentials.
-  parameters:
-    ExternalDeliveryId:
-      name: external_delivery_id
-      in: path
-      required: true
-      description: >-
-        The unique external delivery ID provided when creating the delivery.
-      schema:
-        type: string
-    ExternalBusinessId:
-      name: external_business_id
-      in: path
-      required: true
-      description: >-
-        The unique external identifier for the business.
-      schema:
-        type: string
-    ExternalStoreId:
-      name: external_store_id
-      in: path
-      required: true
-      description: >-
-        The unique external identifier for the store.
-      schema:
-        type: string
   schemas:
-    EstimateRequest:
-      type: object
+    Customer:
+      title: The customer that ordered the delivery.
+      description: The customer that ordered the delivery.
       required:
-      - pickup_address
-      - dropoff_address
-      properties:
-        pickup_address:
-          type: string
-          description: >-
-            The full street address for the pickup location.
-          example: 901 Market St, San Francisco, CA 94105
-        dropoff_address:
-          type: string
-          description: >-
-            The full street address for the dropoff location.
-          example: 901 Market St, San Francisco, CA 94105
-        pickup_time:
-          type: string
-          format: date-time
-          description: >-
-            The requested pickup time in UTC ISO-8601 format.
-          example: '2026-06-02T14:30:00Z'
-        order_value:
-          type: integer
-          description: >-
-            The total value of the order in cents.
-          example: 42
-    Estimate:
+        - phone_number
+        - first_name
+        - last_name
       type: object
       properties:
+        phone_number:
+          type: string
+          description: A valid phone number for the user.
+          example: '+16505555555'
+        business_name:
+          type: string
+          description: Name of the business, if the delivery is request by a business.
+          example: Mega Corp HQ
+        first_name:
+          type: string
+          description: >
+            First name of the customer creating the delivery. Maximum number of
+            characters allowed is 50; cannot contain ~, `, @, #, $, %, ^, &, *,
+            +, =, ?, ;, [, {, ], }, >, <, 
+          example: Jane
+        last_name:
+          type: string
+          description: >
+            Last name of the customer creating the delivery. Maximum number of
+            characters allowed is 50; cannot contain ~, `, @, #, $, %, ^, &, *,
+            +, =, ?, ;, [, {, ], }, >, <, 
+          example: Goodall
+        email:
+          type: string
+          description: Email of the customer creating the delivery
+          example: jane.goodall@megacorp.io
+        should_send_notifications:
+          type: boolean
+          description: >-
+            Whether customer will receive notifications from DoorDash for this
+            delivery. The default is true if you have not requested to opt out
+            of notifications on business level. This field will override your
+            default sms contact configuration.
+          example: true
+        locale:
+          type: string
+          description: >-
+            IETF BCP 47 compliant string representing a user's language
+            preference, for the purpose of communication. Defaults to en-US if
+            not passed in.
+          example: en-US
+    DropoffAddress:
+      title: The address where the delivery needs to be dropped off.
+      description: The address where the delivery needs to be dropped off.
+      required:
+        - city
+        - state
+        - street
+        - zip_code
+      type: object
+      properties:
+        city:
+          type: string
+          description: City for the address
+          example: San Francisco
+          nullable: false
+        state:
+          type: string
+          description: State for the address
+          example: California
+          nullable: false
+        street:
+          type: string
+          description: Street for the address
+          example: 901 Market Street
+          nullable: false
+        unit:
+          type: string
+          description: Suite, Apartment or Unit number of the address
+          example: 'Suite #600'
+          nullable: false
+        zip_code:
+          type: string
+          description: Zipcode for the address
+          example: '94105'
+          nullable: false
+        full_address:
+          type: string
+          description: >-
+            Comma separated full address, in the order appropriate for your
+            locale. Can be used as replacement for all other address component
+            fields (unit, street, city, state, zip). Takes precedence over all
+            other address component fields (unit, street, city, state, zip) if
+            case of combined input.
+          example: 901 Market Street 6th Floor, San Francisco, CA 94103
+        location:
+          title: The coordinates of dropoff address
+          description: >-
+            The Lat/Lng for dropoff address. This is an optional field that is
+            being tested and is ignored unless indicated otherwise to you by the
+            DoorDash team. If both location and text address are provided, we
+            will use location for navigation and text address (and corresponding
+            geocoded lat/lng) for all downstream calculations (fees,
+            serviceability, etc.). Please contact us if interested in joining
+            our pilot test group.
+          required:
+            - lat
+            - lng
+          type: object
+          properties:
+            lat:
+              type: double
+              description: Latitude for the address
+              example: 37.78
+              nullable: false
+            lng:
+              type: double
+              description: Longitude for the address
+              example: -122.4
+              nullable: false
+    DropoffAddressResponse:
+      title: The address where the delivery needs to be dropped off.
+      description: The address where the delivery needs to be dropped off.
+      required:
+        - city
+        - state
+        - street
+        - zip_code
+      type: object
+      properties:
+        city:
+          type: string
+          description: City for the address
+          example: San Francisco
+          nullable: false
+        state:
+          type: string
+          description: State for the address
+          example: California
+          nullable: false
+        street:
+          type: string
+          description: Street for the address
+          example: 901 Market Street
+          nullable: false
+        unit:
+          type: string
+          description: Suite, Apartment or Unit number of the address
+          example: 'Suite #600'
+          nullable: false
+        zip_code:
+          type: string
+          description: Zipcode for the address
+          example: '94105'
+          nullable: false
+        dasher_parking_details:
+          type: string
+          description: >-
+            An identifier describing where the dasher is parked, supplied by the
+            dasher via the app. This value is null when the feature is not
+            enabled.
+          example: Parking Stall 1234
+    PickupAddress:
+      title: The address the delivery needs to be picked up from.
+      description: >-
+        The address the delivery needs to be picked up from. Required unless
+        your request includes an `external_store_id` that you've already used in
+        at least one successful delivery request. If both `pickup_address` and
+        `external_store_id` are included, `pickup_address` is ignored in favor
+        of the existing address associated with the store.
+      required:
+        - city
+        - state
+        - street
+        - zip_code
+      type: object
+      properties:
+        city:
+          type: string
+          description: City for the address
+          example: San Francisco
+        state:
+          type: string
+          description: State for the address
+          example: California
+        street:
+          type: string
+          description: Street for the address
+          example: 101 Howard Street
+        unit:
+          type: string
+          description: Suite, Apartment or Unit number of the address
+          example: Apt 301
+        zip_code:
+          type: string
+          description: Zipcode for the address
+          example: '94105'
+        full_address:
+          type: string
+          description: >-
+            Comma separated full address, in the order appropriate for your
+            locale. Can be used as replacement for all other address component
+            fields (unit, street, city, state, zip). Takes precedence over all
+            other address component fields (unit, street, city, state, zip) if
+            case of combined input.
+          example: 901 Market Street 6th Floor, San Francisco, CA 94103
+    CreationPickupAddress:
+      title: >-
+        The address the delivery needs to be picked up from. This field is not
+        required for existing stores with a known `external_store_id`.
+      description: The address the delivery needs to be picked up from.
+      required:
+        - city
+        - state
+        - street
+        - zip_code
+      type: object
+      properties:
+        city:
+          type: string
+          description: City for the address
+          example: San Francisco
+        state:
+          type: string
+          description: State for the address
+          example: California
+        street:
+          type: string
+          description: Street for the address
+          example: 101 Howard Street
+        unit:
+          type: string
+          description: Suite, Apartment or Unit number of the address
+          example: Apt 301
+        zip_code:
+          type: string
+          description: Zipcode for the address
+          example: 94105
+        location:
+          $ref: '#/components/schemas/location'
+    PickupAddressResponse:
+      title: The address the delivery needs to be picked up from.
+      description: The address the delivery needs to be picked up from.
+      required:
+        - city
+        - state
+        - street
+        - zip_code
+      type: object
+      properties:
+        city:
+          type: string
+          description: City for the address
+          example: San Francisco
+        state:
+          type: string
+          description: State for the address
+          example: California
+        street:
+          type: string
+          description: Street for the address
+          example: 101 Howard Street
+        unit:
+          type: string
+          description: Suite, Apartment or Unit number of the address
+          example: Apt 301
+        zip_code:
+          type: string
+          description: Zipcode for the address
+          example: '94105'
+        dasher_parking_details:
+          type: string
+          description: >-
+            An identifier describing where the dasher is parked, supplied by the
+            dasher via the app. This value is null when the feature is not
+            enabled.
+          example: Parking Stall 1234
+    DeliveryEstimate:
+      title: Estimate
+      required:
+        - delivery_time
+        - fee
+        - pickup_time
+        - currency
+        - id
+      type: object
+      properties:
+        delivery_time:
+          type: string
+          example: '2018-08-22T17:20:28Z'
+          description: Estimated time of delivery
+          nullable: false
         fee:
           type: integer
+          format: int64
+          example: 1900
+          description: Delivery Fees in cents. i.e. 1940 equals $19.40
+          minimum: 0
+          nullable: false
+        fee_components:
+          type: array
+          description: The charges that were applied for this delivery; sums to `fee`.
+          items:
+            $ref: '#/components/schemas/FeeComponent'
+        tax:
+          type: integer
+          format: int32
+          example: 520
           description: >-
-            The estimated delivery fee in cents.
-          example: 42
+            Delivery tax in the lowest currency denomination (e.g. cents). i.e.
+            $5.99 = 599 or null if not available.
+          minimum: 0
+        tax_components:
+          type: array
+          description: >-
+            The taxes that were applied for this delivery; sums to `tax`. Only
+            returned for deliveries in Canada.
+          items:
+            $ref: '#/components/schemas/TaxComponent'
+        pickup_time:
+          type: string
+          example: '2018-08-22T18:10:58Z'
+          description: Estimated time of for order pickup
+          nullable: false
         currency:
           type: string
-          description: >-
-            The currency code for the fee amount.
+          description: Currency for the delivery fees
           example: USD
-        pickup_time:
-          type: string
-          format: date-time
-          description: >-
-            The estimated pickup time.
-          example: '2026-06-02T14:30:00Z'
-        dropoff_time:
-          type: string
-          format: date-time
-          description: >-
-            The estimated dropoff time.
-          example: '2026-06-02T14:30:00Z'
-        delivery_duration:
+        id:
           type: integer
-          description: >-
-            The estimated delivery duration in seconds.
-          example: 42
-    ClassicDeliveryRequest:
-      type: object
+          format: int64
+          description: Id of the delivery estimate
+          example: 48173944
+          nullable: false
+    Address:
+      title: Address
       required:
-      - external_delivery_id
-      - pickup_address
-      - dropoff_address
+        - city
+        - state
+        - street
+        - zip_code
+      type: object
       properties:
-        external_delivery_id:
+        city:
+          type: string
+        state:
+          type: string
+        street:
+          type: string
+        zip_code:
+          type: string
+    location:
+      title: a dictionary containing 'lng' and 'lat'
+      description: Geolocation value in longitude and latitude
+      example:
+        lng: -122.431297
+        lat: 37.773972
+      properties:
+        lng:
+          type: double
+          description: Longitude of the location
+        lat:
+          type: double
+          description: Latitude of the location
+    DeliveryValidationResponse:
+      title: DeliveryValidationResponse
+      type: object
+      properties:
+        valid:
+          description: '`false` as the delivery request is invalid'
+          type: boolean
+          example: false
+        errors:
+          type: object
+          x-nullable: true
+          description: >-
+            Field errors when the validation fails. `null` when the delivery is
+            valid.
+    ValidDeliveryResponse:
+      title: ValidDeliveryResponse
+      type: object
+      properties:
+        valid:
+          description: '`true` delivery is valid, `false` if not.'
+          type: boolean
+          example: true
+        errors:
+          type: object
+          x-nullable: true
+          description: >-
+            Field errors when the validation fails. `null` when the delivery is
+            valid.
+    DeliveryResponse:
+      title: Delivery
+      description: Object that describes the details of a delivery.
+      required:
+        - rating
+        - pickup_window_start_time
+        - actual_return_time
+        - driver_reference_tag
+        - contains_alcohol
+        - updated_at
+        - currency
+        - estimated_pickup_time
+        - pickup_window_end_time
+        - order_volume
+        - id
+        - dasher_status
+        - estimated_delivery_time
+        - fee
+        - quoted_pickup_time
+        - dropoff_address
+        - allow_unattended_delivery
+        - tip
+        - team_lift_required
+        - estimated_return_time
+        - batch_id
+        - external_store_id
+        - pickup_instructions
+        - dasher
+        - status
+        - quoted_delivery_time
+        - actual_pickup_time
+        - delivery_window_start_time
+        - signature_required
+        - delivery_window_end_time
+        - pickup_address
+        - barcode_scanning_required
+        - submit_platform
+        - delivery_tracking_url
+        - external_delivery_id
+        - customer
+        - return_delivery_id
+        - order_value
+        - items
+        - dropoff_instructions
+        - actual_delivery_time
+        - signature_image_url
+        - quantity
+        - delivery_verification_image_url
+        - pickup_verification_image_url
+        - relationship_type
+        - relationship_description
+      type: object
+      properties:
+        rating:
+          type: string
+          description: Rating of the delivery
+        pickup_window_start_time:
           type: string
           description: >-
-            A unique identifier for this delivery.
-          example: D-12345
-        pickup_address:
+            The UTC date-time (in ISO-8601 format) overrides `delivery_time` and
+            `pickup_time` when all four parameters of the delivery window (i.e.
+            `pickup_window_start_time` , `pickup_window_end_time` ,
+            `delivery_window_start_time` , `delivery_window_end_time` ) are
+            provided.
+          example: '2018-08-22T17:20:12Z'
+        pickup_window_end_time:
           type: string
           description: >-
-            The full street address for the pickup location.
-          example: 901 Market St, San Francisco, CA 94105
-        pickup_business_name:
+            The UTC date-time (in ISO-8601 format) overrides `delivery_time` and
+            `pickup_time` when all four parameters of the delivery window (i.e.
+            `pickup_window_start_time` , `pickup_window_end_time` ,
+            `delivery_window_start_time` , `delivery_window_end_time` ) are
+            provided.
+          example: '2018-08-22T17:40:28Z'
+        delivery_window_start_time:
           type: string
           description: >-
-            The business name at the pickup location.
-          example: Acme Pickup Store
-        pickup_phone_number:
+            The UTC date-time (in ISO-8601 format) overrides `delivery_time` and
+            `pickup_time` when all four parameters of the delivery window (i.e.
+            `pickup_window_start_time` , `pickup_window_end_time` ,
+            `delivery_window_start_time` , `delivery_window_end_time` ) are
+            provided.
+          example: '2018-08-22T18:15:28Z'
+        delivery_window_end_time:
           type: string
           description: >-
-            The phone number at the pickup location.
-          example: '+15555551234'
-        pickup_instructions:
+            The UTC date-time (in ISO-8601 format) overrides `delivery_time` and
+            `pickup_time` when all four parameters of the delivery window (i.e.
+            `pickup_window_start_time` , `pickup_window_end_time` ,
+            `delivery_window_start_time` , `delivery_window_end_time` ) are
+            provided.
+          example: '2018-08-22T18:35:28Z'
+        actual_return_time:
+          type: string
+          description: The time at which the delivery was actually returned.
+          example: '2018-08-22T18:35:28Z'
+        driver_reference_tag:
           type: string
           description: >-
-            Special instructions for the Dasher at pickup.
-          example: Leave at the front desk.
-        dropoff_address:
-          type: string
-          description: >-
-            The full street address for the dropoff location.
-          example: 901 Market St, San Francisco, CA 94105
-        dropoff_business_name:
-          type: string
-          description: >-
-            The business name at the dropoff location.
-          example: Acme Pickup Store
-        dropoff_phone_number:
-          type: string
-          description: >-
-            The phone number at the dropoff location.
-          example: '+15555551234'
-        dropoff_instructions:
-          type: string
-          description: >-
-            Special instructions for the Dasher at dropoff.
-          example: Leave at the front desk.
-        dropoff_contact_given_name:
-          type: string
-          description: >-
-            The first name of the dropoff contact.
-          example: Acme Pickup Store
-        dropoff_contact_family_name:
-          type: string
-          description: >-
-            The last name of the dropoff contact.
-          example: Acme Pickup Store
-        order_value:
-          type: integer
-          description: >-
-            The total value of the order in cents.
-          example: 42
-        tip:
-          type: integer
-          description: >-
-            The tip amount in cents.
-          example: 42
-        pickup_time:
-          type: string
-          format: date-time
-          description: >-
-            The requested pickup time in UTC.
-          example: '2026-06-02T14:30:00Z'
-        dropoff_time:
-          type: string
-          format: date-time
-          description: >-
-            The requested dropoff time in UTC.
-          example: '2026-06-02T14:30:00Z'
+            The internal order identifier at the merchant, which the driver can
+            use to pick up the order. One example of a value for this field is
+            the number the cashier hands the customer at a counter-serve
+            restaurant.
+          example: ABD13234
         contains_alcohol:
           type: boolean
           description: >-
-            Whether the order contains alcohol.
+            Set this to true if the order contains alcohol. Default value is
+            false.
           example: true
-        external_business_id:
+        updated_at:
+          type: string
+          description: The timestamp at which the delivery got updated.
+          example: '2018-08-22T18:35:28Z'
+        currency:
+          type: string
+          description: Currency for the delivery fees
+          example: USD
+        estimated_pickup_time:
           type: string
           description: >-
-            The external business ID to associate with this delivery.
-          example: D-12345
+            An estimate of the time by which the dasher will pickup the order
+            from the pickup location provided at the time of delivery creation.
+          example: '2018-08-22T18:35:28Z'
+        order_volume:
+          type: integer
+          format: int64
+          description: >-
+            Only supported for specific use cases. Provide a list of `items`
+            with `weight` and `volume` instead or contact support to discuss the
+            use of `order_volume`.
+          example: 3
+        id:
+          type: integer
+          format: int64
+          description: The id of the delivery
+        dasher_status:
+          type: string
+          description: The status of the dasher
+          enum:
+            - unassigned
+            - accepted
+            - arrived_at_store
+            - picked_up
+            - arrived_at_consumer
+            - dropped_off
+            - pending_return
+            - dropped_off_return
+        estimated_delivery_time:
+          type: string
+          description: >-
+            An estimate of the time by which, the dasher will drop off the order
+            at the customer's location provided at the time of delivery
+            creation.
+          example: '2018-08-22T18:35:28Z'
+        fee:
+          type: integer
+          format: int64
+          example: 1900
+          description: Delivery Fees in cents. i.e. 1940 equals $19.40
+          minimum: 0
+          x-nullable: false
+        fee_components:
+          type: array
+          description: The charges that were applied for this delivery; sums to `fee`.
+          items:
+            $ref: '#/components/schemas/FeeComponent'
+        tax:
+          type: integer
+          format: int32
+          example: 520
+          description: >-
+            Delivery tax in the lowest currency denomination (e.g. cents). i.e.
+            $5.99 = 599 or null if not available.
+          minimum: 0
+        tax_components:
+          type: array
+          description: >-
+            The taxes that were applied for this delivery; sums to `tax`. Only
+            returned for deliveries in Canada.
+          items:
+            $ref: '#/components/schemas/TaxComponent'
+        quoted_pickup_time:
+          type: string
+          description: >-
+            Estimated time at which the delivery will be picked up from the
+            merchant location specified during delivery creation.
+          example: '2018-08-22T17:20:28Z'
+        dropoff_address:
+          $ref: '#/components/schemas/DropoffAddressResponse'
+        allow_unattended_delivery:
+          type: boolean
+          description: >-
+            If true, flags the order as one that does not require the customer
+            to be present to receive the delivery. Cannot be true if
+            `signature_required` is true.
+          example: false
+        tip:
+          type: integer
+          description: The amount to tip the Dasher in cents i.e. $5.00 = 500
+          format: int32
+          example: 500
+        team_lift_required:
+          type: boolean
+          description: More than one dasher is required to complete the delivery
+          example: true
         external_store_id:
           type: string
           description: >-
-            The external store ID to associate with this delivery.
-          example: D-12345
-    ClassicDeliveryUpdateRequest:
-      type: object
-      properties:
-        tip:
-          type: integer
+            A unique identifier, defined by you, which can be used to track the
+            specific store that the delivery is for.
+          example: '148767394'
+        pickup_instructions:
+          type: string
+          description: Instruction for the dasher for the pickup location.
+          example: Use the back alley of the store for pickup
+        dasher:
+          $ref: '#/components/schemas/Dasher'
+        status:
+          type: string
+          description: The status of the delivery
+          enum:
+            - scheduled
+            - assigned
+            - picked_up
+            - delivered
+            - cancelled
+            - pending_return
+            - returned
+        quoted_delivery_time:
+          type: string
+          description: Estimated time by which the order will be delivered.
+          example: '2018-08-22T18:35:28Z'
+        actual_pickup_time:
+          type: string
+          description: Actual time at which the delivery was picked up by the dasher.
+          example: '2018-08-22T18:35:28Z'
+        signature_required:
+          type: boolean
           description: >-
-            Updated tip amount in cents.
-          example: 42
-        dropoff_instructions:
+            If true, flags the order as one that requires a signature from the
+            consumer. Cannot be true if `allow_unattended_delivery` is true.
+          example: false
+        pickup_address:
+          $ref: '#/components/schemas/PickupAddressResponse'
+        barcode_scanning_required:
+          type: boolean
+          description: >-
+            Barcode scanning at both pickup and dropoff is required to complete
+            the delivery
+          example: false
+        delivery_tracking_url:
           type: string
           description: >-
-            Updated dropoff instructions.
-          example: Leave at the front desk.
-        dropoff_phone_number:
-          type: string
-          description: >-
-            Updated dropoff phone number.
-          example: '+15555551234'
-    ClassicDelivery:
-      type: object
-      properties:
+            Tracking page for the delivery that you can use or share with the
+            sender and/or receiver of the delivery. Note: the URL format is not
+            fixed and may change over time.
+          example: http://drd.sh/d035NtWrk/
         external_delivery_id:
           type: string
           description: >-
-            The unique external delivery ID.
-          example: D-12345
-        delivery_status:
+            A unique identifier across all store locations under a business,
+            defined by the merchant, which can be used to track this specific
+            delivery.
+          example: 1342666-2420
+        customer:
+          $ref: '#/components/schemas/Customer'
+        order_value:
+          type: integer
+          format: int64
+          description: Total value of the order being delivered in cents e.g. 14000 is $140
+          example: 14000
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemResponse'
+          description: >-
+            An array of items provided by the merchant at the time of delivery
+            creation
+        dropoff_instructions:
+          type: string
+          description: Instructions for dasher at the time of delivery drop off
+          example: Please call me to buzz you in
+        actual_delivery_time:
+          type: string
+        signature_image_url:
           type: string
           description: >-
-            The current status of the delivery.
+            The link to an image of the signature supplied by the customer if
+            they were required to sign for the delivery. This link will expire
+            in 3 days.
+          example: >-
+            https://doordash-static.s3-us-west-2.amazonaws.com/media/drive/drive-logo.png
+        quantity:
+          description: Quantity of the item being delivered.
+          type: integer
+          format: int64
+          example: 1
+        delivery_verification_image_url:
+          type: string
+          description: >-
+            A URL for the delivery verification image uploaded by the Dasher;
+            only available if the delivery required a verification image to be
+            taken at delivery.
+          example: >-
+            https://doordash-static.s3-us-west-2.amazonaws.com/media/drive/drive-logo.png
+        pickup_verification_image_url:
+          type: string
+          description: >-
+            A URL for the pickup verification image uploaded by the Dasher; only
+            available if the delivery required a verification image to be taken
+            at pickup.
+          example: >-
+            https://doordash-static.s3-us-west-2.amazonaws.com/media/drive/drive-logo.png
+        relationship_type:
+          type: string
+          description: >-
+            For deliveries where `signature_required` is `true`, how the person
+            who signed for the delivery is related to the delivery recipient.
           enum:
-          - created
-          - confirmed
-          - enroute_to_pickup
-          - arrived_at_pickup
-          - picked_up
-          - enroute_to_dropoff
-          - arrived_at_dropoff
-          - delivered
-          - cancelled
-          - returned
-          example: created
-        fee:
-          type: integer
-          description: >-
-            The delivery fee in cents.
-          example: 42
-        currency:
+            - Self
+            - Wife
+            - Husband
+            - Mother
+            - Father
+            - Daughter
+            - Son
+            - Front desk
+            - Nurse
+            - Caregiver
+            - Other
+          example: Self
+        relationship_description:
           type: string
           description: >-
-            The currency code.
-          example: USD
-        tip:
-          type: integer
+            For deliveries where `signature_required` is `true` and
+            `relationship_type` is `other`, a description of how the person who
+            signed for the delivery is related to the delivery recipient.
+          example: Brother
+        order_contains_list:
+          type: array
           description: >-
-            The tip amount in cents.
-          example: 42
-        pickup_address:
-          type: string
+            An object that specifies the restricted item(s) contained in this
+            order. The values that can be specified are 'pharmacy_items'
+            (delivery contains pharmacy items), 'age_restricted_pharmacy_items'
+            (the order is an S3+ pharmacy order which requires ID Verification
+            and can only be delivered to 18+ year olds), 'tobacco_items'
+            (delivery contains tobacco items, requires ID Verification),
+            'hemp_items' (delivery contains hemp items, requires ID
+            Verification), 'otc_items' (delivery contains otc items, requires ID
+            Verification)
+          enum:
+            - pharmacy_items
+            - age_restricted_pharmacy_items
+            - tobacco_items
+            - hemp_items
+            - otc_items
+          example:
+            - pharmacy_items
+            - age_restricted_pharmacy_items
+            - tobacco_items
+            - hemp_items
+            - otc_items
+        pin_code_verification_metadata:
+          type: object
           description: >-
-            The pickup address.
-          example: 901 Market St, San Francisco, CA 94105
-        dropoff_address:
-          type: string
-          description: >-
-            The dropoff address.
-          example: 901 Market St, San Francisco, CA 94105
-        pickup_time_estimated:
-          type: string
-          format: date-time
-          description: >-
-            The estimated pickup time.
-          example: '2026-06-02T14:30:00Z'
-        pickup_time_actual:
-          type: string
-          format: date-time
-          description: >-
-            The actual pickup time.
-          example: '2026-06-02T14:30:00Z'
-        dropoff_time_estimated:
-          type: string
-          format: date-time
-          description: >-
-            The estimated dropoff time.
-          example: '2026-06-02T14:30:00Z'
-        dropoff_time_actual:
-          type: string
-          format: date-time
-          description: >-
-            The actual dropoff time.
-          example: '2026-06-02T14:30:00Z'
-        dasher_id:
-          type: integer
-          description: >-
-            The assigned Dasher's ID.
-          example: 42
-        dasher_name:
-          type: string
-          description: >-
-            The assigned Dasher's first name.
-          example: Acme Pickup Store
-        tracking_url:
-          type: string
-          format: uri
-          description: >-
-            A URL for tracking the delivery.
-          example: https://example.com/path/abc123
-        created_at:
-          type: string
-          format: date-time
-          description: >-
-            When the delivery was created.
-          example: '2026-06-02T14:30:00Z'
-        updated_at:
-          type: string
-          format: date-time
-          description: >-
-            When the delivery was last updated.
-          example: '2026-06-02T14:30:00Z'
-    Business:
+            An object that contains dropoff pin code verification metadata.
+            Please reach out to Doordash to enable this feature for your
+            business.
+          properties:
+            pin_code_type:
+              type: string
+              description: >-
+                An enum that specifies the pin code value type. The values that
+                can be specified are `customer_phone_number` (pin code for
+                dropoff verification is the customer phone number's last 4
+                digits), `merchant_provided_number` (pin code for dropoff
+                verification is the merchant provided 4 digit number),
+                `random_number` (pin code for dropoff verification is the random
+                4 digit number generated by DD). Pin Code can be enabled only
+                for orders that are non-contactless and not unattended
+                deliveries
+              enum:
+                - customer_phone_number
+                - merchant_provided_number
+                - random_number
+              example: customer_phone_number
+            pin_code_value:
+              type: string
+              description: >-
+                An object that contains pin code value, which should be a 4
+                digit number. This must be sent only for
+                `merchant_provided_number` pin code type.
+              pattern: /^\d{4}$/
+              example: '1234'
+    DeliveryCancelResponse:
+      title: DeliveryCancelResponse
       type: object
       properties:
-        external_business_id:
+        return_initiated:
+          type: boolean
+        cancelled_at:
           type: string
-          description: >-
-            The unique external identifier for the business.
-          example: D-12345
-        name:
-          type: string
-          description: >-
-            The name of the business.
-          example: Acme Pickup Store
-        description:
-          type: string
-          description: >-
-            A description of the business.
-          example: Leave at the front desk.
-    BusinessRequest:
+    ValidationFieldErrorResponse:
+      title: ValidationFieldErrorResponse
       type: object
-      required:
-      - external_business_id
-      - name
-      properties:
-        external_business_id:
-          type: string
-          description: >-
-            A unique external identifier for the business.
-          example: D-12345
-        name:
-          type: string
-          description: >-
-            The name of the business.
-          example: Acme Pickup Store
-        description:
-          type: string
-          description: >-
-            A description of the business.
-          example: Leave at the front desk.
-    Store:
-      type: object
-      properties:
-        external_business_id:
-          type: string
-          description: >-
-            The external business ID this store belongs to.
-          example: D-12345
-        external_store_id:
-          type: string
-          description: >-
-            The unique external identifier for the store.
-          example: D-12345
-        name:
-          type: string
-          description: >-
-            The name of the store.
-          example: Acme Pickup Store
-        phone_number:
-          type: string
-          description: >-
-            The phone number for the store.
-          example: '+15555551234'
-        address:
-          type: string
-          description: >-
-            The full street address of the store.
-          example: 901 Market St, San Francisco, CA 94105
-    StoreRequest:
-      type: object
-      required:
-      - external_store_id
-      - name
-      - address
-      properties:
-        external_store_id:
-          type: string
-          description: >-
-            A unique external identifier for the store.
-          example: D-12345
-        name:
-          type: string
-          description: >-
-            The name of the store.
-          example: Acme Pickup Store
-        phone_number:
-          type: string
-          description: >-
-            The phone number for the store.
-          example: '+15555551234'
-        address:
-          type: string
-          description: >-
-            The full street address of the store.
-          example: 901 Market St, San Francisco, CA 94105
-    Error:
-      type: object
+      description: The response returned when validation for field errors are encountered.
+      nullable: true
+      readOnly: true
       properties:
         message:
           type: string
+          description: The message associated with the error, if any
+          example: Something went wrong
+          readOnly: true
+          nullable: true
+        field_errors:
+          type: array
+          description: Error objects that were generated during the validation call
+          items:
+            $ref: '#/components/schemas/ValidationFieldError'
+          nullable: false
+          readOnly: true
+    ValidationFieldError:
+      title: FieldError
+      type: object
+      description: Field Errors that occur during the api call.
+      required:
+        - field
+        - error
+      properties:
+        field:
+          type: string
+          description: Name of the field where the error has occurred
+          example: pickup_phone_number
+        error:
+          type: string
+          description: Error objects that were generated during the validation call
+          example: Invalid phone number format
+    ItemRequest:
+      title: Item
+      description: Items in the delivery
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: Mega Bean and Cheese Burrito
+          description: Name of the item being delivered.
+        description:
+          type: string
+          example: >-
+            Mega Burrito contains the biggest beans of the land with extra
+            cheese.
+          description: Description of the item being delivered
+        barcode:
+          type: string
+          example: '12342830041'
           description: >-
-            A human-readable error message.
-          example: example
-        code:
+            Barcode identifying the item. This value must be in one of the
+            following formats: Data Matrix, AZTEC, Code 128, Code 39, Code 93,
+            CODABAR, EAN 13, EAN 8, ITF, UPC A, UPC E, PDF417
+        quantity:
+          type: int
+          example: 2
+          description: Quantity of the item being delivered. Defaults to 1 if not provided.
+        external_id:
+          type: string
+          example: 123-123443434b
+          description: External name/id for the item as setup by the merchant.
+        volume:
+          maximum: 1000
+          exclusiveMaximum: true
+          type: double
+          example: 5.3
+          description: >-
+            Unit volume of 1 instance of this item, in cubic feet, with or
+            without a decimal point. The overall volume of this item is
+            calculated by multiplying this field by `quantity`.
+        weight:
+          type: double
+          example: 2.8
+          description: >-
+            Unit weight of 1 instance of this item, in pounds (lbs), with or
+            without a decimal point. The overall weight of this item is
+            calculated by multiplying this field by `quantity`.
+        length:
+          minimum: 0
+          type: double
+          example: 2.8
+          description: >-
+            Unit length of 1 instance of this item, in inches, with or without a
+            decimal point.
+        width:
+          minimum: 0
+          type: double
+          example: 2.8
+          description: >-
+            Unit width of 1 instance of this item, in inches, with or without a
+            decimal point.
+        height:
+          minimum: 0
+          type: double
+          example: 2.8
+          description: >-
+            Unit height of 1 instance of this item, in inches, with or without a
+            decimal point.
+        price:
+          type: int
+          example: 1000
+          description: >-
+            Unit price of 1 instance of this item, in cents, i.e. 1000 = 10.00
+            in local currency. The overall price of this item is calculated by
+            multiplying this field by `quantity`.
+    ItemResponse:
+      title: Item
+      description: Items in the delivery
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          example: Mega Bean and Cheese Burrito
+          description: Name of the item being delivered.
+        description:
+          type: string
+          example: >-
+            Mega Burrito contains the biggest beans of the land with extra
+            cheese.
+          description: Description of the item being delivered
+        barcode:
+          type: string
+          example: '12342830041'
+          description: >-
+            Barcode identifying the item. This value must be in one of the
+            following formats: Data Matrix, AZTEC, Code 128, Code 39, Code 93,
+            CODABAR, EAN 13, EAN 8, ITF, UPC A, UPC E, PDF417
+        scan_status:
+          type: string
+          example: unknown
+          description: >
+            Represents whether or not the dasher has scanned this item as a part
+            of the delivery. Possible statuses:
+
+            - "unknown" -> initial state, scanning not attempted yet
+
+            - "scanned" -> this item was scanned in the Dasher app via the
+            barcode scanner
+
+            - "manually_scanned" -> currently not used, reserved for future use
+
+            - "missing" -> this item was not scanned even though it was
+            requested
+
+            - "overage" -> this is an extra item that was not originally
+            requested, but was scanned anyway
+        quantity:
+          type: int
+          example: 2
+          description: Quantity of the item being delivered. Defaults to 1 if not provided.
+        external_id:
+          type: string
+          example: 123-123443434b
+          description: External name/id for the item as setup by the merchant.
+        volume:
+          type: int
+          example: 5.3
+          description: >-
+            Unit volume of 1 instance of this item, in cubic feet, with or
+            without a decimal point. The overall volume of this item is
+            calculated by multiplying this field by `quantity`.
+        weight:
+          type: int
+          example: 2.8
+          description: >-
+            Unit weight of 1 instance of this item, in pounds (lbs), with or
+            without a decimal point. The overall weight of this item is
+            calculated by multiplying this field by `quantity`.
+        price:
+          type: int
+          example: 1000
+          description: >-
+            Unit price of 1 instance of this item, in cents, i.e. 1000 = 10.00
+            in local currency. The overall price of this item is calculated by
+            multiplying this field by `quantity`.
+    DuplicateDeliveryError:
+      title: DuplicateDeliveryError
+      type: object
+      description: >-
+        Error returned with the submitted delivery creation request is a
+        duplicate and has a delivery already created for it.
+      required:
+        - field
+        - error
+      properties:
+        delivery_id:
+          type: int
+          description: Id of the delivery that is already created
+          example: 1123214424
+        external_delivery_id:
+          type: string
+          description: Merchant provided delivery id
+          example: '142355213'
+    Dasher:
+      title: Dasher
+      type: object
+      description: >-
+        The driver picking up the order from the store and dropping it off at
+        the customer.
+      required:
+        - phone_number
+        - id
+        - first_name
+        - last_name
+      properties:
+        id:
+          type: int
+          description: The unique identifier for the Dasher
+          example: 1232142
+        first_name:
+          type: string
+          description: The first name of the Dasher
+          example: John
+        last_name:
+          type: string
+          description: Last name of the Dasher
+          example: Wick
+        phone_number:
           type: string
           description: >-
-            A machine-readable error code.
-          example: ABC123
+            Masked phone number of the Dasher for the merchant to use. Number is
+            masked for privacy and expires 30 minutes after the delivery is
+            completed.
+          example: +1-501-234-1343
+        dasher_phone_number_for_customer:
+          type: string
+          description: >-
+            Masked phone number of the Dasher for the customer to use. Number is
+            masked for privacy and expires 30 minutes after the delivery is
+            completed.
+          example: +1-501-234-1343
+        profile_image_url:
+          type: string
+          description: A URL to a photo of the Dasher
+        vehicle:
+          $ref: '#/components/schemas/Vehicle'
+        location:
+          $ref: '#/components/schemas/Location'
+    Location:
+      title: Location
+      type: object
+      description: Geolocation value in latitude and longitude
+      properties:
+        lat:
+          type: double
+          description: Latitude of the location
+          example: 123.1312343
+        lng:
+          type: double
+          description: Longitude of the location
+          example: -37.2144343
+    Vehicle:
+      title: Vehicle
+      type: object
+      description: Details of a vehicle
+      properties:
+        color:
+          type: string
+          description: Unused
+          example: ''
+        make:
+          type: string
+          description: Model of the vehicle
+          example: Toyota
+        model:
+          type: string
+          description: Make of the vehicle
+          example: Corolla
+        license_plate_number:
+          type: string
+          description: Unused
+          example: ''
+        year:
+          type: string
+          description: Year the vehicle was made
+          example: '2006'
+    FeeComponent:
+      title: FeeComponent
+      description: Breakdown of the fee that was charged for this delivery; sums to `fee`.
+      type: object
+      required:
+        - type
+        - amount
+      properties:
+        type:
+          type: string
+          description: Name of the fee component.
+          example: distance_based_fee
+          enum:
+            - drive_fee_component_type_unspecified
+            - distance_based_fee
+            - order_value_based_fee
+            - service_fee
+            - mx_subsidy
+            - other
+            - dasher_regulatory_fee
+            - promotion
+            - small_order_fee
+            - flat_fee
+            - dwt_fee
+            - package_fee
+            - fuel_surcharge
+            - delivery_area_surcharge
+            - unrecognized
+        amount:
+          type: integer
+          format: int32
+          description: >-
+            Amount of the fee component in the lowest currency denomination
+            (e.g. cents). i.e. $5.99 = 599
+          example: 1900
+    TaxComponent:
+      title: TaxComponent
+      description: >-
+        Breakdown of the taxes that were charged for this delivery; sums to
+        `tax`. Only returned for deliveries in Canada.
+      type: object
+      required:
+        - type
+        - amount
+      properties:
+        type:
+          type: string
+          description: Name of the tax component.
+          example: gst_hst
+          enum:
+            - tax_type_unspecified
+            - gst_hst
+            - qst
+            - pst
+            - unrecognized
+        amount:
+          type: integer
+          format: int32
+          description: >-
+            Amount of the tax component in the lowest currency denomination
+            (e.g. cents). i.e. $5.99 = 599
+          example: 520
+    BusinessName:
+      title: Business Name
+      type: string
+      pattern: Any non empty string
+      description: >-
+        Human readable name for the business. Used when the details of a
+        business are shown to a customer, Dasher, merchant, or support agent.
+      example: Neighborhood Deli
+    BusinessDescription:
+      type: string
+      pattern: Any non empty string
+      description: >-
+        Short description of the business. Used in the DoorDash Merchant Portal.
+        Maximum length of description is 100 characters
+      example: A neighborhood deli serving many tasty sandwiches and soups.
+    BizExternalBusinessId:
+      type: string
+      pattern: /^[A-Za-z0-9_-]{3,64}$/
+      description: Unique, caller-selected ID of the business.
+      example: a0720d55-7cbe-41ce-8185-58285b7985cd
+    BusinessActivationStatus:
+      type: string
+      description: >-
+        Activation status of the business. Used primarily for the automatic
+        self-serve onboarding flow.
+      enum:
+        - initiated
+        - pending_external_activation
+        - pending_legal_agreement
+        - abandoned
+        - failed
+        - active
+        - inactive
+      example: active
+    ExternalMetadata:
+      title: ExternalMetadata
+      description: >-
+        Additional caller-specific metadata about the business. Used primarily
+        for the automatic self-serve onboarding flow.
+      type: object
+      properties:
+        number_of_stores:
+          type: integer
+          description: Number of stores owned by the business.
+          example: '10'
+        client_email:
+          type: string
+          description: Business owner or contact email address.
+          example: merchant@doordash.com
+        client_phone_number:
+          type: string
+          description: Business owner or contact phone number.
+          example: '+12065551212'
+        external_store_ids:
+          type: array
+          items:
+            type: String
+          description: External store_ids that merchant wants MWP/DoorDash to create stores
+    Business:
+      title: Business
+      description: Details of a business.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/BusinessName'
+        description:
+          $ref: '#/components/schemas/BusinessDescription'
+        external_business_id:
+          $ref: '#/components/schemas/BizExternalBusinessId'
+        activation_status:
+          $ref: '#/components/schemas/BusinessActivationStatus'
+        created_at:
+          type: string
+          description: Time when the business was created. Uses ISO-8601 format.
+          example: '2022-04-25T17:21:43Z'
+        last_updated_at:
+          type: string
+          description: Time when the business was last updated. Uses ISO-8601 format.
+          example: '2022-04-25T17:21:43Z'
+        is_test:
+          type: boolean
+          description: Indicates whether the business was created as a test business.
+          example: false
+        external_metadata:
+          $ref: '#/components/schemas/ExternalMetadata'
+    FieldError:
+      title: FieldError
+      type: object
+      description: A field whose value couldn't be validated.
+      required:
+        - field
+        - error
+      properties:
+        field:
+          type: string
+          description: Name of the field whose value couldn't be validated.
+          example: pickup_phone_number
+        error:
+          type: string
+          description: The error that was encountered when validating the field's value.
+          example: Invalid phone number format
+    validation_field_error:
+      x-error: true
+      title: ValidationFieldError
+      type: object
+      description: One or more request values couldn't be validated.
+      required:
+        - code
+        - message
+        - field_errors
+      properties:
+        code:
+          type: string
+          enum:
+            - validation_error
+        message:
+          type: string
+          description: One or more request values couldn't be validated.
+          example: One or more request values couldn't be validated.
         field_errors:
           type: array
           description: >-
-            A list of field-level validation errors.
+            The list of fields whose values couldn't be validated. See more
+            [error
+            examples](https://developer.doordash.com/en-US/docs/drive/reference/errors)
           items:
+            $ref: '#/components/schemas/FieldError'
+          nullable: false
+          readOnly: true
+      components:
+        schemas:
+          FieldError:
+            title: FieldError
             type: object
+            description: A field whose value couldn't be validated.
+            required:
+              - field
+              - error
             properties:
               field:
                 type: string
-                description: >-
-                  The field with the error.
+                description: Name of the field whose value couldn't be validated.
+                example: pickup_phone_number
               error:
                 type: string
                 description: >-
-                  The error message.
+                  The error that was encountered when validating the field's
+                  value.
+                example: Invalid phone number format
+    authorization_error:
+      x-error: true
+      type: object
+      description: >-
+        Authorization error: the credentials provided with the request don't
+        work for the requested operation
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - authorization_error
+          default: authorization_error
+        message:
+          type: string
+          example: >-
+            Authorization error: the credentials provided with the request don't
+            work for the requested operation
+          default: >-
+            Authorization error: the credentials provided with the request don't
+            work for the requested operation
+    unknown_business_error:
+      x-error: true
+      type: object
+      description: External business ID was not found.
+      required:
+        - code
+        - message
+        - external_business_id
+      properties:
+        code:
+          type: string
+          enum:
+            - unknown_business_id
+        message:
+          type: string
+          default: External Business ID was not found
+          example: External Business ID was not found
+        external_business_id:
+          type: string
+          description: The external business ID that couldn't be found.
+          example: a0720d55-7cbe-41ce-8185-58285b7985cd
+    server_fault:
+      x-error: true
+      type: object
+      description: Internal service failure, please try again later.
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          enum:
+            - service_fault
+          default: service_fault
+        message:
+          type: string
+          example: Internal service failure, please try again later.
+          default: Internal service failure, please try again later.
+    UpdateBusinessInput:
+      title: UpdateBusinessInput
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/BusinessName'
+        description:
+          $ref: '#/components/schemas/BusinessDescription'
+        activation_status:
+          $ref: '#/components/schemas/BusinessActivationStatus'
+    PaginatedBusinessList:
+      type: object
+      required:
+        - business_list
+        - result_count
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Business'
+          description: Max length of result set is 25
+        continuation_token:
+          type: string
+          description: >-
+            Opaque string that can be used to fetch next page of businesses, the
+            token value will be null if there are no more businesses to fetch.
+        result_count:
+          type: integer
+    CreateBusinessInput:
+      title: CreateBusinessInput
+      type: object
+      properties:
+        external_business_id:
+          $ref: '#/components/schemas/BizExternalBusinessId'
+        name:
+          $ref: '#/components/schemas/BusinessName'
+        description:
+          $ref: '#/components/schemas/BusinessDescription'
+        activation_status:
+          $ref: '#/components/schemas/BusinessActivationStatus'
+      required:
+        - name
+        - external_business_id
+    Name:
+      title: Store Name
+      type: string
+      pattern: Any non empty string
+      description: The name of the store.
+      example: 'Neighborhood Deli #10'
+    StoreExternalBusinessId:
+      type: string
+      pattern: /^[A-Za-z0-9_-]{3,64}$/
+      description: Unique, caller-selected ID for the business.
+      example: a0720d55-7cbe-41ce-8185-58285b7985cd
+    StoreExternalStoreId:
+      type: string
+      pattern: /^[A-Za-z0-9_-]{3,64}$/
+      description: A unique ID for the store, selected or generated by the API caller.
+      example: ed178ef3-b486-4ce8-8baa-5bc9f0f3fa4a
+    StorePhoneNumber:
+      type: string
+      pattern: Any non empty string, validated by country
+      description: >-
+        Phone number of the store. Used when a customer, Dasher, or support
+        agent needs to contact the store.
+      example: '+12065551212'
+    StoreAddress:
+      type: string
+      pattern: Any non empty string
+      description: >-
+        The full address of the store, in the order appropriate for your locale,
+        with each element separated by a comma.
+      example: 901 Market Street, 6th Floor, San Francisco, CA, 94103
+    StoreActivationStatus:
+      type: string
+      description: Activation status of the store.
+      enum:
+        - active
+        - inactive
+    Store:
+      title: Store
+      description: Details of a store.
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/Name'
+        external_business_id:
+          $ref: '#/components/schemas/StoreExternalBusinessId'
+        external_store_id:
+          $ref: '#/components/schemas/StoreExternalStoreId'
+        phone_number:
+          $ref: '#/components/schemas/StorePhoneNumber'
+        address:
+          $ref: '#/components/schemas/StoreAddress'
+        status:
+          $ref: '#/components/schemas/StoreActivationStatus'
+        is_test:
+          type: boolean
+          description: Indicates whether the store was created as a test store.
+          example: false
+        created_at:
+          type: string
+          description: Time when the store was created. Uses ISO-8601 format.
+          example: '2022-04-25T17:21:43Z'
+        last_updated_at:
+          type: string
+          description: Time when the store was last updated. Uses ISO-8601 format.
+          example: '2022-04-25T17:21:43Z'
+    unknown_store_error:
+      x-error: true
+      type: object
+      description: The external store ID wasn't found under the external business ID.
+      required:
+        - code
+        - message
+        - external_business_id
+        - external_store_id
+      properties:
+        code:
+          type: string
+          enum:
+            - unknown_business_id
+            - unknown_store_id_under_business_id
+        message:
+          type: string
+          example: >-
+            The external store ID in the request wasn't found under the external
+            business ID.
+        external_business_id:
+          type: string
+          description: The external business ID that couldn't be found.
+          example: a0720d55-7cbe-41ce-8185-58285b7985cd
+        external_store_id:
+          type: string
+          description: The external store ID that couldn't be found.
+          example: ed178ef3-b486-4ce8-8baa-5bc9f0f3fa4a
+    UpdateStoreInput:
+      title: UpdateStoreInput
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/Name'
+        phone_number:
+          $ref: '#/components/schemas/StorePhoneNumber'
+        address:
+          $ref: '#/components/schemas/StoreAddress'
+    PaginatedStoreList:
+      type: object
+      required:
+        - store_list
+        - result_count
+      properties:
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/Store'
+          nullable: false
+          description: Max length of result set is 25
+        continuation_token:
+          type: string
+          description: >-
+            Opaque string that can be used to fetch next page of stores, the
+            token value will be null if there are no more stores to fetch.
+        result_count:
+          type: integer
+    CreateStoreInput:
+      title: CreateStoreInput
+      type: object
+      properties:
+        external_store_id:
+          $ref: '#/components/schemas/StoreExternalStoreId'
+        name:
+          $ref: '#/components/schemas/Name'
+        phone_number:
+          $ref: '#/components/schemas/StorePhoneNumber'
+        address:
+          $ref: '#/components/schemas/StoreAddress'
+      required:
+        - external_store_id
+        - name
+        - address
+    MissingDependency:
+      title: MissingDependency
+      type: object
+      description: Missing dependencies.
+      required:
+        - dependency
+        - error
+      properties:
+        field:
+          type: string
+          description: identifier for dependency
+          example: invocing
+        error:
+          type: string
+          description: Error string description missing dependency
+          example: Missing invocing set up
+    missing_dependency_error:
+      x-error: true
+      title: MissingDependencyError
+      type: object
+      description: >-
+        The response returned when one or more dependencies required to create a
+        resource are missing.
+      required:
+        - code
+        - message
+        - missing_dependencies
+      properties:
+        code:
+          type: string
+          enum:
+            - missing_dependency_error
+        message:
+          type: string
+          example: Missing dependency
+        missing_dependencies:
+          type: array
+          description: Missing dependencies that were generated during the call
+          items:
+            $ref: '#/components/schemas/MissingDependency'
+          nullable: false
+          readOnly: true
+      MissingDependency:
+        title: MissingDependency
+        type: object
+        description: Missing dependencies.
+        required:
+          - dependency
+          - error
+        properties:
+          field:
+            type: string
+            description: identifier for dependency
+            example: invocing
+          error:
+            type: string
+            description: Error string description missing dependency
+            example: Missing invocing set up
+  parameters:
+    PathExternalBusinessId:
+      name: external_business_id
+      in: path
+      description: >-
+        Unique, caller-selected ID of the business. Validated using the
+        following regular expression: `/^[A-Za-z0-9_-]{3,64}$/` .
+      required: true
+      style: simple
+      explode: false
+      minLength: 1
+      schema:
+        type: string
+    PathExternalStoreId:
+      name: external_store_id
+      in: path
+      description: >-
+        Unique, caller-selected ID for the store. Validated using the following
+        regular expression: `/^[A-Za-z0-9_-]{3,64}$/` .
+      required: true
+      style: simple
+      explode: false
+      minLength: 1
+      schema:
+        type: string

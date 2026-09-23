@@ -1,0 +1,80 @@
+generated: '2026-09-17'
+method: searched
+source: https://registry.npmjs.org/@doordash/sdk, https://proxy.golang.org/github.com/doordash-oss/oapi-codegen-dd/@latest, https://developer.doordash.com/en-US/docs/drive/tutorials/get_started/
+provider: doordash
+description: >-
+  DoorDash publishes one first-party API client library — the Node.js Drive SDK on npm — plus a
+  first-party fork of oapi-codegen it uses to generate Go clients from OpenAPI. Every other
+  DoorDash-named package found on npm, PyPI, Packagist and RubyGems is third-party. The registry
+  metadata is the abandonment signal worth reading here: the only client SDK DoorDash ships last
+  published in October 2024, while the Drive API it wraps has continued to add endpoints
+  (serviceability, items_substitution_recommendation) that the SDK does not cover.
+packages:
+- name: '@doordash/sdk'
+  registry: npm
+  url: https://www.npmjs.com/package/@doordash/sdk
+  language: javascript
+  official: true
+  version: 0.6.13
+  published: '2024-10-07'
+  first_published: '2022-01-27'
+  license: MIT
+  homepage: https://developer.doordash.com/
+  repository: https://github.com/doordash
+  publisher: doordash-admin
+  covers:
+  - doordash Deliveries API
+  - doordash Quotes API
+  note: >-
+    First-party — published by the npm user doordash-admin with homepage developer.doordash.com.
+    Wraps the Drive API delivery request flow only; it does not cover the Marketplace, Item
+    Management or Reporting APIs. 12 published versions, latest 0.6.13 on 2024-10-07.
+- name: github.com/doordash-oss/oapi-codegen-dd
+  registry: go
+  url: https://pkg.go.dev/github.com/doordash-oss/oapi-codegen-dd
+  language: go
+  official: true
+  kind: tooling
+  version: v1.16.3
+  published: '2024-06-04'
+  repository: https://github.com/doordash-oss/oapi-codegen-dd
+  note: >-
+    DoorDash's own fork of deepmap/oapi-codegen, published under the doordash-oss GitHub
+    organization. This is a code generator, not an API client — it is how DoorDash generates Go
+    types from OpenAPI, and it is included because it is a first-party, registry-dated artifact.
+    Version and date read from proxy.golang.org.
+third_party_observed:
+- name: hyperzod/doordash-sdk-php
+  registry: packagist
+  official: false
+- name: dotsplatform/doordash-drive-api-sdk-laravel
+  registry: packagist
+  official: false
+- name: mahan-shoghy/laravel-doordash
+  registry: packagist
+  official: false
+- name: doordash-cli
+  registry: npm
+  official: false
+  note: Published by the npm user latencytdh, not DoorDash.
+- name: doordash
+  registry: pypi
+  official: false
+  note: >-
+    pypi.org/project/doordash 0.0.1 (2026-03-17) is an unrelated "Utility package" with no
+    DoorDash authorship. Recorded so a later pass does not mistake it for a first-party SDK.
+registries_checked:
+- registry: npm
+  result: 1 first-party package
+- registry: pypi
+  result: no first-party package
+- registry: rubygems
+  result: 404 - no package named doordash
+- registry: packagist
+  result: no first-party package (3 third-party Laravel/PHP wrappers)
+- registry: go
+  result: 1 first-party tooling module
+- registry: maven-central
+  result: not answered within timeout on 2026-09-17; not re-probed
+official_count: 2
+sdk_count: 1
