@@ -60,8 +60,6 @@ apis:
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
   - type: CodeExamples
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
-  - type: GraphQL
-    url: graphql/doordash-graphql.md
   - type: Documentation
     url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
   - type: Documentation
@@ -106,8 +104,6 @@ apis:
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
   - type: CodeExamples
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
-  - type: GraphQL
-    url: graphql/doordash-graphql.md
   - type: Documentation
     url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
   - type: Documentation
@@ -152,8 +148,6 @@ apis:
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
   - type: CodeExamples
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
-  - type: GraphQL
-    url: graphql/doordash-graphql.md
   - type: Documentation
     url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
   - type: Documentation
@@ -197,8 +191,6 @@ apis:
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
   - type: CodeExamples
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
-  - type: GraphQL
-    url: graphql/doordash-graphql.md
   - type: Documentation
     url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
   - type: Documentation
@@ -242,8 +234,6 @@ apis:
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
   - type: CodeExamples
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
-  - type: GraphQL
-    url: graphql/doordash-graphql.md
   - type: Documentation
     url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
   - type: Documentation
@@ -288,8 +278,6 @@ apis:
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
   - type: CodeExamples
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
-  - type: GraphQL
-    url: graphql/doordash-graphql.md
   - type: Documentation
     url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
   - type: Documentation
@@ -332,8 +320,6 @@ apis:
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
   - type: CodeExamples
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
-  - type: GraphQL
-    url: graphql/doordash-graphql.md
   - type: Documentation
     url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
   - type: Documentation
@@ -378,8 +364,6 @@ apis:
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
   - type: CodeExamples
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
-  - type: GraphQL
-    url: graphql/doordash-graphql.md
   - type: Documentation
     url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
   - type: Documentation
@@ -423,8 +407,6 @@ apis:
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
   - type: CodeExamples
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
-  - type: GraphQL
-    url: graphql/doordash-graphql.md
   - type: Documentation
     url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
   - type: Documentation
@@ -467,8 +449,6 @@ apis:
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
   - type: CodeExamples
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
-  - type: GraphQL
-    url: graphql/doordash-graphql.md
   - type: Documentation
     url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
   - type: Documentation
@@ -513,8 +493,6 @@ apis:
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
   - type: CodeExamples
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
-  - type: GraphQL
-    url: graphql/doordash-graphql.md
   - type: Documentation
     url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
   - type: Documentation
@@ -557,8 +535,6 @@ apis:
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-PHP-Sample
   - type: CodeExamples
     url: https://github.com/JoshAtDoorDash/DoorDashAPI-CSharp-Dotnet-Sample
-  - type: GraphQL
-    url: graphql/doordash-graphql.md
   - type: Documentation
     url: https://developer.doordash.com/en-US/docs/drive_classic/overview/about_drive_classic/
   - type: Documentation
