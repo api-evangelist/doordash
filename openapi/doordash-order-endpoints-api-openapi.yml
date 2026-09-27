@@ -1,0 +1,718 @@
+openapi: 3.2.0
+info:
+  title: Doordash Order Endpoints API
+  version: 1.0.0
+  x-logo:
+    url: https://cdn.doordash.com/static/img/merchant/logo-red@3x.png
+    backgroundColor: '#FFFFFF'
+    altText: Doordash Marketplace
+    href: https://developer.doordash.com/
+  description: 'Operations tagged Order Endpoints across 2 of this provider''s published API definitions: doordash-marketplace-legacy-openapi.yml, doordash-marketplace-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://pointofsale.doordash.com
+- url: https://openapi.doordash.com/marketplace
+tags:
+- name: Order Endpoints
+  x-displayName: Order Endpoints
+  description: Endpoints for retrieving and confirming success of orders
+paths:
+  /api/v1/orders/{id}:
+    patch:
+      tags:
+      - Order Endpoints
+      summary: Confirm Order
+      description: Webhook to confirm an order
+      operationId: confirmOrder
+      security:
+      - Authorization: []
+      parameters:
+      - $ref: '#/components/parameters/OrderId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfirmOrderRequest'
+        required: true
+      responses:
+        '202':
+          description: OK
+        '400':
+          description: Order has already been processed or order has expired
+        '401':
+          description: Request is unauthenticated
+        '403':
+          description: Access is denied
+        '404':
+          description: Order with provided ID does not exist
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+      x-codegen-request-body-name: body
+    servers:
+    - url: https://pointofsale.doordash.com
+  /api/v1/orders/{id}/adjustment:
+    patch:
+      tags:
+      - Order Endpoints
+      summary: Cancel/Adjust/Substitute Items
+      description: Endpoint for merchants to cancel items, adjust item/option quantities or substitute items
+      operationId: adjustOrderItems
+      security:
+      - Authorization: []
+      parameters:
+      - $ref: '#/components/parameters/OrderId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdjustOrderItemRequest'
+        required: true
+      responses:
+        '202':
+          description: OK
+        '400':
+          description: Order is not confirmed or has been cancelled
+        '404':
+          description: Order, item, or option with provided ID does not exist
+        '500':
+          description: Internal Server Error
+      x-codegen-request-body-name: body
+    servers:
+    - url: https://pointofsale.doordash.com
+  /api/v1/orders/{id}/cancellation:
+    patch:
+      tags:
+      - Order Endpoints
+      summary: Cancel Order
+      description: Endpoint for merchants to cancel an order
+      operationId: cancelOrder
+      security:
+      - Authorization: []
+      parameters:
+      - $ref: '#/components/parameters/OrderId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelOrderRequest'
+        required: true
+      responses:
+        '202':
+          description: OK
+        '400':
+          description: Order is not confirmed or has already been cancelled
+        '401':
+          description: Request is unauthenticated
+        '403':
+          description: Access is denied
+        '404':
+          description: Order with provided ID does not exist
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+      x-codegen-request-body-name: body
+    servers:
+    - url: https://pointofsale.doordash.com
+  /api/v1/orders/{id}/events/{event_type}:
+    patch:
+      tags:
+      - Order Endpoints
+      summary: Order Events
+      description: Endpoint for order events. In order to use `patch_order_events`, separate token is required.
+      operationId: storeConfirmOrderReadyForPickup
+      security:
+      - Authorization: []
+      parameters:
+      - $ref: '#/components/parameters/OrderId'
+      - $ref: '#/components/parameters/OrderEventType'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderEventsRequest'
+        required: true
+      responses:
+        '202':
+          description: OK
+        '400':
+          description: Order has expired
+        '401':
+          description: Request is unauthenticated
+        '403':
+          description: Access is denied
+        '404':
+          description: Order with provided ID does not exist
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+      x-codegen-request-body-name: body
+    servers:
+    - url: https://pointofsale.doordash.com
+  /api/v1/orders/{id}/return:
+    post:
+      tags:
+      - Order Endpoints
+      summary: Return Order [Retail Only]
+      description: Endpoint for merchants to indicate an order has been returned (this is only for retail orders, not restaurant orders). To find out more, see https://developer.doordash.com/en-US/docs/marketplace/retail/orders/features/order_returns
+      operationId: returnOrder
+      parameters:
+      - $ref: '#/components/parameters/OrderId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReturnOrderRequest'
+        required: true
+      responses:
+        '202':
+          description: Return request successfully received
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnOrderResponse'
+              example:
+                operation_id: 8a718033-c12c-4d08-9376-0f4a96e4ac08
+                operation_status: QUEUED
+                message: Return request received.
+        '400':
+          description: Missing required fields, item does not belong to order or exists with less than requested return quantity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnOrderValidationErrorResponse'
+              example:
+                code: VALIDATION_ERROR
+                message: One or more request values couldn't be validated.
+                field_errors:
+                - field: return_items.quantity
+                  error: item quantity must be greater than 0
+        '401':
+          description: Request is unauthenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnOrderErrorResponse'
+              example:
+                code: UNAUTHENTICATED
+                message: Request is unauthenticated
+        '403':
+          description: Access to the order or items is denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnOrderErrorResponse'
+              example:
+                code: NO_ACCESS
+                message: Access to the order or items is denied
+        '404':
+          description: Order does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnOrderErrorResponse'
+              example:
+                code: NOT_FOUND
+                message: Order does not exist
+        '409':
+          description: Duplicate refund request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnOrderErrorResponse'
+              example:
+                code: DUPLICATE_REQUEST
+                message: All return items do not belong to the order
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnOrderErrorResponse'
+              example:
+                code: RATE_LIMIT_EXCEEDED
+                message: Rate limit exceeded
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReturnOrderErrorResponse'
+              example:
+                code: INTERNAL_SERVER_ERROR
+                message: Unexpected error occurred
+      x-codegen-request-body-name: body
+    servers:
+    - url: https://openapi.doordash.com/marketplace
+components:
+  schemas:
+    CancelOrderRequest:
+      type: object
+      required:
+      - cancel_reason
+      properties:
+        cancel_reason:
+          type: string
+          enum:
+          - ITEM_OUT_OF_STOCK
+          - STORE_CLOSED
+          - KITCHEN_BUSY
+          - OTHERS
+          example: STORE_CLOSED
+        cancel_details:
+          type: string
+          description: Reason why the order has to be cancelled
+          example: The store is offline and cannot accept the order
+    OrderEventsRequest:
+      type: object
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: Order ID in your system
+          example: 1dfa934a-190c-43a9-b2e0-449e5b8cccde
+    LineItemForRemove:
+      type: object
+      required:
+      - line_item_id
+      - adjustment_type
+      properties:
+        line_item_id:
+          type: string
+          description: line_item_id ID in order Json
+          example: 94b653e4-e394-4330-a714-43e764a223
+        adjustment_type:
+          type: string
+          enum:
+          - ITEM_REMOVE
+          - ITEM_UPDATE
+          - ITEM_SUBSTITUTE
+          example: ITEM_REMOVE
+        substituted_item:
+          type: object
+        options:
+          type: array
+    LineItemOption:
+      type: object
+      required:
+      - line_option_id
+      - adjustment_type
+      properties:
+        line_option_id:
+          type: string
+          description: lint_option_id ID in order Json
+          example: 94b653e4-e394-4330-a714-43e764aergjn
+        adjustment_type:
+          type: string
+          enum:
+          - ITEM_REMOVE
+          - ITEM_UPDATE
+          example: ITEM_UPDATE
+        quantity:
+          type: integer
+          example: 1
+    LineItemForUpdate:
+      type: object
+      required:
+      - line_item_id
+      - adjustment_type
+      properties:
+        line_item_id:
+          type: string
+          description: line_item_id ID in order Json
+          example: 94b653e4-e394-4330-a714-43e764aergjn
+        adjustment_type:
+          type: string
+          enum:
+          - ITEM_REMOVE
+          - ITEM_UPDATE
+          - ITEM_SUBSTITUTE
+          example: ITEM_UPDATE
+        quantity:
+          type: integer
+          example: 2
+          description: desired quantity when adjustment_type is ITEM_UPDATE
+        substituted_item:
+          type: object
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/LineItemOption'
+    LineItemForSubstitute:
+      type: object
+      required:
+      - line_item_id
+      - adjustment_type
+      properties:
+        line_item_id:
+          type: string
+          description: line_item_id ID in order Json
+          example: 94b653e4-e394-4330-a714-43e764ab113
+        adjustment_type:
+          type: string
+          enum:
+          - ITEM_REMOVE
+          - ITEM_UPDATE
+          - ITEM_SUBSTITUTE
+          example: ITEM_SUBSTITUTE
+        substituted_item:
+          type: object
+          $ref: '#/components/schemas/LineItemSubstitution'
+        options:
+          type: array
+    ConfirmOrderRequest:
+      type: object
+      required:
+      - order_status
+      - merchant_supplied_id
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: Order ID in your system
+          example: 1dfa934a-190c-43a9-b2e0-449e5b8cccde
+        order_status:
+          type: string
+          enum:
+          - success
+          - fail
+          example: success
+        failure_reason:
+          type: string
+          description: Reason why order can't be fulfilled. Omit if order_status = success
+          example: The store is offline and cannot accept the order
+        prep_time:
+          type: string
+          description: Estimated time by which order should be ready for pickup. It should be in UTC timezone
+          example: '2021-07-20T21:43:47.324Z'
+        pickup_instructions:
+          type: string
+          maxLength: 128
+          description: Pickup instructions for dasher
+          example: Use the back alley of the store for pickup
+    LineItemSubstitution:
+      type: object
+      required:
+      - merchant_supplied_id
+      properties:
+        name:
+          type: string
+          description: Substituted item name
+          example: Diet Coke
+        merchant_supplied_id:
+          type: string
+          description: Substituted item merchant_supplied_id, required field
+          example: '179'
+        price:
+          type: integer
+          description: Substituted item price
+          example: 2
+        quantity:
+          type: integer
+          description: Substituted item quantity
+          example: 1
+    AdjustOrderItemRequest:
+      type: object
+      required:
+      - items
+      properties:
+        items:
+          type: array
+          items:
+          - $ref: '#/components/schemas/LineItemForUpdate'
+          - $ref: '#/components/schemas/LineItemForRemove'
+          - $ref: '#/components/schemas/LineItemForSubstitute'
+    OrderConfirmationError:
+      type: object
+      required:
+      - code
+      - merchant_supplied_id
+      - message
+      properties:
+        code:
+          type: string
+          description: 'Standardized error code indicating the reason for order failure. `REQUESTED_SLOT_UNAVAILABLE` — the requested pickup slot is unavailable but alternatives exist; respond with a `CAPACITY_THROTTLING` error and the earliest available pickup time. `NO_SLOTS_AVAILABLE` — no pickup capacity is available for the entire day; respond with this code and a null pickup time.
+
+            '
+          enum:
+          - INVALID_ORDER
+          - ITEM_OUT_OF_STOCK
+          - STORE_HOURS_ISSUE
+          - INTERNAL_ERROR
+          - OTHER
+          - CONNECTIVITY_ISSUE
+          - TIME_OUT
+          - STORE_CLOSED
+          - STORE_CLOSED_EARLY
+          - POS_OFFLINE
+          - CAPACITY_THROTTLING
+          - STALE_PICKUP_TIME
+          - ORDER_ONLINE_DISABLED
+          - INVALID_ADDRESS
+          - STORE_RENOVATION
+          - STORE_TEMP_CLOSED
+          - WEATHER_ISSUES
+          - REQUESTED_SLOT_UNAVAILABLE
+          - NO_SLOTS_AVAILABLE
+          example: ITEM_OUT_OF_STOCK
+        merchant_supplied_id:
+          type: string
+          description: The merchant_supplied_id of the specific item or modifier associated with this error.
+          example: item_salad_plate
+        message:
+          type: string
+          description: A human-readable message describing the issue.
+          example: Salad Plate is currently unavailable
+    ReturnOrderValidationErrorResponseFieldError:
+      type: object
+      properties:
+        field:
+          type: string
+          description: The name of the field that failed validation
+          example: return_items.quantity
+        error:
+          type: string
+          description: A short description of the validation error
+          example: item quantity must be greater than 0
+    CancelOrderRequest_2:
+      type: object
+      required:
+      - cancel_reason
+      properties:
+        cancel_reason:
+          type: string
+          enum:
+          - ITEM_OUT_OF_STOCK
+          - STORE_CLOSED
+          - KITCHEN_BUSY
+          - OTHER
+          example: STORE_CLOSED
+        cancel_details:
+          type: string
+          description: Reason why the order has to be cancelled
+          example: The store is offline and cannot accept the order
+    ReturnOrderErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: items_do_not_belong_to_order
+        message:
+          type: string
+          description: Details of failure
+          example: All return items do not belong to the order
+    LineItemForRemove_2:
+      type: object
+      required:
+      - line_item_id
+      - adjustment_type
+      properties:
+        line_item_id:
+          type: string
+          description: line_item_id ID in order Json
+          example: 94b653e4-e394-4330-a714-43e764a223
+        merchant_supplied_id:
+          type: string
+          description: merchant_supplied_id ID in order Json
+          example: 12345
+        adjustment_type:
+          type: string
+          enum:
+          - ITEM_REMOVE
+          - ITEM_UPDATE
+          - ITEM_SUBSTITUTE
+          example: ITEM_REMOVE
+        substituted_item:
+          type: object
+        options:
+          type: array
+    LineItemForUpdate_2:
+      type: object
+      required:
+      - line_item_id
+      - adjustment_type
+      properties:
+        line_item_id:
+          type: string
+          description: line_item_id ID in order Json
+          example: 94b653e4-e394-4330-a714-43e764aergjn
+        merchant_supplied_id:
+          type: string
+          description: merchant_supplied_id ID in order Json
+          example: 12345
+        adjustment_type:
+          type: string
+          enum:
+          - ITEM_REMOVE
+          - ITEM_UPDATE
+          - ITEM_SUBSTITUTE
+          example: ITEM_UPDATE
+        quantity:
+          type: integer
+          example: 2
+          description: desired quantity when adjustment_type is ITEM_UPDATE
+        substituted_item:
+          type: object
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/LineItemOption'
+    LineItemForSubstitute_2:
+      type: object
+      required:
+      - line_item_id
+      - adjustment_type
+      properties:
+        line_item_id:
+          type: string
+          description: line_item_id ID in order Json
+          example: 94b653e4-e394-4330-a714-43e764ab113
+        merchant_supplied_id:
+          type: string
+          description: merchant_supplied_id ID in order Json
+          example: 12345
+        adjustment_type:
+          type: string
+          enum:
+          - ITEM_REMOVE
+          - ITEM_UPDATE
+          - ITEM_SUBSTITUTE
+          example: ITEM_SUBSTITUTE
+        substituted_item:
+          type: object
+          $ref: '#/components/schemas/LineItemSubstitution'
+        options:
+          type: array
+    ReturnItem:
+      type: object
+      required:
+      - merchant_supplied_id
+      - quantity
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: Order item ID in your system
+          example: 94b653e4-e394-4330-a714-43e764a223
+        quantity:
+          type: integer
+          description: Quantity being returned
+          example: 1
+        reason:
+          type: string
+          description: Reason the item is being returned
+          enum:
+          - incorrect_item_received
+          - dashmart_only_item_not_found
+          - incorrect_size_or_weight
+          - incorrect_quantity
+          - sub_not_satisfactory
+          - item_not_received
+          - missing_item
+          - incorrect_size
+          - poorly_packaged_or_handled
+          - shopped_item_not_fresh
+          - did_not_meet_expectations
+          - other
+    ReturnOrderRequest:
+      type: object
+      required:
+      - return_items
+      - return_location_id
+      properties:
+        return_items:
+          type: array
+          description: List of order items being returned
+          items:
+            $ref: '#/components/schemas/ReturnItem'
+        return_location_id:
+          type: string
+          description: Location ID of the store where the items were returned
+    ReturnOrderValidationErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: A code representing the type of error
+          example: validation_error
+        message:
+          type: string
+          description: A short description of the error
+          example: One or more request values couldn't be validated.
+        field_errors:
+          type: array
+          description: List of field-specific validation errors
+          items:
+            $ref: '#/components/schemas/ReturnOrderValidationErrorResponseFieldError'
+    ConfirmOrderRequest_2:
+      type: object
+      required:
+      - order_status
+      - merchant_supplied_id
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: Order ID in your system
+          example: 1dfa934a-190c-43a9-b2e0-449e5b8cccde
+        order_status:
+          type: string
+          enum:
+          - success
+          - fail
+          example: success
+        failure_reason:
+          type: string
+          description: Reason why order can't be fulfilled. Omit if order_status = success
+          example: The store is offline and cannot accept the order
+        errors:
+          type: array
+          description: Structured list of errors when order_status = fail. Mirrors the error format used in Order Cart Validation. Omit if order_status = success.
+          items:
+            $ref: '#/components/schemas/OrderConfirmationError'
+        prep_time:
+          type: string
+          description: Estimated time by which order should be ready for pickup. It should be in UTC timezone
+          example: '2021-07-20T21:43:47.324Z'
+        pickup_instructions:
+          type: string
+          maxLength: 128
+          description: Pickup instructions for dasher
+          example: Use the back alley of the store for pickup
+    ReturnOrderResponse:
+      type: object
+      properties:
+        operation_id:
+          type: string
+          description: Unique identifier for the return request
+          example: 8a718033-c12c-4d08-9376-0f4a96e4ac08
+        operation_status:
+          type: string
+          description: Status of the return request
+          example: QUEUED
+        message:
+          type: string
+          description: Helpful message
+          example: Return request received.
+  parameters:
+    OrderId:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+      description: Order ID
+    OrderEventType:
+      in: path
+      name: event_type
+      required: true
+      schema:
+        type: string
+      description: 'Supported event types: `order_ready_for_pickup`'
+  securitySchemes:
+    Authorization:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- doordash-marketplace-legacy-openapi.yml
+- doordash-marketplace-openapi.yml

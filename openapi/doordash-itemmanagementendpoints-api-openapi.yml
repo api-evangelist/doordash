@@ -1,0 +1,564 @@
+openapi: 3.2.0
+info:
+  description: API to manage item catalog, inventory, pricing and other attributes.
+  version: '2.0'
+  title: Doordash Item management API Specification Item Management…
+  x-logo:
+    url: https://cdn.doordash.com/static/img/merchant/logo-red@3x.png
+    backgroundColor: '#FFFFFF'
+    altText: Doordash Marketplace
+    href: https://developer.doordash.com/
+servers:
+- url: https://openapi.doordash.com/marketplace
+tags:
+- name: ItemManagementEndpoints
+  x-displayName: Item Management Endpoints
+  description: Endpoints for item management
+paths:
+  /api/v2/items:
+    post:
+      tags:
+      - ItemManagementEndpoints
+      summary: Add new items
+      description: Add new items managed by business. Items sold across all stores must be added to business first. Items must be uniquely identifiable across stores. As of now, only one businessId must be specified. Request validation will fail if no businessId or multiple businessIds are specified.
+      operationId: batchAddItems
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchAddOrUpdateItemRequest'
+      responses:
+        '201':
+          description: Ok
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+        '400':
+          description: Request Validation Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: Request Entity Too Large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestNotProcessError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      x-codegen-request-body-name: body
+      deprecated: false
+    patch:
+      tags:
+      - ItemManagementEndpoints
+      summary: Update existing items
+      description: Update existing items managed by business.
+      operationId: batchUpdateItems
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchAddOrUpdateItemRequest'
+      responses:
+        '200':
+          description: Ok
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+        '400':
+          description: Request Validation Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: Request Entity Too Large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestNotProcessError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      x-codegen-request-body-name: body
+      deprecated: false
+components:
+  schemas:
+    server_fault:
+      x-error: true
+      type: object
+      description: Internal service failure, please try again later.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - service_fault
+          default: service_fault
+        message:
+          type: string
+          example: Internal service failure, please try again later.
+          default: Internal service failure, please try again later.
+    BatchAddOrUpdateItemRequest:
+      type: object
+      properties:
+        scope:
+          type: object
+          properties:
+            business_ids:
+              type: array
+              items:
+                type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+    NotFoundError:
+      x-error: true
+      type: object
+      description: Request entity was not found.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - unknown_business_id
+        message:
+          type: string
+          example: Entity was not found
+    SizeInfo:
+      type: object
+      properties:
+        dimensions:
+          type: object
+          properties:
+            length:
+              type: object
+              properties:
+                value:
+                  type: number
+                unit:
+                  type: string
+                  enum:
+                  - inch
+                  - ft
+                  - cm
+                  - m
+            width:
+              type: object
+              properties:
+                value:
+                  type: number
+                unit:
+                  type: string
+                  enum:
+                  - inch
+                  - ft
+                  - cm
+                  - m
+            height:
+              type: object
+              properties:
+                value:
+                  type: number
+                unit:
+                  type: string
+                  enum:
+                  - inch
+                  - ft
+                  - cm
+                  - m
+        weight:
+          type: object
+          properties:
+            value:
+              type: number
+            unit:
+              type: string
+              enum:
+              - lbs
+              - gm
+              - kg
+              - ea
+              - oz
+        volume:
+          type: object
+          properties:
+            value:
+              type: number
+            unit:
+              type: string
+              enum:
+              - oz
+              - mL
+              - L
+        product_specific_size_definition:
+          type: object
+          description: Product-specific size information with separate numeric value and unit of measurement
+          properties:
+            value:
+              type: string
+              description: Numeric value only
+              example: '400'
+            description:
+              type: string
+              description: Unit of measurement only
+              example: g
+    Category:
+      type: object
+      properties:
+        name:
+          type: string
+        sub_category:
+          $ref: '#/components/schemas/Category'
+    FieldError:
+      title: FieldError
+      type: object
+      description: A field whose value couldn't be validated.
+      required:
+      - field
+      - error
+      properties:
+        field:
+          type: string
+          description: Name of the field whose value couldn't be validated.
+          example: pickup_phone_number
+        error:
+          type: string
+          description: The error that was encountered when validating the field's value.
+          example: Invalid phone number format
+    ProgramEligibility:
+      description: Eligibility to items for various programs
+      type: string
+      enum:
+      - SNAP
+      - HSA
+      - FSA
+    Item:
+      title: Item
+      description: Item to be managed by doordash. Should be unique across stores within business.
+      properties:
+        merchant_supplied_item_id:
+          type: string
+          description: Merchant supplied Id to identify an item uniquely within business across all stores. Every item that is shopable by CX must be represented as an unique item
+        name:
+          type: string
+          description: Name of the item
+        description:
+          type: string
+          description: Description of the item
+        product_traits:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductTrait'
+          description: Specifies type of product(s) represented by the item. These attributes will be used to validate product specific attributes in request and apply product specific business logic internally. For example, when WEIGHTED is specified as one of the product trait, presence of weighted_item_info will be validated in the request payload
+        other_identifiers:
+          type: array
+          description: Other identifiers associated with item.
+          items:
+            type: object
+            properties:
+              identifier_type:
+                type: string
+                description: 'Identifier type for item. Note: NSC2 and GTIN are not fully supported yet. Please contact support if you need to use these identifiers.'
+                enum:
+                - UPC
+                - PLU
+                - NSC2
+                - GTIN
+              identifier_value:
+                type: string
+                description: identifier value
+        images:
+          type: array
+          description: Images of the item, atleast one image must be specified
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              sort_id:
+                type: integer
+                description: order in which images should be displayed, 0 will be the primary image
+        size:
+          type: object
+          description: size of the item
+          properties:
+            details:
+              $ref: '#/components/schemas/SizeInfo'
+            pack_size_details:
+              type: object
+              description: item size details per pack
+              properties:
+                count_per_pack:
+                  description: Count per pack
+                  type: integer
+                per_item_size_details:
+                  $ref: '#/components/schemas/SizeInfo'
+        weighted_item_info:
+          type: object
+          description: attributes related to items that are sold by weights
+          properties:
+            average_weight_per_each:
+              type: number
+              description: Average weight per each item or pack
+            average_weight_measurement_unit:
+              type: string
+              enum:
+              - ea
+              - kg
+              - lb
+              - gm
+              - oz
+              default: ea
+              description: unit of measurement (ea, kg, lb, gm, oz)
+            shop_by_measurement_unit:
+              type: string
+              enum:
+              - ea
+              - kg
+              - lb
+              - gm
+              - oz
+              description: How the item is shown to customers
+            price_by_measurement_unit:
+              type: string
+              enum:
+              - ea
+              - kg
+              - lb
+              - gm
+              - oz
+              description: How the item is priced
+        brand_info:
+          type: object
+          description: brand of the item if applicable
+          properties:
+            name:
+              type: string
+              description: Name of the brand
+        program_eligibility:
+          type: array
+          description: Program eligibility of the item
+          items:
+            $ref: '#/components/schemas/ProgramEligibility'
+        item_categorizations:
+          type: array
+          description: One or more categories associated with the item
+          items:
+            type: object
+            properties:
+              category:
+                $ref: '#/components/schemas/Category'
+        product_attributes:
+          type: array
+          description: 'product_attributes allow us to infer everything about an item necessary for customers to shop, dasher to fulfill, merchants to merchandise, and advertisers to advertise. See supported full attribute list: https://developer.doordash.com/en-US/docs/marketplace/retail/catalog_management/supported_attribute'
+          items:
+            $ref: '#/components/schemas/ProductAttributes'
+    AsyncOperationResponse:
+      type: object
+      properties:
+        operation_id:
+          type: string
+        operation_status:
+          type: string
+          enum:
+          - QUEUED
+          - IN_PROGRESS
+          - SUCCESS
+          - FAILED
+          - PARTIAL_SUCCESS
+        message:
+          type: string
+    MultiSelectString:
+      type: object
+      properties:
+        multi_select_string:
+          type: array
+          items:
+            type: string
+    AuthenticationError:
+      x-error: true
+      type: object
+      description: 'Authentication error: the token provided with the request doesn''t work for the requested operation'
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authentication_error
+          default: authentication_error
+        message:
+          type: string
+          example: The [exp] is in the past; the JWT is expired
+          default: The [exp] is in the past; the JWT is expired
+    SingleSelectBool:
+      type: object
+      properties:
+        single_select_bool:
+          type: boolean
+    ProductAttributes:
+      type: object
+      properties:
+        attribute_name:
+          type: string
+          description: attribute name
+        attribute_value:
+          description: attribute value
+          oneOf:
+          - $ref: '#/components/schemas/SingleSelectBool'
+          - $ref: '#/components/schemas/MultiSelectString'
+          - $ref: '#/components/schemas/MultiSelectDouble'
+    ProductTrait:
+      type: string
+      enum:
+      - ALCOHOL
+      - MEDICATION
+      - WEIGHTED
+    MultiSelectDouble:
+      type: object
+      properties:
+        multi_select_double:
+          type: array
+          description: array of double
+          items:
+            type: number
+    RequestRateLimitedError:
+      x-error: true
+      type: object
+      description: Request was rate limited.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - request_rate_limited
+        message:
+          type: string
+          example: Request was rate limited. You may be calling the API too much in a short time.
+    RequestNotProcessError:
+      x-error: true
+      type: object
+      description: Request was not process.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - request_rate_limited
+        message:
+          type: string
+          example: Request was not process. Request entity may be too large.
+    ValidationFieldError:
+      x-error: true
+      title: ValidationFieldError
+      type: object
+      description: One or more request values couldn't be validated.
+      required:
+      - code
+      - message
+      - field_errors
+      properties:
+        code:
+          type: string
+          enum:
+          - validation_error
+        message:
+          type: string
+          description: One or more request values couldn't be validated.
+          example: One or more request values couldn't be validated.
+        field_errors:
+          type: array
+          description: The list of fields whose values couldn't be validated. See more [error examples](https://developer.doordash.com/en-US/docs/drive/reference/errors)
+          items:
+            $ref: '#/components/schemas/FieldError'
+          readOnly: true
+    AuthorizationError:
+      x-error: true
+      type: object
+      description: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authorization_error
+          default: authorization_error
+        message:
+          type: string
+          example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+          default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'

@@ -1,0 +1,1255 @@
+openapi: 3.2.0
+info:
+  title: Doordash Store Endpoints API
+  version: 1.0.0
+  x-logo:
+    url: https://cdn.doordash.com/static/img/merchant/logo-red@3x.png
+    backgroundColor: '#FFFFFF'
+    altText: Doordash Marketplace
+    href: https://developer.doordash.com/
+  description: 'Operations tagged Store Endpoints across 2 of this provider''s published API definitions: doordash-marketplace-legacy-openapi.yml, doordash-marketplace-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://pointofsale.doordash.com
+- url: https://openapi.doordash.com/marketplace
+tags:
+- name: Store Endpoints
+  x-displayName: Store Endpoints
+  description: Endpoints for store based operations
+paths:
+  /api/v1/stores/{location_id}:
+    get:
+      tags:
+      - Store Endpoints
+      summary: Store Info
+      description: Get the summary information of the given store
+      operationId: getStoreInfo
+      security:
+      - Authorization: []
+      parameters:
+      - $ref: '#/components/parameters/LocationId'
+      responses:
+        '200':
+          description: Successfully retrieved store details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreInfoRequest'
+        '400':
+          description: Request contains invalid arguments
+        '401':
+          description: Request is unauthenticated
+        '403':
+          description: Access is denied
+        '404':
+          description: Store does not exist
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+      x-codegen-request-body-name: body
+    servers:
+    - url: https://pointofsale.doordash.com
+  /api/v1/stores/{location_id}/activation-status:
+    put:
+      tags:
+      - Store Endpoints
+      summary: Activate/Deactivate Store
+      operationId: updateStoreStatus
+      security:
+      - Authorization: []
+      parameters:
+      - $ref: '#/components/parameters/LocationId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreStatusRequest'
+        required: true
+      responses:
+        '200':
+          description: Successfully updated store activation status
+        '400':
+          description: Request contains invalid arguments
+        '401':
+          description: Request is unauthenticated
+        '403':
+          description: Access is denied
+        '404':
+          description: Store does not exist
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+      x-codegen-request-body-name: body
+    servers:
+    - url: https://pointofsale.doordash.com
+  /api/v1/stores/{merchant_supplied_id}/item/activation-status:
+    put:
+      tags:
+      - Store Endpoints
+      summary: Activate/Deactivate Item
+      description: Webhook to stock in/out items for a given store
+      operationId: itemActivation
+      security:
+      - Authorization: []
+      parameters:
+      - $ref: '#/components/parameters/MerchantSupplierId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemActivationDeactivationRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Bad Request (If one of the item option fails to update, 400 should be returned)
+        '401':
+          description: Request is unauthenticated
+        '403':
+          description: Not Allowed to modify this store
+        '404':
+          description: Store Not Found
+        '413':
+          description: Request Entity Too Large
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+      x-codegen-request-body-name: body
+    servers:
+    - url: https://pointofsale.doordash.com
+  /api/v1/stores/{merchant_supplied_id}/item_option/activation-status:
+    put:
+      tags:
+      - Store Endpoints
+      summary: Activate/Deactivate Item Options
+      description: Webhook to stock in/out item options for a given store
+      operationId: itemOptionActivation
+      security:
+      - Authorization: []
+      parameters:
+      - $ref: '#/components/parameters/MerchantSupplierId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemOptionActivationDeactivationRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Bad Request (If one of the item option fails to update, 400 should be returned)
+        '401':
+          description: Request is unauthenticated
+        '403':
+          description: Not Allowed to modify this store
+        '404':
+          description: Store Not Found
+        '413':
+          description: Request Entity Too Large
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+      x-codegen-request-body-name: body
+    servers:
+    - url: https://pointofsale.doordash.com
+  /api/v1/stores/{merchant_supplied_id}/menu_details:
+    get:
+      tags:
+      - Store Endpoints
+      summary: Get Store Menu Details
+      description: Get the menu details of the given store
+      operationId: getStoreMenuInfo
+      security:
+      - Authorization: []
+      parameters:
+      - $ref: '#/components/parameters/MerchantSupplierId'
+      responses:
+        '200':
+          description: Successfully retrieved store menu details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreMenuDetails'
+        '400':
+          description: Request contains invalid arguments
+        '401':
+          description: Request is unauthenticated
+        '403':
+          description: Access is denied
+        '404':
+          description: Store does not exist
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+      x-codegen-request-body-name: body
+    servers:
+    - url: https://pointofsale.doordash.com
+  /api/v1/stores/{merchant_supplied_id}/store_menu:
+    get:
+      tags:
+      - Store Endpoints
+      summary: Get Store Menu Jsons
+      description: Get the menu jsons of the given store
+      operationId: getStoreMenu
+      security:
+      - Authorization: []
+      parameters:
+      - $ref: '#/components/parameters/MerchantSupplierId'
+      responses:
+        '200':
+          description: Successfully retrieved store menu jsons
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MenuCreateUpdateRequest'
+        '400':
+          description: Request contains invalid arguments
+        '401':
+          description: Request is unauthenticated
+        '403':
+          description: Access is denied
+        '404':
+          description: Store does not exist
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+      x-codegen-request-body-name: body
+    servers:
+    - url: https://pointofsale.doordash.com
+  /api/v1/stores/{location_id}/store_details:
+    get:
+      tags:
+      - Store Endpoints
+      summary: Store Info
+      description: Get the summary information of the given store
+      operationId: getApiV1StoresByLocationIdStoreDetails
+      parameters:
+      - $ref: '#/components/parameters/LocationId'
+      responses:
+        '200':
+          description: Successfully retrieved store details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreInfoRequest'
+        '400':
+          description: Request contains invalid arguments
+        '401':
+          description: Request is unauthenticated
+        '403':
+          description: Access is denied
+        '404':
+          description: Store does not exist
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+      x-codegen-request-body-name: body
+      x-operation-id-source: normalized
+      x-operation-id-original: getStoreInfo
+    servers:
+    - url: https://openapi.doordash.com/marketplace
+  /api/v1/stores/{location_id}/status:
+    put:
+      tags:
+      - Store Endpoints
+      summary: Activate/Deactivate Store
+      operationId: putApiV1StoresByLocationIdStatus
+      parameters:
+      - $ref: '#/components/parameters/LocationId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreStatusRequest_2'
+        required: true
+      responses:
+        '200':
+          description: Successfully updated store activation status
+        '400':
+          description: Request contains invalid arguments
+        '401':
+          description: Request is unauthenticated
+        '403':
+          description: Access is denied
+        '404':
+          description: Store does not exist
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+      x-codegen-request-body-name: body
+      x-operation-id-source: normalized
+      x-operation-id-original: updateStoreStatus
+    servers:
+    - url: https://openapi.doordash.com/marketplace
+  /api/v1/stores/{merchant_supplied_id}/item/availability:
+    get:
+      tags:
+      - Store Endpoints
+      summary: Get Item Availability
+      description: Get the availability of a given item
+      operationId: getItemAvailability
+      parameters:
+      - $ref: '#/components/parameters/MerchantSupplierIdItem'
+      responses:
+        '200':
+          description: Successfully retrieved item availability
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemAvailability'
+        '400':
+          description: Request contains invalid arguments
+        '401':
+          description: Request is unauthenticated
+        '403':
+          description: Access is denied
+        '404':
+          description: Item does not exist
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+      x-codegen-request-body-name: body
+    servers:
+    - url: https://openapi.doordash.com/marketplace
+  /api/v1/stores/{merchant_supplied_id}/item_option/availability:
+    get:
+      tags:
+      - Store Endpoints
+      summary: Get Item Option Availability
+      description: Get the availability of a given item option
+      operationId: getApiV1StoresByMerchantSuppliedIdItemOptionAvailability
+      parameters:
+      - $ref: '#/components/parameters/MerchantSupplierIdItemOption'
+      responses:
+        '200':
+          description: Successfully retrieved item option availability
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemAvailability'
+        '400':
+          description: Request contains invalid arguments
+        '401':
+          description: Request is unauthenticated
+        '403':
+          description: Access is denied
+        '404':
+          description: Item option does not exist
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+      x-codegen-request-body-name: body
+      x-operation-id-source: normalized
+      x-operation-id-original: getItemAvailability
+    servers:
+    - url: https://openapi.doordash.com/marketplace
+  /api/v1/stores/{merchant_supplied_id}/items/status:
+    put:
+      tags:
+      - Store Endpoints
+      summary: Activate/Deactivate Item
+      description: Webhook to stock in/out items for a given store
+      operationId: putApiV1StoresByMerchantSuppliedIdItemsStatus
+      parameters:
+      - $ref: '#/components/parameters/MerchantSupplierId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemActivationDeactivationRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Bad Request
+        '401':
+          description: Request is unauthenticated
+        '403':
+          description: Not Allowed to modify this store
+        '404':
+          description: Store not found or all items within request not found
+        '413':
+          description: Request Entity Too Large
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+      x-codegen-request-body-name: body
+      x-operation-id-source: normalized
+      x-operation-id-original: itemActivation
+    servers:
+    - url: https://openapi.doordash.com/marketplace
+  /api/v1/stores/{merchant_supplied_id}/item_options/status:
+    put:
+      tags:
+      - Store Endpoints
+      summary: Activate/Deactivate Item Options
+      description: Webhook to stock in/out item options for a given store
+      operationId: putApiV1StoresByMerchantSuppliedIdItemOptionsStatus
+      parameters:
+      - $ref: '#/components/parameters/MerchantSupplierId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemOptionActivationDeactivationRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Bad Request
+        '401':
+          description: Request is unauthenticated
+        '403':
+          description: Not Allowed to modify this store
+        '404':
+          description: Store not found or all items within request not found
+        '413':
+          description: Request Entity Too Large
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+      x-codegen-request-body-name: body
+      x-operation-id-source: normalized
+      x-operation-id-original: itemOptionActivation
+    servers:
+    - url: https://openapi.doordash.com/marketplace
+components:
+  schemas:
+    NestedItemExtra:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: the given name of this instance
+        description:
+          type: string
+        merchant_supplied_id:
+          type: string
+          description: ID as it's stored in your system
+        active:
+          type: boolean
+          default: true
+        sort_id:
+          type: integer
+        min_num_options:
+          type: integer
+        max_num_options:
+          type: integer
+        num_free_options:
+          type: integer
+        min_option_choice_quantity:
+          type: integer
+        max_option_choice_quantity:
+          type: integer
+        min_aggregate_options_quantity:
+          type: integer
+        max_aggregate_options_quantity:
+          type: integer
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedItemExtraOption'
+    ItemSpecialHour:
+      type: object
+      properties:
+        day_index:
+          $ref: '#/components/schemas/DayIndex'
+        start_time:
+          type: string
+          description: Start time in format HH:MM:SS
+          example: '13:00:00'
+        end_time:
+          type: string
+          description: End time in format HH:MM:SS
+          example: '18:00:00'
+        start_date:
+          type: string
+        end_date:
+          type: string
+    ItemExtraOption:
+      type: object
+      required:
+      - name
+      - price
+      properties:
+        name:
+          type: string
+          description: the given name of this instance
+        merchant_supplied_id:
+          type: string
+          description: ID as it's stored in your system
+        active:
+          type: boolean
+          default: true
+        price:
+          type: integer
+        base_price:
+          type: integer
+        default:
+          type: boolean
+        sort_id:
+          type: integer
+        tax_rate:
+          type: string
+        tax_category:
+          type: string
+        item_extra_option_special_hours:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemSpecialHour'
+        operation_context:
+          type: array
+          description: Not yet available
+          items:
+            type: string
+        quantity_info:
+          type: object
+          $ref: '#/components/schemas/QuantityInfo'
+        dish_info:
+          type: object
+          $ref: '#/components/schemas/DishInfo'
+        extras:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedItemExtra'
+    ItemExtra:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: the given name of this instance
+        merchant_supplied_id:
+          type: string
+          description: ID as it's stored in your system
+        active:
+          type: boolean
+          default: true
+        sort_id:
+          type: integer
+        min_num_options:
+          type: integer
+        max_num_options:
+          type: integer
+        num_free_options:
+          type: integer
+        min_option_choice_quantity:
+          type: integer
+        max_option_choice_quantity:
+          type: integer
+        min_aggregate_options_quantity:
+          type: integer
+        max_aggregate_options_quantity:
+          type: integer
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemExtraOption'
+    StoreInfoRequest:
+      type: object
+      properties:
+        provider_name:
+          type: string
+          description: Provider name
+          example: square
+        merchant_supplied_id:
+          type: string
+          description: Partner specified ID for the store
+          example: 1dfa934a-190c-43a9-b2e0-449e5b8cccde
+        is_order_protocol_pos:
+          type: boolean
+          description: Current order protocol is POS
+          example: true
+        auto_release_enabled:
+          type: boolean
+          description: Auto order release feature is enabled
+          example: true
+        auto_release_distance:
+          type: integer
+          description: Radius of auto order release in meters
+          example: 0
+        special_instructions_max_length:
+          type: integer
+          description: Max length for special instructions
+          example: 0
+        current_deactivations:
+          type: array
+          description: Current store deactivations
+          items:
+            $ref: '#/components/schemas/StoreDeactivation'
+    DishInfo:
+      type: object
+      properties:
+        nutritional_info:
+          $ref: '#/components/schemas/NutritionalInfo'
+        classification_info:
+          $ref: '#/components/schemas/ClassificationInfo'
+    ClassificationInfo:
+      type: object
+      properties:
+        has_side:
+          type: boolean
+        is_hot:
+          type: boolean
+        is_entree:
+          type: boolean
+        has_alcoholic_items:
+          type: boolean
+        service_types:
+          type: array
+          items:
+            type: string
+        classification_tags:
+          type: array
+          items:
+            type: string
+            enum:
+            - TAG_KEY_DIETARY_VEGETARIAN
+            - TAG_KEY_DIETARY_VEGAN
+            - TAG_KEY_DIETARY_GLUTEN_FREE
+    Item:
+      type: object
+      required:
+      - name
+      - merchant_supplied_id
+      - price
+      properties:
+        name:
+          type: string
+          description: the given name of this instance
+        description:
+          type: string
+        merchant_supplied_id:
+          type: string
+          description: ID as it's stored in your system
+        active:
+          type: boolean
+          default: true
+        is_alcohol:
+          type: boolean
+        is_bike_friendly:
+          type: boolean
+        sort_id:
+          type: integer
+        price:
+          type: integer
+        base_price:
+          type: integer
+        item_special_hours:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemSpecialHour'
+        extras:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemExtra'
+        tax_rate:
+          type: string
+        tax_category:
+          type: string
+        original_image_url:
+          type: string
+          description: Item image URL in JPG|JPEG|PNG format, min resolution (1600w x 800h), aspect ratio 16:9 and max size 2MB. Initial image ingestion will go through approval process
+        operation_context:
+          type: array
+          description: Not yet available
+          items:
+            type: string
+        dish_info:
+          type: object
+          $ref: '#/components/schemas/DishInfo'
+    NutritionalInfo:
+      type: object
+      properties:
+        calorific_info:
+          $ref: '#/components/schemas/CalorificInfo'
+    NestedL2ItemExtraOption:
+      type: object
+      required:
+      - name
+      - price
+      properties:
+        name:
+          type: string
+          description: the given name of this instance
+        description:
+          type: string
+        merchant_supplied_id:
+          type: string
+          description: ID as it's stored in your system
+        active:
+          type: boolean
+          default: true
+        price:
+          type: integer
+        base_price:
+          type: integer
+        default:
+          type: boolean
+        sort_id:
+          type: integer
+        tax_rate:
+          type: string
+        tax_category:
+          type: string
+        item_extra_option_special_hours:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemSpecialHour'
+        operation_context:
+          type: array
+          items:
+            type: string
+        quantity_info:
+          type: object
+          $ref: '#/components/schemas/QuantityInfo'
+        dish_info:
+          type: object
+          $ref: '#/components/schemas/DishInfo'
+    ItemActivationDeactivationRequest:
+      type: array
+      items:
+        $ref: '#/components/schemas/ItemActivation'
+    NestedL2ItemExtra:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: the given name of this instance
+        description:
+          type: string
+        merchant_supplied_id:
+          type: string
+          description: ID as it's stored in your system
+        active:
+          type: boolean
+          default: true
+        sort_id:
+          type: integer
+        min_num_options:
+          type: integer
+        max_num_options:
+          type: integer
+        num_free_options:
+          type: integer
+        min_option_choice_quantity:
+          type: integer
+        max_option_choice_quantity:
+          type: integer
+        min_aggregate_options_quantity:
+          type: integer
+        max_aggregate_options_quantity:
+          type: integer
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedL2ItemExtraOption'
+    Store:
+      type: object
+      required:
+      - merchant_supplied_id
+      - provider_type
+      properties:
+        merchant_supplied_id:
+          type: string
+          example: 1dfa934a-190c-43a9-b2e0-449e5b8cccde
+        provider_type:
+          type: string
+          example: positouch
+    Menu:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          description: the given name of this instance
+          type: string
+        subtitle:
+          type: string
+        merchant_supplied_id:
+          description: ID as it's stored in your system
+          type: string
+        active:
+          type: boolean
+        experience:
+          description: (do not use this field for marketplace integration) optional field used only for Voice experience
+          type: string
+          enum:
+          - voice
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/MenuCategory'
+    ItemOptionActivationDeactivationRequest:
+      type: array
+      items:
+        $ref: '#/components/schemas/ItemActivation'
+    MenuCategory:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: the given name of this instance
+        subtitle:
+          type: string
+        merchant_supplied_id:
+          type: string
+          description: ID as it's stored in your system
+        active:
+          type: boolean
+          default: true
+        sort_id:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+    StoreMenuDetails:
+      type: object
+      properties:
+        provider_name:
+          type: string
+          description: Provider name
+          example: square
+        merchant_supplied_id:
+          type: string
+          description: Partner specified ID for the store
+          example: 1dfa934a-190c-43a9-b2e0-449e5b8cccde
+        menu:
+          type: array
+          description: Active menus
+          items:
+            $ref: '#/components/schemas/MenuDetails'
+    CalorificInfo:
+      type: object
+      properties:
+        display_type:
+          type: string
+        lower_range:
+          type: integer
+        higher_range:
+          type: integer
+    NestedItemExtraOption:
+      type: object
+      required:
+      - name
+      - price
+      properties:
+        name:
+          type: string
+          description: the given name of this instance
+        description:
+          type: string
+        merchant_supplied_id:
+          type: string
+          description: ID as it's stored in your system
+        active:
+          type: boolean
+          default: true
+        price:
+          type: integer
+        base_price:
+          type: integer
+        default:
+          type: boolean
+        sort_id:
+          type: integer
+        tax_rate:
+          type: string
+        tax_category:
+          type: string
+        item_extra_option_special_hours:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemSpecialHour'
+        operation_context:
+          type: array
+          description: Not yet available
+          items:
+            type: string
+        quantity_info:
+          type: object
+          $ref: '#/components/schemas/QuantityInfo'
+        dish_info:
+          type: object
+          $ref: '#/components/schemas/DishInfo'
+        extras:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedL2ItemExtra'
+    MenuCreateUpdateRequest:
+      type: object
+      required:
+      - store
+      - open_hours
+      - special_hours
+      properties:
+        reference:
+          type: string
+        store:
+          type: object
+          $ref: '#/components/schemas/Store'
+        open_hours:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoreOpenHour'
+        special_hours:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoreSpecialHour'
+        menu:
+          type: object
+          $ref: '#/components/schemas/Menu'
+    StoreStatusRequest:
+      type: object
+      required:
+      - is_active
+      properties:
+        is_active:
+          type: boolean
+          description: 'Should store be deactivated/activated. If store is being deactivated i.e. `is_active: false`, then the `reason` field in request body is required.'
+          example: true
+        reason:
+          type: string
+          enum:
+          - out_of_business
+          - operational_issues
+          - delete_store
+          - payment_issue
+          - store_self_disabled_in_their_POS_portal
+          - store_pos_connectivity_issues
+          example: operational_issues
+        notes:
+          type: string
+          example: The store is offline due to operational issues
+        merchant_supplied_id:
+          type: string
+          example: 1dfa934a-190c-43a9-b2e0-449e5b8cccde
+    MenuDetails:
+      type: object
+      properties:
+        menu_id:
+          type: string
+          description: Menu identifier
+        name:
+          type: string
+          description: Menu name
+        subtitle:
+          type: string
+          description: Menu subtitle
+        is_active:
+          type: boolean
+          description: Menu is active
+        is_pos_menu:
+          type: boolean
+          description: Menu was created via POS
+        latest_menu_update:
+          type: object
+          description: Latest menu update
+          properties:
+            created_at:
+              type: string
+              format: date-time
+              description: Time of latest menu update
+            status:
+              type: string
+              enum:
+              - PENDING
+              - SUCCESS
+              - FAILURE
+              description: Status of latest menu update
+        last_successful_menu_update_at:
+          type: string
+          format: date-time
+          description: Time of last successful menu update
+        url:
+          type: string
+          description: Menu preview URL
+        open_hours:
+          type: array
+          description: Menu hours
+          items:
+            $ref: '#/components/schemas/StoreOpenHour'
+        special_hours:
+          type: array
+          description: Menu special hours
+          items:
+            $ref: '#/components/schemas/StoreSpecialHour'
+    ItemActivation:
+      type: object
+      required:
+      - merchant_supplied_id
+      - is_active
+      properties:
+        merchant_supplied_id:
+          type: string
+        is_active:
+          type: boolean
+    StoreDeactivation:
+      type: object
+      properties:
+        reason:
+          type: string
+          description: Reason why the Store was deactivated
+          example: Merchant operational issues
+        notes:
+          type: string
+          description: Notes about the Store deactivation
+          example: store deactivated
+        created_at:
+          type: string
+          format: date-time
+          description: Time of store deactivation request
+          example: '2020-08-14T02:13:56.121734Z'
+        end_time:
+          type: string
+          format: date-time
+          description: End time for a temporal deactivation
+          example: '2021-08-20T07:00:17Z'
+    QuantityInfo:
+      type: object
+      properties:
+        default_quantity:
+          type: integer
+        charge_above:
+          type: integer
+    StoreOpenHour:
+      type: object
+      properties:
+        day_index:
+          type: string
+          enum:
+          - MON
+          - TUE
+          - WED
+          - THU
+          - FRI
+          - SAT
+          - SUN
+          example: MON
+        start_time:
+          type: string
+          description: Start time in format HH:MM:SS
+          example: '13:00:00'
+        end_time:
+          type: string
+          description: End time in format HH:MM:SS
+          example: '18:00:00'
+    DayIndex:
+      type: string
+      enum:
+      - MON
+      - TUE
+      - WED
+      - THU
+      - FRI
+      - SAT
+      - SUN
+      example: MON
+    StoreSpecialHour:
+      type: object
+      properties:
+        date:
+          type: string
+          example: '2021-12-11'
+        closed:
+          type: boolean
+          description: Indicates if store is closed or opened at this special hour
+          example: true
+        start_time:
+          type: string
+          description: Start time in format HH:MM:SS
+          example: '13:00:00'
+        end_time:
+          type: string
+          description: End time in format HH:MM:SS
+          example: '18:00:00'
+    Item_2:
+      type: object
+      required:
+      - name
+      - merchant_supplied_id
+      - price
+      properties:
+        name:
+          type: string
+          description: the given name of this instance
+        description:
+          type: string
+        merchant_supplied_id:
+          type: string
+          description: ID as it's stored in your system
+        active:
+          type: boolean
+          default: true
+        is_alcohol:
+          type: boolean
+        is_bike_friendly:
+          type: boolean
+        sort_id:
+          type: integer
+        price:
+          type: integer
+        base_price:
+          type: integer
+        item_special_hours:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemSpecialHour'
+        extras:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemExtra'
+        tax_rate:
+          type: string
+        tax_category:
+          type: string
+        original_image_url:
+          type: string
+          description: Item image URL in JPG|JPEG|PNG format, min resolution (1400w x 800h), aspect ratio 16:9 and max size 2MB. Initial image ingestion will go through approval process
+        operation_context:
+          type: array
+          description: Not yet available
+          items:
+            type: string
+        dish_info:
+          type: object
+          $ref: '#/components/schemas/DishInfo'
+    StoreStatusRequest_2:
+      type: object
+      required:
+      - is_active
+      properties:
+        is_active:
+          type: boolean
+          description: 'Should store be deactivated/activated. If store is being deactivated i.e. `is_active: false`, then the `reason` field in request body is required.'
+          example: true
+        reason:
+          type: string
+          enum:
+          - out_of_business
+          - operational_issues
+          - delete_store
+          - payment_issue
+          - store_self_disabled_in_their_POS_portal
+          - store_pos_connectivity_issues
+          example: operational_issues
+        notes:
+          type: string
+          example: The store is offline due to operational issues
+        merchant_supplied_id:
+          type: string
+          example: 1dfa934a-190c-43a9-b2e0-449e5b8cccde
+        end_time:
+          type: string
+          description: Deactivation end time in format YYYY-MM-DDTHH:MM:SS+HH:MM.
+        duration_in_hours:
+          type: integer
+          description: Duration of the temporary deactivation in hours. Use with duration_in_secs.
+        duration_in_secs:
+          type: integer
+          description: Duration of the temporary deactivation in seconds. Use with duration_in_hours.
+    ItemAvailability:
+      type: object
+      properties:
+        merchant_supplied_id:
+          type: string
+        is_active:
+          type: boolean
+        start_time:
+          type: string
+          description: Start time in format YYYY-MM-DD HH:MM:SS.
+          example: YYYY-MM-DD HH:MM:SS
+        end_time:
+          type: string
+          description: End time in format YYYY-MM-DD HH:MM:SS.
+          example: YYYY-MM-DD HH:MM:SS
+    StoreDeactivation_2:
+      type: object
+      properties:
+        reason:
+          type: string
+          description: Reason why the Store was deactivated
+          example: Merchant operational issues
+        notes:
+          type: string
+          description: Notes about the Store deactivation
+          example: store deactivated
+        created_at:
+          type: string
+          format: date-time
+          description: Time of store deactivation request
+          example: '2020-08-14T02:13:56.121734Z'
+        end_time:
+          type: string
+          format: date-time
+          description: End time for a temporal deactivation
+          example: '2021-08-20T07:00:17Z'
+        experience:
+          type: string
+          description: Experience which the store is deactivated for
+          enum:
+          - ANY_EXPERIENCE
+          - DOORDASH
+          - STOREFRONT
+          - VOICE
+          example: ANY_EXPERIENCE
+  parameters:
+    LocationId:
+      in: path
+      name: location_id
+      required: true
+      schema:
+        type: string
+      description: Store location id
+    MerchantSupplierId:
+      in: path
+      name: merchant_supplied_id
+      required: true
+      schema:
+        type: string
+      description: Store location id
+    MerchantSupplierIdItemOption:
+      in: path
+      name: merchant_supplied_id
+      required: true
+      schema:
+        type: string
+      description: Item Option ID in your system
+    MerchantSupplierIdItem:
+      in: path
+      name: merchant_supplied_id
+      required: true
+      schema:
+        type: string
+      description: Item ID in your system
+  securitySchemes:
+    Authorization:
+      type: apiKey
+      name: Authorization
+      in: header
+x-refined-from:
+- doordash-marketplace-legacy-openapi.yml
+- doordash-marketplace-openapi.yml

@@ -1,0 +1,315 @@
+openapi: 3.2.0
+info:
+  version: 1.0.29
+  title: DoorDash Ads Product Ads API
+  description: DoorDash Ads API for Sponsored Products for campaign management and reporting operations.
+servers:
+- url: https://openapi.doordash.com
+security:
+- Ads API Key Authentication: []
+tags:
+- name: Product Ads
+paths:
+  /ads/api/v1/{campaignType}/productAds:
+    post:
+      tags:
+      - Product Ads
+      operationId: createProductAd
+      summary: Create product ad
+      description: Create a single product ad the provided campaign and ad group IDs.
+      parameters:
+      - $ref: '#/components/parameters/campaignType'
+      requestBody:
+        description: A product ad to create.
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: '#/components/schemas/CreateProductAdRequest'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                description: The created product ad.
+                $ref: '#/components/schemas/ProductAdResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      tags:
+      - Product Ads
+      operationId: getProductAds
+      summary: Get product ads
+      description: Get a list of product ads, optionally filtered by campaign IDs and/or adGroup IDs.
+      parameters:
+      - $ref: '#/components/parameters/campaignType'
+      - $ref: '#/components/parameters/startIndex'
+      - $ref: '#/components/parameters/count'
+      - name: campaignIdFilter
+        in: query
+        description: A comma-delimited list of campaign identifiers. At least one of campaignIdFilter and adGroupIdFilter is required.
+        required: false
+        schema:
+          type: string
+      - name: adGroupIdFilter
+        in: query
+        description: A comma-delimited list of ad group identifiers. At least one of campaignIdFilter and adGroupIdFilter is required.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - productAds
+                properties:
+                  productAds:
+                    description: List of product ads
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProductAdResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+      - Product Ads
+      operationId: deleteProductAd
+      summary: Delete product ad
+      description: Delete a single product ad by the provided identifier.
+      parameters:
+      - $ref: '#/components/parameters/campaignType'
+      requestBody:
+        description: The identifier of an existing product ad.
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - campaignId
+              - adGroupId
+              - idType
+              - productId
+              properties:
+                campaignId:
+                  $ref: '#/components/schemas/CampaignId'
+                adGroupId:
+                  $ref: '#/components/schemas/AdGroupId'
+                idType:
+                  $ref: '#/components/schemas/ProductIdType'
+                productId:
+                  $ref: '#/components/schemas/ProductId'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteProductAdResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  responses:
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    DeleteProductAdResponse:
+      required:
+      - campaignId
+      - adGroupId
+      - idType
+      - productId
+      - code
+      - codeDescription
+      - ddSic
+      - upcs
+      - gtin14s
+      properties:
+        campaignId:
+          $ref: '#/components/schemas/CampaignId'
+        adGroupId:
+          $ref: '#/components/schemas/AdGroupId'
+        idType:
+          $ref: '#/components/schemas/ProductIdType'
+        productId:
+          $ref: '#/components/schemas/ProductId'
+        ddSic:
+          description: DoorDash product identifier.
+          type: string
+        code:
+          $ref: '#/components/schemas/Code'
+        codeDescription:
+          $ref: '#/components/schemas/CodeDescription'
+        upcs:
+          type: array
+          items:
+            type: string
+        gtin14s:
+          type: array
+          items:
+            type: string
+    ProductId:
+      description: Unique product identifier based on product ID type.
+      type: string
+    CampaignId:
+      description: Unique campaign identifier.
+      type: string
+    CodeDescription:
+      description: A human-readable description of the code.
+      type: string
+    AdGroupId:
+      description: Unique ad group identifier.
+      type: string
+    ProductAdResponse:
+      required:
+      - campaignId
+      - adGroupId
+      - idType
+      - productId
+      - ddSic
+      - upcs
+      - gtin14s
+      properties:
+        campaignId:
+          $ref: '#/components/schemas/CampaignId'
+        adGroupId:
+          $ref: '#/components/schemas/AdGroupId'
+        idType:
+          $ref: '#/components/schemas/ProductIdType'
+        productId:
+          $ref: '#/components/schemas/ProductId'
+        ddSic:
+          description: DoorDash product identifier.
+          type: string
+        isPriority:
+          $ref: '#/components/schemas/IsPriority'
+        upcs:
+          type: array
+          items:
+            type: string
+        gtin14s:
+          type: array
+          items:
+            type: string
+    CreateProductAdRequest:
+      required:
+      - campaignId
+      - adGroupId
+      - idType
+      - productId
+      properties:
+        campaignId:
+          $ref: '#/components/schemas/CampaignId'
+        adGroupId:
+          $ref: '#/components/schemas/AdGroupId'
+        idType:
+          $ref: '#/components/schemas/ProductIdType'
+        productId:
+          $ref: '#/components/schemas/ProductId'
+        isPriority:
+          $ref: '#/components/schemas/IsPriority'
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    IsPriority:
+      description: Indicates pinned product for Sponsored Brand campaigns.
+      type: boolean
+      default: false
+    Code:
+      description: An enumerated success or error code for machine use.
+      type: string
+    ProductIdType:
+      description: Product ID type
+      type: string
+      enum:
+      - GTIN_14
+      - UPC
+      - DD_SIC
+  parameters:
+    count:
+      name: count
+      in: query
+      description: Number of records to include in the paged response.
+      required: false
+      schema:
+        type: number
+    startIndex:
+      name: startIndex
+      in: query
+      description: 0-indexed record offset for the result set. Defaults to 0.
+      schema:
+        type: number
+        default: 0
+    campaignType:
+      name: campaignType
+      in: path
+      description: Indicates campaign type. 'sp' for Sponsored Products or 'sb' for Sponsored Brand
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    Ads_API_Key_Authentication:
+      type: apiKey
+      scheme: bearer
+      in: header
+      name: Authorization
+      description: We will be using stateful token based API keys to authenticate clients, passed in the 'Authorization' header as 'Bearer {API_KEY}'.

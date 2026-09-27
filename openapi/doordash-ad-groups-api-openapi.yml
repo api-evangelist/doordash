@@ -1,0 +1,723 @@
+openapi: 3.2.0
+info:
+  version: 1.0.29
+  title: DoorDash Ads Ad Groups API
+  description: DoorDash Ads API for Sponsored Products for campaign management and reporting operations.
+servers:
+- url: https://openapi.doordash.com
+security:
+- Ads API Key Authentication: []
+tags:
+- name: Ad Groups
+paths:
+  /ads/api/v1/{campaignType}/adGroups:
+    post:
+      tags:
+      - Ad Groups
+      operationId: createAdGroup
+      summary: Create ad group
+      description: Create a single ad group.
+      parameters:
+      - $ref: '#/components/parameters/campaignType'
+      requestBody:
+        description: An ad group to create.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAdGroupRequest'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdGroupResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+      - Ad Groups
+      operationId: updateAdGroup
+      summary: Update ad group
+      description: Update a single ad group.
+      parameters:
+      - $ref: '#/components/parameters/campaignType'
+      requestBody:
+        description: A partial ad group object used to update an existing ad group.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAdGroupRequest'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdGroupResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      tags:
+      - Ad Groups
+      operationId: getAdGroups
+      summary: Get ad groups
+      description: Get a list of ad groups, optionally filtered by campaign IDs and/or ad group IDs.
+      parameters:
+      - $ref: '#/components/parameters/campaignType'
+      - $ref: '#/components/parameters/startIndex'
+      - $ref: '#/components/parameters/count'
+      - name: campaignIdFilter
+        in: query
+        description: A comma-delimited list of campaign identifiers. At least one of campaignIdFilter and adGroupIdFilter is required.
+        required: false
+        schema:
+          type: string
+      - name: adGroupIdFilter
+        in: query
+        description: A comma-delimited list of ad group identifiers. At least one of campaignIdFilter and adGroupIdFilter is required.
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - adGroups
+                properties:
+                  adGroups:
+                    description: List of ad groups.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AdGroupResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/{campaignType}/adGroups/{adGroupId}:
+    get:
+      tags:
+      - Ad Groups
+      operationId: getAdGroupById
+      summary: Get ad group by ID
+      description: Get a single ad group by the provided identifier.
+      parameters:
+      - $ref: '#/components/parameters/campaignType'
+      - name: adGroupId
+        in: path
+        description: The identifier of an existing ad group.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdGroupResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  responses:
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Name:
+      description: Resource name.
+      type: string
+    BehavioralTargetWrite:
+      required:
+      - action
+      - resources
+      properties:
+        action:
+          $ref: '#/components/schemas/TargetingAction'
+        resources:
+          type: object
+          properties:
+            type:
+              $ref: '#/components/schemas/ResourceType'
+            ids:
+              type: array
+              items:
+                type: number
+    BidType:
+      type: string
+      enum:
+      - AUTOMATED
+      - MANUAL
+      description: '**Sponsored Products US market only.**
+
+        Configure the AUTOMATED BidType to enable a new bidding strategy: Automatic Bidding. This strategy automatically sets and adjusts your bids in real-time to maximize clicks at the lowest cost.
+
+
+        When choosing Automatic Bidding with the AUTOMATED BidType, manualTargets must be set. Bid in manualTargets is not required.
+
+
+        All ad groups within the same campaign must use the same BidType. Specifying different BidTypes is not allowed.
+
+        '
+    MonetaryFieldsExtended:
+      required:
+      - unitAmount
+      - currency
+      - displayString
+      - decimalPlaces
+      - symbol
+      - symbolPlacement
+      - sign
+      properties:
+        unitAmount:
+          description: Integer representing a monetary value in cents.
+          type: number
+        currency:
+          description: Monetary value currency
+          type: string
+          enum:
+          - USD
+        displayString:
+          description: Monetary value formatted for display
+          type: string
+        decimalPlaces:
+          description: Monetary value currency decimal places
+          type: number
+        symbol:
+          description: Monetary value symbol
+          type: string
+        symbolPlacement:
+          description: Monetary value symbol placement
+          type: string
+          enum:
+          - left
+          - right
+        sign:
+          description: True indicates the monetary value is positive. False indicates the monetary value is negative.
+          type: boolean
+    StatusWrite:
+      description: Current resource state.
+      type: string
+      enum:
+      - ACTIVE
+      - PAUSED
+      - ENDED
+    CodeDescription:
+      description: A human-readable description of the code.
+      type: string
+    CampaignId:
+      description: Unique campaign identifier.
+      type: string
+    StartDate:
+      description: Start date for the resource to go live. The format of the date is yyyy-MM-dd HH:mm:ss.
+      type: string
+      example: '2025-11-01 00:00:00'
+    ManualTargetRead:
+      required:
+      - bid
+      - placement
+      properties:
+        bid:
+          allOf:
+          - $ref: '#/components/schemas/BidRead'
+          - type: object
+            description: Bid for a specific ad group placement type
+        placement:
+          $ref: '#/components/schemas/Placement'
+    AutomaticBidRequest:
+      allOf:
+      - $ref: '#/components/schemas/BidWrite'
+      - type: object
+        description: 'Bid for all ad group placement types. Either automaticBid OR manualTargets must be set.
+
+
+          Bid unitAmount range per advertiser country code is outlined in the following table. Ranges are presented as ''Minimum-Maximum''.
+
+
+          | Country code (currency) | Minimum-Maximum |
+
+          |-------------------|-----------------|
+
+          | US (USD) | 80-10,000 |
+
+          | CA (CAD) | 80-10,000 |
+
+          | AU (AUD) | 80-10,000 |
+
+          '
+    BehavioralTargetsRequest:
+      type: array
+      items:
+        $ref: '#/components/schemas/BehavioralTargetWrite'
+      description: 'Behavioral targeting configuration to customize the audience of this ad group campaign.
+
+        '
+    AdGroupId:
+      description: Unique ad group identifier.
+      type: string
+    InterestTarget:
+      type: object
+      required:
+      - labels
+      - type
+      properties:
+        labels:
+          type: array
+          items:
+            type: string
+        type:
+          type: string
+          enum:
+          - DISH
+    BehavioralTargetResponse:
+      required:
+      - action
+      - resources
+      properties:
+        action:
+          $ref: '#/components/schemas/TargetingAction'
+        resources:
+          type: object
+          properties:
+            type:
+              $ref: '#/components/schemas/ResourceType'
+            objects:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  status:
+                    type: string
+                    enum:
+                    - INELIGIBLE
+    Daypart:
+      type: object
+      properties:
+        startTimeOfDayOfWeek:
+          $ref: '#/components/schemas/TimeOfDayOfWeek'
+        endTimeOfDayOfWeek:
+          $ref: '#/components/schemas/TimeOfDayOfWeek'
+    StatusRead:
+      description: Current resource state.
+      type: string
+      enum:
+      - INCOMPLETE
+      - IN_REVIEW
+      - SCHEDULED
+      - ACTIVE
+      - PAUSED
+      - ENDED
+      - DRAFT
+      - REJECTED
+      - CANCELLED
+    UpdateAdGroupRequest:
+      description: '**[Beta]** Sponsored Products and Sponsored Brand ad groups support stacked targeting. You can combine multiple targeting features in the same request when those targeting features are enabled for the advertiser and country. Sponsored Products supports dayparting (`dayparts`), merchant targeting (`targetBusinessIds`), behavioral targeting (`behavioralTargets`), interest targeting (`interestTargets`), and keyword targeting (`keywordsBidding`). Sponsored Brand supports dayparting (`dayparts`), merchant targeting (`targetBusinessIds`), behavioral targeting (`behavioralTargets`), and interest targeting (`interestTargets`). Existing campaign type, bid configuration, advertiser, and country validation still applies.
+
+        '
+      required:
+      - campaignId
+      - adGroupId
+      properties:
+        campaignId:
+          $ref: '#/components/schemas/CampaignId'
+        adGroupId:
+          $ref: '#/components/schemas/AdGroupId'
+        name:
+          $ref: '#/components/schemas/Name'
+        status:
+          $ref: '#/components/schemas/StatusWrite'
+        startDate:
+          $ref: '#/components/schemas/StartDate'
+        endDate:
+          $ref: '#/components/schemas/EndDate'
+        automaticBid:
+          $ref: '#/components/schemas/AutomaticBidRequest'
+        manualTargets:
+          $ref: '#/components/schemas/ManualTargetsRequest'
+        keywordsBidding:
+          $ref: '#/components/schemas/KeywordsBiddingRequest'
+        targetBusinessIds:
+          $ref: '#/components/schemas/TargetBusinessIds'
+        behavioralTargets:
+          $ref: '#/components/schemas/BehavioralTargetsRequest'
+        dayparts:
+          description: '**[Beta]** Custom schedule for when people see this ad group campaign.
+
+            '
+          type: array
+          items:
+            $ref: '#/components/schemas/Daypart'
+        bidType:
+          $ref: '#/components/schemas/BidType'
+        bidMinRoas:
+          $ref: '#/components/schemas/BidMinRoas'
+        interestTargets:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterestTarget'
+    CreateAdGroupRequest:
+      description: '**[Beta]** Sponsored Products and Sponsored Brand ad groups support stacked targeting. You can combine multiple targeting features in the same request when those targeting features are enabled for the advertiser and country. Sponsored Products supports dayparting (`dayparts`), merchant targeting (`targetBusinessIds`), behavioral targeting (`behavioralTargets`), interest targeting (`interestTargets`), and keyword targeting (`keywordsBidding`). Sponsored Brand supports dayparting (`dayparts`), merchant targeting (`targetBusinessIds`), behavioral targeting (`behavioralTargets`), and interest targeting (`interestTargets`). Existing campaign type, bid configuration, advertiser, and country validation still applies.
+
+        '
+      required:
+      - campaignId
+      - name
+      - startDate
+      - endDate
+      - automaticBid
+      - manualTargets
+      properties:
+        campaignId:
+          $ref: '#/components/schemas/CampaignId'
+        name:
+          $ref: '#/components/schemas/Name'
+        startDate:
+          $ref: '#/components/schemas/StartDate'
+        endDate:
+          $ref: '#/components/schemas/EndDate'
+        automaticBid:
+          $ref: '#/components/schemas/AutomaticBidRequest'
+        manualTargets:
+          $ref: '#/components/schemas/ManualTargetsRequest'
+        targetBusinessIds:
+          $ref: '#/components/schemas/TargetBusinessIds'
+        behavioralTargets:
+          $ref: '#/components/schemas/BehavioralTargetsRequest'
+        dayparts:
+          description: '**[Beta]** Configure custom schedule for when people see this ad group campaign.
+
+            '
+          type: array
+          items:
+            $ref: '#/components/schemas/Daypart'
+        bidType:
+          $ref: '#/components/schemas/BidType'
+        bidMinRoas:
+          $ref: '#/components/schemas/BidMinRoas'
+        interestTargets:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterestTarget'
+        keywordsBidding:
+          $ref: '#/components/schemas/KeywordsBiddingRequest'
+    ManualTargetsRequest:
+      type: array
+      items:
+        $ref: '#/components/schemas/ManualTargetWrite'
+      description: "**Sponsored Products only.** Bid for specific ad group placement types. Either automaticBid OR manualTargets must be set. \n\nSupported ad group placement type combinations are represented in the following table.\n\n| Valid combinations |\n|-------------------|\n| CATEGORIES, COLLECTION, SEARCH, and DOUBLEDASH |\n| CATEGORIES, COLLECTION, and SEARCH |\n| DOUBLEDASH only |\n\nBid unitAmount range per advertiser country code per placement type is outlined in the following table. Ranges are presented as 'Minimum-Maximum'.\n\n| Placement type | US (USD) | CA (CAD) | AU (AUD) |\n|-------------------|-------------------|-------------------|-------------------|\n| CATEGORIES | 40-10,000 | 30-10,000 | 40-10,000 |\n| COLLECTION | 30-10,000 | 40-10,000 | 50-10,000 |\n| SEARCH | 60-10,000 | 40-10,000 | 50-10,000 |\n| DOUBLEDASH | 80-10,000 | 80-10,000 | 80-10,000 |\n"
+    TimeOfDayOfWeek:
+      type: object
+      properties:
+        dayOfWeek:
+          $ref: '#/components/schemas/DayOfWeek'
+        timeOfDay:
+          $ref: '#/components/schemas/TimeOfDay'
+    Placement:
+      required:
+      - type
+      properties:
+        type:
+          description: Specifies an ad group surface
+          type: string
+          enum:
+          - SEARCH
+          - CATEGORIES
+          - COLLECTION
+          - DOUBLEDASH
+    AdGroupResponse:
+      required:
+      - campaignId
+      - adGroupId
+      - name
+      - status
+      - statusDescription
+      - startDate
+      - endDate
+      properties:
+        campaignId:
+          $ref: '#/components/schemas/CampaignId'
+        adGroupId:
+          $ref: '#/components/schemas/AdGroupId'
+        name:
+          $ref: '#/components/schemas/Name'
+        status:
+          $ref: '#/components/schemas/StatusRead'
+        statusDescription:
+          $ref: '#/components/schemas/StatusDescription'
+        startDate:
+          $ref: '#/components/schemas/StartDate'
+        endDate:
+          $ref: '#/components/schemas/EndDate'
+        automaticBid:
+          allOf:
+          - $ref: '#/components/schemas/BidRead'
+          - type: object
+            description: Bid for all ad group placement types
+        code:
+          $ref: '#/components/schemas/Code'
+        codeDescription:
+          $ref: '#/components/schemas/CodeDescription'
+        manualTargets:
+          type: array
+          items:
+            $ref: '#/components/schemas/ManualTargetRead'
+        keywordsBidding:
+          type: array
+          items:
+            $ref: '#/components/schemas/KeywordsBiddingRead'
+        targetBusinessIds:
+          $ref: '#/components/schemas/TargetBusinessIds'
+        behavioralTargets:
+          type: array
+          items:
+            $ref: '#/components/schemas/BehavioralTargetResponse'
+        dayparts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Daypart'
+        bidType:
+          $ref: '#/components/schemas/BidType'
+        bidMinRoas:
+          $ref: '#/components/schemas/BidMinRoas'
+        interestTargets:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterestTarget'
+    BidRead:
+      required:
+      - price
+      properties:
+        price:
+          $ref: '#/components/schemas/MonetaryFieldsExtended'
+    DayOfWeek:
+      type: string
+      enum:
+      - MONDAY
+      - TUESDAY
+      - WEDNESDAY
+      - THURSDAY
+      - FRIDAY
+      - SATURDAY
+      - SUNDAY
+      - UNSPECIFIED
+    TargetBusinessIds:
+      type: array
+      items:
+        type: string
+      description: 'Business IDs for merchant targeting (domestic, non-alcohol only).
+
+        '
+    ResourceType:
+      type: string
+      enum:
+      - L1_BRAND
+      - L1_CATEGORY
+      - L2_CATEGORY
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    ManualTargetWrite:
+      required:
+      - bid
+      - placement
+      properties:
+        bid:
+          allOf:
+          - $ref: '#/components/schemas/BidWrite'
+          - type: object
+            description: Bid for a specific ad group placement type
+        placement:
+          $ref: '#/components/schemas/Placement'
+    Code:
+      description: An enumerated success or error code for machine use.
+      type: string
+    KeywordsBiddingWrite:
+      required:
+      - bid
+      - placement
+      - targetKeywords
+      properties:
+        bid:
+          allOf:
+          - $ref: '#/components/schemas/BidWrite'
+          - type: object
+            description: Bid for list of keywords under a specific ad group placement type. Zero unit amount will be excluded keywords.
+        placement:
+          $ref: '#/components/schemas/Placement'
+        targetKeywords:
+          type: array
+          minItems: 1
+          maxItems: 40
+          items:
+            type: string
+    BidMinRoas:
+      minimum: 0.1
+      exclusiveMinimum: false
+      maximum: 6
+      exclusiveMaximum: false
+      type: double
+      example: 2
+      description: 'Specify the BidMinRoas value when configuring the Automatic Bidding strategy.
+
+
+        Choose a minimum ROAS that aligns with your campaign goals. If not specified, a default minimum guardrail of 2.0x will be applied.
+
+
+        All ad groups within the same campaign must use the same bidMinRoas. Although bidMinRoas is set at the ad group level, it is applied at the campaign level — updating bidMinRoas on any ad group will set the same value across all ad groups within the campaign.
+
+        '
+    StatusDescription:
+      description: Description of the resource is in current state.
+      type: string
+    BidWrite:
+      required:
+      - price
+      properties:
+        price:
+          description: Integer representing a monetary value in cents.
+          properties:
+            unitAmount:
+              description: Integer representing a monetary value in cents.
+              type: number
+    KeywordsBiddingRead:
+      required:
+      - bid
+      - placement
+      - targetKeywords
+      properties:
+        bid:
+          allOf:
+          - $ref: '#/components/schemas/BidRead'
+          - type: object
+            description: Bid for list of keywords under a specific ad group placement type. Zero unit amount will be excluded keywords.
+        placement:
+          $ref: '#/components/schemas/Placement'
+        targetKeywords:
+          type: array
+          minItems: 1
+          maxItems: 40
+          items:
+            type: string
+    KeywordsBiddingRequest:
+      description: '**Sponsored Products only.** Keyword search bidding configuration to customize the audience of this ad group campaign.
+
+        '
+      type: array
+      items:
+        $ref: '#/components/schemas/KeywordsBiddingWrite'
+    TargetingAction:
+      type: string
+      enum:
+      - LAPSED
+      - INCLUDE_ANY
+      - EXCLUDE_ANY
+    EndDate:
+      description: End date for the resource to stop running. The format of the date is yyyy-MM-dd HH:mm:ss.
+      type: string
+      example: '2025-12-01 00:00:00'
+    TimeOfDay:
+      type: object
+      properties:
+        hours:
+          type: number
+        minutes:
+          type: number
+        seconds:
+          type: number
+        nanos:
+          type: number
+  parameters:
+    count:
+      name: count
+      in: query
+      description: Number of records to include in the paged response.
+      required: false
+      schema:
+        type: number
+    startIndex:
+      name: startIndex
+      in: query
+      description: 0-indexed record offset for the result set. Defaults to 0.
+      schema:
+        type: number
+        default: 0
+    campaignType:
+      name: campaignType
+      in: path
+      description: Indicates campaign type. 'sp' for Sponsored Products or 'sb' for Sponsored Brand
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    Ads_API_Key_Authentication:
+      type: apiKey
+      scheme: bearer
+      in: header
+      name: Authorization
+      description: We will be using stateful token based API keys to authenticate clients, passed in the 'Authorization' header as 'Bearer {API_KEY}'.

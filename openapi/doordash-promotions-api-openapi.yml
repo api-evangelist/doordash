@@ -188,6 +188,14 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
+  parameters:
+    StoreLocationId:
+      name: store_location_id
+      in: path
+      required: true
+      description: The unique identifier for the store location.
+      schema:
+        type: string
   schemas:
     Promotion:
       type: object
@@ -217,31 +225,6 @@ components:
           type: string
           description: A description of the promotion.
           example: Leave at the front desk.
-    PromotionsRequest:
-      type: object
-      required:
-      - promotions
-      properties:
-        promotions:
-          type: array
-          description: The promotions to add or update.
-          items:
-            $ref: '#/components/schemas/Promotion'
-    ItemError:
-      type: object
-      properties:
-        merchant_supplied_id:
-          type: string
-          description: The item identifier that had an error.
-          example: D-12345
-        message:
-          type: string
-          description: The error message.
-          example: example
-        code:
-          type: string
-          description: A machine-readable error code.
-          example: ABC123
     Error:
       type: object
       properties:
@@ -269,14 +252,31 @@ components:
           description: Any errors encountered during processing.
           items:
             $ref: '#/components/schemas/ItemError'
-  parameters:
-    StoreLocationId:
-      name: store_location_id
-      in: path
-      required: true
-      description: The unique identifier for the store location.
-      schema:
-        type: string
+    PromotionsRequest:
+      type: object
+      required:
+      - promotions
+      properties:
+        promotions:
+          type: array
+          description: The promotions to add or update.
+          items:
+            $ref: '#/components/schemas/Promotion'
+    ItemError:
+      type: object
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: The item identifier that had an error.
+          example: D-12345
+        message:
+          type: string
+          description: The error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
   securitySchemes:
     bearerAuth:
       type: http

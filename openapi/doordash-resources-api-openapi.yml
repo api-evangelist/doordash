@@ -1,0 +1,130 @@
+openapi: 3.2.0
+info:
+  version: 1.0.29
+  title: DoorDash Ads Resources API
+  description: DoorDash Ads API for Sponsored Products for campaign management and reporting operations.
+servers:
+- url: https://openapi.doordash.com
+security:
+- Ads API Key Authentication: []
+tags:
+- name: Resources
+  description: To retrieve brands and categories available for behavioral targeting.
+paths:
+  /ads/api/v1/resources/search:
+    post:
+      tags:
+      - Resources
+      operationId: searchResources
+      summary: Search resources
+      description: Get a list of resources (categories or advertiser's brands) based on classification type and resource type.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResourcesSearchRequest'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourcesSearchResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  responses:
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    ResourceType:
+      type: string
+      enum:
+      - L1_BRAND
+      - L1_CATEGORY
+      - L2_CATEGORY
+    ResourcesSearchRequest:
+      type: object
+      required:
+      - classificationType
+      properties:
+        classificationType:
+          $ref: '#/components/schemas/ClassificationType'
+        resourceTypes:
+          allOf:
+          - type: array
+          - items:
+              $ref: '#/components/schemas/ResourceType'
+          - description: "When classificationType = BRAND, resourceTypes must be at least one of [L1_BRAND].\n\nWhen classificationType = CATEGORY, resourceTypes must be at least one of [L1_CATEGORY, L2_CATEGORY].\n\nWhen not provided, will return only L1s for the provided classification. \n\nWhen provided, will returns associated resources of the provided classification type.\n"
+        searchAfter:
+          type: string
+          description: 'Null when results included all matching resources. Base64 encoded string of the request payload when there are additional resources not included within the current result set.
+
+            '
+        limit:
+          type: number
+          default: 10
+    CpgResource:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/ResourceType'
+        l1Id:
+          type: string
+        l1name:
+          type: string
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    ClassificationType:
+      type: string
+      enum:
+      - BRAND
+      - CATEGORY
+    ResourcesSearchResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CpgResource'
+        searchAfter:
+          type: string
+  securitySchemes:
+    Ads_API_Key_Authentication:
+      type: apiKey
+      scheme: bearer
+      in: header
+      name: Authorization
+      description: We will be using stateful token based API keys to authenticate clients, passed in the 'Authorization' header as 'Bearer {API_KEY}'.

@@ -1,0 +1,300 @@
+openapi: 3.2.0
+info:
+  title: Drive Audit API
+  x-logo:
+    url: https://doordash-static.s3-us-west-2.amazonaws.com/media/drive/drive-logo.png
+    backgroundColor: '#FFFFFF'
+    altText: Doordash Drive
+    href: https://developer.doordash.com/
+  version: 2.1.59
+  description: ''
+servers:
+- url: https://openapi.doordash.com
+  variables: {}
+tags:
+- name: Audit
+  x-displayName: Audit
+paths:
+  /drive/v2/checkout_audit_signal:
+    post:
+      summary: Create Checkout Audit Signal
+      tags:
+      - Audit
+      description: Create a new audit signal for virtual checkout for a specified delivery
+      operationId: CheckoutAuditSignal
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutAuditSignalInput'
+        required: true
+      responses:
+        '200':
+          description: Ok
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutAuditSignalResponse'
+        '400':
+          description: Request Validation Failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validation_field_error'
+        '401':
+          description: Request unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authentication_error'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authorization_error'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      deprecated: false
+components:
+  schemas:
+    server_fault:
+      x-error: true
+      type: object
+      description: Internal service failure, please try again later.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - service_fault
+          default: service_fault
+        message:
+          type: string
+          example: Internal service failure, please try again later.
+          default: Internal service failure, please try again later.
+    AuditedItemCount:
+      type: integer
+      description: The count of the items that is audited by the Merchant
+      format: int32
+      example: 2
+    authorization_error:
+      x-error: true
+      type: object
+      description: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authorization_error
+          default: authorization_error
+        message:
+          type: string
+          example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+          default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+    FieldError:
+      title: FieldError
+      type: object
+      description: A field whose value couldn't be validated.
+      required:
+      - field
+      - error
+      properties:
+        field:
+          type: string
+          description: Name of the field whose value couldn't be validated.
+          example: pickup_phone_number
+        error:
+          type: string
+          description: The error that was encountered when validating the field's value.
+          example: Invalid phone number format
+    SignalReceived:
+      type: boolean
+      description: Whether the audit for the specified delivery was successfully received.
+      example: 'false'
+    validation_field_error:
+      x-error: true
+      title: ValidationFieldError
+      type: object
+      description: One or more request values couldn't be validated.
+      required:
+      - code
+      - message
+      - field_errors
+      properties:
+        code:
+          type: string
+          enum:
+          - validation_error
+        message:
+          type: string
+          description: One or more request values couldn't be validated.
+          example: One or more request values couldn't be validated.
+        field_errors:
+          type: array
+          description: The list of fields whose values couldn't be validated. See more [error examples](https://developer.doordash.com/en-US/docs/drive/reference/errors)
+          items:
+            $ref: '#/components/schemas/FieldError'
+          readOnly: true
+      components:
+        schemas:
+          FieldError:
+            title: FieldError
+            type: object
+            description: A field whose value couldn't be validated.
+            required:
+            - field
+            - error
+            properties:
+              field:
+                type: string
+                description: Name of the field whose value couldn't be validated.
+                example: pickup_phone_number
+              error:
+                type: string
+                description: The error that was encountered when validating the field's value.
+                example: Invalid phone number format
+    CheckoutAuditSignalInput:
+      title: CheckoutAuditSignalInput
+      description: Request body for quote accept endpoint
+      allOf:
+      - $ref: '#/components/schemas/delivery_CheckoutAuditSignalInput'
+      type: object
+    RequestedAuditItemCount:
+      type: integer
+      description: The count of the items requested for audit
+      format: int32
+      example: 2
+    AuditPeriod:
+      title: AuditPeriod
+      type: object
+      description: An object that specifies the audit period start and end time, if audit is completed on the Merchants side.
+      properties:
+        start_time:
+          $ref: '#/components/schemas/Time'
+        end_time:
+          $ref: '#/components/schemas/Time'
+    DriveFailedAuditedItem:
+      title: DriveFailedAuditedItem
+      type: object
+      description: Drive item that has successfully passed audit or failed audit
+      properties:
+        external_item_id:
+          type: string
+          description: External ID of the item audited
+          example: item-id-1
+        upc_scanned:
+          type: string
+          description: UPC scanned for the audited item
+          example: '1234575757'
+        failed_reason:
+          $ref: '#/components/schemas/AuditFailedReason'
+    authentication_error:
+      x-error: true
+      type: object
+      description: 'Authentication error: the token provided with the request doesn''t work for the requested operation'
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authentication_error
+          default: authentication_error
+        message:
+          type: string
+          example: The [exp] is in the past; the JWT is expired
+          default: The [exp] is in the past; the JWT is expired
+    IsAuditSuccessful:
+      type: boolean
+      description: Whether the audit for the specified delivery passed or failed.
+      example: 'false'
+    delivery_CheckoutAuditSignalInput:
+      title: CheckoutAuditSignalInput
+      description: Request body for quote accept endpoint
+      type: object
+      properties:
+        external_delivery_id:
+          $ref: '#/components/schemas/ExternalDeliveryId'
+        is_audit_successful:
+          $ref: '#/components/schemas/IsAuditSuccessful'
+        audit_period:
+          $ref: '#/components/schemas/AuditPeriod'
+        requested_audit_item_count:
+          $ref: '#/components/schemas/RequestedAuditItemCount'
+        audited_item_count:
+          $ref: '#/components/schemas/AuditedItemCount'
+        successful_audit_items:
+          type: array
+          description: The items that successfuly passed the audit process.
+          items:
+            $ref: '#/components/schemas/DriveSuccessfulAuditedItem'
+        failed_audit_items:
+          type: array
+          description: The items that failed the audit process.
+          items:
+            $ref: '#/components/schemas/DriveFailedAuditedItem'
+        checkout_audit_status:
+          $ref: '#/components/schemas/CheckoutAuditStatus'
+      required:
+      - external_delivery_id
+    CheckoutAuditStatus:
+      type: string
+      description: An enum that specifies the overal audit status of the order. Must be sent for failed_audit_items and not successful_audit_items."
+      enum:
+      - passed
+      - failed
+      - skipped
+      example: passed
+    Time:
+      title: TimeDetails
+      description: Time details in ISO-8601 format.
+      type: string
+      example: '2018-08-22T17:20:28Z'
+    AuditFailedReason:
+      type: string
+      description: An enum that specifies the reason why the item failed audit."
+      enum:
+      - scan_mismatch
+      - item_expired
+      example: scan_mismatch
+    CheckoutAuditSignalResponse:
+      title: CheckoutAuditSignalResponse
+      description: Create audit signal status and details.
+      properties:
+        signal_received:
+          $ref: '#/components/schemas/SignalReceived'
+      type: object
+    ExternalDeliveryId:
+      type: string
+      pattern: /[a-zA-Z0-9-._~]+/
+      description: Unique ID generated by the caller for the delivery.
+      example: D-1763
+    DriveSuccessfulAuditedItem:
+      title: DriveSuccessfulAuditedItem
+      type: object
+      description: Drive item that has successfully passed audit or failed audit
+      properties:
+        external_item_id:
+          type: string
+          description: External ID of the item audited
+          example: item-id-1
+        upc_scanned:
+          type: string
+          description: UPC scanned for the audited item
+          example: '1234575757'

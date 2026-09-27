@@ -1,0 +1,533 @@
+openapi: 3.2.0
+info:
+  version: 1.0.29
+  title: DoorDash Ads Campaigns API
+  description: DoorDash Ads API for Sponsored Products for campaign management and reporting operations.
+servers:
+- url: https://openapi.doordash.com
+security:
+- Ads API Key Authentication: []
+tags:
+- name: Campaigns
+paths:
+  /ads/api/v1/{campaignType}/campaigns:
+    post:
+      tags:
+      - Campaigns
+      operationId: createCampaign
+      summary: Create campaign
+      description: Create a single campaign.
+      parameters:
+      - $ref: '#/components/parameters/campaignType'
+      requestBody:
+        description: A campaign to create.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCampaignRequest'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+      - Campaigns
+      operationId: updateCampaign
+      summary: Update campaign
+      description: Update a single campaign.
+      parameters:
+      - $ref: '#/components/parameters/campaignType'
+      requestBody:
+        description: A partial campaign object used to update an existing campaign.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCampaignRequest'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    get:
+      tags:
+      - Campaigns
+      operationId: getCampaigns
+      summary: Get campaigns
+      description: Get a list of campaigns.
+      parameters:
+      - $ref: '#/components/parameters/startIndex'
+      - $ref: '#/components/parameters/count'
+      - $ref: '#/components/parameters/campaignType'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - campaigns
+                properties:
+                  campaigns:
+                    description: List of campaigns.
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CampaignResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/{campaignType}/campaigns/{campaignId}:
+    get:
+      tags:
+      - Campaigns
+      operationId: getCampaignById
+      summary: Get campaign by ID
+      description: Get a single campaign by the provided identifier.
+      parameters:
+      - $ref: '#/components/parameters/campaignType'
+      - name: campaignId
+        in: path
+        description: Unique identifier for a campaign
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/campaigns/{campaignId}/recommendations:
+    get:
+      tags:
+      - Campaigns
+      operationId: getBudgetCapoutRecommendations
+      summary: Get budget capout recommendations
+      description: Get budget capout report and recommendations for the provided campaign ID.
+      parameters:
+      - $ref: '#/components/parameters/campaignId'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BudgetCapoutRecommendationsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  responses:
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Name:
+      description: Resource name.
+      type: string
+    CampaignType:
+      description: The advertising product managed by this campaign.
+      type: string
+      enum:
+      - SPONSORED_PRODUCTS
+    MonetaryFieldsExtended:
+      required:
+      - unitAmount
+      - currency
+      - displayString
+      - decimalPlaces
+      - symbol
+      - symbolPlacement
+      - sign
+      properties:
+        unitAmount:
+          description: Integer representing a monetary value in cents.
+          type: number
+        currency:
+          description: Monetary value currency
+          type: string
+          enum:
+          - USD
+        displayString:
+          description: Monetary value formatted for display
+          type: string
+        decimalPlaces:
+          description: Monetary value currency decimal places
+          type: number
+        symbol:
+          description: Monetary value symbol
+          type: string
+        symbolPlacement:
+          description: Monetary value symbol placement
+          type: string
+          enum:
+          - left
+          - right
+        sign:
+          description: True indicates the monetary value is positive. False indicates the monetary value is negative.
+          type: boolean
+    PacingStrategy:
+      description: Controls how the budget is distributed over the campaign duration.
+      type: string
+      enum:
+      - DEMAND
+      - UNSPECIFIED
+      x-enumDescriptions:
+        DEMAND: Spend more of the budget when traffic is high, and less when traffic is low.
+        UNSPECIFIED: Specify to use the default pacing strategy.
+    StatusWrite:
+      description: Current resource state.
+      type: string
+      enum:
+      - ACTIVE
+      - PAUSED
+      - ENDED
+    CampaignId:
+      description: Unique campaign identifier.
+      type: string
+    CodeDescription:
+      description: A human-readable description of the code.
+      type: string
+    StartDate:
+      description: Start date for the resource to go live. The format of the date is yyyy-MM-dd HH:mm:ss.
+      type: string
+      example: '2025-11-01 00:00:00'
+    BudgetRead:
+      required:
+      - daily
+      - lifetime
+      properties:
+        daily:
+          allOf:
+          - $ref: '#/components/schemas/MonetaryFieldsExtended'
+          - type: object
+            description: A daily budget for the campaign
+        lifetime:
+          allOf:
+          - $ref: '#/components/schemas/MonetaryFieldsExtended'
+          - type: object
+            description: A lifetime budget for the campaign
+        pacingStrategy:
+          $ref: '#/components/schemas/PacingStrategy'
+    CreateCampaignRequest:
+      required:
+      - name
+      - campaignType
+      - budget
+      - startDate
+      properties:
+        name:
+          $ref: '#/components/schemas/Name'
+        description:
+          $ref: '#/components/schemas/Description'
+        budget:
+          $ref: '#/components/schemas/BudgetWrite'
+        startDate:
+          $ref: '#/components/schemas/StartDate'
+        endDate:
+          $ref: '#/components/schemas/EndDate'
+    StatusRead:
+      description: Current resource state.
+      type: string
+      enum:
+      - INCOMPLETE
+      - IN_REVIEW
+      - SCHEDULED
+      - ACTIVE
+      - PAUSED
+      - ENDED
+      - DRAFT
+      - REJECTED
+      - CANCELLED
+    MonetaryFields:
+      required:
+      - unitAmount
+      - currency
+      properties:
+        unitAmount:
+          description: Integer representing a monetary value in cents.
+          type: number
+        currency:
+          description: Monetary value currency
+          type: string
+          enum:
+          - USD
+        displayString:
+          description: Monetary value formatted for display
+          type: string
+        decimalPlaces:
+          description: Monetary value currency decimal places
+          type: number
+        symbol:
+          description: Monetary value symbol
+          type: string
+    UpdateCampaignRequest:
+      required:
+      - campaignId
+      properties:
+        campaignId:
+          $ref: '#/components/schemas/CampaignId'
+        name:
+          $ref: '#/components/schemas/Name'
+        description:
+          $ref: '#/components/schemas/Description'
+        status:
+          $ref: '#/components/schemas/StatusWrite'
+        budget:
+          $ref: '#/components/schemas/BudgetWrite'
+        startDate:
+          $ref: '#/components/schemas/StartDate'
+        endDate:
+          $ref: '#/components/schemas/EndDate'
+    CampaignResponse:
+      required:
+      - campaignId
+      - name
+      - description
+      - status
+      - statusDescription
+      - code
+      - codeDescription
+      - campaignType
+      - budget
+      - startDate
+      - endDate
+      - placementType
+      - permission
+      properties:
+        campaignId:
+          $ref: '#/components/schemas/CampaignId'
+        name:
+          $ref: '#/components/schemas/Name'
+        description:
+          $ref: '#/components/schemas/Description'
+        status:
+          $ref: '#/components/schemas/StatusRead'
+        statusDescription:
+          $ref: '#/components/schemas/StatusDescription'
+        code:
+          $ref: '#/components/schemas/Code'
+        codeDescription:
+          $ref: '#/components/schemas/CodeDescription'
+        campaignType:
+          $ref: '#/components/schemas/CampaignType'
+        budget:
+          $ref: '#/components/schemas/BudgetRead'
+        startDate:
+          $ref: '#/components/schemas/StartDate'
+        endDate:
+          $ref: '#/components/schemas/EndDate'
+        placementType:
+          $ref: '#/components/schemas/PlacementType'
+        permission:
+          $ref: '#/components/schemas/Permission'
+    PlacementType:
+      description: Specifies how all ad groups for the campaign will specify placement type details.
+      type: string
+      enum:
+      - AUTOMATIC
+      - MANUAL
+    RecommendedBudget:
+      type: object
+      properties:
+        avgCapOutTimeLast7Days:
+          type: number
+        recommendedBudget:
+          $ref: '#/components/schemas/MonetaryFields'
+        totalMissedSalesLast7Days:
+          $ref: '#/components/schemas/MonetaryFields'
+        dailyCapOutTime:
+          type: array
+          items:
+            $ref: '#/components/schemas/DailyCapOutTime'
+    BudgetWrite:
+      properties:
+        daily:
+          description: Daily budget for the campaign
+          properties:
+            unitAmount:
+              description: Integer representing a monetary value in cents.
+              type: number
+        lifetime:
+          description: Lifetime budget for the campaign
+          properties:
+            unitAmount:
+              description: Integer representing a monetary value in cents.
+              type: number
+        pacingStrategy:
+          $ref: '#/components/schemas/PacingStrategy'
+          description: 'Used to opt into or out of Optimized Pacing. In updates without a pacingStrategy specified, the existing pacingStrategy will be preserved.
+
+            * `DEMAND` - Spend more of the budget when traffic is high, and less when traffic is low. Requires daily budget to be set.
+
+            * `UNSPECIFIED` - Specify to opt out of Optimized Pacing and use the default pacing strategy.
+
+            '
+      minProperties: 1
+      description: At least one of daily or lifetime budget must be configured.
+    DayOfWeek:
+      type: string
+      enum:
+      - MONDAY
+      - TUESDAY
+      - WEDNESDAY
+      - THURSDAY
+      - FRIDAY
+      - SATURDAY
+      - SUNDAY
+      - UNSPECIFIED
+    Description:
+      description: Resource description.
+      type: string
+    Permission:
+      required:
+      - isReadOnly
+      - message
+      properties:
+        isReadOnly:
+          description: Indicates whether a campaign is read-only through the API
+          type: boolean
+        message:
+          description: Description of the campaign permission
+          type: string
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    Code:
+      description: An enumerated success or error code for machine use.
+      type: string
+    DailyCapOutTime:
+      type: object
+      properties:
+        dayOfWeek:
+          $ref: '#/components/schemas/DayOfWeek'
+        capOutTime:
+          type: number
+        maximumLiveHours:
+          type: number
+    StatusDescription:
+      description: Description of the resource is in current state.
+      type: string
+    BudgetCapoutRecommendationsResponse:
+      type: object
+      properties:
+        adEntityId:
+          type: string
+          description: ''
+        type:
+          type: string
+          description: ''
+        value:
+          $ref: '#/components/schemas/RecommendedBudget'
+    EndDate:
+      description: End date for the resource to stop running. The format of the date is yyyy-MM-dd HH:mm:ss.
+      type: string
+      example: '2025-12-01 00:00:00'
+  parameters:
+    count:
+      name: count
+      in: query
+      description: Number of records to include in the paged response.
+      required: false
+      schema:
+        type: number
+    startIndex:
+      name: startIndex
+      in: query
+      description: 0-indexed record offset for the result set. Defaults to 0.
+      schema:
+        type: number
+        default: 0
+    campaignType:
+      name: campaignType
+      in: path
+      description: Indicates campaign type. 'sp' for Sponsored Products or 'sb' for Sponsored Brand
+      required: true
+      schema:
+        type: string
+    campaignId:
+      name: campaignId
+      in: path
+      description: Unique identifier for a campaign
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    Ads_API_Key_Authentication:
+      type: apiKey
+      scheme: bearer
+      in: header
+      name: Authorization
+      description: We will be using stateful token based API keys to authenticate clients, passed in the 'Authorization' header as 'Bearer {API_KEY}'.

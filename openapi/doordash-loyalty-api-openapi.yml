@@ -1,0 +1,718 @@
+openapi: 3.2.0
+info:
+  title: Storefront V1 API Specification Loyalty API
+  version: 1.0.0
+  contact:
+    name: Storefront API Support
+    email: storefront-api-support@doordash.com
+  description: Endpoints for loyalty related resources
+servers:
+- url: https://openapi.doordash.com
+  variables: {}
+security:
+- BearerAuth: []
+tags:
+- name: Loyalty
+  description: Endpoints for loyalty related resources
+paths:
+  /storefront/api/v1/loyalty/get_balance:
+    get:
+      deprecated: true
+      tags:
+      - Loyalty
+      summary: Get loyalty account balance of the user
+      operationId: getAccountBalance
+      parameters:
+      - $ref: '#/components/parameters/ExternalUserId'
+      - $ref: '#/components/parameters/Provider'
+      - $ref: '#/components/parameters/ProviderEnvironment'
+      - $ref: '#/components/parameters/IntegrationId'
+      - $ref: '#/components/parameters/ProviderReferenceId'
+      responses:
+        '200':
+          description: Successfully retrieved order history
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStorefrontLoyaltyAccountBalanceResponse'
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '422':
+          description: Request Entity Too Large
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/loyalty/profile:
+    post:
+      tags:
+      - Loyalty
+      summary: Get loyalty member profile of the user
+      operationId: getMemberProfile
+      requestBody:
+        description: request body which should contain user's identification details.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyMemberProfileRequest'
+      responses:
+        '200':
+          description: Successfully retrieved member profile information with the loyalty provider
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoyaltyMemberProfileResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/loyalty/revoke_session:
+    post:
+      tags:
+      - Loyalty
+      summary: Revoke a user's session with the loyalty provider
+      operationId: revokeUserSession
+      requestBody:
+        description: request body which should contain user's identification details.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyUserSessionRequest'
+      responses:
+        '200':
+          description: Successfully revoked user session with the loyalty provider
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/loyalty/delete_account:
+    post:
+      tags:
+      - Loyalty
+      summary: Delete a user's account
+      operationId: deleteUserAccount
+      requestBody:
+        description: request body which should contain user's identification details.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyUserSessionRequest'
+      responses:
+        '200':
+          description: Successfully deleted account.
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/loyalty/session:
+    post:
+      tags:
+      - Loyalty
+      summary: Retrieve a user's session info with the loyalty provider
+      operationId: getUserSession
+      requestBody:
+        description: request body which should contain user's identification details.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyUserSessionRequest'
+      responses:
+        '200':
+          description: Successfully retrieved user session info with the loyalty provider
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoyaltyUserSessionResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/loyalty/qr_code:
+    post:
+      tags:
+      - Loyalty
+      summary: Get QR code for user loyalty account
+      operationId: GenerateStorefrontUserQrCode
+      requestBody:
+        description: request body which should contain user's identification details.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateStorefrontUserQrCodeRequest'
+      responses:
+        '200':
+          description: Successfully retrieved member profile information with the loyalty provider
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerateStorefrontUserQrCodeResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/loyalty/get_user_rewards:
+    post:
+      tags:
+      - Loyalty
+      summary: Retrieve user loyalty rewards
+      operationId: LoyaltyRetrieveRewards
+      requestBody:
+        description: request body which should contain user's identification details.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyRetrieveRewardsRequest'
+      responses:
+        '200':
+          description: Successfully retrieved rewards
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/loyalty/store/check_in:
+    post:
+      tags:
+      - Loyalty
+      summary: Check a user in to earn loyalty points for visiting a store location
+      operationId: LoyaltyCheckIn
+      requestBody:
+        description: request body which should contain user's identification details.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyCheckInRequest'
+      responses:
+        '200':
+          description: Successfully checked in to store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoyaltyCheckInResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/loyalty/store/redeem:
+    post:
+      tags:
+      - Loyalty
+      summary: Redeem a customer's loyalty reward in store
+      operationId: LoyaltyRedeemReward
+      requestBody:
+        description: request body which should contain user's identification details.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoyaltyRedeemRewardRequest'
+      responses:
+        '200':
+          description: Successfully redeemed reward
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoyaltyRedeemRewardResponse'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+components:
+  schemas:
+    ProviderReferenceId:
+      type: string
+      pattern: ^([a-zA-Z1-9][:_a-zA-Z0-9]*)$
+      description: Unique ID for a external user.
+      example: '123:12'
+    GenerateStorefrontUserQrCodeRequest:
+      type: object
+      properties:
+        session:
+          $ref: '#/components/schemas/LoyaltyUserSessionRequest'
+        store_id:
+          $ref: '#/components/schemas/StoreId'
+        width:
+          $ref: '#/components/schemas/Width'
+        height:
+          $ref: '#/components/schemas/Height'
+      required:
+      - session
+      - store_id
+    LoyaltyCheckInResponse:
+      type: object
+      properties:
+        earned_reward:
+          $ref: '#/components/schemas/Reward'
+    Provider:
+      type: string
+      enum:
+      - paytronix
+      - spendgo
+      example: spendgo
+      description: which provider the user has logged in to
+    Latitude:
+      type: string
+      pattern: ^(\+|-)?(?:90(?:(?:\.0{1,7})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,7})?))$
+      example: -32.1234537
+    LinkState:
+      type: object
+      properties:
+        linked:
+          type: boolean
+          description: Whether or not the payment method has been card linked
+          example: true
+        error:
+          type: string
+          description: Error message when linking or unlinking a payment method fails
+          example: We were unable to link your payment method. Please try again.
+    IntegrationType:
+      type: string
+      enum:
+      - BUSINESS
+      - BUSINESS_GROUP
+      - STORE
+      example: store
+      default: business
+      description: Type of the integration id
+    Rewards:
+      type: array
+      items:
+        $ref: '#/components/schemas/Redemption'
+    LoyaltyMemberProfile:
+      type: object
+      properties:
+        external_user_id:
+          type: string
+          description: Member id with the loyalty provider
+          example: '123'
+        first_name:
+          type: string
+          description: First name
+          example: John
+        last_name:
+          type: string
+          description: Last name
+          example: Doe
+        email:
+          type: string
+          description: Email
+          example: john.doe@email.com
+        phone_number:
+          type: string
+          description: Phone number
+          example: '1234567890'
+        loyalty_points:
+          type: integer
+          description: Balance of loyalty points
+          example: 100
+        loyalty_tier:
+          type: string
+          description: Loyalty tier
+          example: Gold
+        in_store_rewards:
+          $ref: '#/components/schemas/InStoreRewards'
+    LoyaltyCheckInRequest:
+      type: object
+      properties:
+        session:
+          $ref: '#/components/schemas/LoyaltyUserSessionRequest'
+        store_id:
+          $ref: '#/components/schemas/StoreId'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+      required:
+      - session
+      - store_id
+    RewardsProgress:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title describing rewards progress
+          example: 2 orders away from your next reward
+        subtitle:
+          type: string
+          description: Optional subtitle describing rewards progress
+          example: Earn $5 for every 5 orders
+        current_points:
+          type: integer
+          description: Balance of loyalty points
+          example: 5
+        target_points:
+          type: integer
+          description: Loyalty points needed to earn the next reward
+          example: 10
+    GenerateStorefrontUserQrCodeResponse:
+      type: object
+      properties:
+        qr_code:
+          $ref: '#/components/schemas/QRCode'
+      required:
+      - qr_code
+    GetLoyaltyInfo:
+      type: boolean
+      description: if true, return loyalty account information for the user.
+      default: false
+    LoyaltyUserSessionRequest:
+      type: object
+      properties:
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        integration_id:
+          $ref: '#/components/schemas/IntegrationId'
+        integration_type:
+          $ref: '#/components/schemas/IntegrationType'
+      required:
+      - session_id
+      - integration_id
+      - integration_type
+    LoyaltyRedeemRewardRequest:
+      type: object
+      properties:
+        session:
+          $ref: '#/components/schemas/LoyaltyUserSessionRequest'
+        promotion_id:
+          type: string
+          description: Unique identifier for the reward
+          example: 2d3eddf8-2723-434d-81d5-920eac66a61c
+      required:
+      - session
+      - promotion_id
+    QRCode:
+      type: string
+      description: base 64 encoded QR code for user's account.
+    Width:
+      type: integer
+      description: expected width of the qr code
+      example: 300
+      default: 256
+      minimum: 1
+      maximum: 1024
+    Height:
+      type: integer
+      description: expected height of the qr code
+      example: 300
+      default: 256
+      minimum: 1
+      maximum: 1024
+    LoyaltyMemberProfileResponse:
+      type: object
+      title: LoyaltyMemberProfileResponse
+      description: Loyalty member profile
+      required:
+      - profile
+      properties:
+        profile:
+          $ref: '#/components/schemas/LoyaltyMemberProfile'
+    StoreId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the store.
+      example: '123'
+    Redemption:
+      type: object
+      properties:
+        reward_id:
+          type: string
+          description: Unique identifier for the reward
+          example: 2d3eddf8-2723-434d-81d5-920eac66a61c
+        redeemed:
+          type: boolean
+          description: Whether or not the redemption has taken place
+          example: true
+        message:
+          type: string
+          description: A message to show the user describing the redemption
+          example: $5 reward
+        description:
+          type: string
+          description: A confirmation message to show the user when redeeming a reward
+          example: You have two hours to redeem your reward in-store before it expires.
+        redemption_time:
+          type: string
+          pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(.[0-9]{3,})?Z$
+          description: UTC Timestamp in ISO-8601 format
+          example: '2018-08-22T17:20:28Z'
+        expiration_time:
+          type: string
+          pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(.[0-9]{3,})?Z$
+          description: UTC Timestamp in ISO-8601 format
+          example: '2018-08-22T17:20:28Z'
+    ExternalUserId:
+      type: string
+      pattern: ^([a-zA-Z1-9][a-zA-Z0-9]*)$
+      description: Unique ID for a external user.
+      example: asAZ123
+    SessionId:
+      type: string
+      description: id of the application session
+    ProviderEnvironment:
+      type: string
+      enum:
+      - prod
+      - staging
+      example: staging
+      description: which provider environment user has logged in to.
+    IntegrationId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the business, business group or store.
+      example: '987654'
+    InStoreRewards:
+      type: object
+      properties:
+        rewards_progress:
+          $ref: '#/components/schemas/RewardsProgress'
+        available_rewards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rewards'
+        unavailable_rewards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reward'
+        activated_rewards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reward'
+        past_rewards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reward'
+        card_linking_payment_methods:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardLinkingPaymentMethod'
+    GetStorefrontLoyaltyAccountBalanceResponse:
+      type: object
+      title: GetStorefrontLoyaltyAccountBalanceResponse
+      description: get loyalty account balance of the user.
+      required:
+      - balance
+      properties:
+        balance:
+          type: number
+          description: total account balance of the user.
+          example: '1234'
+    LoyaltyRedeemRewardResponse:
+      type: object
+      properties:
+        applied_redemption:
+          type: array
+          items:
+            $ref: '#/components/schemas/Redemption'
+        rejected_redemption:
+          type: array
+          items:
+            $ref: '#/components/schemas/Redemption'
+    Longitude:
+      type: string
+      pattern: ^(\+|-)?(?:180(?:(?:\.0{1,7})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,7})?))$
+      example: -156.1234538
+    Reward:
+      type: object
+      properties:
+        reward_id:
+          type: string
+          description: Unique identifier for the reward
+          example: 2d3eddf8-2723-434d-81d5-920eac66a61c
+        name:
+          type: string
+          description: User facing description of the reward
+          example: $5 off your order
+        description:
+          type: string
+          description: Used to provide any additional description about the reward
+          example: No minimum spend
+        redemption:
+          $ref: '#/components/schemas/Redemption'
+    CardLinkingPaymentMethod:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the payment method
+          example: 2d3eddf8-2723-434d-81d5-920eac66a61c
+        last4:
+          type: string
+          description: Last 4 digits of the payment method
+          example: '1234'
+        brand:
+          type: string
+          description: Card brand
+          example: Visa
+        exp_month:
+          type: string
+          description: Expiration month for the payment method
+          example: '2'
+        exp_year:
+          type: string
+          description: Expiration year for the payment method
+          example: '2030'
+        link_state:
+          $ref: '#/components/schemas/LinkState'
+    LoyaltyUserSessionResponse:
+      type: object
+      title: LoyaltyUserSessionResponse
+      description: Loyalty user session info
+      required:
+      - session
+      properties:
+        session:
+          $ref: '#/components/schemas/LoyaltyUserSession'
+    LoyaltyRetrieveRewardsRequest:
+      type: object
+      properties:
+        integration_id:
+          $ref: '#/components/schemas/IntegrationId'
+        integration_type:
+          $ref: '#/components/schemas/IntegrationType'
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        store_id:
+          $ref: '#/components/schemas/StoreId'
+      required:
+      - session_id
+      - store_id
+      - integration_id
+      - integration_type
+    LoyaltyMemberProfileRequest:
+      type: object
+      properties:
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        integration_id:
+          $ref: '#/components/schemas/IntegrationId'
+        integration_type:
+          $ref: '#/components/schemas/IntegrationType'
+        get_loyalty_info:
+          $ref: '#/components/schemas/GetLoyaltyInfo'
+      required:
+      - session_id
+      - integration_id
+      - integration_type
+    LoyaltyUserSession:
+      type: object
+      properties:
+        is_session_active:
+          type: boolean
+          description: Whether user session is active or not
+          example: true
+        external_user_id:
+          type: string
+          description: Member id with the external loyalty provider
+          example: '123'
+        consumer_id:
+          type: string
+          description: Consumer id with Storefront
+          example: '321'
+  parameters:
+    IntegrationId:
+      name: integration_id
+      in: query
+      description: business id, business group id or store id
+      required: true
+      schema:
+        $ref: '#/components/schemas/IntegrationId'
+    Provider:
+      name: provider
+      in: query
+      description: loyalty provider of the user
+      required: true
+      schema:
+        $ref: '#/components/schemas/Provider'
+    ProviderReferenceId:
+      name: provider_reference_id
+      in: query
+      description: merchant id or any other id which loyalty provider uses to uniquely identify the business/merchant.
+      required: true
+      schema:
+        $ref: '#/components/schemas/ProviderReferenceId'
+    ProviderEnvironment:
+      name: provider_environment
+      in: query
+      description: which environment of the loyalty provider needs to be used.
+      required: true
+      schema:
+        $ref: '#/components/schemas/ProviderEnvironment'
+    ExternalUserId:
+      name: external_user_id
+      in: query
+      description: External User id, user identifier of the external loyalty provider
+      required: true
+      schema:
+        $ref: '#/components/schemas/ExternalUserId'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

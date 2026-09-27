@@ -29,6 +29,9 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/doordash.png
 url: https://raw.githubusercontent.com/api-evangelist/doordash/refs/heads/main/apis.yml
+x-docs-platform: docusaurus
+x-docs-platform-confidence: medium
+x-docs-platform-checked: 2026-09-25
 apis:
 - aid: doordash:doordash-addresses-api
   name: doordash Addresses API
@@ -547,184 +550,1133 @@ apis:
     url: https://developer.doordash.com/en-US/docs/reporting/overview/about_reporting/
   - type: AsyncAPI
     url: asyncapi/doordash-reporting-webhooks-asyncapi.yml
-- aid: doordash:doordash-ads-api
-  name: DoorDash Ads API
-  description: Plan, launch and measure sponsored-listing and brand advertising on the DoorDash
-    marketplace. Campaigns, ad groups, product ads, keywords, creatives, targeting, budget
-    recommendations, catalog validation and downloadable performance reports.
-  humanURL: https://developer.doordash.com/en-US/api/ads
-  baseURL: https://openapi.doordash.com
+- aid: doordash:doordash-ad-groups-api
+  name: Doordash Ad Groups API
+  description: The Ad Groups API from Doordash — 2 operation(s) for ad groups.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
   tags:
-  - Advertising
-  - Campaigns
-  - Retail Media
+  - Ad Groups
   properties:
   - type: OpenAPI
-    url: openapi/_original/doordash-ads-openapi.yml
-    name: DoorDash Ads API 1.0.29 (provider-published)
-  - type: OpenAPI
-    url: https://developer.doordash.com/redocusaurus/plugin-redoc-0.yaml
-    name: OpenAPI (provider-hosted)
+    url: openapi/doordash-ad-groups-api-openapi.yml
   - type: APIReference
     url: https://developer.doordash.com/en-US/api/ads
-  - type: Overlay
-    url: overlays/doordash-ads-overlay.yaml
-- aid: doordash:doordash-storefront-api
-  name: DoorDash Storefront API
-  description: The white-label online-ordering surface DoorDash runs on a merchant's own site -
-    addresses and geocoding, store and menu reads, cart and order sessions, payment methods,
-    loyalty profiles, rewards and redemptions, and QR code generation.
-  humanURL: https://developer.doordash.com/en-US/api/storefront
-  baseURL: https://openapi.doordash.com
-  tags:
-  - Storefront
-  - Online Ordering
-  - Loyalty
-  properties:
-  - type: OpenAPI
-    url: openapi/_original/doordash-storefront-openapi.yml
-    name: Storefront V1 API Specification (provider-published)
-  - type: OpenAPI
-    url: https://developer.doordash.com/redocusaurus/plugin-redoc-19.yaml
-    name: OpenAPI (provider-hosted)
   - type: APIReference
     url: https://developer.doordash.com/en-US/api/storefront
-  - type: Overlay
-    url: overlays/doordash-storefront-overlay.yaml
-- aid: doordash:doordash-parcel-api
-  name: DoorDash Parcel API
-  description: The shipped-parcel variant of Drive - quote, create, track and cancel a parcel
-    delivery with package dimensions, labels and scanned data, on the same drive/v2 paths as the
-    on-demand Drive API.
-  humanURL: https://developer.doordash.com/en-US/api/drive_v2_parcel
-  baseURL: https://openapi.doordash.com
-  tags:
-  - Parcel
-  - Shipping
-  - Last Mile
-  properties:
-  - type: OpenAPI
-    url: openapi/_original/doordash-parcel-openapi.yml
-    name: Parcel API 0.3.6 (provider-published)
-  - type: OpenAPI
-    url: https://developer.doordash.com/redocusaurus/plugin-redoc-24.yaml
-    name: OpenAPI (provider-hosted)
   - type: APIReference
     url: https://developer.doordash.com/en-US/api/drive_v2_parcel
   - type: Documentation
     url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
-  - type: Overlay
-    url: overlays/doordash-parcel-overlay.yaml
-- aid: doordash:doordash-drive-refunds-api
-  name: DoorDash Drive Refunds API
-  description: Request a refund against a completed Drive delivery. DoorDash decides whether the
-    refund is granted or rejected and returns a result code; no eligibility window is published.
-  humanURL: https://developer.doordash.com/en-US/api/drive_refunds
-  baseURL: https://openapi.doordash.com
-  tags:
-  - Refunds
-  - Delivery
-  properties:
-  - type: OpenAPI
-    url: openapi/_original/doordash-drive-refunds-openapi.yml
-    name: Drive Refunds API 0.0.3 (provider-published)
-  - type: OpenAPI
-    url: https://developer.doordash.com/redocusaurus/plugin-redoc-20.yaml
-    name: OpenAPI (provider-hosted)
   - type: APIReference
     url: https://developer.doordash.com/en-US/api/drive_refunds
-  - type: Overlay
-    url: overlays/doordash-drive-refunds-overlay.yaml
-- aid: doordash:doordash-drive-redelivery-api
-  name: DoorDash Drive Redelivery API
-  description: Re-attempt a Drive delivery that could not be completed, creating a redelivery
-    against the original external_delivery_id.
-  humanURL: https://developer.doordash.com/en-US/api/drive_redelivery
-  baseURL: https://openapi.doordash.com
-  tags:
-  - Delivery
-  - Redelivery
-  properties:
-  - type: OpenAPI
-    url: openapi/_original/doordash-drive-redelivery-openapi.yml
-    name: Drive Redelivery API 0.0.1 (provider-published)
-  - type: OpenAPI
-    url: https://developer.doordash.com/redocusaurus/plugin-redoc-23.yaml
-    name: OpenAPI (provider-hosted)
   - type: APIReference
     url: https://developer.doordash.com/en-US/api/drive_redelivery
-  - type: Overlay
-    url: overlays/doordash-drive-redelivery-overlay.yaml
-- aid: doordash:doordash-drive-dasher-feedback-api
-  name: DoorDash Drive Dasher Feedback API
-  description: Read the Dasher assignment history for a delivery and submit a rating for the
-    Dasher who completed it.
-  humanURL: https://developer.doordash.com/en-US/api/drive_dasher_feedback
-  baseURL: https://openapi.doordash.com
-  tags:
-  - Delivery
-  - Ratings
-  properties:
-  - type: OpenAPI
-    url: openapi/_original/doordash-drive-dasher-feedback-openapi.yml
-    name: Drive Dasher Feedback API 0.0.1 (provider-published)
-  - type: OpenAPI
-    url: https://developer.doordash.com/redocusaurus/plugin-redoc-21.yaml
-    name: OpenAPI (provider-hosted)
   - type: APIReference
     url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
-  - type: Overlay
-    url: overlays/doordash-drive-dasher-feedback-overlay.yaml
-- aid: doordash:doordash-checkout-api
-  name: DoorDash Checkout API
-  description: The embedded checkout interface used to hand a cart to DoorDash from a merchant's
-    own e-commerce flow. The contract states absolute URLs on api.doordash.com and order.online
-    rather than a servers[] base.
-  humanURL: https://developer.doordash.com/en-US/api/external_checkout
-  baseURL: https://api.doordash.com
-  tags:
-  - Checkout
-  - Commerce
-  properties:
-  - type: OpenAPI
-    url: openapi/_original/doordash-external-checkout-openapi.yml
-    name: DoorDash Checkout API Interface 0.1.6 (provider-published)
-  - type: OpenAPI
-    url: https://developer.doordash.com/redocusaurus/plugin-redoc-22.yaml
-    name: OpenAPI (provider-hosted)
   - type: APIReference
     url: https://developer.doordash.com/en-US/api/external_checkout
-  - type: Overlay
-    url: overlays/doordash-external-checkout-overlay.yaml
-- aid: doordash:doordash-marketplace-legacy-api
-  name: DoorDash Marketplace (legacy) API
-  description: The legacy point-of-sale integration surface - menus, orders, order confirmation,
-    item and store availability - served from pointofsale.doordash.com. Superseded by the
-    Marketplace API, with a published partner migration guide but no retirement date.
-  humanURL: https://developer.doordash.com/en-US/api/marketplace_legacy
-  baseURL: https://pointofsale.doordash.com
-  tags:
-  - Marketplace
-  - Point-of-Sale
-  - Legacy
-  tags_raw:
-  - Marketplace
-  - Point of Sale
-  - Legacy
-  properties:
-  - type: OpenAPI
-    url: openapi/_original/doordash-marketplace-legacy-openapi.yml
-    name: Marketplace (legacy) API Specification (provider-published)
-  - type: OpenAPI
-    url: https://developer.doordash.com/redocusaurus/plugin-redoc-18.yaml
-    name: OpenAPI (provider-hosted)
   - type: APIReference
     url: https://developer.doordash.com/en-US/api/marketplace_legacy
   - type: Documentation
     url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
-  - type: Overlay
-    url: overlays/doordash-marketplace-legacy-overlay.yaml
+- aid: doordash:doordash-address-api
+  name: Doordash Address API
+  description: The Address API from Doordash — 5 operation(s) for address.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Address
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-address-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-app-api
+  name: Doordash App API
+  description: Endpoints for mobile app related information
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - App
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-app-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-assets-api
+  name: Doordash Assets API
+  description: The Assets API from Doordash — 3 operation(s) for assets.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Assets
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-assets-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-audit-api
+  name: Doordash Audit API
+  description: The Audit API from Doordash — 1 operation(s) for audit.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Audit
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-audit-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-business-store-api
+  name: Doordash Business & Store API
+  description: The Business & Store API from Doordash — 9 operation(s) for business & store.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Business & Store
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-business-store-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-campaigns-api
+  name: Doordash Campaigns API
+  description: The Campaigns API from Doordash — 3 operation(s) for campaigns.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Campaigns
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-campaigns-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-checkoutmanagementendpoints-api
+  name: Doordash Checkout Management Endpoints API
+  description: Endpoints for managing checkout and transactions
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - CheckoutManagementEndpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-checkoutmanagementendpoints-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-creatives-sb-api
+  name: Doordash Creatives (SB) API
+  description: For Sponsored Brand campaigns only.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Creatives (SB)
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-creatives-sb-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-dasherfeedback-api
+  name: Doordash Dasher Feedback API
+  description: The DasherFeedback API from Doordash — 2 operation(s) for dasherfeedback.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - DasherFeedback
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-dasherfeedback-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-dataexchange-api
+  name: Doordash Dataexchange API
+  description: The Dataexchange API from Doordash — 2 operation(s) for dataexchange.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Dataexchange
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-dataexchange-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-delivery-api
+  name: Doordash Delivery API
+  description: The Delivery API from Doordash — 12 operation(s) for delivery.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Delivery
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-delivery-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-drive-redelivery-api
+  name: Doordash Drive Redelivery API
+  description: The drive-redelivery API from Doordash — 1 operation(s) for drive-redelivery.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - drive-redelivery
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-drive-redelivery-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-https-api
+  name: 'Doordash Https: API'
+  description: 'The Https: API from Doordash — 2 operation(s) for https:.'
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - 'Https:'
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-https-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-inventorymanagementendpoints-api
+  name: Doordash Inventory Management Endpoints API
+  description: Endpoints to manage inventory/pricing and other item attributes specific to this store
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - InventoryManagementEndpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-inventorymanagementendpoints-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-itemmanagementendpoints-api
+  name: Doordash Item Management Endpoints API
+  description: Endpoints for item management
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - ItemManagementEndpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-itemmanagementendpoints-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-jobmanagementendpoints-api
+  name: Doordash Job Management Endpoints API
+  description: Endpoints to create jobs to support pull request flows.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - JobManagementEndpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-jobmanagementendpoints-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-jwt-api
+  name: Doordash JWT API
+  description: Endpoints for JWT resources
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - JWT
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-jwt-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-keywords-sp-api
+  name: Doordash Keywords (SP) API
+  description: For Sponsored Products campaigns only.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Keywords (SP)
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-keywords-sp-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-loyalty-api
+  name: Doordash Loyalty API
+  description: Endpoints for loyalty related resources
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Loyalty
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-loyalty-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-menu-api
+  name: Doordash Menu API
+  description: The Menu API from Doordash — 1 operation(s) for menu.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Menu
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-menu-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-menu-endpoints-api
+  name: Doordash Menu Endpoints API
+  description: Endpoints for updating and creating menus
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Menu Endpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-menu-endpoints-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-menu-item-api
+  name: Doordash Menu Item API
+  description: The Menu Item API from Doordash — 1 operation(s) for menu item.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Menu Item
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-menu-item-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-menu-v2-api
+  name: Doordash Menu V2 API
+  description: The Menu V2 API from Doordash — 1 operation(s) for menu v2.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Menu V2
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-menu-v2-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-merchants-retailers-api
+  name: Doordash Merchants (Retailers) API
+  description: To retrieve business IDs available for merchant targeting.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Merchants (Retailers)
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-merchants-retailers-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-newverticalsselfserveintegrationendpoints-api
+  name: Doordash New Verticals Self Serve Integration Endpoints API
+  description: Endpoints for new verticals self-serve integration onboarding
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - NewVerticalsSelfServeIntegrationEndpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-newverticalsselfserveintegrationendpoints-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-order-api
+  name: Doordash Order API
+  description: Endpoints for order resources
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Order
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-order-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-order-endpoints-api
+  name: Doordash Order Endpoints API
+  description: Endpoints for retrieving and confirming success of orders
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Order Endpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-order-endpoints-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-product-ads-api
+  name: Doordash Product Ads API
+  description: The Product Ads API from Doordash — 1 operation(s) for product ads.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Product Ads
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-product-ads-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-promotionmanagementendpoints-api
+  name: Doordash Promotion Management Endpoints API
+  description: Endpoints for promotion management
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - PromotionManagementEndpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-promotionmanagementendpoints-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-refunds-api
+  name: Doordash Refunds API
+  description: The Refunds API from Doordash — 1 operation(s) for refunds.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Refunds
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-refunds-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-report-api
+  name: Doordash Report API
+  description: The Report API from Doordash — 3 operation(s) for report.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Report
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-report-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-resources-api
+  name: Doordash Resources API
+  description: To retrieve brands and categories available for behavioral targeting.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Resources
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-resources-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-search-api
+  name: Doordash Search API
+  description: Endpoints for store searches
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Search
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-search-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-store-endpoints-api
+  name: Doordash Store Endpoints API
+  description: Endpoints for store based operations
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Store Endpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-store-endpoints-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-storemanagementendpoints-api
+  name: Doordash Store Management Endpoints API
+  description: Endpoints for managing stores
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - StoreManagementEndpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-storemanagementendpoints-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
+- aid: doordash:doordash-targeting-api
+  name: Doordash Targeting API
+  description: The Targeting API from Doordash — 1 operation(s) for targeting.
+  humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
+  baseURL: https://openapi.doordash.com/drive/v2
+  tags:
+  - Targeting
+  properties:
+  - type: OpenAPI
+    url: openapi/doordash-targeting-api-openapi.yml
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/ads
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/storefront
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_v2_parcel
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/drive/how_to/Parcel/error_handling
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_refunds
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_redelivery
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/drive_dasher_feedback
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/external_checkout
+  - type: APIReference
+    url: https://developer.doordash.com/en-US/api/marketplace_legacy
+  - type: Documentation
+    url: https://developer.doordash.com/en-US/docs/marketplace/faq/legacy_partner_migration
 common:
+- type: Overlay
+  url: overlays/doordash-ads-overlay.yaml
+- type: Overlay
+  url: overlays/doordash-storefront-overlay.yaml
+- type: Overlay
+  url: overlays/doordash-parcel-overlay.yaml
+- type: Overlay
+  url: overlays/doordash-drive-refunds-overlay.yaml
+- type: Overlay
+  url: overlays/doordash-drive-redelivery-overlay.yaml
+- type: Overlay
+  url: overlays/doordash-drive-dasher-feedback-overlay.yaml
+- type: Overlay
+  url: overlays/doordash-external-checkout-overlay.yaml
+- type: Overlay
+  url: overlays/doordash-marketplace-legacy-overlay.yaml
 - type: CapabilityMap
   url: capabilities/doordash-capability-edges.yml
   name: doordash Business Capability Map
@@ -854,7 +1806,7 @@ position: Producing
 tags:
 - Delivery
 - Logistics
-- Last Mile
+- Last Mile Delivery
 - On-Demand
 - Food Delivery
 - Local Commerce

@@ -1,0 +1,84 @@
+openapi: 3.2.0
+info:
+  version: 1.0.29
+  title: DoorDash Ads Merchants (Retailers) API
+  description: DoorDash Ads API for Sponsored Products for campaign management and reporting operations.
+servers:
+- url: https://openapi.doordash.com
+security:
+- Ads API Key Authentication: []
+tags:
+- name: Merchants (Retailers)
+  description: To retrieve business IDs available for merchant targeting.
+paths:
+  /ads/api/v1/merchants:
+    get:
+      summary: Get merchants
+      description: Get merchant business IDs for targeting
+      tags:
+      - Merchants (Retailers)
+      responses:
+        '200':
+          description: Merchants retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                  - id
+                  - name
+                  properties:
+                    id:
+                      type: number
+                      description: Merchant business ID
+                    name:
+                      type: string
+                      description: Merchant name
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      operationId: getAdsApiV1Merchants
+      x-operation-id-source: derived
+components:
+  responses:
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+  securitySchemes:
+    Ads_API_Key_Authentication:
+      type: apiKey
+      scheme: bearer
+      in: header
+      name: Authorization
+      description: We will be using stateful token based API keys to authenticate clients, passed in the 'Authorization' header as 'Bearer {API_KEY}'.

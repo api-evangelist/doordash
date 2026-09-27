@@ -1,0 +1,227 @@
+openapi: 3.2.0
+info:
+  version: 1.0.29
+  title: DoorDash Ads Assets API
+  description: DoorDash Ads API for Sponsored Products for campaign management and reporting operations.
+servers:
+- url: https://openapi.doordash.com
+security:
+- Ads API Key Authentication: []
+tags:
+- name: Assets
+paths:
+  /ads/api/v1/assets:
+    post:
+      summary: Create a new asset
+      description: Create a new asset and get upload URL
+      tags:
+      - Assets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              - type
+              - width
+              - height
+              properties:
+                name:
+                  type: string
+                  description: Name of the asset
+                type:
+                  $ref: '#/components/schemas/AssetType'
+                width:
+                  type: integer
+                  format: int64
+                  description: Width of the asset in pixels
+                height:
+                  type: integer
+                  format: int64
+                  description: Height of the asset in pixels
+      responses:
+        '200':
+          description: Asset creation successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  asset:
+                    $ref: '#/components/schemas/Asset'
+                  uploadUrl:
+                    type: string
+                    description: Presigned URL for uploading the asset
+                  uploadUrlExpiresAt:
+                    type: string
+                    format: date-time
+                    description: Expiration timestamp for the upload URL
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      operationId: postAdsApiV1Assets
+      x-operation-id-source: derived
+  /ads/api/v1/assets/{assetId}:
+    get:
+      summary: Get asset by ID
+      description: Get a single asset by its identifier
+      tags:
+      - Assets
+      parameters:
+      - name: assetId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Asset identifier
+      responses:
+        '200':
+          description: Asset retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  asset:
+                    $ref: '#/components/schemas/Asset'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      operationId: getAdsApiV1AssetsByAssetId
+      x-operation-id-source: derived
+  /ads/api/v1/assets/{assetId}/register:
+    post:
+      summary: Register an asset
+      description: Register an asset after upload is complete
+      tags:
+      - Assets
+      parameters:
+      - name: assetId
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Asset identifier
+      responses:
+        '200':
+          description: Asset registration successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  asset:
+                    $ref: '#/components/schemas/Asset'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      operationId: postAdsApiV1AssetsByAssetIdRegister
+      x-operation-id-source: derived
+components:
+  responses:
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    AssetType:
+      type: string
+      enum:
+      - IMAGE
+      - VIDEO
+      description: Type of the asset
+    Asset:
+      type: object
+      required:
+      - id
+      - name
+      - state
+      - type
+      - width
+      - height
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the asset
+        name:
+          type: string
+          description: Name of the asset
+        state:
+          $ref: '#/components/schemas/AssetState'
+          description: Current state of the asset
+        type:
+          $ref: '#/components/schemas/AssetType'
+          description: Type of the asset (image or video)
+        width:
+          type: integer
+          description: Width of the asset in pixels
+        height:
+          type: integer
+          description: Height of the asset in pixels
+        cdnUrl:
+          type: string
+          description: CDN URL of the asset
+    AssetState:
+      type: string
+      enum:
+      - PENDING_REGISTRATION
+      - REGISTERED
+      - ACTIVE
+      - INVALID
+      - ERROR
+      - ARCHIVED
+      description: Current state of the asset
+  securitySchemes:
+    Ads_API_Key_Authentication:
+      type: apiKey
+      scheme: bearer
+      in: header
+      name: Authorization
+      description: We will be using stateful token based API keys to authenticate clients, passed in the 'Authorization' header as 'Bearer {API_KEY}'.

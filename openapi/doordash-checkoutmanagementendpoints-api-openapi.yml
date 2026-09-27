@@ -1,0 +1,692 @@
+openapi: 3.2.0
+info:
+  description: API to manage item catalog, inventory, pricing and other attributes.
+  version: '2.0'
+  title: Doordash Item management API Specification Checkout…
+  x-logo:
+    url: https://cdn.doordash.com/static/img/merchant/logo-red@3x.png
+    backgroundColor: '#FFFFFF'
+    altText: Doordash Marketplace
+    href: https://developer.doordash.com/
+servers:
+- url: https://openapi.doordash.com/marketplace
+tags:
+- name: CheckoutManagementEndpoints
+  x-displayName: Checkout Management Endpoints
+  description: Endpoints for managing checkout and transactions
+paths:
+  /api/v2/stores/{store_location_id}/checkout/transactions/auth:
+    post:
+      tags:
+      - CheckoutManagementEndpoints
+      summary: Authorize a checkout transaction
+      description: Authorize a transaction for checkout. Only supported when transaction method is DOORDASH_DIRECT. Transaction authorization retries will be successful only when the checkout session is in active state. The checkout session will be closed once the Dasher is able to proceed to checkout or when Mx sends a transaction complete signal to the Events API.
+      operationId: authorizeTransaction
+      parameters:
+      - name: store_location_id
+        in: path
+        description: ID of store where checkout is occurring
+        required: true
+        schema:
+          type: string
+          format: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionAuthRequest'
+      responses:
+        '200':
+          description: Transaction authorization response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionAuthResponse'
+        '400':
+          description: Request Validation Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreLocationNotFoundError'
+        '409':
+          description: Checkout already authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '422':
+          description: Request Entity Too Large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestNotProcessError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      x-codegen-request-body-name: body
+  /api/v2/stores/{store_location_id}/checkout/transactions:
+    post:
+      tags:
+      - CheckoutManagementEndpoints
+      summary: Batch add checkout transactions
+      description: Submit multiple transactions for checkout
+      operationId: batchAddTransactions
+      parameters:
+      - name: store_location_id
+        in: path
+        description: ID of store where checkout is occurring
+        required: true
+        schema:
+          type: string
+          format: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchAddTransactionRequest'
+      responses:
+        '200':
+          description: Transactions added successfully
+        '400':
+          description: Request Validation Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreLocationNotFoundError'
+        '422':
+          description: Request Entity Too Large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestNotProcessError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    server_fault:
+      x-error: true
+      type: object
+      description: Internal service failure, please try again later.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - service_fault
+          default: service_fault
+        message:
+          type: string
+          example: Internal service failure, please try again later.
+          default: Internal service failure, please try again later.
+    LoyaltyMemberInfo:
+      type: object
+      description: Loyalty member information. Mx can utilize this information to apply membership benefits.
+      properties:
+        member_id:
+          type: string
+          description: Loyalty member identifier
+        scan_type:
+          type: string
+          description: Type of scan method used for loyalty
+          enum:
+          - QR_CODE
+          - BARCODE
+          - NA
+        scan_payload:
+          type: string
+          description: Scanned loyalty payload value
+    Transaction:
+      type: object
+      title: Transaction
+      description: Complete transaction with identifier, contents, and timestamp
+      required:
+      - merchant_supplied_transaction_id
+      - in_store_transaction_contents
+      properties:
+        merchant_supplied_transaction_id:
+          type: string
+          description: Merchant supplied transaction identifier
+        in_store_transaction_contents:
+          $ref: '#/components/schemas/TransactionContent'
+        marketplace_transaction_contents:
+          $ref: '#/components/schemas/TransactionContent'
+        transaction_timestamp:
+          type: string
+          format: date-time
+          description: Timestamp when the transaction occurred in ISO8601 format
+    BatchAddTransactionRequest:
+      type: object
+      description: Request to add multiple transactions
+      properties:
+        transactions:
+          type: array
+          description: List of transactions to add
+          items:
+            $ref: '#/components/schemas/Transaction'
+    FieldError:
+      title: FieldError
+      type: object
+      description: A field whose value couldn't be validated.
+      required:
+      - field
+      - error
+      properties:
+        field:
+          type: string
+          description: Name of the field whose value couldn't be validated.
+          example: pickup_phone_number
+        error:
+          type: string
+          description: The error that was encountered when validating the field's value.
+          example: Invalid phone number format
+    ProgramEligibility:
+      description: Eligibility to items for various programs
+      type: string
+      enum:
+      - SNAP
+      - HSA
+      - FSA
+    TransactionAuthResponse:
+      type: object
+      title: TransactionAuthResponse
+      description: Response for transaction authorization
+      properties:
+        client_txn_context_id:
+          type: string
+          description: Client-supplied context id for this transaction (echoed from request)
+        order_uuid:
+          type: string
+          description: DoorDash order UUID
+        delivery_uuid:
+          type: string
+          description: DoorDash delivery UUID
+        approval_status:
+          type: string
+          description: Overall approval status of the transaction
+          enum:
+          - APPROVED
+          - APPROVED_WITH_CONDITIONS
+          - DENIED
+        audit_results:
+          type: array
+          description: List of audit results explaining why the transaction was approved with conditions or denied; empty when approval_status is APPROVED
+          items:
+            $ref: '#/components/schemas/TransactionAuditResult'
+    TaxInfo:
+      type: object
+      description: Tax information for line items or transaction
+      properties:
+        amount:
+          type: number
+          description: Tax amount in minor units of the specified currency
+        tax_type:
+          type: string
+          description: Type of tax applied
+          enum:
+          - SALES_TAX
+          - VAT
+          - GST
+          - EXCISE_TAX
+          - TAX_ON_FEES
+          - TAX_ON_SUBTOTAL
+          - OTHER
+        tax_type_other:
+          type: string
+          description: Additional details when tax_type is OTHER
+    Tender:
+      type: object
+      description: Payment tender information. When tender_type is DOORDASH_DIRECT, doordash_direct_scan_code is populated with the scanned barcode or QR code value.
+      required:
+      - doordash_direct_scan_code
+      properties:
+        tender_type:
+          type: string
+          description: Type of tender used
+          enum:
+          - CARD
+          - DOORDASH_DIRECT
+          - HSA_FSA
+          - SNAP
+          - EBT
+          - OTHER
+        tender_type_other:
+          type: string
+          description: Additional details when tender_type is OTHER
+        amount:
+          type: number
+          description: Amount paid with this tender in minor units of the specified currency
+        card_info:
+          $ref: '#/components/schemas/CardTransactionInfo'
+        doordash_direct_scan_code:
+          type: string
+          description: Scanned barcode or QR code value when tender_type is DOORDASH_DIRECT
+    FeeInfo:
+      type: object
+      description: Fee information for transaction
+      properties:
+        fee_amount:
+          type: number
+          description: Fee amount in minor units of the specified currency
+        fee_type:
+          type: string
+          description: Type of fee applied
+          enum:
+          - ECO_FEE
+          - BAG_FEE
+          - BOTTLE_DEPOSIT_FEE
+          - OTHER
+        fee_type_other:
+          type: string
+          description: Additional details when fee_type is OTHER
+    TransactionAuthRequest:
+      type: object
+      description: Request to authorize a transaction
+      required:
+      - dd_direct_scan_code
+      - transaction_contents
+      properties:
+        checkout_id:
+          type: string
+          description: DoorDash checkout identifier (optional; authoritative checkout id is parsed from dd_direct_scan_code)
+        client_txn_context_id:
+          type: string
+          description: Client-supplied context id for this transaction; server echoes it back in the response
+        dd_direct_scan_code:
+          type: string
+          description: DoorDash Direct scan code for the transaction
+        transaction_contents:
+          $ref: '#/components/schemas/TransactionContent'
+        client_request_time:
+          type: string
+          format: date-time
+          description: Timestamp when the client initiated the request in ISO8601 format
+    DiscountInfo:
+      type: object
+      description: Discount information for line items or transaction
+      properties:
+        amount:
+          type: number
+          description: Discount amount in minor units of the specified currency
+        discount_type:
+          type: string
+          description: Type of discount applied
+          enum:
+          - MEMBER_SAVINGS
+          - MX_PROMO
+          - CPG_PROMO
+          - OTHER
+        discount_type_other:
+          type: string
+          description: Additional details when discount_type is OTHER
+    AuthenticationError:
+      x-error: true
+      type: object
+      description: 'Authentication error: the token provided with the request doesn''t work for the requested operation'
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authentication_error
+          default: authentication_error
+        message:
+          type: string
+          example: The [exp] is in the past; the JWT is expired
+          default: The [exp] is in the past; the JWT is expired
+    TransactionContent:
+      type: object
+      description: Transaction details without merchant-supplied transaction identifier
+      required:
+      - total
+      - currency_code
+      properties:
+        total:
+          type: number
+          description: Total transaction amount in minor units of the specified currency
+        currency_code:
+          type: string
+          description: Currency code for the transaction
+          enum:
+          - USD
+          - AUD
+        summary:
+          $ref: '#/components/schemas/TransactionSummary'
+        items:
+          type: array
+          description: List of line items in the transaction
+          items:
+            $ref: '#/components/schemas/TransactionLineItem'
+        discounts:
+          type: array
+          description: Transaction-level discounts
+          items:
+            $ref: '#/components/schemas/DiscountInfo'
+        taxes:
+          type:
+          - array
+          - 'null'
+          description: Transaction-level taxes; omit, use [], or null when not applicable
+          items:
+            $ref: '#/components/schemas/TaxInfo'
+        fees:
+          type: array
+          description: Transaction-level fees
+          items:
+            $ref: '#/components/schemas/FeeInfo'
+        loyalty:
+          type: object
+          description: Loyalty information for transaction
+          properties:
+            member_info:
+              $ref: '#/components/schemas/LoyaltyMemberInfo'
+            points_awarded:
+              type: number
+              description: Points awarded from this transaction
+        tenders:
+          type: array
+          minItems: 1
+          maxItems: 1
+          description: List of payment tenders used in this transaction. Exactly one tender must be provided per transaction; requests with zero or multiple tenders are rejected.
+          items:
+            $ref: '#/components/schemas/Tender'
+    OtherIdentifier:
+      type: object
+      description: Additional identifiers for items
+      properties:
+        name:
+          type: string
+          description: Identifier name
+        value:
+          type: string
+          description: Identifier value
+    CardTransactionInfo:
+      type: object
+      description: Card transaction information
+      properties:
+        bin:
+          type: string
+          description: Bank Identification Number (first 6 digits of card)
+        card_holder_name:
+          type: string
+          description: Name of the card holder
+        last_four_digits:
+          type: string
+          description: Last four digits of the card number
+        card_type:
+          type: string
+          description: Type of card
+          enum:
+          - CREDIT
+          - OTHER
+        card_type_other:
+          type: string
+          description: Additional details when card_type is OTHER
+        approval_code:
+          type: string
+          description: Authorization or approval code from the card network or processor
+        card_transaction_status:
+          type: string
+          description: Status of the card transaction
+    TransactionSummary:
+      type:
+      - object
+      - 'null'
+      description: Summary of transaction totals; the property may be omitted, sent as an empty object, or sent as null when not applicable
+      properties:
+        subtotal:
+          type: number
+          description: Subtotal amount in minor units of the specified currency before tax and fees
+        tax:
+          type: number
+          description: Total tax amount in minor units of the specified currency
+        fees:
+          type: number
+          description: Total fees amount in minor units of the specified currency
+        discount:
+          type: number
+          description: Total discount amount in minor units of the specified currency
+    TransactionLineItem:
+      type: object
+      description: Individual line item in the transaction
+      properties:
+        line_id:
+          type: string
+          description: Unique identifier for the line item
+        merchant_supplied_item_id:
+          type: string
+          description: Merchant supplied item identifier
+        quantity:
+          type: number
+          description: Quantity of the item
+        measurement_unit:
+          type: string
+          description: Unit of measurement for the item; accepted in either lower or upper case (e.g., 'ea' or 'EA')
+          enum:
+          - ea
+          - kg
+          - lb
+          - gm
+          - oz
+        name:
+          type: string
+          description: Name of the item
+        category:
+          type: string
+          description: Category of the item
+        other_identifiers:
+          type: array
+          description: Other identifiers associated with the item
+          items:
+            $ref: '#/components/schemas/OtherIdentifier'
+        scan_code:
+          type: string
+          description: Barcode or scan code for the item
+        program_eligibility:
+          type: array
+          description: Program eligibility of the item
+          items:
+            $ref: '#/components/schemas/ProgramEligibility'
+        price:
+          type:
+          - number
+          - 'null'
+          description: Price per unit in minor units of the specified currency; null when the line item does not represent a priced unit (e.g., variable-measure)
+        net_price:
+          type: number
+          description: Total net price in minor units of the specified currency
+        price_per_measurement_unit:
+          type:
+          - number
+          - 'null'
+          description: Price per measurement unit in minor units of the specified currency; null when not applicable (e.g., line item is not measured-by-unit)
+        net_price_per_measurement_unit:
+          type: number
+          description: Net price per measurement unit in minor units of the specified currency
+        discounts:
+          $ref: '#/components/schemas/DiscountInfo'
+        taxes:
+          type:
+          - array
+          - 'null'
+          description: Tax information for this line item; omit, use [], or null when not applicable
+          items:
+            $ref: '#/components/schemas/TaxInfo'
+    RequestRateLimitedError:
+      x-error: true
+      type: object
+      description: Request was rate limited.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - request_rate_limited
+        message:
+          type: string
+          example: Request was rate limited. You may be calling the API too much in a short time.
+    StoreLocationNotFoundError:
+      x-error: true
+      type: object
+      description: The store location could not be found.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - unknown_store_location_id
+        message:
+          type: string
+          example: The store location could not be found
+    TransactionAuditResult:
+      type: object
+      description: Audit result for transaction authorization
+      properties:
+        reason_code:
+          type: string
+          description: Reason code for audit result
+          enum:
+          - INVALID_SCAN_CODE
+          - CHECKOUT_NOT_ACTIVE
+          - UNKNOWN_CHECKOUT_ID
+          - OTHER
+          - TRANSACTION_TOTAL_MISMATCH
+        message:
+          type: string
+          description: Detailed message for the audit result
+    RequestNotProcessError:
+      x-error: true
+      type: object
+      description: Request was not process.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - request_rate_limited
+        message:
+          type: string
+          example: Request was not process. Request entity may be too large.
+    ValidationFieldError:
+      x-error: true
+      title: ValidationFieldError
+      type: object
+      description: One or more request values couldn't be validated.
+      required:
+      - code
+      - message
+      - field_errors
+      properties:
+        code:
+          type: string
+          enum:
+          - validation_error
+        message:
+          type: string
+          description: One or more request values couldn't be validated.
+          example: One or more request values couldn't be validated.
+        field_errors:
+          type: array
+          description: The list of fields whose values couldn't be validated. See more [error examples](https://developer.doordash.com/en-US/docs/drive/reference/errors)
+          items:
+            $ref: '#/components/schemas/FieldError'
+          readOnly: true
+    ConflictError:
+      x-error: true
+      type: object
+      description: The checkout has already been authorized and cannot be authorized again.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - checkout_already_authorized
+        message:
+          type: string
+          example: The checkout has already been authorized and cannot be authorized again.
+    AuthorizationError:
+      x-error: true
+      type: object
+      description: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authorization_error
+          default: authorization_error
+        message:
+          type: string
+          example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+          default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'

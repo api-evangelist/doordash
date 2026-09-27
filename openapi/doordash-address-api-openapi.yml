@@ -1,0 +1,859 @@
+openapi: 3.2.0
+info:
+  title: Doordash Address API
+  x-refined-note:
+  - x-logo differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged Address across 2 of this provider''s published API definitions: doordash-drive-openapi.yml, doordash-storefront-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://openapi.doordash.com
+  variables: {}
+tags:
+- name: Address
+  x-displayName: Address
+paths:
+  /drive/v2/address/auto_complete:
+    post:
+      summary: Get Autocompleted Address
+      tags:
+      - Address
+      description: Get address auto-completion suggestions based on partial address input and optional location coordinates
+      operationId: GetAddressAutoComplete
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressAutoCompleteInput'
+        required: true
+      responses:
+        '200':
+          description: Ok
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressAutoCompleteResponse'
+        '400':
+          description: Request Validation Failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validation_field_error'
+        '401':
+          description: Request unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authentication_error'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authorization_error'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      deprecated: false
+    servers:
+    - url: https://openapi.doordash.com
+      variables: {}
+  /storefront/api/v1/addresses/autocomplete:
+    get:
+      tags:
+      - Address
+      summary: Get address suggestions for an input string
+      description: Retrieve a list of address suggestions based on the user input and optional geographic bounds.
+      operationId: GetAutocompleteSuggestionsForAddressInput
+      parameters:
+      - $ref: '#/components/parameters/IntegrationId'
+      - $ref: '#/components/parameters/IntegrationType'
+      - name: input
+        in: query
+        schema:
+          type: string
+        required: true
+      - name: lat
+        in: query
+        description: latitude
+        schema:
+          $ref: '#/components/schemas/Latitude'
+      - name: lon
+        in: query
+        description: longitude
+        schema:
+          $ref: '#/components/schemas/Longitude'
+      - $ref: '#/components/parameters/CountryCode'
+      - name: search_radius
+        in: query
+        description: Define the distance in meters within which to return results. Results outside of the defined area may still be displayed.
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100000
+      - $ref: '#/components/parameters/Language'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutocompleteSuggestionsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      deprecated: false
+      security:
+      - BearerAuth: []
+    servers:
+    - url: https://openapi.doordash.com
+      variables: {}
+  /storefront/api/v1/addresses/details:
+    get:
+      tags:
+      - Address
+      summary: Get address details with an id
+      description: Request more details about an address given an id
+      operationId: GetAddressDetailsById
+      parameters:
+      - $ref: '#/components/parameters/IntegrationId'
+      - $ref: '#/components/parameters/IntegrationType'
+      - name: source_place_id
+        in: query
+        schema:
+          type: string
+        required: true
+      - $ref: '#/components/parameters/CountryCode'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressDetailsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      deprecated: false
+      security:
+      - BearerAuth: []
+    servers:
+    - url: https://openapi.doordash.com
+      variables: {}
+  /storefront/api/v1/addresses/reverse_geocode:
+    get:
+      tags:
+      - Address
+      summary: Get list of addresses with latitude and longitude
+      description: Find addresses closest to a location on the map
+      operationId: GetAddressesByGeocode
+      parameters:
+      - $ref: '#/components/parameters/IntegrationId'
+      - $ref: '#/components/parameters/IntegrationType'
+      - $ref: '#/components/parameters/Latitude'
+      - $ref: '#/components/parameters/Longitude'
+      - $ref: '#/components/parameters/Language'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReverseGeocodeResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      deprecated: false
+      security:
+      - BearerAuth: []
+    servers:
+    - url: https://openapi.doordash.com
+      variables: {}
+  /storefront/api/v1/addresses/create:
+    post:
+      tags:
+      - Address
+      summary: Get or create address details with a full qualified address string
+      description: Get or create address details based on a formatted_address, e.g. "1234 Main St., Sacramento, CA 95814"
+      operationId: GetOrCreateAddress
+      requestBody:
+        description: request body which should contain formatted address, integration id and type.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetOrCreateAddressRequest'
+      responses:
+        '200':
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressDetailsResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      deprecated: false
+      security:
+      - BearerAuth: []
+    servers:
+    - url: https://openapi.doordash.com
+      variables: {}
+components:
+  schemas:
+    DropoffAddress:
+      type: string
+      description: Comma-separated full address, in the order appropriate for your locale.
+      example: 901 Market Street 6th Floor San Francisco, CA 94103
+    server_fault:
+      x-error: true
+      type: object
+      description: Internal service failure, please try again later.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - service_fault
+          default: service_fault
+        message:
+          type: string
+          example: Internal service failure, please try again later.
+          default: Internal service failure, please try again later.
+    AddressAutoCompleteDetailsResponse:
+      title: AddressAutoCompleteDetailsResponse
+      description: Details about the address suggestions in the auto-complete response
+      type: object
+      properties:
+        results:
+          type: array
+          description: List of address suggestions
+          items:
+            $ref: '#/components/schemas/AddressAutoCompleteResult'
+      required:
+      - results
+    AddressAutoCompleteResponse:
+      title: AddressAutoCompleteResponse
+      description: Response containing address auto-completion suggestions
+      allOf:
+      - $ref: '#/components/schemas/AddressAutoCompleteDetailsResponse'
+      type: object
+    validation_field_error:
+      x-error: true
+      title: ValidationFieldError
+      type: object
+      description: One or more request values couldn't be validated.
+      required:
+      - code
+      - message
+      - field_errors
+      properties:
+        code:
+          type: string
+          enum:
+          - validation_error
+        message:
+          type: string
+          description: One or more request values couldn't be validated.
+          example: One or more request values couldn't be validated.
+        field_errors:
+          type: array
+          description: The list of fields whose values couldn't be validated. See more [error examples](https://developer.doordash.com/en-US/docs/drive/reference/errors)
+          items:
+            $ref: '#/components/schemas/FieldError'
+          readOnly: true
+      components:
+        schemas:
+          FieldError:
+            title: FieldError
+            type: object
+            description: A field whose value couldn't be validated.
+            required:
+            - field
+            - error
+            properties:
+              field:
+                type: string
+                description: Name of the field whose value couldn't be validated.
+                example: pickup_phone_number
+              error:
+                type: string
+                description: The error that was encountered when validating the field's value.
+                example: Invalid phone number format
+    authentication_error:
+      x-error: true
+      type: object
+      description: 'Authentication error: the token provided with the request doesn''t work for the requested operation'
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authentication_error
+          default: authentication_error
+        message:
+          type: string
+          example: The [exp] is in the past; the JWT is expired
+          default: The [exp] is in the past; the JWT is expired
+    DropoffAddressComponent:
+      type: object
+      title: Dropoff Address Component
+      description: Address broken down by components
+      properties:
+        street:
+          type: string
+          description: The street address of the location.
+          example: 1600 Amphitheatre Parkway
+        unit:
+          type: string
+          description: Used to denote the unit number, suite number or apartment number
+          example: 'Suite #600'
+        city:
+          type: string
+          description: City for the address
+          example: Mountain View
+        state:
+          type: string
+          description: State for the address. 2 letter state codes for US addresses. For instance, "CA" for California
+          example: CA
+        zip_code:
+          type: string
+          description: ZIP code for the address. 5 digit zip code for US addresses.
+          example: '94043'
+        country:
+          type: string
+          description: ISO 3166 Alpha 2 code for country.
+          example: US
+      required:
+      - street
+      - city
+      - state
+      - zip_code
+    AddressAutoCompleteInput:
+      title: AddressAutoCompleteInput
+      description: Request body for address auto complete endpoint
+      allOf:
+      - $ref: '#/components/schemas/delivery_AddressAutoCompleteInput'
+      type: object
+    authorization_error:
+      x-error: true
+      type: object
+      description: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authorization_error
+          default: authorization_error
+        message:
+          type: string
+          example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+          default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+    FieldError:
+      title: FieldError
+      type: object
+      description: A field whose value couldn't be validated.
+      required:
+      - field
+      - error
+      properties:
+        field:
+          type: string
+          description: Name of the field whose value couldn't be validated.
+          example: pickup_phone_number
+        error:
+          type: string
+          description: The error that was encountered when validating the field's value.
+          example: Invalid phone number format
+    AddressAutoCompleteResult:
+      title: AddressAutoCompleteResult
+      description: Individual address suggestion result
+      type: object
+      properties:
+        address:
+          allOf:
+          - type: object
+            properties:
+              formatted_address:
+                $ref: '#/components/schemas/DropoffAddress'
+              location:
+                $ref: '#/components/schemas/Location'
+            required:
+            - formatted_address
+            - location
+          - $ref: '#/components/schemas/DropoffAddressComponent'
+      required:
+      - address
+    delivery_AddressAutoCompleteInput:
+      title: AddressAutoCompleteInput
+      description: Request body for address auto complete endpoint
+      type: object
+      properties:
+        input_address:
+          type: string
+          description: Partial address input to search for
+          example: 1600 Amphitheatre
+        location:
+          $ref: '#/components/schemas/Location'
+        search_radius_meter:
+          type: integer
+          description: Search radius in meters from the provided location
+          example: 1000
+          default: 1000
+        max_results:
+          type: integer
+          description: Maximum number of results to return
+          example: 3
+          default: 3
+          minimum: 1
+          maximum: 5
+        country:
+          type: string
+          description: Country code to limit search results
+          example: US
+          pattern: ^[A-Z]{2}$
+      required:
+      - input_address
+    Location:
+      title: Location
+      type: object
+      description: Near-real-time location of the Dasher.
+      required:
+      - lat
+      - lng
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Latitude of the location.
+          example: 123.1312343
+        lng:
+          type: number
+          format: double
+          description: Longitude of the location.
+          example: -37.2144343
+    CountryCode:
+      type: string
+      pattern: ^[A-Z]{2}$
+      description: Country code in ISO 3166-1 alpha-2 format
+      example: US
+    AutocompleteSuggestionsResponse:
+      type: object
+      title: AutocompleteSuggestionsResponse
+      description: List of suggested addresses based on the input
+      required:
+      - suggestions
+      properties:
+        suggestions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AutocompleteSuggestion'
+    Latitude:
+      type: string
+      pattern: ^(\+|-)?(?:90(?:(?:\.0{1,7})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,7})?))$
+      example: -32.1234537
+    AddressDetailsResponse:
+      type: object
+      title: AddressDetailsResponse
+      description: Address details
+      required:
+      - address
+      properties:
+        address:
+          $ref: '#/components/schemas/AddressDetails'
+    IntegrationType:
+      type: string
+      enum:
+      - BUSINESS
+      - BUSINESS_GROUP
+      - STORE
+      example: store
+      default: business
+      description: Type of the integration id
+    AuthenticationError:
+      x-error: true
+      type: object
+      description: Authorization error, available credentials don't match requested operation
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authentication_error
+        message:
+          type: string
+          example: Request does not contain a JWT.
+    AutocompleteSuggestion:
+      type: object
+      properties:
+        source_place_id:
+          type: string
+          description: Source place id
+          example: ChIJQdd29XuAhYARlLzH0JbNTyQ
+        formatted_address:
+          type: string
+          description: Short displayable address
+          example: 303 2nd Street, San Francisco, CA, USA
+        formatted_address_segmented:
+          type: array
+          description: Address segmented into two strings
+          example:
+          - 303 2nd Street
+          - San Francisco, CA, USA
+          items:
+            type: string
+    AddressDetails:
+      type: object
+      properties:
+        address_id:
+          type: string
+          example: '123'
+        formatted_address:
+          type: string
+          example: 303 2nd Street, San Francisco, CA, USA
+        lat:
+          type: number
+          example: 37.7856757
+        lon:
+          type: number
+          example: -122.3958433
+        locality:
+          type: string
+          example: San Francisco
+        administrative_area:
+          type: string
+          example: CA
+        postal_code:
+          type: string
+          example: '94107'
+        country:
+          type: string
+          example: USA
+    AddressResourceNotFoundError:
+      x-error: true
+      title: AddressResourceNotFoundError
+      type: object
+      description: The response returned when requested resource is not found/available.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - not_found
+        message:
+          type: string
+          example: Address is not found.
+    IntegrationId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the business, business group or store.
+      example: '987654'
+    Language:
+      type: string
+      pattern: ^[a-z]{2}$
+      description: Language code in ISO 639-1 format
+      example: en
+    RateLimitedError:
+      x-error: true
+      title: RateLimitedError
+      type: object
+      description: Rate limited.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - rate_limit_error
+        message:
+          type: string
+          example: Developer account endpoint rate limit exceeded.
+    Longitude:
+      type: string
+      pattern: ^(\+|-)?(?:180(?:(?:\.0{1,7})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,7})?))$
+      example: -156.1234538
+    InternalError:
+      x-error: true
+      title: InternalError
+      type: object
+      description: Internal errors that occur during the api call.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - internal_service_error
+        message:
+          type: string
+          example: Internal Service Error.
+    ValidationFieldError:
+      x-error: true
+      title: ValidationFieldError
+      type: object
+      description: The response returned when validation for field errors are encountered.
+      required:
+      - code
+      - message
+      - field_errors
+      properties:
+        code:
+          type: string
+          enum:
+          - validation_error
+        message:
+          type: string
+          example: Request validation failed.
+        errors:
+          type: string
+          example: Missing business/store id.
+    GetOrCreateAddressRequest:
+      type: object
+      required:
+      - integration_id
+      - integration_type
+      - formatted_address
+      properties:
+        integration_id:
+          $ref: '#/components/schemas/IntegrationId'
+        integration_type:
+          $ref: '#/components/schemas/IntegrationType'
+        formatted_address:
+          type: string
+          description: Short displayable address
+          example: 303 2nd Street, San Francisco, CA, USA
+        country_code:
+          $ref: '#/components/schemas/CountryCode'
+    ReverseGeocodeResponse:
+      type: object
+      title: ReverseGeocodeResponse
+      description: List of addresses closest to the given location
+      required:
+      - addresses
+      properties:
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressDetails'
+    AuthorizationError:
+      x-error: true
+      type: object
+      description: Authorization error, available credentials don't match requested operation
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authorization_error
+        message:
+          type: string
+          example: You are not authorized to perform this action.
+  parameters:
+    IntegrationId:
+      name: integration_id
+      in: query
+      description: business id, business group id or store id
+      required: true
+      schema:
+        $ref: '#/components/schemas/IntegrationId'
+    Latitude:
+      name: lat
+      in: query
+      description: latitude
+      required: true
+      schema:
+        $ref: '#/components/schemas/Latitude'
+    IntegrationType:
+      name: integration_type
+      in: query
+      description: business id, business group id or store id
+      schema:
+        $ref: '#/components/schemas/IntegrationType'
+    Language:
+      name: language
+      in: query
+      description: ISO 639-1 language code
+      schema:
+        $ref: '#/components/schemas/Language'
+    CountryCode:
+      name: country_code
+      in: query
+      description: ISO 3166-1 alpha-2 country code
+      schema:
+        $ref: '#/components/schemas/CountryCode'
+    Longitude:
+      name: lon
+      in: query
+      description: longitude
+      required: true
+      schema:
+        $ref: '#/components/schemas/Longitude'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+x-refined-from:
+- doordash-drive-openapi.yml
+- doordash-storefront-openapi.yml

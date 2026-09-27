@@ -1,0 +1,234 @@
+openapi: 3.2.0
+info:
+  title: Storefront V1 API Specification Menu Item API
+  version: 1.0.0
+  contact:
+    name: Storefront API Support
+    email: storefront-api-support@doordash.com
+servers:
+- url: https://openapi.doordash.com
+  variables: {}
+security:
+- BearerAuth: []
+tags:
+- name: Menu Item
+paths:
+  /storefront/api/v1/stores/{store_id}/item:
+    post:
+      tags:
+      - Menu Item
+      summary: Get store menu item
+      operationId: GetStoreMenuItem
+      parameters:
+      - $ref: '#/components/parameters/StoreId'
+      requestBody:
+        description: request body which should contain item id
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetStoreMenuItemRequest'
+      responses:
+        '200':
+          description: Ok
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      deprecated: false
+components:
+  schemas:
+    GetStoreMenuItemRequest:
+      type: object
+      required:
+      - integration_id
+      - integration_type
+      - item_id
+      - menu_id
+      properties:
+        item_id:
+          type: string
+        menu_id:
+          type: string
+        integration_id:
+          $ref: '#/components/schemas/IntegrationId'
+        integration_type:
+          $ref: '#/components/schemas/IntegrationType'
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        fulfillment_type:
+          $ref: '#/components/schemas/FulfillmentType'
+        cursor:
+          type: string
+    RateLimitedError:
+      x-error: true
+      title: RateLimitedError
+      type: object
+      description: Rate limited.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - rate_limit_error
+        message:
+          type: string
+          example: Developer account endpoint rate limit exceeded.
+    StoreId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the store.
+      example: '123'
+    SessionId:
+      type: string
+      description: id of the application session
+    AddressResourceNotFoundError:
+      x-error: true
+      title: AddressResourceNotFoundError
+      type: object
+      description: The response returned when requested resource is not found/available.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - not_found
+        message:
+          type: string
+          example: Address is not found.
+    AuthenticationError:
+      x-error: true
+      type: object
+      description: Authorization error, available credentials don't match requested operation
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authentication_error
+        message:
+          type: string
+          example: Request does not contain a JWT.
+    InternalError:
+      x-error: true
+      title: InternalError
+      type: object
+      description: Internal errors that occur during the api call.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - internal_service_error
+        message:
+          type: string
+          example: Internal Service Error.
+    FulfillmentType:
+      type: string
+      enum:
+      - delivery
+      - pickup
+      example: pickup
+    ValidationFieldError:
+      x-error: true
+      title: ValidationFieldError
+      type: object
+      description: The response returned when validation for field errors are encountered.
+      required:
+      - code
+      - message
+      - field_errors
+      properties:
+        code:
+          type: string
+          enum:
+          - validation_error
+        message:
+          type: string
+          example: Request validation failed.
+        errors:
+          type: string
+          example: Missing business/store id.
+    IntegrationType:
+      type: string
+      enum:
+      - BUSINESS
+      - BUSINESS_GROUP
+      - STORE
+      example: store
+      default: business
+      description: Type of the integration id
+    IntegrationId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the business, business group or store.
+      example: '987654'
+    AuthorizationError:
+      x-error: true
+      type: object
+      description: Authorization error, available credentials don't match requested operation
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authorization_error
+        message:
+          type: string
+          example: You are not authorized to perform this action.
+  parameters:
+    StoreId:
+      name: store_id
+      in: path
+      description: Store id
+      required: true
+      schema:
+        $ref: '#/components/schemas/StoreId'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

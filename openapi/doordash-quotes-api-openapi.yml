@@ -213,28 +213,7 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
-  parameters:
-    ExternalDeliveryId:
-      name: external_delivery_id
-      in: path
-      required: true
-      description: The unique external delivery ID provided when creating the delivery or quote.
-      schema:
-        type: string
   schemas:
-    Location:
-      type: object
-      properties:
-        lat:
-          type: number
-          format: double
-          description: Latitude coordinate.
-          example: 37.422
-        lng:
-          type: number
-          format: double
-          description: Longitude coordinate.
-          example: -122.084
     AcceptQuoteRequest:
       type: object
       properties:
@@ -242,85 +221,6 @@ components:
           type: integer
           description: Optional tip amount in cents to include with the delivery.
           example: 42
-    Quote:
-      type: object
-      properties:
-        external_delivery_id:
-          type: string
-          description: The unique external delivery ID for this quote.
-          example: D-12345
-        fee:
-          type: integer
-          description: The delivery fee in cents.
-          example: 42
-        currency:
-          type: string
-          description: The currency code for the fee amount.
-          example: USD
-        delivery_time:
-          type: string
-          format: date-time
-          description: The estimated delivery time in UTC ISO-8601 format.
-          example: '2026-06-02T14:30:00Z'
-        pickup_time:
-          type: string
-          format: date-time
-          description: The estimated pickup time in UTC ISO-8601 format.
-          example: '2026-06-02T14:30:00Z'
-        expires_at:
-          type: string
-          format: date-time
-          description: The time at which this quote expires, typically 5 minutes after creation.
-          example: '2026-06-02T14:30:00Z'
-    QuoteRequest:
-      type: object
-      required:
-      - external_delivery_id
-      - pickup_address
-      - dropoff_address
-      properties:
-        external_delivery_id:
-          type: string
-          description: A unique identifier for this delivery, provided by the caller.
-          example: D-12345
-        pickup_address:
-          type: string
-          description: The full street address for the pickup location.
-          example: 901 Market St, San Francisco, CA 94105
-        pickup_business_name:
-          type: string
-          description: The business name at the pickup location.
-          example: Acme Pickup Store
-        pickup_phone_number:
-          type: string
-          description: The phone number at the pickup location.
-          example: '+15555551234'
-        dropoff_address:
-          type: string
-          description: The full street address for the dropoff location.
-          example: 901 Market St, San Francisco, CA 94105
-        dropoff_business_name:
-          type: string
-          description: The business name at the dropoff location.
-          example: Acme Pickup Store
-        dropoff_phone_number:
-          type: string
-          description: The phone number at the dropoff location.
-          example: '+15555551234'
-        order_value:
-          type: integer
-          description: The total value of the order in cents.
-          example: 42
-        pickup_time:
-          type: string
-          format: date-time
-          description: The requested pickup time in UTC ISO-8601 format.
-          example: '2026-06-02T14:30:00Z'
-        dropoff_time:
-          type: string
-          format: date-time
-          description: The requested dropoff time in UTC ISO-8601 format.
-          example: '2026-06-02T14:30:00Z'
     Error:
       type: object
       properties:
@@ -479,6 +379,106 @@ components:
           format: date-time
           description: The timestamp when the delivery was last updated.
           example: '2026-06-02T14:30:00Z'
+    Quote:
+      type: object
+      properties:
+        external_delivery_id:
+          type: string
+          description: The unique external delivery ID for this quote.
+          example: D-12345
+        fee:
+          type: integer
+          description: The delivery fee in cents.
+          example: 42
+        currency:
+          type: string
+          description: The currency code for the fee amount.
+          example: USD
+        delivery_time:
+          type: string
+          format: date-time
+          description: The estimated delivery time in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
+        pickup_time:
+          type: string
+          format: date-time
+          description: The estimated pickup time in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
+        expires_at:
+          type: string
+          format: date-time
+          description: The time at which this quote expires, typically 5 minutes after creation.
+          example: '2026-06-02T14:30:00Z'
+    QuoteRequest:
+      type: object
+      required:
+      - external_delivery_id
+      - pickup_address
+      - dropoff_address
+      properties:
+        external_delivery_id:
+          type: string
+          description: A unique identifier for this delivery, provided by the caller.
+          example: D-12345
+        pickup_address:
+          type: string
+          description: The full street address for the pickup location.
+          example: 901 Market St, San Francisco, CA 94105
+        pickup_business_name:
+          type: string
+          description: The business name at the pickup location.
+          example: Acme Pickup Store
+        pickup_phone_number:
+          type: string
+          description: The phone number at the pickup location.
+          example: '+15555551234'
+        dropoff_address:
+          type: string
+          description: The full street address for the dropoff location.
+          example: 901 Market St, San Francisco, CA 94105
+        dropoff_business_name:
+          type: string
+          description: The business name at the dropoff location.
+          example: Acme Pickup Store
+        dropoff_phone_number:
+          type: string
+          description: The phone number at the dropoff location.
+          example: '+15555551234'
+        order_value:
+          type: integer
+          description: The total value of the order in cents.
+          example: 42
+        pickup_time:
+          type: string
+          format: date-time
+          description: The requested pickup time in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
+        dropoff_time:
+          type: string
+          format: date-time
+          description: The requested dropoff time in UTC ISO-8601 format.
+          example: '2026-06-02T14:30:00Z'
+    Location:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Latitude coordinate.
+          example: 37.422
+        lng:
+          type: number
+          format: double
+          description: Longitude coordinate.
+          example: -122.084
+  parameters:
+    ExternalDeliveryId:
+      name: external_delivery_id
+      in: path
+      required: true
+      description: The unique external delivery ID provided when creating the delivery or quote.
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       type: http

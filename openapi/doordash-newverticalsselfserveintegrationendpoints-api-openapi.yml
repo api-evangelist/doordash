@@ -1,0 +1,383 @@
+openapi: 3.2.0
+info:
+  description: API to manage item catalog, inventory, pricing and other attributes.
+  version: '2.0'
+  title: Doordash Item management API Specification New Verticals…
+  x-logo:
+    url: https://cdn.doordash.com/static/img/merchant/logo-red@3x.png
+    backgroundColor: '#FFFFFF'
+    altText: Doordash Marketplace
+    href: https://developer.doordash.com/
+servers:
+- url: https://openapi.doordash.com/marketplace
+tags:
+- name: NewVerticalsSelfServeIntegrationEndpoints
+  x-displayName: New Verticals Self-Serve Integration Onboarding
+  description: Endpoints for new verticals self-serve integration onboarding
+paths:
+  /api/v2/managed_merchant_connect_url:
+    post:
+      tags:
+      - NewVerticalsSelfServeIntegrationEndpoints
+      summary: Generate managed merchant onboarding URL
+      description: Creates a managed merchant onboarding URL for NV SSIO partner-initiated merchant onboarding. The partner must redirect the merchant to the returned URL, where DoorDash hosts and manages the full onboarding flow including authentication, store creation, and provider linking.
+      operationId: createManagedMerchantConnectUrl
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ManagedMerchantConnectRequest'
+      responses:
+        '200':
+          description: Successfully generated managed merchant connect URL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ManagedMerchantConnectResponse'
+        '400':
+          description: Request Validation Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '409':
+          description: Conflict - Store already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreAlreadyExistsError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      x-codegen-request-body-name: body
+      deprecated: false
+  /api/v2/nv_multi_location_onboarding_intent:
+    post:
+      tags:
+      - NewVerticalsSelfServeIntegrationEndpoints
+      summary: Submit onboarding intent for multiple store locations in a single batch
+      description: Batch sibling of managed_merchant_connect_url for NV SSIO partner-initiated merchant onboarding - submits onboarding intent for multiple store locations in one call. Unlike managed_merchant_connect_url, no onboarding URL is returned; onboarding completion for accepted locations is a manual DoorDash-rep follow-up. Each location in the batch is processed independently, so a per-location failure does not fail the rest of the batch - see the results array in the response.
+      operationId: submitMultiLocationOnboardingIntent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MultiLocationOnboardingIntentRequest'
+      responses:
+        '200':
+          description: Batch received - see the per-location results array for individual outcomes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MultiLocationOnboardingIntentResponse'
+        '400':
+          description: Request Validation Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      x-codegen-request-body-name: body
+      deprecated: false
+components:
+  schemas:
+    server_fault:
+      x-error: true
+      type: object
+      description: Internal service failure, please try again later.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - service_fault
+          default: service_fault
+        message:
+          type: string
+          example: Internal service failure, please try again later.
+          default: Internal service failure, please try again later.
+    MerchantAddress:
+      type: object
+      required:
+      - line_1
+      - city
+      - state
+      - zip
+      properties:
+        line_1:
+          type: string
+          description: Street address
+        line_2:
+          type: string
+          description: Apartment, suite, etc.
+        city:
+          type: string
+          description: City
+        state:
+          type: string
+          description: State (2-letter code)
+          pattern: ^[A-Z]{2}$
+        zip:
+          type: string
+          description: ZIP/postal code
+    MultiLocationOnboardingIntentResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          description: One result per submitted location, positionally matching the request list and identifiable by location_id. Per-location business failures (e.g. invalid address) do not fail the whole batch.
+          items:
+            $ref: '#/components/schemas/MultiLocationOnboardingIntentResult'
+    StoreAlreadyExistsError:
+      x-error: true
+      type: object
+      description: Store with the provided partner_store_id is already onboarded
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - store_already_exists
+          default: store_already_exists
+        message:
+          type: string
+          example: Store with partner_store_id 'shopify_store_456' is already onboarded
+    MultiLocationOnboardingIntentResult:
+      type: object
+      properties:
+        location_id:
+          type: string
+          description: Echoes the location_id from the corresponding request
+        code:
+          type: string
+          description: gRPC status code name. "OK" means DoorDash accepted the onboarding intent for this location. No managed_merchant_connect_url is ever returned by this endpoint - onboarding completion for accepted locations is a manual follow-up.
+          example: OK
+        error:
+          type: string
+          description: Present only when code is not "OK"
+    FieldError:
+      title: FieldError
+      type: object
+      description: A field whose value couldn't be validated.
+      required:
+      - field
+      - error
+      properties:
+        field:
+          type: string
+          description: Name of the field whose value couldn't be validated.
+          example: pickup_phone_number
+        error:
+          type: string
+          description: The error that was encountered when validating the field's value.
+          example: Invalid phone number format
+    MultiLocationOnboardingIntentRequest:
+      type: object
+      required:
+      - requests
+      properties:
+        requests:
+          type: array
+          minItems: 1
+          maxItems: 100
+          description: One onboarding intent request per store location, submitted as a single batch
+          items:
+            $ref: '#/components/schemas/ManagedMerchantConnectRequest'
+    ManagedMerchantConnectResponse:
+      type: object
+      properties:
+        managed_merchant_connect_url:
+          type: string
+          format: uri
+          description: Managed Merchant Onboarding URL. The partner must redirect the merchant to this URL where DoorDash hosts the full onboarding flow. After completion, DoorDash displays a confirmation page and the merchant should close the tab and return to the partner portal.
+    AuthenticationError:
+      x-error: true
+      type: object
+      description: 'Authentication error: the token provided with the request doesn''t work for the requested operation'
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authentication_error
+          default: authentication_error
+        message:
+          type: string
+          example: The [exp] is in the past; the JWT is expired
+          default: The [exp] is in the past; the JWT is expired
+    ValidationFieldError:
+      x-error: true
+      title: ValidationFieldError
+      type: object
+      description: One or more request values couldn't be validated.
+      required:
+      - code
+      - message
+      - field_errors
+      properties:
+        code:
+          type: string
+          enum:
+          - validation_error
+        message:
+          type: string
+          description: One or more request values couldn't be validated.
+          example: One or more request values couldn't be validated.
+        field_errors:
+          type: array
+          description: The list of fields whose values couldn't be validated. See more [error examples](https://developer.doordash.com/en-US/docs/drive/reference/errors)
+          items:
+            $ref: '#/components/schemas/FieldError'
+          readOnly: true
+    RequestRateLimitedError:
+      x-error: true
+      type: object
+      description: Request was rate limited.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - request_rate_limited
+        message:
+          type: string
+          example: Request was rate limited. You may be calling the API too much in a short time.
+    AuthorizationError:
+      x-error: true
+      type: object
+      description: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authorization_error
+          default: authorization_error
+        message:
+          type: string
+          example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+          default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+    ManagedMerchantConnectRequest:
+      type: object
+      required:
+      - location_id
+      - location_group_id
+      - store_name
+      - address
+      - first_name
+      - last_name
+      - email
+      - merchant_decision_maker_email
+      - order_protocol
+      - fulfillment_protocol
+      - locale
+      properties:
+        location_id:
+          type: string
+          description: Unique identifier of the store in partner system (becomes location_id in API calls)
+        location_group_id:
+          type: string
+          description: Unique identifier of the parent business in partner system
+        store_name:
+          type: string
+          description: Customer-facing name of the store (e.g., "Burger Shack")
+        location_name:
+          type: string
+          description: Location-specific context (e.g., "Burger Shack - Las Vegas")
+        address:
+          $ref: '#/components/schemas/MerchantAddress'
+        first_name:
+          type: string
+          description: First name of user on partner side initiating request
+        last_name:
+          type: string
+          description: Last name of user on partner side
+        email:
+          type: string
+          format: email
+          description: Email for user on partner side (receives status updates)
+        business_phone:
+          type: string
+          description: Phone number for requestor
+        expected_go_live_date:
+          type: string
+          format: date
+          description: Expected activation date (YYYY-MM-DD, best effort)
+          example: '2026-01-15'
+        merchant_decision_maker_email:
+          type: string
+          format: email
+          description: Merchant email (must be Business Admin in DoorDash Merchant Portal)
+        order_protocol:
+          type: string
+          enum:
+          - POS
+          - TABLET
+          description: POS - Merchant receives and fulfills orders via their POS; TABLET - Merchant will be sent a DD tablet and orders will not go to their POS
+        fulfillment_protocol:
+          type: string
+          enum:
+          - MERCHANT_PICK
+          - DASHER_PICK
+          description: MERCHANT_PICK - merchant picks; DASHER_PICK - dasher shops and delivers
+        locale:
+          type: string
+          enum:
+          - en-US
+          description: Locale for the merchant onboarding experience

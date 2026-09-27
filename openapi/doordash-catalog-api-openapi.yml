@@ -1,21 +1,61 @@
 openapi: 3.2.0
 info:
-  title: DoorDash Item Management Catalog API
-  description: The DoorDash Item Management API enables merchants and integration partners to programmatically manage their item catalogs, inventory levels, pricing, and promotions on the DoorDash platform.
-  version: '2.0'
-  contact:
-    name: DoorDash Developer Support
-    url: https://developer.doordash.com/en-US/
-  termsOfService: https://www.doordash.com/terms/
+  title: Doordash Catalog API
+  version: '1.0'
+  description: 'Operations tagged Catalog across 2 of this provider''s published API definitions: doordash-ads-openapi.yml, doordash-catalog-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
+- url: https://openapi.doordash.com
 - url: https://openapi.doordash.com/marketplace/api/v2
   description: Production Server
-security:
-- bearerAuth: []
 tags:
 - name: Catalog
-  description: Manage the item catalog including adding new items and updating existing item information such as names, descriptions, images, and attributes.
 paths:
+  /ads/api/v1/sp/catalogs/validate:
+    post:
+      tags:
+      - Catalog
+      operationId: validateCatalogProducts
+      summary: Validate products
+      description: Validate eligibility of a list of catalog products. Products in result will be returned in the same order as provided in the request.
+      requestBody:
+        description: List of product IDs
+        content:
+          application/json:
+            schema:
+              type: array
+              minItems: 1
+              maxItems: 100
+              items:
+                properties:
+                  idType:
+                    $ref: '#/components/schemas/ProductIdType'
+                  productId:
+                    $ref: '#/components/schemas/ProductId'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CatalogValidationResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+          properties:
+            campaigns:
+              description: List of campaigns.
+              type: array
+              items:
+                $ref: '#/components/schemas/CampaignResponse'
+      security:
+      - Ads API Key Authentication: []
+    servers:
+    - url: https://openapi.doordash.com
   /items:
     post:
       operationId: createItems
@@ -69,7 +109,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error_2'
               examples:
                 CreateItems400Example:
                   summary: Default createItems 400 response
@@ -82,7 +122,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error_2'
               examples:
                 CreateItems401Example:
                   summary: Default createItems 401 response
@@ -93,6 +133,8 @@ paths:
       x-microcks-operation:
         delay: 0
         dispatcher: FALLBACK
+      security:
+      - bearerAuth: []
     patch:
       operationId: updateItems
       summary: DoorDash Update Items in Catalog
@@ -145,7 +187,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error_2'
               examples:
                 UpdateItems400Example:
                   summary: Default updateItems 400 response
@@ -158,7 +200,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Error_2'
               examples:
                 UpdateItems401Example:
                   summary: Default updateItems 401 response
@@ -169,18 +211,266 @@ paths:
       x-microcks-operation:
         delay: 0
         dispatcher: FALLBACK
+      security:
+      - bearerAuth: []
+    servers:
+    - url: https://openapi.doordash.com/marketplace/api/v2
+      description: Production Server
 components:
+  responses:
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    ItemError:
+    Name:
+      description: Resource name.
+      type: string
+    ProductId:
+      description: Unique product identifier based on product ID type.
+      type: string
+    CampaignType:
+      description: The advertising product managed by this campaign.
+      type: string
+      enum:
+      - SPONSORED_PRODUCTS
+    MonetaryFieldsExtended:
+      required:
+      - unitAmount
+      - currency
+      - displayString
+      - decimalPlaces
+      - symbol
+      - symbolPlacement
+      - sign
+      properties:
+        unitAmount:
+          description: Integer representing a monetary value in cents.
+          type: number
+        currency:
+          description: Monetary value currency
+          type: string
+          enum:
+          - USD
+        displayString:
+          description: Monetary value formatted for display
+          type: string
+        decimalPlaces:
+          description: Monetary value currency decimal places
+          type: number
+        symbol:
+          description: Monetary value symbol
+          type: string
+        symbolPlacement:
+          description: Monetary value symbol placement
+          type: string
+          enum:
+          - left
+          - right
+        sign:
+          description: True indicates the monetary value is positive. False indicates the monetary value is negative.
+          type: boolean
+    PacingStrategy:
+      description: Controls how the budget is distributed over the campaign duration.
+      type: string
+      enum:
+      - DEMAND
+      - UNSPECIFIED
+      x-enumDescriptions:
+        DEMAND: Spend more of the budget when traffic is high, and less when traffic is low.
+        UNSPECIFIED: Specify to use the default pacing strategy.
+    CodeDescription:
+      description: A human-readable description of the code.
+      type: string
+    CampaignId:
+      description: Unique campaign identifier.
+      type: string
+    StartDate:
+      description: Start date for the resource to go live. The format of the date is yyyy-MM-dd HH:mm:ss.
+      type: string
+      example: '2025-11-01 00:00:00'
+    BudgetRead:
+      required:
+      - daily
+      - lifetime
+      properties:
+        daily:
+          allOf:
+          - $ref: '#/components/schemas/MonetaryFieldsExtended'
+          - type: object
+            description: A daily budget for the campaign
+        lifetime:
+          allOf:
+          - $ref: '#/components/schemas/MonetaryFieldsExtended'
+          - type: object
+            description: A lifetime budget for the campaign
+        pacingStrategy:
+          $ref: '#/components/schemas/PacingStrategy'
+    StatusRead:
+      description: Current resource state.
+      type: string
+      enum:
+      - INCOMPLETE
+      - IN_REVIEW
+      - SCHEDULED
+      - ACTIVE
+      - PAUSED
+      - ENDED
+      - DRAFT
+      - REJECTED
+      - CANCELLED
+    CampaignResponse:
+      required:
+      - campaignId
+      - name
+      - description
+      - status
+      - statusDescription
+      - code
+      - codeDescription
+      - campaignType
+      - budget
+      - startDate
+      - endDate
+      - placementType
+      - permission
+      properties:
+        campaignId:
+          $ref: '#/components/schemas/CampaignId'
+        name:
+          $ref: '#/components/schemas/Name'
+        description:
+          $ref: '#/components/schemas/Description'
+        status:
+          $ref: '#/components/schemas/StatusRead'
+        statusDescription:
+          $ref: '#/components/schemas/StatusDescription'
+        code:
+          $ref: '#/components/schemas/Code'
+        codeDescription:
+          $ref: '#/components/schemas/CodeDescription'
+        campaignType:
+          $ref: '#/components/schemas/CampaignType'
+        budget:
+          $ref: '#/components/schemas/BudgetRead'
+        startDate:
+          $ref: '#/components/schemas/StartDate'
+        endDate:
+          $ref: '#/components/schemas/EndDate'
+        placementType:
+          $ref: '#/components/schemas/PlacementType'
+        permission:
+          $ref: '#/components/schemas/Permission'
+    PlacementType:
+      description: Specifies how all ad groups for the campaign will specify placement type details.
+      type: string
+      enum:
+      - AUTOMATIC
+      - MANUAL
+    Description:
+      description: Resource description.
+      type: string
+    Permission:
+      required:
+      - isReadOnly
+      - message
+      properties:
+        isReadOnly:
+          description: Indicates whether a campaign is read-only through the API
+          type: boolean
+        message:
+          description: Description of the campaign permission
+          type: string
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    CatalogValidationResponse:
+      required:
+      - idType
+      - productId
+      - isEligible
+      properties:
+        idType:
+          $ref: '#/components/schemas/ProductIdType'
+        productId:
+          $ref: '#/components/schemas/ProductId'
+        isEligible:
+          description: whether a product is eligible in DoorDash
+          type: boolean
+        brandName:
+          description: product's brand name
+          type: string
+        productName:
+          description: name of a product
+          type: string
+        imageUrl:
+          description: product image url
+          type: string
+        ddSic:
+          description: DoorDash product identifier.
+          type: string
+        upcs:
+          type: array
+          items:
+            type: string
+        gtin14s:
+          type: array
+          items:
+            type: string
+    Code:
+      description: An enumerated success or error code for machine use.
+      type: string
+    StatusDescription:
+      description: Description of the resource is in current state.
+      type: string
+    ProductIdType:
+      description: Product ID type
+      type: string
+      enum:
+      - GTIN_14
+      - UPC
+      - DD_SIC
+    EndDate:
+      description: End date for the resource to stop running. The format of the date is yyyy-MM-dd HH:mm:ss.
+      type: string
+      example: '2025-12-01 00:00:00'
+    CatalogItemsRequest:
+      type: object
+      required:
+      - items
+      properties:
+        items:
+          type: array
+          description: The items to add or update in the catalog.
+          items:
+            $ref: '#/components/schemas/CatalogItem'
+    Error_2:
       type: object
       properties:
-        merchant_supplied_id:
-          type: string
-          description: The item identifier that had an error.
-          example: D-12345
         message:
           type: string
-          description: The error message.
+          description: A human-readable error message.
           example: example
         code:
           type: string
@@ -258,28 +548,28 @@ components:
           description: Any errors encountered during processing.
           items:
             $ref: '#/components/schemas/ItemError'
-    Error:
+    ItemError:
       type: object
       properties:
+        merchant_supplied_id:
+          type: string
+          description: The item identifier that had an error.
+          example: D-12345
         message:
           type: string
-          description: A human-readable error message.
+          description: The error message.
           example: example
         code:
           type: string
           description: A machine-readable error code.
           example: ABC123
-    CatalogItemsRequest:
-      type: object
-      required:
-      - items
-      properties:
-        items:
-          type: array
-          description: The items to add or update in the catalog.
-          items:
-            $ref: '#/components/schemas/CatalogItem'
   securitySchemes:
+    Ads_API_Key_Authentication:
+      type: apiKey
+      scheme: bearer
+      in: header
+      name: Authorization
+      description: We will be using stateful token based API keys to authenticate clients, passed in the 'Authorization' header as 'Bearer {API_KEY}'.
     bearerAuth:
       type: http
       scheme: bearer
@@ -288,3 +578,6 @@ components:
 externalDocs:
   description: DoorDash Item Management API Documentation
   url: https://developer.doordash.com/en-US/api/marketplace_v2/
+x-refined-from:
+- doordash-ads-openapi.yml
+- doordash-catalog-api-openapi.yml

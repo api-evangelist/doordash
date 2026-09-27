@@ -19,6 +19,9 @@ tags:
   description: Manage business entities that represent legal entities or owners.
 paths:
   /businesses:
+    servers:
+    - url: https://openapi.doordash.com/drive/v1
+      description: Production Server
     get:
       operationId: listBusinesses
       summary: DoorDash List Businesses
@@ -131,10 +134,10 @@ paths:
       x-microcks-operation:
         delay: 0
         dispatcher: FALLBACK
+  /businesses/{external_business_id}:
     servers:
     - url: https://openapi.doordash.com/drive/v1
       description: Production Server
-  /businesses/{external_business_id}:
     get:
       operationId: getBusiness
       summary: DoorDash Get Business Details
@@ -281,44 +284,16 @@ paths:
       x-microcks-operation:
         delay: 0
         dispatcher: FALLBACK
-    servers:
-    - url: https://openapi.doordash.com/drive/v1
-      description: Production Server
 components:
+  parameters:
+    ExternalBusinessId:
+      name: external_business_id
+      in: path
+      required: true
+      description: The unique external identifier for the business.
+      schema:
+        type: string
   schemas:
-    Business:
-      type: object
-      properties:
-        external_business_id:
-          type: string
-          description: The unique external identifier for the business.
-          example: D-12345
-        name:
-          type: string
-          description: The name of the business.
-          example: Acme Pickup Store
-        description:
-          type: string
-          description: A description of the business.
-          example: Leave at the front desk.
-    BusinessRequest:
-      type: object
-      required:
-      - external_business_id
-      - name
-      properties:
-        external_business_id:
-          type: string
-          description: A unique external identifier for the business.
-          example: D-12345
-        name:
-          type: string
-          description: The name of the business.
-          example: Acme Pickup Store
-        description:
-          type: string
-          description: A description of the business.
-          example: Leave at the front desk.
     Error:
       type: object
       properties:
@@ -342,37 +317,39 @@ components:
               error:
                 type: string
                 description: The error message.
-    Error_2:
+    BusinessRequest:
+      type: object
+      required:
+      - external_business_id
+      - name
+      properties:
+        external_business_id:
+          type: string
+          description: A unique external identifier for the business.
+          example: D-12345
+        name:
+          type: string
+          description: The name of the business.
+          example: Acme Pickup Store
+        description:
+          type: string
+          description: A description of the business.
+          example: Leave at the front desk.
+    Business:
       type: object
       properties:
-        field_errors:
-          type: array
-          description: A list of field-level validation errors.
-          items:
-            type: object
-            properties:
-              field:
-                type: string
-                description: The name of the field with the error.
-              error:
-                type: string
-                description: The error message for the field.
-        message:
+        external_business_id:
           type: string
-          description: A human-readable error message.
-          example: example
-        code:
+          description: The unique external identifier for the business.
+          example: D-12345
+        name:
           type: string
-          description: A machine-readable error code.
-          example: ABC123
-  parameters:
-    ExternalBusinessId:
-      name: external_business_id
-      in: path
-      required: true
-      description: The unique external identifier for the business.
-      schema:
-        type: string
+          description: The name of the business.
+          example: Acme Pickup Store
+        description:
+          type: string
+          description: A description of the business.
+          example: Leave at the front desk.
   securitySchemes:
     bearerAuth:
       type: http

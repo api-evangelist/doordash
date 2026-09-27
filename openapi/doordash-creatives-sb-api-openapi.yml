@@ -1,0 +1,280 @@
+openapi: 3.2.0
+info:
+  version: 1.0.29
+  title: DoorDash Ads Creatives (SB) API
+  description: DoorDash Ads API for Sponsored Products for campaign management and reporting operations.
+servers:
+- url: https://openapi.doordash.com
+security:
+- Ads API Key Authentication: []
+tags:
+- name: Creatives (SB)
+  description: For Sponsored Brand campaigns only.
+paths:
+  /ads/api/v1/sb/creatives:
+    post:
+      summary: Create creatives
+      description: Create creatives for a campaign and ad group
+      tags:
+      - Creatives (SB)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - campaignId
+              - adGroupId
+              - creatives
+              properties:
+                campaignId:
+                  type: string
+                  description: Campaign identifier
+                adGroupId:
+                  type: string
+                  description: Ad group identifier
+                creatives:
+                  type: array
+                  items:
+                    oneOf:
+                    - $ref: '#/components/schemas/BrandHeaderImageCreative'
+                    - $ref: '#/components/schemas/BrandLandingPageCreative'
+      responses:
+        '200':
+          description: Creatives successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - campaignId
+                - adGroupId
+                - creatives
+                properties:
+                  campaignId:
+                    type: string
+                    description: Campaign identifier
+                  adGroupId:
+                    type: string
+                    description: Ad group identifier
+                  creatives:
+                    type: array
+                    items:
+                      oneOf:
+                      - $ref: '#/components/schemas/BrandHeaderImageCreative'
+                      - $ref: '#/components/schemas/BrandLandingPageCreative'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Campaign or ad group not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      operationId: postAdsApiV1SbCreatives
+      x-operation-id-source: derived
+    get:
+      summary: Get creatives
+      description: Get creatives with pagination support
+      tags:
+      - Creatives (SB)
+      parameters:
+      - name: campaignIdFilter
+        in: query
+        required: true
+        schema:
+          type: string
+        description: A comma-delimited list of campaign identifiers
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 20
+        description: Number of results to return per page
+      - $ref: '#/components/parameters/searchAfter'
+      responses:
+        '200':
+          description: Creatives retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  searchAfter:
+                    type: string
+                    description: 'Null when results included all matching resources. Base64 encoded string of the request payload when there are additional resources not included within the current result set.
+
+                      '
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                      - campaignId
+                      - adGroupId
+                      - creatives
+                      properties:
+                        campaignId:
+                          type: string
+                          description: Campaign identifier
+                        adGroupId:
+                          type: string
+                          description: Ad group identifier
+                        creatives:
+                          type: array
+                          items:
+                            oneOf:
+                            - $ref: '#/components/schemas/BrandCreative'
+                            - $ref: '#/components/schemas/BrandHeaderImageCreative'
+                            - $ref: '#/components/schemas/BrandLandingPageCreative'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      operationId: getAdsApiV1SbCreatives
+      x-operation-id-source: derived
+components:
+  responses:
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    BrandHeaderImageCreative:
+      type: object
+      required:
+      - type
+      - title
+      - description
+      - logoContentUrl
+      properties:
+        type:
+          type: string
+          enum:
+          - BRAND_HEADER_IMAGE
+          description: Type of creative
+        title:
+          type: string
+          description: Title of the creative
+        description:
+          type: string
+          description: Description of the creative
+        logoContentUrl:
+          type: string
+          description: URL of the logo content
+        headerImageUrlMobile:
+          type: string
+          description: URL of the header image for mobile
+        headerImageUrlWeb:
+          type: string
+          description: URL of the header image for web
+        headerVideoUrlMobile:
+          type: string
+          description: URL of the header video for mobile
+        headerVideoUrlWeb:
+          type: string
+          description: URL of the header video for web
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    BrandLandingPageCreative:
+      type: object
+      required:
+      - type
+      - title
+      - description
+      - logoContentUrl
+      - headerImageUrls
+      - headerImageUrlsWeb
+      properties:
+        type:
+          type: string
+          enum:
+          - BRAND_LANDING_PAGE
+          description: Type of creative
+        title:
+          type: string
+          description: Title of the creative
+        description:
+          type: string
+          description: Description of the creative
+        logoContentUrl:
+          type: string
+          description: URL of the logo content
+        headerImageUrls:
+          type: array
+          items:
+            type: string
+          description: Array of header image URLs
+        headerImageUrlsWeb:
+          type: array
+          items:
+            type: string
+          description: Array of header image URLs for web
+    BrandCreative:
+      type: object
+      required:
+      - type
+      - title
+      - description
+      - logoContentUrl
+      properties:
+        type:
+          type: string
+          enum:
+          - BRAND
+          description: Type of creative
+        title:
+          type: string
+          description: Title of the creative
+        description:
+          type: string
+          description: Description of the creative
+        logoContentUrl:
+          type: string
+          description: URL of the logo content
+  parameters:
+    searchAfter:
+      name: searchAfter
+      in: query
+      description: 'Null when results included all matching resources. Base64 encoded string of the request payload when there are additional resources not included within the current result set.
+
+        '
+      schema:
+        type: string
+  securitySchemes:
+    Ads_API_Key_Authentication:
+      type: apiKey
+      scheme: bearer
+      in: header
+      name: Authorization
+      description: We will be using stateful token based API keys to authenticate clients, passed in the 'Authorization' header as 'Bearer {API_KEY}'.

@@ -1,0 +1,193 @@
+openapi: 3.2.0
+info:
+  version: 1.0.29
+  title: DoorDash Ads Keywords (SP) API
+  description: DoorDash Ads API for Sponsored Products for campaign management and reporting operations.
+servers:
+- url: https://openapi.doordash.com
+security:
+- Ads API Key Authentication: []
+tags:
+- name: Keywords (SP)
+  description: For Sponsored Products campaigns only.
+paths:
+  /ads/api/v1/sp/keywords:
+    post:
+      tags:
+      - Keywords (SP)
+      operationId: getRecommendedKeywordsForProducts
+      summary: Get recommended keywords
+      description: Get a list of recommended keywords for the provided products and placement type.
+      requestBody:
+        description: List of placement types and list of product IDs.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetRecommendedKeywordsRequest'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendedKeywordsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/sp/adGroups/{adGroupId}/keywords:
+    post:
+      tags:
+      - Keywords (SP)
+      operationId: getRecommendedKeywordsAdGroupStatus
+      summary: Get recommended keywords with status in ad group
+      description: Get a list of recommended keywords and their status within the given ad group (e.g. new) for the provided products and placement type.
+      parameters:
+      - name: adGroupId
+        in: path
+        description: Unique identifier for an ad group
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: List of placement types and list of product IDs.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetRecommendedKeywordsRequest'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendedKeywordsStatusResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  responses:
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    ProductId:
+      description: Unique product identifier based on product ID type.
+      type: string
+    ProductIdType:
+      description: Product ID type
+      type: string
+      enum:
+      - GTIN_14
+      - UPC
+      - DD_SIC
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    Placement:
+      required:
+      - type
+      properties:
+        type:
+          description: Specifies an ad group surface
+          type: string
+          enum:
+          - SEARCH
+          - CATEGORIES
+          - COLLECTION
+          - DOUBLEDASH
+    RecommendedKeywordsStatusResponse:
+      required:
+      - recommendedKeywords
+      properties:
+        recommendedKeywords:
+          type: object
+          properties:
+            SEARCH:
+              type: array
+              items:
+                $ref: '#/components/schemas/KeywordStatus'
+          required:
+          - SEARCH
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/KeywordStatus'
+    KeywordStatus:
+      properties:
+        keyword:
+          type: string
+        status:
+          type: string
+          enum:
+          - NEW
+    RecommendedKeywordsResponse:
+      required:
+      - recommendedKeywords
+      properties:
+        recommendedKeywords:
+          type: object
+          properties:
+            SEARCH:
+              type: array
+              items:
+                type: string
+          required:
+          - SEARCH
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    GetRecommendedKeywordsRequest:
+      required:
+      - placements
+      - products
+      properties:
+        placements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Placement'
+          description: Placement type must be 'SEARCH' for recommended keywords.
+        products:
+          description: List of product IDs
+          type: array
+          items:
+            properties:
+              idType:
+                $ref: '#/components/schemas/ProductIdType'
+              productId:
+                $ref: '#/components/schemas/ProductId'
+  securitySchemes:
+    Ads_API_Key_Authentication:
+      type: apiKey
+      scheme: bearer
+      in: header
+      name: Authorization
+      description: We will be using stateful token based API keys to authenticate clients, passed in the 'Authorization' header as 'Bearer {API_KEY}'.

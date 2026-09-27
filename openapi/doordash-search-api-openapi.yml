@@ -1,0 +1,573 @@
+openapi: 3.2.0
+info:
+  title: Storefront V1 API Specification Search API
+  version: 1.0.0
+  contact:
+    name: Storefront API Support
+    email: storefront-api-support@doordash.com
+  description: Endpoints for store searches
+servers:
+- url: https://openapi.doordash.com
+  variables: {}
+security:
+- BearerAuth: []
+tags:
+- name: Search
+  description: Endpoints for store searches
+paths:
+  /storefront/api/v1/businesses/{business_id}/stores/nearby_search:
+    get:
+      tags:
+      - Search
+      summary: Search nearby stores by business
+      description: Search for stores that are currently active on storefront and within a specified area given business id and location. Search results can be refined by providing additional keywords and the result will be sorted by distance.
+      operationId: NearbyStoresByBusinessId
+      parameters:
+      - $ref: '#/components/parameters/BusinessId'
+      - $ref: '#/components/parameters/Latitude'
+      - $ref: '#/components/parameters/Longitude'
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/OpenAt'
+      - $ref: '#/components/parameters/IsPickup'
+      - $ref: '#/components/parameters/SearchRadius'
+      - $ref: '#/components/parameters/ShouldSendStoreDetails'
+      responses:
+        '200':
+          description: Ok
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NearByStoresResponse'
+        '400':
+          description: Request Validation Failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      deprecated: false
+  /storefront/api/v1/business_groups/{business_group_id}/stores/nearby_search:
+    get:
+      tags:
+      - Search
+      summary: Search nearby stores by business group
+      description: Search for stores that are currently active on storefront and within a specified area given business group id and location. Search results can be refined by providing additional keywords and the result will be sorted by distance.
+      operationId: NearbyStoresByBusinessGroupId
+      parameters:
+      - $ref: '#/components/parameters/BusinessGroupId'
+      - $ref: '#/components/parameters/Latitude'
+      - $ref: '#/components/parameters/Longitude'
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/OpenAt'
+      - $ref: '#/components/parameters/IsPickup'
+      - $ref: '#/components/parameters/SearchRadius'
+      - $ref: '#/components/parameters/ShouldSendStoreDetails'
+      responses:
+        '200':
+          description: Ok
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NearByStoresResponse'
+        '400':
+          description: Request Validation Failed
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request not authenticated
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Operation not authorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Request resources not found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessGroupResourceNotFoundError'
+        '429':
+          description: Rate limited
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+      deprecated: false
+components:
+  schemas:
+    BusinessGroupResourceNotFoundError:
+      x-error: true
+      title: BusinessResourceNotFoundError
+      type: object
+      description: The response returned when requested resource is not found/available.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - not_found
+        message:
+          type: string
+          example: Business group is inactive/invalid.
+    ShouldSendStoreDetails:
+      type: boolean
+      default: false
+    Latitude:
+      type: string
+      pattern: ^(\+|-)?(?:90(?:(?:\.0{1,7})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,7})?))$
+      example: -32.1234537
+    BusinessId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the business.
+      example: '123'
+    Limit:
+      type: integer
+      pattern: ^(0|[1-9][0-9]*)$
+      description: Resource results size limit
+      default: 10
+      minimum: 1
+      maximum: 200
+    StoreStatus:
+      type: string
+      description: store activation status
+      enum:
+      - open
+      - closed
+      - inactive
+      - paused
+      - deactivated
+      example: open
+    BusinessResourceNotFoundError:
+      x-error: true
+      title: BusinessResourceNotFoundError
+      type: object
+      description: The response returned when requested resource is not found/available.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - not_found
+        message:
+          type: string
+          example: Business is inactive/invalid.
+    StoreRadius:
+      type: integer
+      default: 1000
+      minimum: 1
+      maximum: 100000
+    AuthenticationError:
+      x-error: true
+      type: object
+      description: Authorization error, available credentials don't match requested operation
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authentication_error
+        message:
+          type: string
+          example: Request does not contain a JWT.
+    StoreDetails:
+      type: object
+      title: StoreDetails
+      description: Store details
+      properties:
+        id:
+          type: string
+          description: Store id
+          example: '123'
+        name:
+          type: string
+          description: Store name
+          example: Example Store
+        address:
+          type: string
+          description: Store address
+          example: 123 Street Apt123, WA
+        phone_number:
+          type: string
+          description: Store phone number
+          example: '1233333456'
+        time_zone:
+          type: string
+          description: Store time zone
+          example: US/New York
+        status:
+          type: object
+          description: Store activation status
+          properties:
+            storefront:
+              $ref: '#/components/schemas/StoreStatus'
+        store_hours:
+          type: object
+          description: Store hours
+          properties:
+            storefront:
+              $ref: '#/components/schemas/StorefrontStoreHours'
+        store_special_hours:
+          type: object
+          description: Special service hours for a specific day
+          properties:
+            storefront:
+              $ref: '#/components/schemas/StorefrontStoreSpecialHours'
+        minimum_order_value:
+          type: number
+          format: integer
+          description: The minimum amount that the consumers need to spend. Value in minor units.
+          example: 0
+        delivery_fee:
+          type: number
+          format: integer
+          description: Order delivery fee. Value in minor units.
+          example: 399
+        average_delivery_time:
+          type: number
+          format: integer
+          description: Average store ETA for delivery orders. Value in minutes.
+          example: 20
+        average_pickup_time:
+          type: number
+          format: integer
+          description: Average store ETA for pickup orders. Value in minutes.
+          example: 10
+        special_instructions_max_length:
+          type: number
+          format: integer
+          description: Maximum length of special instructions. if <= 0 then it means merchant does not allow it.
+          example: 10
+        should_show_delivery_fee:
+          type: boolean
+          description: whether to show delivery fee.
+          example: true
+          default: true
+        store_properties:
+          type: object
+          description: Store properties indicating available services
+          properties:
+            curbside:
+              type: boolean
+              description: Whether the store offers curbside pickup
+              example: true
+              default: false
+            drivethru:
+              type: boolean
+              description: Whether the store has a drive-thru
+              example: false
+              default: false
+    BusinessGroupId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the business.
+      example: '123'
+    NearbyStoreInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Store name
+          example: test
+        id:
+          type: string
+          description: Store id
+          example: '123'
+        address:
+          type: string
+          description: Store address
+          example: 123 Street Apt123, 98101
+        distance:
+          type: number
+          format: double
+          description: Distance from store to given location in miles
+          example: 1.2
+        average_eta:
+          type: number
+          format: integer
+          description: Average store ETA based on the requested fulfillment type, whether it's pick up or delivery. Value in minutes.
+          example: 35
+        store_details:
+          $ref: '#/components/schemas/StoreDetails'
+    StoreIntervals:
+      type: object
+      properties:
+        start:
+          type: string
+          description: Store open time
+          example: 9am
+        end:
+          type: string
+          description: Store close time
+          example: 10pm
+        start_seconds:
+          type: integer
+          description: number of seconds since the beginning of the day e.g. 3600 means 1am. 39600 means 11 am and 89100 means 12:45 am.
+          example: 39600
+        end_seconds:
+          type: integer
+          description: number of seconds since the beginning of the day e.g.3600 means 1am. 39600 means 11 am and 89100 means 12:45 am.
+          example: 89100
+    StorefrontStoreSpecialHours:
+      type: object
+      properties:
+        date:
+          type: string
+          description: In yyyy-mm-dd format
+          example: '2018-01-12'
+        hours:
+          $ref: '#/components/schemas/StoreHours'
+    NearByStoresResponse:
+      type: object
+      title: BusinessStoresResponse
+      description: List of stores with basic information.
+      required:
+      - stores
+      properties:
+        stores:
+          type: array
+          items:
+            $ref: '#/components/schemas/NearbyStoreInfo'
+    StoreHours:
+      type: object
+      properties:
+        closed:
+          type: boolean
+          example: false
+        asap_pickup:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoreIntervals'
+        asap_delivery:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoreIntervals'
+        scheduled_pickup:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoreIntervals'
+        scheduled_delivery:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoreIntervals'
+    RateLimitedError:
+      x-error: true
+      title: RateLimitedError
+      type: object
+      description: Rate limited.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - rate_limit_error
+        message:
+          type: string
+          example: Developer account endpoint rate limit exceeded.
+    IsPickup:
+      type: boolean
+      default: true
+    Longitude:
+      type: string
+      pattern: ^(\+|-)?(?:180(?:(?:\.0{1,7})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,7})?))$
+      example: -156.1234538
+    OpenAt:
+      type: string
+      pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(.[0-9]{3,})?Z$
+      description: UTC Timestamp in ISO-8601 format, or string "now"
+      example: 2018-08-22T17:20:28Z or 2018-08-22T17:20:28.123Z
+    InternalError:
+      x-error: true
+      title: InternalError
+      type: object
+      description: Internal errors that occur during the api call.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - internal_service_error
+        message:
+          type: string
+          example: Internal Service Error.
+    StorefrontStoreHours:
+      type: object
+      properties:
+        monday:
+          $ref: '#/components/schemas/StoreHours'
+        tuesday:
+          $ref: '#/components/schemas/StoreHours'
+        wednesday:
+          $ref: '#/components/schemas/StoreHours'
+        thursday:
+          $ref: '#/components/schemas/StoreHours'
+        friday:
+          $ref: '#/components/schemas/StoreHours'
+        saturday:
+          $ref: '#/components/schemas/StoreHours'
+        sunday:
+          $ref: '#/components/schemas/StoreHours'
+    ValidationFieldError:
+      x-error: true
+      title: ValidationFieldError
+      type: object
+      description: The response returned when validation for field errors are encountered.
+      required:
+      - code
+      - message
+      - field_errors
+      properties:
+        code:
+          type: string
+          enum:
+          - validation_error
+        message:
+          type: string
+          example: Request validation failed.
+        errors:
+          type: string
+          example: Missing business/store id.
+    AuthorizationError:
+      x-error: true
+      type: object
+      description: Authorization error, available credentials don't match requested operation
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authorization_error
+        message:
+          type: string
+          example: You are not authorized to perform this action.
+  parameters:
+    Latitude:
+      name: lat
+      in: query
+      description: latitude
+      required: true
+      schema:
+        $ref: '#/components/schemas/Latitude'
+    SearchRadius:
+      name: search_radius
+      in: query
+      description: Define the distance in meters within which to return store results. The default value is 1000. Search radius is only applicable to pick ups.
+      schema:
+        $ref: '#/components/schemas/StoreRadius'
+    BusinessGroupId:
+      name: business_group_id
+      in: path
+      description: Business group id used for filtering stores
+      required: true
+      schema:
+        $ref: '#/components/schemas/BusinessGroupId'
+    IsPickup:
+      name: is_pickup
+      in: query
+      description: If true, return stores based on store pick up radius. Otherwise, return stores based on delivery radius. The default value is true.
+      schema:
+        $ref: '#/components/schemas/IsPickup'
+    Limit:
+      name: limit
+      in: query
+      description: Specify the maximum number of items that may be returned for a single request.
+      schema:
+        $ref: '#/components/schemas/Limit'
+    BusinessId:
+      name: business_id
+      in: path
+      description: Business id used for filtering stores
+      required: true
+      schema:
+        $ref: '#/components/schemas/BusinessId'
+    ShouldSendStoreDetails:
+      name: should_send_store_details
+      in: query
+      description: If true, return stores details for each store in the list. The default value is false.
+      schema:
+        $ref: '#/components/schemas/ShouldSendStoreDetails'
+    OpenAt:
+      name: open_at
+      in: query
+      description: If specified, only stores that are open for business at the specified time are returned. Possible values is future UTC timestamp in ISO-8601 format within seven days from current time.
+      schema:
+        $ref: '#/components/schemas/OpenAt'
+    Longitude:
+      name: lon
+      in: query
+      description: longitude
+      required: true
+      schema:
+        $ref: '#/components/schemas/Longitude'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

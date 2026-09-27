@@ -1,0 +1,632 @@
+openapi: 3.2.0
+info:
+  version: 1.0.29
+  title: DoorDash Ads Report API
+  description: DoorDash Ads API for Sponsored Products for campaign management and reporting operations.
+servers:
+- url: https://openapi.doordash.com
+security:
+- Ads API Key Authentication: []
+tags:
+- name: Report
+paths:
+  /ads/api/v1/sp/reports/{recordType}/create:
+    post:
+      tags:
+      - Report
+      operationId: createReport
+      summary: Create report
+      description: Create a single report. See request samples for example report requests. Note that there is a 3 year rolling window for reports (`startDate` cannot be more than three years ago).
+      parameters:
+      - name: recordType
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/parameters/recordType'
+        examples:
+          Campaign:
+            value: CAMPAIGN
+            summary: Campaign Report (SB, SP)
+          CampaignPerformanceAndPlacement:
+            value: ADGROUP
+            summary: Campaign Performance Report (SB, SP), Placement Report (SP)
+          Product:
+            value: PRODUCT
+            summary: Product Report (SB, SP)
+          Keyword:
+            value: KEYWORD
+            summary: Keyword Report (SP)
+          CategoryShare:
+            value: CATEGORY_SHARE
+            summary: Category Share Report
+          ProductSales:
+            value: PRODUCT_SALES
+            summary: Product Sales Report
+          Catalog:
+            value: CATALOG
+            summary: Catalog Report
+          InterestInsight:
+            value: INTEREST_INSIGHTS
+            summary: Interest Insight Report
+      requestBody:
+        description: Report request parameters.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReportRequest'
+            examples:
+              CampaignSB:
+                summary: Sponsored Brand Campaign Report
+                value:
+                  reportName: Sponsored Brand Campaign Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                  - SPONSORED_BRAND
+              CampaignPerformanceSB:
+                summary: Sponsored Brand Campaign Performance Report
+                value:
+                  reportName: Sponsored Brand Campaign Performance Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                  - SPONSORED_BRAND
+              CampaignPerformanceSBDayparted:
+                summary: Sponsored Brand Dayparted Campaign Performance Report
+                value:
+                  reportName: Sponsored Brand Dayparted Campaign Performance Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                  - SPONSORED_BRAND
+                  timeGranularity: HOUR
+              ProductSB:
+                summary: Sponsored Brand Product Report
+                value:
+                  reportName: Sponsored Brand Product Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                  - SPONSORED_BRAND
+              ProductSBDayparted:
+                summary: Sponsored Brand Dayparted Product Report
+                value:
+                  reportName: Sponsored Brand Dayparted Product Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                  - SPONSORED_BRAND
+                  timeGranularity: HOUR
+              CampaignSP:
+                summary: Sponsored Products Campaign Report
+                value:
+                  reportName: Sponsored Products Campaign Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                  - SPONSORED_PRODUCTS
+              CampaignPerformanceSP:
+                summary: Sponsored Products Campaign Performance Report
+                value:
+                  reportName: Sponsored Products Campaign Performance Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                  - SPONSORED_PRODUCTS
+              CampaignPerformanceSPDayparted:
+                summary: Sponsored Products Dayparted Campaign Performance Report
+                value:
+                  reportName: Sponsored Products Dayparted Campaign Performance Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                  - SPONSORED_PRODUCTS
+                  timeGranularity: HOUR
+              ProductSP:
+                summary: Sponsored Products Product Report
+                value:
+                  reportName: Sponsored Products Product Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                  - SPONSORED_PRODUCTS
+              ProductSPDayparted:
+                summary: Sponsored Products Dayparted Product Report
+                value:
+                  reportName: Sponsored Products Dayparted Product Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                  - SPONSORED_PRODUCTS
+                  timeGranularity: HOUR
+              Placement:
+                summary: Sponsored Products Placement Report
+                value:
+                  reportName: Sponsored Products Placement Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  segment: SEGMENT
+                  campaignTypes:
+                  - SPONSORED_PRODUCTS
+              PlacementDayparted:
+                summary: Sponsored Products Dayparted Placement Report
+                value:
+                  reportName: Sponsored Products Dayparted Placement Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  segment: SEGMENT
+                  campaignTypes:
+                  - SPONSORED_PRODUCTS
+                  timeGranularity: HOUR
+              Keyword:
+                summary: Sponsored Products Keyword Report
+                value:
+                  reportName: Sponsored Products Keyword Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  campaignTypes:
+                  - SPONSORED_PRODUCTS
+              CategoryShareWeekly:
+                summary: Category Share Weekly Nielsen Report
+                value:
+                  reportName: Category Share Weekly Nielsen Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  groupBys: '[BRAND, VERTICAL]'
+                  timeGranularity: '[WEEK]'
+                  categoryProvider: NIELSEN
+              CategoryShareMonthly:
+                summary: Category Share Monthly Circana Report
+                value:
+                  reportName: Category Share Monthly Circana Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  groupBys: '[BRAND, VERTICAL, CATEGORY]'
+                  timeGranularity: '[MONTH]'
+                  categoryProvider: CIRCANA
+              ProductSalesDaily:
+                summary: Product Sales Daily Report
+                value:
+                  reportName: Product Sales Daily Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  groupBys: '[BRAND, VERTICAL, ITEM]'
+                  timeGranularity: '[DAY]'
+              ProductSalesWeekly:
+                summary: Product Sales Weekly Report
+                value:
+                  reportName: Product Sales Weekly Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  groupBys: '[BRAND, VERTICAL, ITEM]'
+                  timeGranularity: '[WEEK]'
+              ProductSalesMonthly:
+                summary: Product Sales Monthly Report
+                value:
+                  reportName: Product Sales Monthly Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  groupBys: '[BRAND, VERTICAL, ITEM]'
+                  timeGranularity: '[MONTH]'
+              ProductSalesRetailer:
+                summary: Product Sales Retailer Report
+                value:
+                  reportName: Product Sales Retailer Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  groupBys: '[RETAILER]'
+                  timeGranularity: '[MONTH]'
+              Catalog:
+                summary: Catalog Report
+                value:
+                  reportName: Catalog Report
+                  startDate: '2025-11-01 00:00:00'
+                  endDate: '2025-11-01 00:00:00'
+                  filters:
+                  - field: L1_BRAND
+                    terms:
+                    - 1
+                    - 2
+                  - field: STATUS
+                    terms:
+                    - ACTIVE
+                    - INACTIVE
+                  - field: SEARCH_TERM
+                    terms:
+                    - bottle
+              InterestInsightsDish:
+                summary: Interest Insights Dish Report
+                value:
+                  reportName: Interest Insights Dish Report
+                  startDate: '2025-01-01 00:00:00'
+                  endDate: '2025-04-01 00:00:00'
+                  groupBys: '[DISH]'
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateReportResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/sp/reports/download/{reportId}:
+    get:
+      tags:
+      - Report
+      operationId: downloadReportRequest
+      summary: Download report
+      description: Download a single report by the provided identifier.
+      parameters:
+      - name: reportId
+        in: path
+        description: The identifier for a report.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DownloadReportResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ads/api/v1/sp/reports/list:
+    get:
+      tags:
+      - Report
+      operationId: listReports
+      summary: Get reports
+      description: Get a list of reports, optionally filtered by status or report type.
+      parameters:
+      - name: startDate
+        in: query
+        description: Get all reports requested after this date.
+        required: true
+        schema:
+          type: string
+        example: '2025-11-01 00:00:00'
+      - name: endDate
+        in: query
+        description: Get all reports requested before this date.
+        schema:
+          type: string
+        example: '2025-11-01 00:00:00'
+      - $ref: '#/components/parameters/startIndex'
+      - $ref: '#/components/parameters/count'
+      - name: status
+        in: query
+        description: Filter report by status.
+        schema:
+          $ref: '#/components/schemas/ReportStatus'
+      - name: reportNameContains
+        in: query
+        description: Get all report names requested containing this substring, case-insensitive and trimmed.
+        schema:
+          type: string
+      - name: sortCol
+        in: query
+        description: Sort reports by this column.
+        schema:
+          type: string
+          enum:
+          - name
+          - type
+          - startDate
+          - dateGenerated
+          - status
+          default: dateGenerated
+      - name: sortDir
+        in: query
+        description: Sort reports by this direction.
+        schema:
+          type: string
+          enum:
+          - ASC
+          - DESC
+          default: DESC
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListReportsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  responses:
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Name:
+      description: Resource name.
+      type: string
+    CreateReportRequest:
+      required:
+      - reportName
+      - startDate
+      - endDate
+      properties:
+        reportName:
+          description: Name of the report
+          type: string
+        fileType:
+          $ref: '#/components/schemas/FileType'
+        startDate:
+          $ref: '#/components/schemas/Date'
+        endDate:
+          $ref: '#/components/schemas/Date'
+        segment:
+          $ref: '#/components/schemas/Segment'
+        groupBys:
+          description: '- <code>"CATEGORY"</code> only available for Nielsen Category Share reports for Alcohol and non-US advertisers, and Circana Category Share reports for US advertisers.
+
+            - <code>"RETAILER"</code> only available to Product Sales and Category Share reports for Diamond and Gold tier advertisers.
+
+            - <code>"RETAILER"</code> and <code>"VERTICAL"</code> cannot be both requested in the same report.
+
+            - <code>"DISH"</code> only available for Interest Insights reports.
+
+            '
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupBy'
+        timeGranularity:
+          $ref: '#/components/schemas/TimeGranularity'
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogReportFilter'
+        campaignTypes:
+          $ref: '#/components/schemas/ReportCampaignTypes'
+        categoryProvider:
+          $ref: '#/components/schemas/CategoryProvider'
+    GroupBy:
+      type: string
+      enum:
+      - BRAND
+      - VERTICAL
+      - CATEGORY
+      - ITEM
+      - RETAILER
+      - DISH
+    CatalogReportFilter:
+      type: object
+      properties:
+        field:
+          description: Product filter types for catalog reporting.
+          type: string
+          enum:
+          - L1_BRAND
+          - STATUS
+          - SEARCH_TERM
+        terms:
+          type: array
+          items:
+            type: string
+    Date:
+      description: A date string in format of yyyy-MM-dd HH:mm:ss
+      type: string
+      example: '2025-11-01 00:00:00'
+    TimeGranularity:
+      description: '- HOUR (for dayparted reports) is currently in **Beta**.
+
+        - Category Share supports Week or Month grain
+
+        - Product Sales supports Day, Week, or Month grain
+
+        '
+      type: string
+      enum:
+      - HOUR
+      - DAY
+      - WEEK
+      - MONTH
+      - NONE
+    DownloadReportResponse:
+      required:
+      - reportId
+      - url
+      - name
+      - requestedAt
+      - reportExpiresAt
+      - status
+      properties:
+        reportId:
+          $ref: '#/components/schemas/ReportId'
+        url:
+          type: string
+          description: URL to download the report. This URL expires approximately 30 minutes after it is generated, so download the report within that window. Once the URL has expired, accessing it returns an `ExpiredToken` error ("The provided token has expired"). To obtain a fresh URL, call the download report endpoint again.
+          example: https://doordash-marketing-save-report-prod.s3.us-west-2.amazonaws.com/...
+        name:
+          $ref: '#/components/schemas/Name'
+        requestedAt:
+          $ref: '#/components/schemas/Date'
+        reportExpiresAt:
+          $ref: '#/components/schemas/Date'
+        status:
+          $ref: '#/components/schemas/ReportStatus'
+        recordType:
+          $ref: '#/components/schemas/RecordType'
+        groupBys:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupBy'
+        timeGranularity:
+          $ref: '#/components/schemas/TimeGranularity'
+        campaignTypes:
+          $ref: '#/components/schemas/ReportCampaignTypes'
+        categoryProvider:
+          $ref: '#/components/schemas/CategoryProvider'
+    ReportStatus:
+      type: string
+      enum:
+      - SCHEDULED
+      - PROCESSING
+      - COMPLETED
+      - ERROR
+      example: COMPLETED
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    ReportResponse:
+      required:
+      - reportId
+      - name
+      - status
+      - startDate
+      - endDate
+      - dateGenerated
+      properties:
+        reportId:
+          $ref: '#/components/schemas/ReportId'
+        name:
+          $ref: '#/components/schemas/Name'
+        status:
+          $ref: '#/components/schemas/ReportStatus'
+        recordType:
+          $ref: '#/components/schemas/RecordType'
+        segment:
+          $ref: '#/components/schemas/Segment'
+        groupBys:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupBy'
+        startDate:
+          $ref: '#/components/schemas/Date'
+        endDate:
+          $ref: '#/components/schemas/Date'
+        dateGenerated:
+          $ref: '#/components/schemas/Date'
+        categoryProvider:
+          $ref: '#/components/schemas/CategoryProvider'
+    Segment:
+      description: A secondary dimension used to further segment certain types of reports.
+      type: string
+      enum:
+      - PLACEMENT
+      - NONE
+    CreateReportResponse:
+      required:
+      - reportId
+      properties:
+        reportId:
+          $ref: '#/components/schemas/ReportId'
+    ReportId:
+      description: Unique report identifier.
+      type: string
+    RecordType:
+      type: string
+      enum:
+      - CAMPAIGN
+      - ADGROUP
+      - PRODUCT
+      - KEYWORD
+      - PRODUCT_SALES
+      - CATEGORY_SHARE
+      - CATALOG
+      - INTEREST_INSIGHTS
+    ReportCampaignTypes:
+      description: '- Type of campaigns to include in the report.
+
+        - Only relevant for Marketing reports (when recordType is one of <code>{CAMPAIGN, ADGROUP, PRODUCT, KEYWORD}</code>).
+
+        - Only one campaign type may be specified per report request.
+
+        '
+      type: array
+      maxItems: 1
+      items:
+        $ref: '#/components/schemas/ReportCampaignType'
+    ListReportsResponse:
+      properties:
+        totalCount:
+          type: integer
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportResponse'
+    FileType:
+      description: Report file type.
+      type: string
+      enum:
+      - CSV
+    ReportCampaignType:
+      type: string
+      enum:
+      - SPONSORED_PRODUCTS
+      - SPONSORED_BRAND
+    CategoryProvider:
+      description: Data provider for product category definitions. Only applicable for Category Share reports. Note that Circana is only available to US advertisers.
+      type: string
+      enum:
+      - NIELSEN
+      - CIRCANA
+      example: CIRCANA
+  parameters:
+    recordType:
+      name: recordType
+      in: query
+      description: 'one of: CAMPAIGN, ADGROUP, PRODUCT, KEYWORD, CATEGORY_SHARE, PRODUCT_SALES, CATALOG, INTEREST_INSIGHTS'
+      required: true
+      schema:
+      - $ref: '#/components/schemas/RecordType'
+    count:
+      name: count
+      in: query
+      description: Number of records to include in the paged response.
+      required: false
+      schema:
+        type: number
+    startIndex:
+      name: startIndex
+      in: query
+      description: 0-indexed record offset for the result set. Defaults to 0.
+      schema:
+        type: number
+        default: 0
+  securitySchemes:
+    Ads_API_Key_Authentication:
+      type: apiKey
+      scheme: bearer
+      in: header
+      name: Authorization
+      description: We will be using stateful token based API keys to authenticate clients, passed in the 'Authorization' header as 'Bearer {API_KEY}'.

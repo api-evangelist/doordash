@@ -1,0 +1,250 @@
+openapi: 3.2.0
+info:
+  title: Storefront V1 API Specification App API
+  version: 1.0.0
+  contact:
+    name: Storefront API Support
+    email: storefront-api-support@doordash.com
+  description: Endpoints for mobile app related information
+servers:
+- url: https://openapi.doordash.com
+  variables: {}
+security:
+- BearerAuth: []
+tags:
+- name: App
+  description: Endpoints for mobile app related information
+paths:
+  /storefront/api/v1/app/get_minimum_version:
+    get:
+      tags:
+      - App
+      summary: Get minimum application version required for the mobile apps to operate
+      operationId: getMinimumApplicationVersion
+      parameters:
+      - $ref: '#/components/parameters/AppPlatform'
+      - $ref: '#/components/parameters/OptionalIntegrationId'
+      responses:
+        '200':
+          description: Successfully retrieved minimum version required for the app to work correctly.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStorefrontMinimumApplicationVersionResponse'
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '422':
+          description: Request Entity Too Large
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+  /storefront/api/v1/app/metadata:
+    get:
+      tags:
+      - App
+      summary: Get app metadata for the mobile apps to operate
+      operationId: getAppMetadata
+      parameters:
+      - $ref: '#/components/parameters/IntegrationId'
+      - $ref: '#/components/parameters/IntegrationType'
+      responses:
+        '200':
+          description: Successfully retrieved metadata for the app.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStorefrontAppMetadataResponse'
+        '400':
+          description: Bad Request
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '422':
+          description: Request Entity Too Large
+        '429':
+          description: Request is rate limited
+        '500':
+          description: Internal Server Error
+components:
+  schemas:
+    QRCodeEnabled:
+      type: boolean
+      description: if true, return then the mx is enabled show qr code option.
+      default: false
+    GetStorefrontMinimumApplicationVersionResponse:
+      type: object
+      title: GetStorefrontMinimumApplicationVersionResponse
+      description: minimum version for the given platform/os.
+      required:
+      - version
+      properties:
+        version:
+          type: string
+          description: minimum version of the app.
+          example: '1234'
+    GetStorefrontAppMetadataResponse:
+      type: object
+      title: GetStorefrontAppMetadataResponse
+      description: all the metadata needed for the app to function.
+      required:
+      - login_url
+      - edit_profile_url
+      properties:
+        login_url:
+          type: string
+          description: oauth url to use to sign in users.
+          example: https://oauth.com
+        edit_profile_url:
+          type: string
+          description: oauth url to use to sign in users.
+          example: https://edit-profile.com
+        oauth_state:
+          type: string
+          description: state which needs to be validated after oauth redirect.
+          example: some random string
+        privacy_url:
+          type: string
+          description: privacy url for the mx.
+          example: https://some-random-privacy-url.com
+        terms_of_use_url:
+          type: string
+          description: terms of use url for the mx.
+          example: https://some-random-terms-of-use-url.com
+        rewards_background_image_url:
+          type: string
+          description: rewards background image url.
+          example: https://reward_backround.png
+        rewards_header_bottom_sheet_image_url:
+          type: string
+          description: rewards bottom sheet image url.
+          example: https://reward_header_bottom_sheet_url.png
+        rewards_logo_url:
+          type: string
+          description: rewards logo url.
+          example: https://rewards_logo.png
+        signup_header_image_url:
+          type: string
+          description: signup header logo url.
+          example: https://signup_header.png
+        rewards_points:
+          type: string
+          description: rewards points.
+          example: 5,000 points = 1 Steamed Rice
+        rewards_points_details:
+          type: array
+          description: rewards points details.
+          example:
+          - 5,000 points = 1 Steamed Rice
+          - Enjoy a special treat on your birthday!
+          - Earn points for every $1 spent on qualifying purchases.
+          items:
+            type: string
+        supported_account_type:
+          $ref: '#/components/schemas/SupportedAccountType'
+        qr_code_enabled:
+          $ref: '#/components/schemas/QRCodeEnabled'
+        qr_code_title:
+          type: string
+          description: QR Code Title.
+          example: Earn 1 point
+        qr_code_subtitle:
+          type: string
+          description: qr code subtitle.
+          example: For Every $1 spent
+        qr_code_rewards_title:
+          type: string
+          description: QR Code Rewards Title.
+          example: Scan to earn
+        qr_code_rewards_subtitle:
+          type: string
+          description: QR Code Rewards Subtitle.
+          example: details of how it works.
+        how_rewards_work:
+          type: array
+          items:
+            $ref: '#/components/schemas/HowRewardsWorkSection'
+        client_id:
+          type: string
+          description: oauth client id
+          example: '1791203948'
+        card_linking_enabled:
+          type: boolean
+          description: whether card linking is enabled or not.
+          example: true
+    SupportedAccountType:
+      type: string
+      enum:
+      - SF_ACCOUNT
+      - SF_ACCOUNT_LOYALTY
+      - EXTERNAL_ACCOUNT
+      example: SF_ACCOUNT
+      description: what kind of account it is for logged in user.
+    AppPlatform:
+      type: string
+      enum:
+      - android
+      - ios
+      example: android
+      description: operating system of the application.
+    IntegrationId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the business, business group or store.
+      example: '987654'
+    IntegrationType:
+      type: string
+      enum:
+      - BUSINESS
+      - BUSINESS_GROUP
+      - STORE
+      example: store
+      default: business
+      description: Type of the integration id
+    HowRewardsWorkSection:
+      type: object
+      properties:
+        title:
+          type: string
+          description: title of the section
+          example: You can earn on our DoorDash store by linking your DoorDash account.
+        icon:
+          type: string
+          description: icon to use as a bullet point for the section
+          example: logo/doordash
+  parameters:
+    IntegrationType:
+      name: integration_type
+      in: query
+      description: business id, business group id or store id
+      schema:
+        $ref: '#/components/schemas/IntegrationType'
+    OptionalIntegrationId:
+      name: integration_id
+      in: query
+      description: business id, business group id or store id
+      schema:
+        $ref: '#/components/schemas/IntegrationId'
+    IntegrationId:
+      name: integration_id
+      in: query
+      description: business id, business group id or store id
+      required: true
+      schema:
+        $ref: '#/components/schemas/IntegrationId'
+    AppPlatform:
+      name: app_platform
+      in: query
+      description: operating system like android or ios.
+      required: true
+      schema:
+        $ref: '#/components/schemas/AppPlatform'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

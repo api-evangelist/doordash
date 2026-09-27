@@ -1,0 +1,145 @@
+openapi: 3.2.0
+info:
+  version: 1.0.29
+  title: DoorDash Ads Targeting API
+  description: DoorDash Ads API for Sponsored Products for campaign management and reporting operations.
+servers:
+- url: https://openapi.doordash.com
+security:
+- Ads API Key Authentication: []
+tags:
+- name: Targeting
+paths:
+  /ads/api/v1/targeting/audience/estimate:
+    post:
+      summary: Get audience size estimation
+      description: Gets an audience size estimation for a campaign to be created or updated based on the targeting
+      tags:
+      - Targeting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - filters
+              properties:
+                filters:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/TargetingFilters'
+      responses:
+        '200':
+          description: Audience size estimation calculated successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AudienceEstimateResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+      operationId: postAdsApiV1TargetingAudienceEstimate
+      x-operation-id-source: derived
+components:
+  responses:
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    TargetingFilters:
+      type: object
+      required:
+      - field
+      - values
+      properties:
+        field:
+          type: string
+          enum:
+          - L1_BRANDS_EXISTING
+          - L1_BRANDS_NEW
+          - L1_CATEGORY_EXISTING
+          - L1_CATEGORY_LAPSED
+          - L1_CATEGORY_NEW
+          - L2_CATEGORY_EXISTING
+          - L2_CATEGORY_LAPSED
+          - L2_CATEGORY_NEW
+          - BOUGHT_FROM_RETAILER
+          - L2_DISH_INTEREST
+          - PLACEMENT
+          - CAMPAIGN_TYPE
+          description: Targeting field to be specified
+        values:
+          type: array
+          minItems: 1
+          items:
+            type: string
+    AudienceEstimateResponse:
+      type: object
+      required:
+      - reach
+      properties:
+        reach:
+          type: string
+          enum:
+          - TOO_NARROW
+          - NARROW
+          - MODERATE
+          - BROAD
+          - ALL_AUDIENCES
+          description: Expected reach for campaign
+        estimatedSize:
+          $ref: '#/components/schemas/EstimatedSize'
+          description: Expected size of audience
+        description:
+          type: string
+          description: Description for the label
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    EstimatedSize:
+      type: object
+      required:
+      - low
+      - high
+      properties:
+        low:
+          type: integer
+          description: Estimated lower bound for audience size
+        high:
+          type: integer
+          description: Estimated upper bound for audience size
+  securitySchemes:
+    Ads_API_Key_Authentication:
+      type: apiKey
+      scheme: bearer
+      in: header
+      name: Authorization
+      description: We will be using stateful token based API keys to authenticate clients, passed in the 'Authorization' header as 'Bearer {API_KEY}'.

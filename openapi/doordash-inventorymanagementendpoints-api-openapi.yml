@@ -1,0 +1,620 @@
+openapi: 3.2.0
+info:
+  description: API to manage item catalog, inventory, pricing and other attributes.
+  version: '2.0'
+  title: Doordash Item management API Specification Inventory…
+  x-logo:
+    url: https://cdn.doordash.com/static/img/merchant/logo-red@3x.png
+    backgroundColor: '#FFFFFF'
+    altText: Doordash Marketplace
+    href: https://developer.doordash.com/
+servers:
+- url: https://openapi.doordash.com/marketplace
+tags:
+- name: InventoryManagementEndpoints
+  x-displayName: Inventory/Pricing Management Endpoints
+  description: Endpoints to manage inventory/pricing and other item attributes specific to this store
+paths:
+  /api/v2/stores/{store_location_id}/items:
+    post:
+      tags:
+      - InventoryManagementEndpoints
+      summary: Add inventory/pricing and other in-store attributes of new item that is made…
+      description: Add inventory/pricing and other in-store attributes of new item that is made available for sale in the store. base_price and status must be specified first time when an item is made available for sale in a store. At this time, item with extras/options is supported only via job management endpoint. Request validation will fail if extras/options are present in POST/PATCH.
+      operationId: batchAddStoreItem
+      parameters:
+      - name: store_location_id
+        in: path
+        description: ID of store where the item is physically sourced.
+        required: true
+        schema:
+          type: string
+          format: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchAddOrUpdateStoreItemRequest'
+      responses:
+        '202':
+          description: operation successfully queued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+        '400':
+          description: Request Validation Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: Request Entity Too Large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestNotProcessError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      x-codegen-request-body-name: body
+    patch:
+      tags:
+      - InventoryManagementEndpoints
+      summary: Update inventory/pricing and other in-store attributes of item that is already…
+      description: At this time, item with extras/options is supported only via job management endpoint. Request validation will fail if extras/options are present in POST/PATCH.
+      operationId: batchUpdateStoreItem
+      parameters:
+      - name: store_location_id
+        in: path
+        description: ID of store where the item is physically sourced.
+        required: true
+        schema:
+          type: string
+          format: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchAddOrUpdateStoreItemRequest'
+      responses:
+        '202':
+          description: operation successfully queued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+        '400':
+          description: Request Validation Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: Request Entity Too Large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestNotProcessError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      x-codegen-request-body-name: body
+  /api/v2/businesses/{business_id}/items:
+    patch:
+      tags:
+      - InventoryManagementEndpoints
+      summary: Update inventory/pricing of items that are already sold by a business for all…
+      description: At this time, only basic pricing updates are available. Validation will fail if unsupported fields are included in the payload.
+      operationId: updateItemsInBusiness
+      parameters:
+      - name: business_id
+        in: path
+        description: ID of the business that manages the items.
+        required: true
+        schema:
+          type: string
+          format: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateItemsInBusinessRequest'
+      responses:
+        '202':
+          description: operation successfully queued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AsyncOperationResponse'
+        '400':
+          description: Request Validation Failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationFieldError'
+        '401':
+          description: Request unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationError'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorizationError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: Request Entity Too Large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestNotProcessError'
+        '429':
+          description: Request is rate limited
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestRateLimitedError'
+        '500':
+          description: Internal service failure, please try again later
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/server_fault'
+      x-codegen-request-body-name: body
+      deprecated: false
+components:
+  schemas:
+    ItemLocation:
+      type: object
+      description: Default location of an item in the store across business. Can be specified at store level for any store specific customizations.
+      properties:
+        aisle:
+          type: string
+        zone:
+          type: string
+        shelf:
+          type: string
+        side:
+          type: string
+        additional_details:
+          type: string
+        coordinates:
+          type: object
+          properties:
+            x:
+              type: integer
+            y:
+              type: integer
+        raw_text:
+          description: Raw text is the unparsed raw data that comes from merchants.
+          type: string
+        section:
+          description: Section is where the item is located at.
+          type: string
+    server_fault:
+      x-error: true
+      type: object
+      description: Internal service failure, please try again later.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - service_fault
+          default: service_fault
+        message:
+          type: string
+          example: Internal service failure, please try again later.
+          default: Internal service failure, please try again later.
+    NotFoundError:
+      x-error: true
+      type: object
+      description: Request entity was not found.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - unknown_business_id
+        message:
+          type: string
+          example: Entity was not found
+    Extra:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Given name of this instance
+        merchant_supplied_id:
+          type: string
+          description: ID as it's stored in your system
+        description:
+          type: string
+          description: Description of the extra
+        availability:
+          type: string
+          enum:
+          - ACTIVE
+          - INACTIVE
+          default: ACTIVE
+        sort_id:
+          type: integer
+          description: Dictates extra sort order. DD now sorts required modifiers to the top of the item page. If there are multiple required modifiers, they will be sorted using their extra.sort_id
+        min_num_options:
+          type: integer
+          description: Controls the number of distinct options within the extra that must be added to the item. This input also controls the subtext that is displayed under the extra name (e.g “Select at least 1”).
+        max_num_options:
+          type: integer
+          description: Controls the number of distinct options within the extra that can be added to the item.
+        num_free_options:
+          type: integer
+          description: Number of distinct options that the Consumer can add to the item for free.
+        min_option_choice_quantity:
+          type: integer
+          description: Controls the quantity of an individual option within the extra that must be added to the item.
+        max_option_choice_quantity:
+          type: integer
+          description: Controls the quantity of an individual option within the extra that can be added to the item.
+        min_aggregate_options_quantity:
+          type: integer
+          description: Limits the quantity of a single option that can be added within the extra To offer quantity selectors as the selection method, this must be specified.
+        max_aggregate_options_quantity:
+          type: integer
+          description: Limits the quantity of a single option that can be added within the extra To offer quantity selectors as the selection method, this must be specified.
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/Option'
+    FieldError:
+      title: FieldError
+      type: object
+      description: A field whose value couldn't be validated.
+      required:
+      - field
+      - error
+      properties:
+        field:
+          type: string
+          description: Name of the field whose value couldn't be validated.
+          example: pickup_phone_number
+        error:
+          type: string
+          description: The error that was encountered when validating the field's value.
+          example: Invalid phone number format
+    ProgramEligibility:
+      description: Eligibility to items for various programs
+      type: string
+      enum:
+      - SNAP
+      - HSA
+      - FSA
+    AsyncOperationResponse:
+      type: object
+      properties:
+        operation_id:
+          type: string
+        operation_status:
+          type: string
+          enum:
+          - QUEUED
+          - IN_PROGRESS
+          - SUCCESS
+          - FAILED
+          - PARTIAL_SUCCESS
+        message:
+          type: string
+    UpdateItemsInBusinessRequest:
+      type: object
+      required:
+      - items
+      properties:
+        items:
+          type: array
+          description: Items whose business-level attributes should be updated across every live store in the business.
+          items:
+            $ref: '#/components/schemas/StoreItem'
+    AuthenticationError:
+      x-error: true
+      type: object
+      description: 'Authentication error: the token provided with the request doesn''t work for the requested operation'
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authentication_error
+          default: authentication_error
+        message:
+          type: string
+          example: The [exp] is in the past; the JWT is expired
+          default: The [exp] is in the past; the JWT is expired
+    OptionPriceInfo:
+      type: object
+      properties:
+        base_price:
+          description: base price in cents. For example, 12.99$ should be specified as 1299
+          type: number
+    StoreItem:
+      properties:
+        merchant_supplied_item_id:
+          type: string
+        item_availability:
+          type: string
+          enum:
+          - ACTIVE
+          - INACTIVE
+        balance_on_hand:
+          type: integer
+        funding_source:
+          type: string
+          enum:
+          - MERCHANT
+          - CPG
+        last_sold_datetime:
+          type: string
+          description: DateTime in ISO8601 format of when the item was last sold at the store.
+        price_info:
+          $ref: '#/components/schemas/PriceInfo'
+        location:
+          $ref: '#/components/schemas/ItemLocation'
+        item_special_hours:
+          type: array
+          description: Special hours on when item will be available
+          items:
+            $ref: '#/components/schemas/TimeBlock'
+        program_eligibility:
+          type: array
+          description: Program eligibility of the item
+          items:
+            $ref: '#/components/schemas/ProgramEligibility'
+        extras:
+          type: array
+          items:
+            $ref: '#/components/schemas/Extra'
+      type: object
+    BatchAddOrUpdateStoreItemRequest:
+      type: object
+      properties:
+        meta:
+          type: object
+          description: Only need this information when you use paginated pull workflow
+          properties:
+            current_page:
+              type: integer
+              description: optional
+            page_size:
+              type: integer
+              description: optional
+            total_page:
+              type: integer
+              description: required
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoreItem'
+    RequestRateLimitedError:
+      x-error: true
+      type: object
+      description: Request was rate limited.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - request_rate_limited
+        message:
+          type: string
+          example: Request was rate limited. You may be calling the API too much in a short time.
+    TimeBlock:
+      type: object
+      properties:
+        day_index:
+          type: string
+          enum:
+          - MON
+          - TUE
+          - WED
+          - THU
+          - FRI
+          - SAT
+          - SUN
+        start_time:
+          type: string
+          format: HH:MM:SS
+        end_time:
+          type: string
+          format: HH:MM:SS
+        start_date:
+          type: string
+        end_date:
+          type: string
+    RequestNotProcessError:
+      x-error: true
+      type: object
+      description: Request was not process.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - request_rate_limited
+        message:
+          type: string
+          example: Request was not process. Request entity may be too large.
+    PriceInfo:
+      type: object
+      properties:
+        base_price:
+          description: base price in cents. For example, 12.99$ should be specified as 1299
+          type: number
+        sale_price:
+          description: sale price in cents, For example, 8.50$ should be specified as 850
+          type: number
+        tax_rate:
+          description: tax rate as percent value. For example, Tax rate of seven and a half percent must be specified as 7.5.
+          type: number
+        bottle_fee_deposit:
+          description: bottle fee deposit in cents. For example, 1.25$ must be specified as 125
+          type: number
+        base_price_per_measurement_unit:
+          description: base price per measurement unit(kg, lb) in cents for weighted items
+          type: number
+        loyalty_price:
+          description: price in cents for loyalty members
+          type: number
+        loyalty_price_per_measurement_unit:
+          description: loyalty price in cents per measurement unit(kg, lb) in cents for weighted items
+          type: number
+        sale_price_per_measurement_unit:
+          description: sale price in cents per measurement unit(kg, lb) in cents for weighted items
+          type: number
+    ValidationFieldError:
+      x-error: true
+      title: ValidationFieldError
+      type: object
+      description: One or more request values couldn't be validated.
+      required:
+      - code
+      - message
+      - field_errors
+      properties:
+        code:
+          type: string
+          enum:
+          - validation_error
+        message:
+          type: string
+          description: One or more request values couldn't be validated.
+          example: One or more request values couldn't be validated.
+        field_errors:
+          type: array
+          description: The list of fields whose values couldn't be validated. See more [error examples](https://developer.doordash.com/en-US/docs/drive/reference/errors)
+          items:
+            $ref: '#/components/schemas/FieldError'
+          readOnly: true
+    Option:
+      type: object
+      properties:
+        merchant_supplied_item_id:
+          type: string
+          description: Merchant supplied Id to identify the option inside the extra.
+        name:
+          type: string
+          description: Name of the option
+        availability:
+          type: string
+          enum:
+          - ACTIVE
+          - INACTIVE
+          default: ACTIVE
+        price_info:
+          $ref: '#/components/schemas/OptionPriceInfo'
+        item_extra_option_special_hours:
+          type: array
+          description: Special hours on when option will be available
+          items:
+            $ref: '#/components/schemas/TimeBlock'
+        description:
+          type: string
+          description: Description of the option
+        default:
+          type: boolean
+          description: Controls whether the option is pre-selected or not.  For options that have quantity selectors, if option.default:true, then the pre-selected quantity will be 1
+        sort_id:
+          type: integer
+          description: Dictates option sort order, DoorDash sorts options based in ascending order by referencing this field (i.e. sort_id does not have to be 0 in order for option to be sorted to the top)
+        extras:
+          type: array
+          items:
+            $ref: '#/components/schemas/Extra'
+    AuthorizationError:
+      x-error: true
+      type: object
+      description: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authorization_error
+          default: authorization_error
+        message:
+          type: string
+          example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+          default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
