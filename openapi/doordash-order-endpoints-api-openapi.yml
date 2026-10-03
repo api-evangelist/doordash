@@ -265,34 +265,6 @@ components:
           type: string
           description: Reason why the order has to be cancelled
           example: The store is offline and cannot accept the order
-    OrderEventsRequest:
-      type: object
-      properties:
-        merchant_supplied_id:
-          type: string
-          description: Order ID in your system
-          example: 1dfa934a-190c-43a9-b2e0-449e5b8cccde
-    LineItemForRemove:
-      type: object
-      required:
-      - line_item_id
-      - adjustment_type
-      properties:
-        line_item_id:
-          type: string
-          description: line_item_id ID in order Json
-          example: 94b653e4-e394-4330-a714-43e764a223
-        adjustment_type:
-          type: string
-          enum:
-          - ITEM_REMOVE
-          - ITEM_UPDATE
-          - ITEM_SUBSTITUTE
-          example: ITEM_REMOVE
-        substituted_item:
-          type: object
-        options:
-          type: array
     LineItemOption:
       type: object
       required:
@@ -312,33 +284,6 @@ components:
         quantity:
           type: integer
           example: 1
-    LineItemForUpdate:
-      type: object
-      required:
-      - line_item_id
-      - adjustment_type
-      properties:
-        line_item_id:
-          type: string
-          description: line_item_id ID in order Json
-          example: 94b653e4-e394-4330-a714-43e764aergjn
-        adjustment_type:
-          type: string
-          enum:
-          - ITEM_REMOVE
-          - ITEM_UPDATE
-          - ITEM_SUBSTITUTE
-          example: ITEM_UPDATE
-        quantity:
-          type: integer
-          example: 2
-          description: desired quantity when adjustment_type is ITEM_UPDATE
-        substituted_item:
-          type: object
-        options:
-          type: array
-          items:
-            $ref: '#/components/schemas/LineItemOption'
     LineItemForSubstitute:
       type: object
       required:
@@ -361,6 +306,13 @@ components:
           $ref: '#/components/schemas/LineItemSubstitution'
         options:
           type: array
+    OrderEventsRequest:
+      type: object
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: Order ID in your system
+          example: 1dfa934a-190c-43a9-b2e0-449e5b8cccde
     ConfirmOrderRequest:
       type: object
       required:
@@ -390,6 +342,65 @@ components:
           maxLength: 128
           description: Pickup instructions for dasher
           example: Use the back alley of the store for pickup
+    LineItemForRemove:
+      type: object
+      required:
+      - line_item_id
+      - adjustment_type
+      properties:
+        line_item_id:
+          type: string
+          description: line_item_id ID in order Json
+          example: 94b653e4-e394-4330-a714-43e764a223
+        adjustment_type:
+          type: string
+          enum:
+          - ITEM_REMOVE
+          - ITEM_UPDATE
+          - ITEM_SUBSTITUTE
+          example: ITEM_REMOVE
+        substituted_item:
+          type: object
+        options:
+          type: array
+    LineItemForUpdate:
+      type: object
+      required:
+      - line_item_id
+      - adjustment_type
+      properties:
+        line_item_id:
+          type: string
+          description: line_item_id ID in order Json
+          example: 94b653e4-e394-4330-a714-43e764aergjn
+        adjustment_type:
+          type: string
+          enum:
+          - ITEM_REMOVE
+          - ITEM_UPDATE
+          - ITEM_SUBSTITUTE
+          example: ITEM_UPDATE
+        quantity:
+          type: integer
+          example: 2
+          description: desired quantity when adjustment_type is ITEM_UPDATE
+        substituted_item:
+          type: object
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/LineItemOption'
+    AdjustOrderItemRequest:
+      type: object
+      required:
+      - items
+      properties:
+        items:
+          type: array
+          items:
+          - $ref: '#/components/schemas/LineItemForUpdate'
+          - $ref: '#/components/schemas/LineItemForRemove'
+          - $ref: '#/components/schemas/LineItemForSubstitute'
     LineItemSubstitution:
       type: object
       required:
@@ -411,17 +422,6 @@ components:
           type: integer
           description: Substituted item quantity
           example: 1
-    AdjustOrderItemRequest:
-      type: object
-      required:
-      - items
-      properties:
-        items:
-          type: array
-          items:
-          - $ref: '#/components/schemas/LineItemForUpdate'
-          - $ref: '#/components/schemas/LineItemForRemove'
-          - $ref: '#/components/schemas/LineItemForSubstitute'
     OrderConfirmationError:
       type: object
       required:
@@ -463,17 +463,6 @@ components:
           type: string
           description: A human-readable message describing the issue.
           example: Salad Plate is currently unavailable
-    ReturnOrderValidationErrorResponseFieldError:
-      type: object
-      properties:
-        field:
-          type: string
-          description: The name of the field that failed validation
-          example: return_items.quantity
-        error:
-          type: string
-          description: A short description of the validation error
-          example: item quantity must be greater than 0
     CancelOrderRequest_2:
       type: object
       required:
@@ -491,17 +480,97 @@ components:
           type: string
           description: Reason why the order has to be cancelled
           example: The store is offline and cannot accept the order
-    ReturnOrderErrorResponse:
+    LineItemForSubstitute_2:
+      type: object
+      required:
+      - line_item_id
+      - adjustment_type
+      properties:
+        line_item_id:
+          type: string
+          description: line_item_id ID in order Json
+          example: 94b653e4-e394-4330-a714-43e764ab113
+        merchant_supplied_id:
+          type: string
+          description: merchant_supplied_id ID in order Json
+          example: 12345
+        adjustment_type:
+          type: string
+          enum:
+          - ITEM_REMOVE
+          - ITEM_UPDATE
+          - ITEM_SUBSTITUTE
+          example: ITEM_SUBSTITUTE
+        substituted_item:
+          type: object
+          $ref: '#/components/schemas/LineItemSubstitution'
+        options:
+          type: array
+    ReturnOrderResponse:
+      type: object
+      properties:
+        operation_id:
+          type: string
+          description: Unique identifier for the return request
+          example: 8a718033-c12c-4d08-9376-0f4a96e4ac08
+        operation_status:
+          type: string
+          description: Status of the return request
+          example: QUEUED
+        message:
+          type: string
+          description: Helpful message
+          example: Return request received.
+    ReturnOrderValidationErrorResponse:
       type: object
       properties:
         code:
           type: string
-          description: Error code
-          example: items_do_not_belong_to_order
+          description: A code representing the type of error
+          example: validation_error
         message:
           type: string
-          description: Details of failure
-          example: All return items do not belong to the order
+          description: A short description of the error
+          example: One or more request values couldn't be validated.
+        field_errors:
+          type: array
+          description: List of field-specific validation errors
+          items:
+            $ref: '#/components/schemas/ReturnOrderValidationErrorResponseFieldError'
+    ConfirmOrderRequest_2:
+      type: object
+      required:
+      - order_status
+      - merchant_supplied_id
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: Order ID in your system
+          example: 1dfa934a-190c-43a9-b2e0-449e5b8cccde
+        order_status:
+          type: string
+          enum:
+          - success
+          - fail
+          example: success
+        failure_reason:
+          type: string
+          description: Reason why order can't be fulfilled. Omit if order_status = success
+          example: The store is offline and cannot accept the order
+        errors:
+          type: array
+          description: Structured list of errors when order_status = fail. Mirrors the error format used in Order Cart Validation. Omit if order_status = success.
+          items:
+            $ref: '#/components/schemas/OrderConfirmationError'
+        prep_time:
+          type: string
+          description: Estimated time by which order should be ready for pickup. It should be in UTC timezone
+          example: '2021-07-20T21:43:47.324Z'
+        pickup_instructions:
+          type: string
+          maxLength: 128
+          description: Pickup instructions for dasher
+          example: Use the back alley of the store for pickup
     LineItemForRemove_2:
       type: object
       required:
@@ -558,32 +627,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LineItemOption'
-    LineItemForSubstitute_2:
-      type: object
-      required:
-      - line_item_id
-      - adjustment_type
-      properties:
-        line_item_id:
-          type: string
-          description: line_item_id ID in order Json
-          example: 94b653e4-e394-4330-a714-43e764ab113
-        merchant_supplied_id:
-          type: string
-          description: merchant_supplied_id ID in order Json
-          example: 12345
-        adjustment_type:
-          type: string
-          enum:
-          - ITEM_REMOVE
-          - ITEM_UPDATE
-          - ITEM_SUBSTITUTE
-          example: ITEM_SUBSTITUTE
-        substituted_item:
-          type: object
-          $ref: '#/components/schemas/LineItemSubstitution'
-        options:
-          type: array
     ReturnItem:
       type: object
       required:
@@ -614,6 +657,28 @@ components:
           - shopped_item_not_fresh
           - did_not_meet_expectations
           - other
+    ReturnOrderErrorResponse:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: items_do_not_belong_to_order
+        message:
+          type: string
+          description: Details of failure
+          example: All return items do not belong to the order
+    ReturnOrderValidationErrorResponseFieldError:
+      type: object
+      properties:
+        field:
+          type: string
+          description: The name of the field that failed validation
+          example: return_items.quantity
+        error:
+          type: string
+          description: A short description of the validation error
+          example: item quantity must be greater than 0
     ReturnOrderRequest:
       type: object
       required:
@@ -628,79 +693,7 @@ components:
         return_location_id:
           type: string
           description: Location ID of the store where the items were returned
-    ReturnOrderValidationErrorResponse:
-      type: object
-      properties:
-        code:
-          type: string
-          description: A code representing the type of error
-          example: validation_error
-        message:
-          type: string
-          description: A short description of the error
-          example: One or more request values couldn't be validated.
-        field_errors:
-          type: array
-          description: List of field-specific validation errors
-          items:
-            $ref: '#/components/schemas/ReturnOrderValidationErrorResponseFieldError'
-    ConfirmOrderRequest_2:
-      type: object
-      required:
-      - order_status
-      - merchant_supplied_id
-      properties:
-        merchant_supplied_id:
-          type: string
-          description: Order ID in your system
-          example: 1dfa934a-190c-43a9-b2e0-449e5b8cccde
-        order_status:
-          type: string
-          enum:
-          - success
-          - fail
-          example: success
-        failure_reason:
-          type: string
-          description: Reason why order can't be fulfilled. Omit if order_status = success
-          example: The store is offline and cannot accept the order
-        errors:
-          type: array
-          description: Structured list of errors when order_status = fail. Mirrors the error format used in Order Cart Validation. Omit if order_status = success.
-          items:
-            $ref: '#/components/schemas/OrderConfirmationError'
-        prep_time:
-          type: string
-          description: Estimated time by which order should be ready for pickup. It should be in UTC timezone
-          example: '2021-07-20T21:43:47.324Z'
-        pickup_instructions:
-          type: string
-          maxLength: 128
-          description: Pickup instructions for dasher
-          example: Use the back alley of the store for pickup
-    ReturnOrderResponse:
-      type: object
-      properties:
-        operation_id:
-          type: string
-          description: Unique identifier for the return request
-          example: 8a718033-c12c-4d08-9376-0f4a96e4ac08
-        operation_status:
-          type: string
-          description: Status of the return request
-          example: QUEUED
-        message:
-          type: string
-          description: Helpful message
-          example: Return request received.
   parameters:
-    OrderId:
-      in: path
-      name: id
-      required: true
-      schema:
-        type: string
-      description: Order ID
     OrderEventType:
       in: path
       name: event_type
@@ -708,6 +701,13 @@ components:
       schema:
         type: string
       description: 'Supported event types: `order_ready_for_pickup`'
+    OrderId:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+      description: Order ID
   securitySchemes:
     Authorization:
       type: apiKey

@@ -142,25 +142,6 @@ paths:
       operationId: getAdsApiV1SbCreatives
       x-operation-id-source: derived
 components:
-  responses:
-    InternalServerError:
-      description: One or more query parameters contained an invalid value.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Unauthorized.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
     BrandHeaderImageCreative:
       type: object
@@ -196,16 +177,6 @@ components:
         headerVideoUrlWeb:
           type: string
           description: URL of the header video for web
-    Error:
-      properties:
-        code:
-          description: An enumerated error for machine use.
-          type: string
-          readOnly: true
-        details:
-          description: A human-readable description of the error.
-          type: string
-          readOnly: true
     BrandLandingPageCreative:
       type: object
       required:
@@ -240,6 +211,16 @@ components:
           items:
             type: string
           description: Array of header image URLs for web
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
     BrandCreative:
       type: object
       required:
@@ -271,6 +252,25 @@ components:
         '
       schema:
         type: string
+  responses:
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     Ads_API_Key_Authentication:
       type: apiKey

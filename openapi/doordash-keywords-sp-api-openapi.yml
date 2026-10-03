@@ -71,29 +71,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 components:
-  responses:
-    Unauthorized:
-      description: Unauthorized.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    InternalServerError:
-      description: One or more query parameters contained an invalid value.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    ProductId:
-      description: Unique product identifier based on product ID type.
-      type: string
     ProductIdType:
       description: Product ID type
       type: string
@@ -101,53 +79,6 @@ components:
       - GTIN_14
       - UPC
       - DD_SIC
-    Error:
-      properties:
-        code:
-          description: An enumerated error for machine use.
-          type: string
-          readOnly: true
-        details:
-          description: A human-readable description of the error.
-          type: string
-          readOnly: true
-    Placement:
-      required:
-      - type
-      properties:
-        type:
-          description: Specifies an ad group surface
-          type: string
-          enum:
-          - SEARCH
-          - CATEGORIES
-          - COLLECTION
-          - DOUBLEDASH
-    RecommendedKeywordsStatusResponse:
-      required:
-      - recommendedKeywords
-      properties:
-        recommendedKeywords:
-          type: object
-          properties:
-            SEARCH:
-              type: array
-              items:
-                $ref: '#/components/schemas/KeywordStatus'
-          required:
-          - SEARCH
-          additionalProperties:
-            type: array
-            items:
-              $ref: '#/components/schemas/KeywordStatus'
-    KeywordStatus:
-      properties:
-        keyword:
-          type: string
-        status:
-          type: string
-          enum:
-          - NEW
     RecommendedKeywordsResponse:
       required:
       - recommendedKeywords
@@ -165,6 +96,36 @@ components:
             type: array
             items:
               type: string
+    KeywordStatus:
+      properties:
+        keyword:
+          type: string
+        status:
+          type: string
+          enum:
+          - NEW
+    Placement:
+      required:
+      - type
+      properties:
+        type:
+          description: Specifies an ad group surface
+          type: string
+          enum:
+          - SEARCH
+          - CATEGORIES
+          - COLLECTION
+          - DOUBLEDASH
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
     GetRecommendedKeywordsRequest:
       required:
       - placements
@@ -184,6 +145,45 @@ components:
                 $ref: '#/components/schemas/ProductIdType'
               productId:
                 $ref: '#/components/schemas/ProductId'
+    ProductId:
+      description: Unique product identifier based on product ID type.
+      type: string
+    RecommendedKeywordsStatusResponse:
+      required:
+      - recommendedKeywords
+      properties:
+        recommendedKeywords:
+          type: object
+          properties:
+            SEARCH:
+              type: array
+              items:
+                $ref: '#/components/schemas/KeywordStatus'
+          required:
+          - SEARCH
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/KeywordStatus'
+  responses:
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     Ads_API_Key_Authentication:
       type: apiKey

@@ -146,10 +146,16 @@ paths:
       deprecated: false
 components:
   schemas:
-    server_fault:
+    ProductTrait:
+      type: string
+      enum:
+      - ALCOHOL
+      - MEDICATION
+      - WEIGHTED
+    RequestNotProcessError:
       x-error: true
       type: object
-      description: Internal service failure, please try again later.
+      description: Request was not process.
       required:
       - code
       - message
@@ -157,12 +163,10 @@ components:
         code:
           type: string
           enum:
-          - service_fault
-          default: service_fault
+          - request_rate_limited
         message:
           type: string
-          example: Internal service failure, please try again later.
-          default: Internal service failure, please try again later.
+          example: Request was not process. Request entity may be too large.
     BatchAddOrUpdateItemRequest:
       type: object
       properties:
@@ -177,122 +181,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Item'
-    NotFoundError:
-      x-error: true
-      type: object
-      description: Request entity was not found.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - unknown_business_id
-        message:
-          type: string
-          example: Entity was not found
-    SizeInfo:
-      type: object
-      properties:
-        dimensions:
-          type: object
-          properties:
-            length:
-              type: object
-              properties:
-                value:
-                  type: number
-                unit:
-                  type: string
-                  enum:
-                  - inch
-                  - ft
-                  - cm
-                  - m
-            width:
-              type: object
-              properties:
-                value:
-                  type: number
-                unit:
-                  type: string
-                  enum:
-                  - inch
-                  - ft
-                  - cm
-                  - m
-            height:
-              type: object
-              properties:
-                value:
-                  type: number
-                unit:
-                  type: string
-                  enum:
-                  - inch
-                  - ft
-                  - cm
-                  - m
-        weight:
-          type: object
-          properties:
-            value:
-              type: number
-            unit:
-              type: string
-              enum:
-              - lbs
-              - gm
-              - kg
-              - ea
-              - oz
-        volume:
-          type: object
-          properties:
-            value:
-              type: number
-            unit:
-              type: string
-              enum:
-              - oz
-              - mL
-              - L
-        product_specific_size_definition:
-          type: object
-          description: Product-specific size information with separate numeric value and unit of measurement
-          properties:
-            value:
-              type: string
-              description: Numeric value only
-              example: '400'
-            description:
-              type: string
-              description: Unit of measurement only
-              example: g
-    Category:
-      type: object
-      properties:
-        name:
-          type: string
-        sub_category:
-          $ref: '#/components/schemas/Category'
-    FieldError:
-      title: FieldError
-      type: object
-      description: A field whose value couldn't be validated.
-      required:
-      - field
-      - error
-      properties:
-        field:
-          type: string
-          description: Name of the field whose value couldn't be validated.
-          example: pickup_phone_number
-        error:
-          type: string
-          description: The error that was encountered when validating the field's value.
-          example: Invalid phone number format
     ProgramEligibility:
       description: Eligibility to items for various programs
       type: string
@@ -300,6 +188,25 @@ components:
       - SNAP
       - HSA
       - FSA
+    MultiSelectString:
+      type: object
+      properties:
+        multi_select_string:
+          type: array
+          items:
+            type: string
+    ProductAttributes:
+      type: object
+      properties:
+        attribute_name:
+          type: string
+          description: attribute name
+        attribute_value:
+          description: attribute value
+          oneOf:
+          - $ref: '#/components/schemas/SingleSelectBool'
+          - $ref: '#/components/schemas/MultiSelectString'
+          - $ref: '#/components/schemas/MultiSelectDouble'
     Item:
       title: Item
       description: Item to be managed by doordash. Should be unique across stores within business.
@@ -436,13 +343,11 @@ components:
           - PARTIAL_SUCCESS
         message:
           type: string
-    MultiSelectString:
+    SingleSelectBool:
       type: object
       properties:
-        multi_select_string:
-          type: array
-          items:
-            type: string
+        single_select_bool:
+          type: boolean
     AuthenticationError:
       x-error: true
       type: object
@@ -460,67 +365,13 @@ components:
           type: string
           example: The [exp] is in the past; the JWT is expired
           default: The [exp] is in the past; the JWT is expired
-    SingleSelectBool:
+    Category:
       type: object
       properties:
-        single_select_bool:
-          type: boolean
-    ProductAttributes:
-      type: object
-      properties:
-        attribute_name:
+        name:
           type: string
-          description: attribute name
-        attribute_value:
-          description: attribute value
-          oneOf:
-          - $ref: '#/components/schemas/SingleSelectBool'
-          - $ref: '#/components/schemas/MultiSelectString'
-          - $ref: '#/components/schemas/MultiSelectDouble'
-    ProductTrait:
-      type: string
-      enum:
-      - ALCOHOL
-      - MEDICATION
-      - WEIGHTED
-    MultiSelectDouble:
-      type: object
-      properties:
-        multi_select_double:
-          type: array
-          description: array of double
-          items:
-            type: number
-    RequestRateLimitedError:
-      x-error: true
-      type: object
-      description: Request was rate limited.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - request_rate_limited
-        message:
-          type: string
-          example: Request was rate limited. You may be calling the API too much in a short time.
-    RequestNotProcessError:
-      x-error: true
-      type: object
-      description: Request was not process.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - request_rate_limited
-        message:
-          type: string
-          example: Request was not process. Request entity may be too large.
+        sub_category:
+          $ref: '#/components/schemas/Category'
     ValidationFieldError:
       x-error: true
       title: ValidationFieldError
@@ -545,6 +396,22 @@ components:
           items:
             $ref: '#/components/schemas/FieldError'
           readOnly: true
+    FieldError:
+      title: FieldError
+      type: object
+      description: A field whose value couldn't be validated.
+      required:
+      - field
+      - error
+      properties:
+        field:
+          type: string
+          description: Name of the field whose value couldn't be validated.
+          example: pickup_phone_number
+        error:
+          type: string
+          description: The error that was encountered when validating the field's value.
+          example: Invalid phone number format
     AuthorizationError:
       x-error: true
       type: object
@@ -562,3 +429,136 @@ components:
           type: string
           example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
           default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+    MultiSelectDouble:
+      type: object
+      properties:
+        multi_select_double:
+          type: array
+          description: array of double
+          items:
+            type: number
+    RequestRateLimitedError:
+      x-error: true
+      type: object
+      description: Request was rate limited.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - request_rate_limited
+        message:
+          type: string
+          example: Request was rate limited. You may be calling the API too much in a short time.
+    SizeInfo:
+      type: object
+      properties:
+        dimensions:
+          type: object
+          properties:
+            length:
+              type: object
+              properties:
+                value:
+                  type: number
+                unit:
+                  type: string
+                  enum:
+                  - inch
+                  - ft
+                  - cm
+                  - m
+            width:
+              type: object
+              properties:
+                value:
+                  type: number
+                unit:
+                  type: string
+                  enum:
+                  - inch
+                  - ft
+                  - cm
+                  - m
+            height:
+              type: object
+              properties:
+                value:
+                  type: number
+                unit:
+                  type: string
+                  enum:
+                  - inch
+                  - ft
+                  - cm
+                  - m
+        weight:
+          type: object
+          properties:
+            value:
+              type: number
+            unit:
+              type: string
+              enum:
+              - lbs
+              - gm
+              - kg
+              - ea
+              - oz
+        volume:
+          type: object
+          properties:
+            value:
+              type: number
+            unit:
+              type: string
+              enum:
+              - oz
+              - mL
+              - L
+        product_specific_size_definition:
+          type: object
+          description: Product-specific size information with separate numeric value and unit of measurement
+          properties:
+            value:
+              type: string
+              description: Numeric value only
+              example: '400'
+            description:
+              type: string
+              description: Unit of measurement only
+              example: g
+    NotFoundError:
+      x-error: true
+      type: object
+      description: Request entity was not found.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - unknown_business_id
+        message:
+          type: string
+          example: Entity was not found
+    server_fault:
+      x-error: true
+      type: object
+      description: Internal service failure, please try again later.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - service_fault
+          default: service_fault
+        message:
+          type: string
+          example: Internal service failure, please try again later.
+          default: Internal service failure, please try again later.

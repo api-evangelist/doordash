@@ -82,6 +82,21 @@ paths:
       deprecated: false
 components:
   schemas:
+    AuthenticationError:
+      x-error: true
+      type: object
+      description: Authorization error, available credentials don't match requested operation
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authentication_error
+        message:
+          type: string
+          example: Request does not contain a JWT.
     StoreResourceNotFoundError:
       x-error: true
       title: StoreResourceNotFoundError
@@ -98,22 +113,6 @@ components:
         message:
           type: string
           example: Store is inactive/invalid.
-    RateLimitedError:
-      x-error: true
-      title: RateLimitedError
-      type: object
-      description: Rate limited.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - rate_limit_error
-        message:
-          type: string
-          example: Developer account endpoint rate limit exceeded.
     StorefrontCreateJWTRequest:
       type: object
       required:
@@ -123,21 +122,15 @@ components:
           $ref: '#/components/schemas/IntegrationId'
         integration_type:
           $ref: '#/components/schemas/IntegrationType'
-    AuthenticationError:
-      x-error: true
-      type: object
-      description: Authorization error, available credentials don't match requested operation
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - authentication_error
-        message:
-          type: string
-          example: Request does not contain a JWT.
+    IntegrationType:
+      type: string
+      enum:
+      - BUSINESS
+      - BUSINESS_GROUP
+      - STORE
+      example: store
+      default: business
+      description: Type of the integration id
     InternalError:
       x-error: true
       title: InternalError
@@ -154,6 +147,11 @@ components:
         message:
           type: string
           example: Internal Service Error.
+    IntegrationId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the business, business group or store.
+      example: '987654'
     StorefrontCreateJWTResponse:
       type: object
       required:
@@ -187,20 +185,22 @@ components:
         errors:
           type: string
           example: Missing business/store id.
-    IntegrationType:
-      type: string
-      enum:
-      - BUSINESS
-      - BUSINESS_GROUP
-      - STORE
-      example: store
-      default: business
-      description: Type of the integration id
-    IntegrationId:
-      type: string
-      pattern: ^([1-9][0-9]*)$
-      description: Unique ID for the business, business group or store.
-      example: '987654'
+    RateLimitedError:
+      x-error: true
+      title: RateLimitedError
+      type: object
+      description: Rate limited.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - rate_limit_error
+        message:
+          type: string
+          example: Developer account endpoint rate limit exceeded.
     AuthorizationError:
       x-error: true
       type: object

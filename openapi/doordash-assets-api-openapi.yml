@@ -136,8 +136,8 @@ paths:
       x-operation-id-source: derived
 components:
   responses:
-    InternalServerError:
-      description: One or more query parameters contained an invalid value.
+    NotFound:
+      description: The requested resource was not found.
       content:
         application/json:
           schema:
@@ -148,8 +148,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
       content:
         application/json:
           schema:
@@ -161,22 +161,16 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
-    Error:
-      properties:
-        code:
-          description: An enumerated error for machine use.
-          type: string
-          readOnly: true
-        details:
-          description: A human-readable description of the error.
-          type: string
-          readOnly: true
-    AssetType:
+    AssetState:
       type: string
       enum:
-      - IMAGE
-      - VIDEO
-      description: Type of the asset
+      - PENDING_REGISTRATION
+      - REGISTERED
+      - ACTIVE
+      - INVALID
+      - ERROR
+      - ARCHIVED
+      description: Current state of the asset
     Asset:
       type: object
       required:
@@ -208,16 +202,22 @@ components:
         cdnUrl:
           type: string
           description: CDN URL of the asset
-    AssetState:
+    AssetType:
       type: string
       enum:
-      - PENDING_REGISTRATION
-      - REGISTERED
-      - ACTIVE
-      - INVALID
-      - ERROR
-      - ARCHIVED
-      description: Current state of the asset
+      - IMAGE
+      - VIDEO
+      description: Type of the asset
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
   securitySchemes:
     Ads_API_Key_Authentication:
       type: apiKey

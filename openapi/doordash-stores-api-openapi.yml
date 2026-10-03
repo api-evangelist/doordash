@@ -447,40 +447,7 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
-  parameters:
-    MerchantSuppliedId:
-      name: merchant_supplied_id
-      in: path
-      required: true
-      description: The merchant-supplied identifier for the store.
-      schema:
-        type: string
-    ExternalStoreId:
-      name: external_store_id
-      in: path
-      required: true
-      description: The unique external identifier for the store.
-      schema:
-        type: string
-    ExternalBusinessId:
-      name: external_business_id
-      in: path
-      required: true
-      description: The unique external identifier for the business.
-      schema:
-        type: string
   schemas:
-    Error_3:
-      type: object
-      properties:
-        message:
-          type: string
-          description: A human-readable error message.
-          example: example
-        code:
-          type: string
-          description: A machine-readable error code.
-          example: ABC123
     MenuDetails:
       type: object
       properties:
@@ -515,157 +482,6 @@ components:
           type: string
           description: The reason for the status change.
           example: example
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: A human-readable error message.
-          example: example
-        code:
-          type: string
-          description: A machine-readable error code.
-          example: ABC123
-        field_errors:
-          type: array
-          description: A list of field-level validation errors.
-          items:
-            type: object
-            properties:
-              field:
-                type: string
-                description: The field with the error.
-              error:
-                type: string
-                description: The error message.
-    MenuCategory:
-      type: object
-      required:
-      - id
-      - name
-      - items
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this category.
-          example: D-12345
-        name:
-          type: string
-          description: The display name of the category.
-          example: Acme Pickup Store
-        description:
-          type: string
-          description: A description of the category.
-          example: Leave at the front desk.
-        sort_id:
-          type: integer
-          description: The sort order for this category.
-          example: 42
-        items:
-          type: array
-          description: The items in this category.
-          items:
-            $ref: '#/components/schemas/MenuItem'
-    StoreDetails:
-      type: object
-      properties:
-        merchant_supplied_id:
-          type: string
-          description: The merchant-supplied store identifier.
-          example: D-12345
-        name:
-          type: string
-          description: The store name.
-          example: Acme Pickup Store
-        address:
-          type: string
-          description: The store address.
-          example: 901 Market St, San Francisco, CA 94105
-        phone_number:
-          type: string
-          description: The store phone number.
-          example: '+15555551234'
-        is_active:
-          type: boolean
-          description: Whether the store is currently active on DoorDash.
-          example: true
-        status:
-          type: string
-          description: The operational status of the store.
-          enum:
-          - open
-          - closed
-          - temporarily_closed
-          example: open
-    Store:
-      type: object
-      properties:
-        external_business_id:
-          type: string
-          description: The external business ID this store belongs to.
-          example: D-12345
-        external_store_id:
-          type: string
-          description: The unique external identifier for the store.
-          example: D-12345
-        name:
-          type: string
-          description: The name of the store.
-          example: Acme Pickup Store
-        phone_number:
-          type: string
-          description: The phone number for the store.
-          example: '+15555551234'
-        address:
-          type: string
-          description: The full street address of the store.
-          example: 901 Market St, San Francisco, CA 94105
-    MenuOption:
-      type: object
-      required:
-      - id
-      - name
-      - price
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this option.
-          example: D-12345
-        name:
-          type: string
-          description: The display name of the option.
-          example: Acme Pickup Store
-        price:
-          type: integer
-          description: The additional price for this option in cents.
-          example: 42
-        is_active:
-          type: boolean
-          description: Whether the option is currently available.
-          example: true
-    StoreRequest:
-      type: object
-      required:
-      - external_store_id
-      - name
-      - address
-      properties:
-        external_store_id:
-          type: string
-          description: A unique external identifier for the store.
-          example: D-12345
-        name:
-          type: string
-          description: The name of the store.
-          example: Acme Pickup Store
-        phone_number:
-          type: string
-          description: The phone number for the store.
-          example: '+15555551234'
-        address:
-          type: string
-          description: The full street address of the store.
-          example: 901 Market St, San Francisco, CA 94105
     OptionGroup:
       type: object
       required:
@@ -696,6 +512,109 @@ components:
           description: The available options in this group.
           items:
             $ref: '#/components/schemas/MenuOption'
+    StoreRequest:
+      type: object
+      required:
+      - external_store_id
+      - name
+      - address
+      properties:
+        external_store_id:
+          type: string
+          description: A unique external identifier for the store.
+          example: D-12345
+        name:
+          type: string
+          description: The name of the store.
+          example: Acme Pickup Store
+        phone_number:
+          type: string
+          description: The phone number for the store.
+          example: '+15555551234'
+        address:
+          type: string
+          description: The full street address of the store.
+          example: 901 Market St, San Francisco, CA 94105
+    Store:
+      type: object
+      properties:
+        external_business_id:
+          type: string
+          description: The external business ID this store belongs to.
+          example: D-12345
+        external_store_id:
+          type: string
+          description: The unique external identifier for the store.
+          example: D-12345
+        name:
+          type: string
+          description: The name of the store.
+          example: Acme Pickup Store
+        phone_number:
+          type: string
+          description: The phone number for the store.
+          example: '+15555551234'
+        address:
+          type: string
+          description: The full street address of the store.
+          example: 901 Market St, San Francisco, CA 94105
+    Error_3:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+        field_errors:
+          type: array
+          description: A list of field-level validation errors.
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: The field with the error.
+              error:
+                type: string
+                description: The error message.
+    MenuOption:
+      type: object
+      required:
+      - id
+      - name
+      - price
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this option.
+          example: D-12345
+        name:
+          type: string
+          description: The display name of the option.
+          example: Acme Pickup Store
+        price:
+          type: integer
+          description: The additional price for this option in cents.
+          example: 42
+        is_active:
+          type: boolean
+          description: Whether the option is currently available.
+          example: true
     MenuItem:
       type: object
       required:
@@ -737,6 +656,87 @@ components:
           description: Option groups (modifiers) for this item.
           items:
             $ref: '#/components/schemas/OptionGroup'
+    StoreDetails:
+      type: object
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: The merchant-supplied store identifier.
+          example: D-12345
+        name:
+          type: string
+          description: The store name.
+          example: Acme Pickup Store
+        address:
+          type: string
+          description: The store address.
+          example: 901 Market St, San Francisco, CA 94105
+        phone_number:
+          type: string
+          description: The store phone number.
+          example: '+15555551234'
+        is_active:
+          type: boolean
+          description: Whether the store is currently active on DoorDash.
+          example: true
+        status:
+          type: string
+          description: The operational status of the store.
+          enum:
+          - open
+          - closed
+          - temporarily_closed
+          example: open
+    MenuCategory:
+      type: object
+      required:
+      - id
+      - name
+      - items
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this category.
+          example: D-12345
+        name:
+          type: string
+          description: The display name of the category.
+          example: Acme Pickup Store
+        description:
+          type: string
+          description: A description of the category.
+          example: Leave at the front desk.
+        sort_id:
+          type: integer
+          description: The sort order for this category.
+          example: 42
+        items:
+          type: array
+          description: The items in this category.
+          items:
+            $ref: '#/components/schemas/MenuItem'
+  parameters:
+    ExternalStoreId:
+      name: external_store_id
+      in: path
+      required: true
+      description: The unique external identifier for the store.
+      schema:
+        type: string
+    MerchantSuppliedId:
+      name: merchant_supplied_id
+      in: path
+      required: true
+      description: The merchant-supplied identifier for the store.
+      schema:
+        type: string
+    ExternalBusinessId:
+      name: external_business_id
+      in: path
+      required: true
+      description: The unique external identifier for the business.
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       type: http

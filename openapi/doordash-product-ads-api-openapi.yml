@@ -133,38 +133,40 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 components:
-  responses:
-    InternalServerError:
-      description: One or more query parameters contained an invalid value.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Unauthorized.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Forbidden.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
+    IsPriority:
+      description: Indicates pinned product for Sponsored Brand campaigns.
+      type: boolean
+      default: false
+    CampaignId:
+      description: Unique campaign identifier.
+      type: string
+    AdGroupId:
+      description: Unique ad group identifier.
+      type: string
+    ProductIdType:
+      description: Product ID type
+      type: string
+      enum:
+      - GTIN_14
+      - UPC
+      - DD_SIC
+    Code:
+      description: An enumerated success or error code for machine use.
+      type: string
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    CodeDescription:
+      description: A human-readable description of the code.
+      type: string
     DeleteProductAdResponse:
       required:
       - campaignId
@@ -200,18 +202,23 @@ components:
           type: array
           items:
             type: string
-    ProductId:
-      description: Unique product identifier based on product ID type.
-      type: string
-    CampaignId:
-      description: Unique campaign identifier.
-      type: string
-    CodeDescription:
-      description: A human-readable description of the code.
-      type: string
-    AdGroupId:
-      description: Unique ad group identifier.
-      type: string
+    CreateProductAdRequest:
+      required:
+      - campaignId
+      - adGroupId
+      - idType
+      - productId
+      properties:
+        campaignId:
+          $ref: '#/components/schemas/CampaignId'
+        adGroupId:
+          $ref: '#/components/schemas/AdGroupId'
+        idType:
+          $ref: '#/components/schemas/ProductIdType'
+        productId:
+          $ref: '#/components/schemas/ProductId'
+        isPriority:
+          $ref: '#/components/schemas/IsPriority'
     ProductAdResponse:
       required:
       - campaignId
@@ -243,55 +250,41 @@ components:
           type: array
           items:
             type: string
-    CreateProductAdRequest:
-      required:
-      - campaignId
-      - adGroupId
-      - idType
-      - productId
-      properties:
-        campaignId:
-          $ref: '#/components/schemas/CampaignId'
-        adGroupId:
-          $ref: '#/components/schemas/AdGroupId'
-        idType:
-          $ref: '#/components/schemas/ProductIdType'
-        productId:
-          $ref: '#/components/schemas/ProductId'
-        isPriority:
-          $ref: '#/components/schemas/IsPriority'
-    Error:
-      properties:
-        code:
-          description: An enumerated error for machine use.
-          type: string
-          readOnly: true
-        details:
-          description: A human-readable description of the error.
-          type: string
-          readOnly: true
-    IsPriority:
-      description: Indicates pinned product for Sponsored Brand campaigns.
-      type: boolean
-      default: false
-    Code:
-      description: An enumerated success or error code for machine use.
+    ProductId:
+      description: Unique product identifier based on product ID type.
       type: string
-    ProductIdType:
-      description: Product ID type
-      type: string
-      enum:
-      - GTIN_14
-      - UPC
-      - DD_SIC
+  responses:
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
-    count:
-      name: count
-      in: query
-      description: Number of records to include in the paged response.
-      required: false
-      schema:
-        type: number
     startIndex:
       name: startIndex
       in: query
@@ -306,6 +299,13 @@ components:
       required: true
       schema:
         type: string
+    count:
+      name: count
+      in: query
+      description: Number of records to include in the paged response.
+      required: false
+      schema:
+        type: number
   securitySchemes:
     Ads_API_Key_Authentication:
       type: apiKey

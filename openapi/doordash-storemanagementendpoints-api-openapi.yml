@@ -87,42 +87,10 @@ paths:
               $ref: '#/components/schemas/Store'
 components:
   schemas:
-    server_fault:
+    RequestRateLimitedError:
       x-error: true
       type: object
-      description: Internal service failure, please try again later.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - service_fault
-          default: service_fault
-        message:
-          type: string
-          example: Internal service failure, please try again later.
-          default: Internal service failure, please try again later.
-    NotFoundError:
-      x-error: true
-      type: object
-      description: Request entity was not found.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - unknown_business_id
-        message:
-          type: string
-          example: Entity was not found
-    RequestNotProcessError:
-      x-error: true
-      type: object
-      description: Request was not process.
+      description: Request was rate limited.
       required:
       - code
       - message
@@ -133,23 +101,7 @@ components:
           - request_rate_limited
         message:
           type: string
-          example: Request was not process. Request entity may be too large.
-    FieldError:
-      title: FieldError
-      type: object
-      description: A field whose value couldn't be validated.
-      required:
-      - field
-      - error
-      properties:
-        field:
-          type: string
-          description: Name of the field whose value couldn't be validated.
-          example: pickup_phone_number
-        error:
-          type: string
-          description: The error that was encountered when validating the field's value.
-          example: Invalid phone number format
+          example: Request was rate limited. You may be calling the API too much in a short time.
     AuthenticationError:
       x-error: true
       type: object
@@ -167,6 +119,21 @@ components:
           type: string
           example: The [exp] is in the past; the JWT is expired
           default: The [exp] is in the past; the JWT is expired
+    RequestNotProcessError:
+      x-error: true
+      type: object
+      description: Request was not process.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - request_rate_limited
+        message:
+          type: string
+          example: Request was not process. Request entity may be too large.
     ValidationFieldError:
       x-error: true
       title: ValidationFieldError
@@ -191,6 +158,71 @@ components:
           items:
             $ref: '#/components/schemas/FieldError'
           readOnly: true
+    NotFoundError:
+      x-error: true
+      type: object
+      description: Request entity was not found.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - unknown_business_id
+        message:
+          type: string
+          example: Entity was not found
+    FieldError:
+      title: FieldError
+      type: object
+      description: A field whose value couldn't be validated.
+      required:
+      - field
+      - error
+      properties:
+        field:
+          type: string
+          description: Name of the field whose value couldn't be validated.
+          example: pickup_phone_number
+        error:
+          type: string
+          description: The error that was encountered when validating the field's value.
+          example: Invalid phone number format
+    server_fault:
+      x-error: true
+      type: object
+      description: Internal service failure, please try again later.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - service_fault
+          default: service_fault
+        message:
+          type: string
+          example: Internal service failure, please try again later.
+          default: Internal service failure, please try again later.
+    AuthorizationError:
+      x-error: true
+      type: object
+      description: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authorization_error
+          default: authorization_error
+        message:
+          type: string
+          example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+          default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
     Store:
       title: Store
       description: Store associated with the business.
@@ -235,35 +267,3 @@ components:
                 format: HH:MM:SS
               closed:
                 type: boolean
-    RequestRateLimitedError:
-      x-error: true
-      type: object
-      description: Request was rate limited.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - request_rate_limited
-        message:
-          type: string
-          example: Request was rate limited. You may be calling the API too much in a short time.
-    AuthorizationError:
-      x-error: true
-      type: object
-      description: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - authorization_error
-          default: authorization_error
-        message:
-          type: string
-          example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
-          default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'

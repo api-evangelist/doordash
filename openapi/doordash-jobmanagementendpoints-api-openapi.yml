@@ -77,10 +77,10 @@ paths:
                 $ref: '#/components/schemas/server_fault'
 components:
   schemas:
-    server_fault:
+    RequestRateLimitedError:
       x-error: true
       type: object
-      description: Internal service failure, please try again later.
+      description: Request was rate limited.
       required:
       - code
       - message
@@ -88,16 +88,31 @@ components:
         code:
           type: string
           enum:
-          - service_fault
-          default: service_fault
+          - request_rate_limited
         message:
           type: string
-          example: Internal service failure, please try again later.
-          default: Internal service failure, please try again later.
-    NotFoundError:
+          example: Request was rate limited. You may be calling the API too much in a short time.
+    PullStoreItemsJobResponse:
+      type: object
+      properties:
+        operation_id:
+          type: string
+        operation_status:
+          type: string
+          enum:
+          - QUEUED
+          - IN_PROGRESS
+          - SUCCESS
+          - FAILED
+          - PARTIAL_SUCCESS
+        message:
+          type: string
+        max_page_size:
+          type: integer
+    AuthenticationError:
       x-error: true
       type: object
-      description: Request entity was not found.
+      description: 'Authentication error: the token provided with the request doesn''t work for the requested operation'
       required:
       - code
       - message
@@ -105,10 +120,12 @@ components:
         code:
           type: string
           enum:
-          - unknown_business_id
+          - authentication_error
+          default: authentication_error
         message:
           type: string
-          example: Entity was not found
+          example: The [exp] is in the past; the JWT is expired
+          default: The [exp] is in the past; the JWT is expired
     CreateJobRequest:
       type: object
       properties:
@@ -137,56 +154,6 @@ components:
         message:
           type: string
           example: Request was not process. Request entity may be too large.
-    PullStoreItemsJobResponse:
-      type: object
-      properties:
-        operation_id:
-          type: string
-        operation_status:
-          type: string
-          enum:
-          - QUEUED
-          - IN_PROGRESS
-          - SUCCESS
-          - FAILED
-          - PARTIAL_SUCCESS
-        message:
-          type: string
-        max_page_size:
-          type: integer
-    FieldError:
-      title: FieldError
-      type: object
-      description: A field whose value couldn't be validated.
-      required:
-      - field
-      - error
-      properties:
-        field:
-          type: string
-          description: Name of the field whose value couldn't be validated.
-          example: pickup_phone_number
-        error:
-          type: string
-          description: The error that was encountered when validating the field's value.
-          example: Invalid phone number format
-    AuthenticationError:
-      x-error: true
-      type: object
-      description: 'Authentication error: the token provided with the request doesn''t work for the requested operation'
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - authentication_error
-          default: authentication_error
-        message:
-          type: string
-          example: The [exp] is in the past; the JWT is expired
-          default: The [exp] is in the past; the JWT is expired
     ValidationFieldError:
       x-error: true
       title: ValidationFieldError
@@ -211,10 +178,10 @@ components:
           items:
             $ref: '#/components/schemas/FieldError'
           readOnly: true
-    RequestRateLimitedError:
+    NotFoundError:
       x-error: true
       type: object
-      description: Request was rate limited.
+      description: Request entity was not found.
       required:
       - code
       - message
@@ -222,10 +189,43 @@ components:
         code:
           type: string
           enum:
-          - request_rate_limited
+          - unknown_business_id
         message:
           type: string
-          example: Request was rate limited. You may be calling the API too much in a short time.
+          example: Entity was not found
+    FieldError:
+      title: FieldError
+      type: object
+      description: A field whose value couldn't be validated.
+      required:
+      - field
+      - error
+      properties:
+        field:
+          type: string
+          description: Name of the field whose value couldn't be validated.
+          example: pickup_phone_number
+        error:
+          type: string
+          description: The error that was encountered when validating the field's value.
+          example: Invalid phone number format
+    server_fault:
+      x-error: true
+      type: object
+      description: Internal service failure, please try again later.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - service_fault
+          default: service_fault
+        message:
+          type: string
+          example: Internal service failure, please try again later.
+          default: Internal service failure, please try again later.
     AuthorizationError:
       x-error: true
       type: object

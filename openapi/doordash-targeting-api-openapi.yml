@@ -47,53 +47,19 @@ paths:
       operationId: postAdsApiV1TargetingAudienceEstimate
       x-operation-id-source: derived
 components:
-  responses:
-    Unauthorized:
-      description: Unauthorized.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    InternalServerError:
-      description: One or more query parameters contained an invalid value.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    TargetingFilters:
+    EstimatedSize:
       type: object
       required:
-      - field
-      - values
+      - low
+      - high
       properties:
-        field:
-          type: string
-          enum:
-          - L1_BRANDS_EXISTING
-          - L1_BRANDS_NEW
-          - L1_CATEGORY_EXISTING
-          - L1_CATEGORY_LAPSED
-          - L1_CATEGORY_NEW
-          - L2_CATEGORY_EXISTING
-          - L2_CATEGORY_LAPSED
-          - L2_CATEGORY_NEW
-          - BOUGHT_FROM_RETAILER
-          - L2_DISH_INTEREST
-          - PLACEMENT
-          - CAMPAIGN_TYPE
-          description: Targeting field to be specified
-        values:
-          type: array
-          minItems: 1
-          items:
-            type: string
+        low:
+          type: integer
+          description: Estimated lower bound for audience size
+        high:
+          type: integer
+          description: Estimated upper bound for audience size
     AudienceEstimateResponse:
       type: object
       required:
@@ -124,18 +90,52 @@ components:
           description: A human-readable description of the error.
           type: string
           readOnly: true
-    EstimatedSize:
+    TargetingFilters:
       type: object
       required:
-      - low
-      - high
+      - field
+      - values
       properties:
-        low:
-          type: integer
-          description: Estimated lower bound for audience size
-        high:
-          type: integer
-          description: Estimated upper bound for audience size
+        field:
+          type: string
+          enum:
+          - L1_BRANDS_EXISTING
+          - L1_BRANDS_NEW
+          - L1_CATEGORY_EXISTING
+          - L1_CATEGORY_LAPSED
+          - L1_CATEGORY_NEW
+          - L2_CATEGORY_EXISTING
+          - L2_CATEGORY_LAPSED
+          - L2_CATEGORY_NEW
+          - BOUGHT_FROM_RETAILER
+          - L2_DISH_INTEREST
+          - PLACEMENT
+          - CAMPAIGN_TYPE
+          description: Targeting field to be specified
+        values:
+          type: array
+          minItems: 1
+          items:
+            type: string
+  responses:
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     Ads_API_Key_Authentication:
       type: apiKey

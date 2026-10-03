@@ -72,11 +72,34 @@ paths:
         '500':
           description: Internal Server Error
 components:
+  parameters:
+    IntegrationId:
+      name: integration_id
+      in: query
+      description: business id, business group id or store id
+      required: true
+      schema:
+        $ref: '#/components/schemas/IntegrationId'
+    AppPlatform:
+      name: app_platform
+      in: query
+      description: operating system like android or ios.
+      required: true
+      schema:
+        $ref: '#/components/schemas/AppPlatform'
+    IntegrationType:
+      name: integration_type
+      in: query
+      description: business id, business group id or store id
+      schema:
+        $ref: '#/components/schemas/IntegrationType'
+    OptionalIntegrationId:
+      name: integration_id
+      in: query
+      description: business id, business group id or store id
+      schema:
+        $ref: '#/components/schemas/IntegrationId'
   schemas:
-    QRCodeEnabled:
-      type: boolean
-      description: if true, return then the mx is enabled show qr code option.
-      default: false
     GetStorefrontMinimumApplicationVersionResponse:
       type: object
       title: GetStorefrontMinimumApplicationVersionResponse
@@ -177,6 +200,17 @@ components:
           type: boolean
           description: whether card linking is enabled or not.
           example: true
+    HowRewardsWorkSection:
+      type: object
+      properties:
+        title:
+          type: string
+          description: title of the section
+          example: You can earn on our DoorDash store by linking your DoorDash account.
+        icon:
+          type: string
+          description: icon to use as a bullet point for the section
+          example: logo/doordash
     SupportedAccountType:
       type: string
       enum:
@@ -185,6 +219,15 @@ components:
       - EXTERNAL_ACCOUNT
       example: SF_ACCOUNT
       description: what kind of account it is for logged in user.
+    IntegrationType:
+      type: string
+      enum:
+      - BUSINESS
+      - BUSINESS_GROUP
+      - STORE
+      example: store
+      default: business
+      description: Type of the integration id
     AppPlatform:
       type: string
       enum:
@@ -197,53 +240,10 @@ components:
       pattern: ^([1-9][0-9]*)$
       description: Unique ID for the business, business group or store.
       example: '987654'
-    IntegrationType:
-      type: string
-      enum:
-      - BUSINESS
-      - BUSINESS_GROUP
-      - STORE
-      example: store
-      default: business
-      description: Type of the integration id
-    HowRewardsWorkSection:
-      type: object
-      properties:
-        title:
-          type: string
-          description: title of the section
-          example: You can earn on our DoorDash store by linking your DoorDash account.
-        icon:
-          type: string
-          description: icon to use as a bullet point for the section
-          example: logo/doordash
-  parameters:
-    IntegrationType:
-      name: integration_type
-      in: query
-      description: business id, business group id or store id
-      schema:
-        $ref: '#/components/schemas/IntegrationType'
-    OptionalIntegrationId:
-      name: integration_id
-      in: query
-      description: business id, business group id or store id
-      schema:
-        $ref: '#/components/schemas/IntegrationId'
-    IntegrationId:
-      name: integration_id
-      in: query
-      description: business id, business group id or store id
-      required: true
-      schema:
-        $ref: '#/components/schemas/IntegrationId'
-    AppPlatform:
-      name: app_platform
-      in: query
-      description: operating system like android or ios.
-      required: true
-      schema:
-        $ref: '#/components/schemas/AppPlatform'
+    QRCodeEnabled:
+      type: boolean
+      description: if true, return then the mx is enabled show qr code option.
+      default: false
   securitySchemes:
     BearerAuth:
       type: http

@@ -287,11 +287,93 @@ paths:
           description: Internal Server Error
 components:
   schemas:
+    LoyaltyRedeemRewardResponse:
+      type: object
+      properties:
+        applied_redemption:
+          type: array
+          items:
+            $ref: '#/components/schemas/Redemption'
+        rejected_redemption:
+          type: array
+          items:
+            $ref: '#/components/schemas/Redemption'
     ProviderReferenceId:
       type: string
       pattern: ^([a-zA-Z1-9][:_a-zA-Z0-9]*)$
       description: Unique ID for a external user.
       example: '123:12'
+    InStoreRewards:
+      type: object
+      properties:
+        rewards_progress:
+          $ref: '#/components/schemas/RewardsProgress'
+        available_rewards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rewards'
+        unavailable_rewards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reward'
+        activated_rewards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reward'
+        past_rewards:
+          type: array
+          items:
+            $ref: '#/components/schemas/Reward'
+        card_linking_payment_methods:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardLinkingPaymentMethod'
+    GenerateStorefrontUserQrCodeResponse:
+      type: object
+      properties:
+        qr_code:
+          $ref: '#/components/schemas/QRCode'
+      required:
+      - qr_code
+    IntegrationType:
+      type: string
+      enum:
+      - BUSINESS
+      - BUSINESS_GROUP
+      - STORE
+      example: store
+      default: business
+      description: Type of the integration id
+    LoyaltyMemberProfileResponse:
+      type: object
+      title: LoyaltyMemberProfileResponse
+      description: Loyalty member profile
+      required:
+      - profile
+      properties:
+        profile:
+          $ref: '#/components/schemas/LoyaltyMemberProfile'
+    ExternalUserId:
+      type: string
+      pattern: ^([a-zA-Z1-9][a-zA-Z0-9]*)$
+      description: Unique ID for a external user.
+      example: asAZ123
+    GetStorefrontLoyaltyAccountBalanceResponse:
+      type: object
+      title: GetStorefrontLoyaltyAccountBalanceResponse
+      description: get loyalty account balance of the user.
+      required:
+      - balance
+      properties:
+        balance:
+          type: number
+          description: total account balance of the user.
+          example: '1234'
+    LoyaltyCheckInResponse:
+      type: object
+      properties:
+        earned_reward:
+          $ref: '#/components/schemas/Reward'
     GenerateStorefrontUserQrCodeRequest:
       type: object
       properties:
@@ -306,11 +388,64 @@ components:
       required:
       - session
       - store_id
-    LoyaltyCheckInResponse:
+    RewardsProgress:
       type: object
       properties:
-        earned_reward:
-          $ref: '#/components/schemas/Reward'
+        title:
+          type: string
+          description: Title describing rewards progress
+          example: 2 orders away from your next reward
+        subtitle:
+          type: string
+          description: Optional subtitle describing rewards progress
+          example: Earn $5 for every 5 orders
+        current_points:
+          type: integer
+          description: Balance of loyalty points
+          example: 5
+        target_points:
+          type: integer
+          description: Loyalty points needed to earn the next reward
+          example: 10
+    LoyaltyCheckInRequest:
+      type: object
+      properties:
+        session:
+          $ref: '#/components/schemas/LoyaltyUserSessionRequest'
+        store_id:
+          $ref: '#/components/schemas/StoreId'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+      required:
+      - session
+      - store_id
+    CardLinkingPaymentMethod:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the payment method
+          example: 2d3eddf8-2723-434d-81d5-920eac66a61c
+        last4:
+          type: string
+          description: Last 4 digits of the payment method
+          example: '1234'
+        brand:
+          type: string
+          description: Card brand
+          example: Visa
+        exp_month:
+          type: string
+          description: Expiration month for the payment method
+          example: '2'
+        exp_year:
+          type: string
+          description: Expiration year for the payment method
+          example: '2030'
+        link_state:
+          $ref: '#/components/schemas/LinkState'
     Provider:
       type: string
       enum:
@@ -318,34 +453,78 @@ components:
       - spendgo
       example: spendgo
       description: which provider the user has logged in to
+    Redemption:
+      type: object
+      properties:
+        reward_id:
+          type: string
+          description: Unique identifier for the reward
+          example: 2d3eddf8-2723-434d-81d5-920eac66a61c
+        redeemed:
+          type: boolean
+          description: Whether or not the redemption has taken place
+          example: true
+        message:
+          type: string
+          description: A message to show the user describing the redemption
+          example: $5 reward
+        description:
+          type: string
+          description: A confirmation message to show the user when redeeming a reward
+          example: You have two hours to redeem your reward in-store before it expires.
+        redemption_time:
+          type: string
+          pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(.[0-9]{3,})?Z$
+          description: UTC Timestamp in ISO-8601 format
+          example: '2018-08-22T17:20:28Z'
+        expiration_time:
+          type: string
+          pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(.[0-9]{3,})?Z$
+          description: UTC Timestamp in ISO-8601 format
+          example: '2018-08-22T17:20:28Z'
+    LoyaltyRetrieveRewardsRequest:
+      type: object
+      properties:
+        integration_id:
+          $ref: '#/components/schemas/IntegrationId'
+        integration_type:
+          $ref: '#/components/schemas/IntegrationType'
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        store_id:
+          $ref: '#/components/schemas/StoreId'
+      required:
+      - session_id
+      - store_id
+      - integration_id
+      - integration_type
+    GetLoyaltyInfo:
+      type: boolean
+      description: if true, return loyalty account information for the user.
+      default: false
     Latitude:
       type: string
       pattern: ^(\+|-)?(?:90(?:(?:\.0{1,7})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,7})?))$
       example: -32.1234537
-    LinkState:
+    LoyaltyRedeemRewardRequest:
       type: object
       properties:
-        linked:
-          type: boolean
-          description: Whether or not the payment method has been card linked
-          example: true
-        error:
+        session:
+          $ref: '#/components/schemas/LoyaltyUserSessionRequest'
+        promotion_id:
           type: string
-          description: Error message when linking or unlinking a payment method fails
-          example: We were unable to link your payment method. Please try again.
-    IntegrationType:
+          description: Unique identifier for the reward
+          example: 2d3eddf8-2723-434d-81d5-920eac66a61c
+      required:
+      - session
+      - promotion_id
+    ProviderEnvironment:
       type: string
       enum:
-      - BUSINESS
-      - BUSINESS_GROUP
-      - STORE
-      example: store
-      default: business
-      description: Type of the integration id
-    Rewards:
-      type: array
-      items:
-        $ref: '#/components/schemas/Redemption'
+      - prod
+      - staging
+      example: staging
+      description: which provider environment user has logged in to.
     LoyaltyMemberProfile:
       type: object
       properties:
@@ -379,206 +558,20 @@ components:
           example: Gold
         in_store_rewards:
           $ref: '#/components/schemas/InStoreRewards'
-    LoyaltyCheckInRequest:
+    LinkState:
       type: object
       properties:
-        session:
-          $ref: '#/components/schemas/LoyaltyUserSessionRequest'
-        store_id:
-          $ref: '#/components/schemas/StoreId'
-        latitude:
-          $ref: '#/components/schemas/Latitude'
-        longitude:
-          $ref: '#/components/schemas/Longitude'
-      required:
-      - session
-      - store_id
-    RewardsProgress:
-      type: object
-      properties:
-        title:
+        linked:
+          type: boolean
+          description: Whether or not the payment method has been card linked
+          example: true
+        error:
           type: string
-          description: Title describing rewards progress
-          example: 2 orders away from your next reward
-        subtitle:
-          type: string
-          description: Optional subtitle describing rewards progress
-          example: Earn $5 for every 5 orders
-        current_points:
-          type: integer
-          description: Balance of loyalty points
-          example: 5
-        target_points:
-          type: integer
-          description: Loyalty points needed to earn the next reward
-          example: 10
-    GenerateStorefrontUserQrCodeResponse:
-      type: object
-      properties:
-        qr_code:
-          $ref: '#/components/schemas/QRCode'
-      required:
-      - qr_code
-    GetLoyaltyInfo:
-      type: boolean
-      description: if true, return loyalty account information for the user.
-      default: false
-    LoyaltyUserSessionRequest:
-      type: object
-      properties:
-        session_id:
-          $ref: '#/components/schemas/SessionId'
-        integration_id:
-          $ref: '#/components/schemas/IntegrationId'
-        integration_type:
-          $ref: '#/components/schemas/IntegrationType'
-      required:
-      - session_id
-      - integration_id
-      - integration_type
-    LoyaltyRedeemRewardRequest:
-      type: object
-      properties:
-        session:
-          $ref: '#/components/schemas/LoyaltyUserSessionRequest'
-        promotion_id:
-          type: string
-          description: Unique identifier for the reward
-          example: 2d3eddf8-2723-434d-81d5-920eac66a61c
-      required:
-      - session
-      - promotion_id
+          description: Error message when linking or unlinking a payment method fails
+          example: We were unable to link your payment method. Please try again.
     QRCode:
       type: string
       description: base 64 encoded QR code for user's account.
-    Width:
-      type: integer
-      description: expected width of the qr code
-      example: 300
-      default: 256
-      minimum: 1
-      maximum: 1024
-    Height:
-      type: integer
-      description: expected height of the qr code
-      example: 300
-      default: 256
-      minimum: 1
-      maximum: 1024
-    LoyaltyMemberProfileResponse:
-      type: object
-      title: LoyaltyMemberProfileResponse
-      description: Loyalty member profile
-      required:
-      - profile
-      properties:
-        profile:
-          $ref: '#/components/schemas/LoyaltyMemberProfile'
-    StoreId:
-      type: string
-      pattern: ^([1-9][0-9]*)$
-      description: Unique ID for the store.
-      example: '123'
-    Redemption:
-      type: object
-      properties:
-        reward_id:
-          type: string
-          description: Unique identifier for the reward
-          example: 2d3eddf8-2723-434d-81d5-920eac66a61c
-        redeemed:
-          type: boolean
-          description: Whether or not the redemption has taken place
-          example: true
-        message:
-          type: string
-          description: A message to show the user describing the redemption
-          example: $5 reward
-        description:
-          type: string
-          description: A confirmation message to show the user when redeeming a reward
-          example: You have two hours to redeem your reward in-store before it expires.
-        redemption_time:
-          type: string
-          pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(.[0-9]{3,})?Z$
-          description: UTC Timestamp in ISO-8601 format
-          example: '2018-08-22T17:20:28Z'
-        expiration_time:
-          type: string
-          pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(.[0-9]{3,})?Z$
-          description: UTC Timestamp in ISO-8601 format
-          example: '2018-08-22T17:20:28Z'
-    ExternalUserId:
-      type: string
-      pattern: ^([a-zA-Z1-9][a-zA-Z0-9]*)$
-      description: Unique ID for a external user.
-      example: asAZ123
-    SessionId:
-      type: string
-      description: id of the application session
-    ProviderEnvironment:
-      type: string
-      enum:
-      - prod
-      - staging
-      example: staging
-      description: which provider environment user has logged in to.
-    IntegrationId:
-      type: string
-      pattern: ^([1-9][0-9]*)$
-      description: Unique ID for the business, business group or store.
-      example: '987654'
-    InStoreRewards:
-      type: object
-      properties:
-        rewards_progress:
-          $ref: '#/components/schemas/RewardsProgress'
-        available_rewards:
-          type: array
-          items:
-            $ref: '#/components/schemas/Rewards'
-        unavailable_rewards:
-          type: array
-          items:
-            $ref: '#/components/schemas/Reward'
-        activated_rewards:
-          type: array
-          items:
-            $ref: '#/components/schemas/Reward'
-        past_rewards:
-          type: array
-          items:
-            $ref: '#/components/schemas/Reward'
-        card_linking_payment_methods:
-          type: array
-          items:
-            $ref: '#/components/schemas/CardLinkingPaymentMethod'
-    GetStorefrontLoyaltyAccountBalanceResponse:
-      type: object
-      title: GetStorefrontLoyaltyAccountBalanceResponse
-      description: get loyalty account balance of the user.
-      required:
-      - balance
-      properties:
-        balance:
-          type: number
-          description: total account balance of the user.
-          example: '1234'
-    LoyaltyRedeemRewardResponse:
-      type: object
-      properties:
-        applied_redemption:
-          type: array
-          items:
-            $ref: '#/components/schemas/Redemption'
-        rejected_redemption:
-          type: array
-          items:
-            $ref: '#/components/schemas/Redemption'
-    Longitude:
-      type: string
-      pattern: ^(\+|-)?(?:180(?:(?:\.0{1,7})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,7})?))$
-      example: -156.1234538
     Reward:
       type: object
       properties:
@@ -596,31 +589,46 @@ components:
           example: No minimum spend
         redemption:
           $ref: '#/components/schemas/Redemption'
-    CardLinkingPaymentMethod:
+    Width:
+      type: integer
+      description: expected width of the qr code
+      example: 300
+      default: 256
+      minimum: 1
+      maximum: 1024
+    SessionId:
+      type: string
+      description: id of the application session
+    Height:
+      type: integer
+      description: expected height of the qr code
+      example: 300
+      default: 256
+      minimum: 1
+      maximum: 1024
+    IntegrationId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the business, business group or store.
+      example: '987654'
+    LoyaltyUserSessionRequest:
       type: object
       properties:
-        id:
-          type: string
-          description: Unique identifier for the payment method
-          example: 2d3eddf8-2723-434d-81d5-920eac66a61c
-        last4:
-          type: string
-          description: Last 4 digits of the payment method
-          example: '1234'
-        brand:
-          type: string
-          description: Card brand
-          example: Visa
-        exp_month:
-          type: string
-          description: Expiration month for the payment method
-          example: '2'
-        exp_year:
-          type: string
-          description: Expiration year for the payment method
-          example: '2030'
-        link_state:
-          $ref: '#/components/schemas/LinkState'
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        integration_id:
+          $ref: '#/components/schemas/IntegrationId'
+        integration_type:
+          $ref: '#/components/schemas/IntegrationType'
+      required:
+      - session_id
+      - integration_id
+      - integration_type
+    StoreId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the store.
+      example: '123'
     LoyaltyUserSessionResponse:
       type: object
       title: LoyaltyUserSessionResponse
@@ -630,22 +638,6 @@ components:
       properties:
         session:
           $ref: '#/components/schemas/LoyaltyUserSession'
-    LoyaltyRetrieveRewardsRequest:
-      type: object
-      properties:
-        integration_id:
-          $ref: '#/components/schemas/IntegrationId'
-        integration_type:
-          $ref: '#/components/schemas/IntegrationType'
-        session_id:
-          $ref: '#/components/schemas/SessionId'
-        store_id:
-          $ref: '#/components/schemas/StoreId'
-      required:
-      - session_id
-      - store_id
-      - integration_id
-      - integration_type
     LoyaltyMemberProfileRequest:
       type: object
       properties:
@@ -661,6 +653,10 @@ components:
       - session_id
       - integration_id
       - integration_type
+    Longitude:
+      type: string
+      pattern: ^(\+|-)?(?:180(?:(?:\.0{1,7})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,7})?))$
+      example: -156.1234538
     LoyaltyUserSession:
       type: object
       properties:
@@ -676,21 +672,11 @@ components:
           type: string
           description: Consumer id with Storefront
           example: '321'
+    Rewards:
+      type: array
+      items:
+        $ref: '#/components/schemas/Redemption'
   parameters:
-    IntegrationId:
-      name: integration_id
-      in: query
-      description: business id, business group id or store id
-      required: true
-      schema:
-        $ref: '#/components/schemas/IntegrationId'
-    Provider:
-      name: provider
-      in: query
-      description: loyalty provider of the user
-      required: true
-      schema:
-        $ref: '#/components/schemas/Provider'
     ProviderReferenceId:
       name: provider_reference_id
       in: query
@@ -698,13 +684,20 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/ProviderReferenceId'
-    ProviderEnvironment:
-      name: provider_environment
+    Provider:
+      name: provider
       in: query
-      description: which environment of the loyalty provider needs to be used.
+      description: loyalty provider of the user
       required: true
       schema:
-        $ref: '#/components/schemas/ProviderEnvironment'
+        $ref: '#/components/schemas/Provider'
+    IntegrationId:
+      name: integration_id
+      in: query
+      description: business id, business group id or store id
+      required: true
+      schema:
+        $ref: '#/components/schemas/IntegrationId'
     ExternalUserId:
       name: external_user_id
       in: query
@@ -712,6 +705,13 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/ExternalUserId'
+    ProviderEnvironment:
+      name: provider_environment
+      in: query
+      description: which environment of the loyalty provider needs to be used.
+      required: true
+      schema:
+        $ref: '#/components/schemas/ProviderEnvironment'
   securitySchemes:
     BearerAuth:
       type: http

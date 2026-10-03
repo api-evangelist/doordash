@@ -76,11 +76,14 @@ paths:
       deprecated: false
 components:
   schemas:
-    RateLimitedError:
-      x-error: true
-      title: RateLimitedError
+    PrimaryMenu:
       type: object
-      description: Rate limited.
+      title: PrimaryMenu
+      description: The default menu to be shown on the store page
+    AuthenticationError:
+      x-error: true
+      type: object
+      description: Authorization error, available credentials don't match requested operation
       required:
       - code
       - message
@@ -88,19 +91,42 @@ components:
         code:
           type: string
           enum:
-          - rate_limit_error
+          - authentication_error
         message:
           type: string
-          example: Developer account endpoint rate limit exceeded.
-    GetStoreMenuV2Response:
+          example: Request does not contain a JWT.
+    IntegrationId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the business, business group or store.
+      example: '987654'
+    IntegrationType:
+      type: string
+      enum:
+      - BUSINESS
+      - BUSINESS_GROUP
+      - STORE
+      example: store
+      default: business
+      description: Type of the integration id
+    StoreHeader:
       type: object
-      title: GetStoreMenuV2Response
-      description: Store menu v2
+      title: StoreHeader
+      description: StoreHeader
       properties:
-        store_header:
-          $ref: '#/components/schemas/StoreHeader'
-        primary_menu:
-          $ref: '#/components/schemas/PrimaryMenu'
+        business:
+          $ref: '#/components/schemas/Business'
+    Business:
+      type: object
+      title: Business
+      description: Business Info
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        differential_pricing_enabled:
+          type: boolean
     GetStoreMenuV2Request:
       type: object
       required:
@@ -119,72 +145,21 @@ components:
           $ref: '#/components/schemas/FulfillmentType'
         country_code:
           $ref: '#/components/schemas/CountryCode'
-    CountryCode:
+    FulfillmentType:
       type: string
-      pattern: ^[A-Z]{2}$
-      description: Country code in ISO 3166-1 alpha-2 format
-      example: US
-    StoreId:
-      type: string
-      pattern: ^([1-9][0-9]*)$
-      description: Unique ID for the store.
-      example: '123'
-    Business:
+      enum:
+      - delivery
+      - pickup
+      example: pickup
+    GetStoreMenuV2Response:
       type: object
-      title: Business
-      description: Business Info
+      title: GetStoreMenuV2Response
+      description: Store menu v2
       properties:
-        id:
-          type: string
-        name:
-          type: string
-        differential_pricing_enabled:
-          type: boolean
-    PrimaryMenu:
-      type: object
-      title: PrimaryMenu
-      description: The default menu to be shown on the store page
-    StoreHeader:
-      type: object
-      title: StoreHeader
-      description: StoreHeader
-      properties:
-        business:
-          $ref: '#/components/schemas/Business'
-    SessionId:
-      type: string
-      description: id of the application session
-    AddressResourceNotFoundError:
-      x-error: true
-      title: AddressResourceNotFoundError
-      type: object
-      description: The response returned when requested resource is not found/available.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - not_found
-        message:
-          type: string
-          example: Address is not found.
-    AuthenticationError:
-      x-error: true
-      type: object
-      description: Authorization error, available credentials don't match requested operation
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - authentication_error
-        message:
-          type: string
-          example: Request does not contain a JWT.
+        store_header:
+          $ref: '#/components/schemas/StoreHeader'
+        primary_menu:
+          $ref: '#/components/schemas/PrimaryMenu'
     InternalError:
       x-error: true
       title: InternalError
@@ -201,12 +176,9 @@ components:
         message:
           type: string
           example: Internal Service Error.
-    FulfillmentType:
+    SessionId:
       type: string
-      enum:
-      - delivery
-      - pickup
-      example: pickup
+      description: id of the application session
     ValidationFieldError:
       x-error: true
       title: ValidationFieldError
@@ -227,20 +199,27 @@ components:
         errors:
           type: string
           example: Missing business/store id.
-    IntegrationType:
+    RateLimitedError:
+      x-error: true
+      title: RateLimitedError
+      type: object
+      description: Rate limited.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - rate_limit_error
+        message:
+          type: string
+          example: Developer account endpoint rate limit exceeded.
+    CountryCode:
       type: string
-      enum:
-      - BUSINESS
-      - BUSINESS_GROUP
-      - STORE
-      example: store
-      default: business
-      description: Type of the integration id
-    IntegrationId:
-      type: string
-      pattern: ^([1-9][0-9]*)$
-      description: Unique ID for the business, business group or store.
-      example: '987654'
+      pattern: ^[A-Z]{2}$
+      description: Country code in ISO 3166-1 alpha-2 format
+      example: US
     AuthorizationError:
       x-error: true
       type: object
@@ -256,6 +235,27 @@ components:
         message:
           type: string
           example: You are not authorized to perform this action.
+    StoreId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the store.
+      example: '123'
+    AddressResourceNotFoundError:
+      x-error: true
+      title: AddressResourceNotFoundError
+      type: object
+      description: The response returned when requested resource is not found/available.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - not_found
+        message:
+          type: string
+          example: Address is not found.
   parameters:
     StoreId:
       name: store_id

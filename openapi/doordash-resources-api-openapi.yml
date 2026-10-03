@@ -37,32 +37,50 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 components:
-  responses:
-    Unauthorized:
-      description: Unauthorized.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    InternalServerError:
-      description: One or more query parameters contained an invalid value.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
+    CpgResource:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/ResourceType'
+        l1Id:
+          type: string
+        l1name:
+          type: string
+    ResourcesSearchResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CpgResource'
+        searchAfter:
+          type: string
     ResourceType:
       type: string
       enum:
       - L1_BRAND
       - L1_CATEGORY
       - L2_CATEGORY
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    ClassificationType:
+      type: string
+      enum:
+      - BRAND
+      - CATEGORY
     ResourcesSearchRequest:
       type: object
       required:
@@ -84,43 +102,25 @@ components:
         limit:
           type: number
           default: 10
-    CpgResource:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        type:
-          $ref: '#/components/schemas/ResourceType'
-        l1Id:
-          type: string
-        l1name:
-          type: string
-    Error:
-      properties:
-        code:
-          description: An enumerated error for machine use.
-          type: string
-          readOnly: true
-        details:
-          description: A human-readable description of the error.
-          type: string
-          readOnly: true
-    ClassificationType:
-      type: string
-      enum:
-      - BRAND
-      - CATEGORY
-    ResourcesSearchResponse:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CpgResource'
-        searchAfter:
-          type: string
+  responses:
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     Ads_API_Key_Authentication:
       type: apiKey

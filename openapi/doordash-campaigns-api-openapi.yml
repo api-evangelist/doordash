@@ -155,195 +155,18 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 components:
-  responses:
-    InternalServerError:
-      description: One or more query parameters contained an invalid value.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Unauthorized.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Forbidden:
-      description: Forbidden.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    Name:
-      description: Resource name.
-      type: string
-    CampaignType:
-      description: The advertising product managed by this campaign.
+    DayOfWeek:
       type: string
       enum:
-      - SPONSORED_PRODUCTS
-    MonetaryFieldsExtended:
-      required:
-      - unitAmount
-      - currency
-      - displayString
-      - decimalPlaces
-      - symbol
-      - symbolPlacement
-      - sign
-      properties:
-        unitAmount:
-          description: Integer representing a monetary value in cents.
-          type: number
-        currency:
-          description: Monetary value currency
-          type: string
-          enum:
-          - USD
-        displayString:
-          description: Monetary value formatted for display
-          type: string
-        decimalPlaces:
-          description: Monetary value currency decimal places
-          type: number
-        symbol:
-          description: Monetary value symbol
-          type: string
-        symbolPlacement:
-          description: Monetary value symbol placement
-          type: string
-          enum:
-          - left
-          - right
-        sign:
-          description: True indicates the monetary value is positive. False indicates the monetary value is negative.
-          type: boolean
-    PacingStrategy:
-      description: Controls how the budget is distributed over the campaign duration.
-      type: string
-      enum:
-      - DEMAND
+      - MONDAY
+      - TUESDAY
+      - WEDNESDAY
+      - THURSDAY
+      - FRIDAY
+      - SATURDAY
+      - SUNDAY
       - UNSPECIFIED
-      x-enumDescriptions:
-        DEMAND: Spend more of the budget when traffic is high, and less when traffic is low.
-        UNSPECIFIED: Specify to use the default pacing strategy.
-    StatusWrite:
-      description: Current resource state.
-      type: string
-      enum:
-      - ACTIVE
-      - PAUSED
-      - ENDED
-    CampaignId:
-      description: Unique campaign identifier.
-      type: string
-    CodeDescription:
-      description: A human-readable description of the code.
-      type: string
-    StartDate:
-      description: Start date for the resource to go live. The format of the date is yyyy-MM-dd HH:mm:ss.
-      type: string
-      example: '2025-11-01 00:00:00'
-    BudgetRead:
-      required:
-      - daily
-      - lifetime
-      properties:
-        daily:
-          allOf:
-          - $ref: '#/components/schemas/MonetaryFieldsExtended'
-          - type: object
-            description: A daily budget for the campaign
-        lifetime:
-          allOf:
-          - $ref: '#/components/schemas/MonetaryFieldsExtended'
-          - type: object
-            description: A lifetime budget for the campaign
-        pacingStrategy:
-          $ref: '#/components/schemas/PacingStrategy'
-    CreateCampaignRequest:
-      required:
-      - name
-      - campaignType
-      - budget
-      - startDate
-      properties:
-        name:
-          $ref: '#/components/schemas/Name'
-        description:
-          $ref: '#/components/schemas/Description'
-        budget:
-          $ref: '#/components/schemas/BudgetWrite'
-        startDate:
-          $ref: '#/components/schemas/StartDate'
-        endDate:
-          $ref: '#/components/schemas/EndDate'
-    StatusRead:
-      description: Current resource state.
-      type: string
-      enum:
-      - INCOMPLETE
-      - IN_REVIEW
-      - SCHEDULED
-      - ACTIVE
-      - PAUSED
-      - ENDED
-      - DRAFT
-      - REJECTED
-      - CANCELLED
-    MonetaryFields:
-      required:
-      - unitAmount
-      - currency
-      properties:
-        unitAmount:
-          description: Integer representing a monetary value in cents.
-          type: number
-        currency:
-          description: Monetary value currency
-          type: string
-          enum:
-          - USD
-        displayString:
-          description: Monetary value formatted for display
-          type: string
-        decimalPlaces:
-          description: Monetary value currency decimal places
-          type: number
-        symbol:
-          description: Monetary value symbol
-          type: string
-    UpdateCampaignRequest:
-      required:
-      - campaignId
-      properties:
-        campaignId:
-          $ref: '#/components/schemas/CampaignId'
-        name:
-          $ref: '#/components/schemas/Name'
-        description:
-          $ref: '#/components/schemas/Description'
-        status:
-          $ref: '#/components/schemas/StatusWrite'
-        budget:
-          $ref: '#/components/schemas/BudgetWrite'
-        startDate:
-          $ref: '#/components/schemas/StartDate'
-        endDate:
-          $ref: '#/components/schemas/EndDate'
     CampaignResponse:
       required:
       - campaignId
@@ -386,25 +209,139 @@ components:
           $ref: '#/components/schemas/PlacementType'
         permission:
           $ref: '#/components/schemas/Permission'
-    PlacementType:
-      description: Specifies how all ad groups for the campaign will specify placement type details.
+    Name:
+      description: Resource name.
+      type: string
+    Permission:
+      required:
+      - isReadOnly
+      - message
+      properties:
+        isReadOnly:
+          description: Indicates whether a campaign is read-only through the API
+          type: boolean
+        message:
+          description: Description of the campaign permission
+          type: string
+    PacingStrategy:
+      description: Controls how the budget is distributed over the campaign duration.
       type: string
       enum:
-      - AUTOMATIC
-      - MANUAL
-    RecommendedBudget:
+      - DEMAND
+      - UNSPECIFIED
+      x-enumDescriptions:
+        DEMAND: Spend more of the budget when traffic is high, and less when traffic is low.
+        UNSPECIFIED: Specify to use the default pacing strategy.
+    CampaignId:
+      description: Unique campaign identifier.
+      type: string
+    MonetaryFields:
+      required:
+      - unitAmount
+      - currency
+      properties:
+        unitAmount:
+          description: Integer representing a monetary value in cents.
+          type: number
+        currency:
+          description: Monetary value currency
+          type: string
+          enum:
+          - USD
+        displayString:
+          description: Monetary value formatted for display
+          type: string
+        decimalPlaces:
+          description: Monetary value currency decimal places
+          type: number
+        symbol:
+          description: Monetary value symbol
+          type: string
+    CampaignType:
+      description: The advertising product managed by this campaign.
+      type: string
+      enum:
+      - SPONSORED_PRODUCTS
+    Code:
+      description: An enumerated success or error code for machine use.
+      type: string
+    CreateCampaignRequest:
+      required:
+      - name
+      - campaignType
+      - budget
+      - startDate
+      properties:
+        name:
+          $ref: '#/components/schemas/Name'
+        description:
+          $ref: '#/components/schemas/Description'
+        budget:
+          $ref: '#/components/schemas/BudgetWrite'
+        startDate:
+          $ref: '#/components/schemas/StartDate'
+        endDate:
+          $ref: '#/components/schemas/EndDate'
+    BudgetRead:
+      required:
+      - daily
+      - lifetime
+      properties:
+        daily:
+          allOf:
+          - $ref: '#/components/schemas/MonetaryFieldsExtended'
+          - type: object
+            description: A daily budget for the campaign
+        lifetime:
+          allOf:
+          - $ref: '#/components/schemas/MonetaryFieldsExtended'
+          - type: object
+            description: A lifetime budget for the campaign
+        pacingStrategy:
+          $ref: '#/components/schemas/PacingStrategy'
+    UpdateCampaignRequest:
+      required:
+      - campaignId
+      properties:
+        campaignId:
+          $ref: '#/components/schemas/CampaignId'
+        name:
+          $ref: '#/components/schemas/Name'
+        description:
+          $ref: '#/components/schemas/Description'
+        status:
+          $ref: '#/components/schemas/StatusWrite'
+        budget:
+          $ref: '#/components/schemas/BudgetWrite'
+        startDate:
+          $ref: '#/components/schemas/StartDate'
+        endDate:
+          $ref: '#/components/schemas/EndDate'
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    StatusDescription:
+      description: Description of the resource is in current state.
+      type: string
+    CodeDescription:
+      description: A human-readable description of the code.
+      type: string
+    DailyCapOutTime:
       type: object
       properties:
-        avgCapOutTimeLast7Days:
+        dayOfWeek:
+          $ref: '#/components/schemas/DayOfWeek'
+        capOutTime:
           type: number
-        recommendedBudget:
-          $ref: '#/components/schemas/MonetaryFields'
-        totalMissedSalesLast7Days:
-          $ref: '#/components/schemas/MonetaryFields'
-        dailyCapOutTime:
-          type: array
-          items:
-            $ref: '#/components/schemas/DailyCapOutTime'
+        maximumLiveHours:
+          type: number
     BudgetWrite:
       properties:
         daily:
@@ -430,56 +367,46 @@ components:
             '
       minProperties: 1
       description: At least one of daily or lifetime budget must be configured.
-    DayOfWeek:
+    StatusRead:
+      description: Current resource state.
       type: string
       enum:
-      - MONDAY
-      - TUESDAY
-      - WEDNESDAY
-      - THURSDAY
-      - FRIDAY
-      - SATURDAY
-      - SUNDAY
-      - UNSPECIFIED
-    Description:
-      description: Resource description.
-      type: string
-    Permission:
-      required:
-      - isReadOnly
-      - message
-      properties:
-        isReadOnly:
-          description: Indicates whether a campaign is read-only through the API
-          type: boolean
-        message:
-          description: Description of the campaign permission
-          type: string
-    Error:
-      properties:
-        code:
-          description: An enumerated error for machine use.
-          type: string
-          readOnly: true
-        details:
-          description: A human-readable description of the error.
-          type: string
-          readOnly: true
-    Code:
-      description: An enumerated success or error code for machine use.
-      type: string
-    DailyCapOutTime:
+      - INCOMPLETE
+      - IN_REVIEW
+      - SCHEDULED
+      - ACTIVE
+      - PAUSED
+      - ENDED
+      - DRAFT
+      - REJECTED
+      - CANCELLED
+    RecommendedBudget:
       type: object
       properties:
-        dayOfWeek:
-          $ref: '#/components/schemas/DayOfWeek'
-        capOutTime:
+        avgCapOutTimeLast7Days:
           type: number
-        maximumLiveHours:
-          type: number
-    StatusDescription:
-      description: Description of the resource is in current state.
+        recommendedBudget:
+          $ref: '#/components/schemas/MonetaryFields'
+        totalMissedSalesLast7Days:
+          $ref: '#/components/schemas/MonetaryFields'
+        dailyCapOutTime:
+          type: array
+          items:
+            $ref: '#/components/schemas/DailyCapOutTime'
+    EndDate:
+      description: End date for the resource to stop running. The format of the date is yyyy-MM-dd HH:mm:ss.
       type: string
+      example: '2025-12-01 00:00:00'
+    PlacementType:
+      description: Specifies how all ad groups for the campaign will specify placement type details.
+      type: string
+      enum:
+      - AUTOMATIC
+      - MANUAL
+    StartDate:
+      description: Start date for the resource to go live. The format of the date is yyyy-MM-dd HH:mm:ss.
+      type: string
+      example: '2025-11-01 00:00:00'
     BudgetCapoutRecommendationsResponse:
       type: object
       properties:
@@ -491,18 +418,84 @@ components:
           description: ''
         value:
           $ref: '#/components/schemas/RecommendedBudget'
-    EndDate:
-      description: End date for the resource to stop running. The format of the date is yyyy-MM-dd HH:mm:ss.
+    StatusWrite:
+      description: Current resource state.
       type: string
-      example: '2025-12-01 00:00:00'
+      enum:
+      - ACTIVE
+      - PAUSED
+      - ENDED
+    Description:
+      description: Resource description.
+      type: string
+    MonetaryFieldsExtended:
+      required:
+      - unitAmount
+      - currency
+      - displayString
+      - decimalPlaces
+      - symbol
+      - symbolPlacement
+      - sign
+      properties:
+        unitAmount:
+          description: Integer representing a monetary value in cents.
+          type: number
+        currency:
+          description: Monetary value currency
+          type: string
+          enum:
+          - USD
+        displayString:
+          description: Monetary value formatted for display
+          type: string
+        decimalPlaces:
+          description: Monetary value currency decimal places
+          type: number
+        symbol:
+          description: Monetary value symbol
+          type: string
+        symbolPlacement:
+          description: Monetary value symbol placement
+          type: string
+          enum:
+          - left
+          - right
+        sign:
+          description: True indicates the monetary value is positive. False indicates the monetary value is negative.
+          type: boolean
+  responses:
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   parameters:
-    count:
-      name: count
-      in: query
-      description: Number of records to include in the paged response.
-      required: false
-      schema:
-        type: number
     startIndex:
       name: startIndex
       in: query
@@ -524,6 +517,13 @@ components:
       required: true
       schema:
         type: string
+    count:
+      name: count
+      in: query
+      description: Number of records to include in the paged response.
+      required: false
+      schema:
+        type: number
   securitySchemes:
     Ads_API_Key_Authentication:
       type: apiKey

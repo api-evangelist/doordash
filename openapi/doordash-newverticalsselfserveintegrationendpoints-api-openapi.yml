@@ -127,10 +127,10 @@ paths:
       deprecated: false
 components:
   schemas:
-    server_fault:
+    RequestRateLimitedError:
       x-error: true
       type: object
-      description: Internal service failure, please try again later.
+      description: Request was rate limited.
       required:
       - code
       - message
@@ -138,12 +138,10 @@ components:
         code:
           type: string
           enum:
-          - service_fault
-          default: service_fault
+          - request_rate_limited
         message:
           type: string
-          example: Internal service failure, please try again later.
-          default: Internal service failure, please try again later.
+          example: Request was rate limited. You may be calling the API too much in a short time.
     MerchantAddress:
       type: object
       required:
@@ -176,70 +174,6 @@ components:
           description: One result per submitted location, positionally matching the request list and identifiable by location_id. Per-location business failures (e.g. invalid address) do not fail the whole batch.
           items:
             $ref: '#/components/schemas/MultiLocationOnboardingIntentResult'
-    StoreAlreadyExistsError:
-      x-error: true
-      type: object
-      description: Store with the provided partner_store_id is already onboarded
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - store_already_exists
-          default: store_already_exists
-        message:
-          type: string
-          example: Store with partner_store_id 'shopify_store_456' is already onboarded
-    MultiLocationOnboardingIntentResult:
-      type: object
-      properties:
-        location_id:
-          type: string
-          description: Echoes the location_id from the corresponding request
-        code:
-          type: string
-          description: gRPC status code name. "OK" means DoorDash accepted the onboarding intent for this location. No managed_merchant_connect_url is ever returned by this endpoint - onboarding completion for accepted locations is a manual follow-up.
-          example: OK
-        error:
-          type: string
-          description: Present only when code is not "OK"
-    FieldError:
-      title: FieldError
-      type: object
-      description: A field whose value couldn't be validated.
-      required:
-      - field
-      - error
-      properties:
-        field:
-          type: string
-          description: Name of the field whose value couldn't be validated.
-          example: pickup_phone_number
-        error:
-          type: string
-          description: The error that was encountered when validating the field's value.
-          example: Invalid phone number format
-    MultiLocationOnboardingIntentRequest:
-      type: object
-      required:
-      - requests
-      properties:
-        requests:
-          type: array
-          minItems: 1
-          maxItems: 100
-          description: One onboarding intent request per store location, submitted as a single batch
-          items:
-            $ref: '#/components/schemas/ManagedMerchantConnectRequest'
-    ManagedMerchantConnectResponse:
-      type: object
-      properties:
-        managed_merchant_connect_url:
-          type: string
-          format: uri
-          description: Managed Merchant Onboarding URL. The partner must redirect the merchant to this URL where DoorDash hosts the full onboarding flow. After completion, DoorDash displays a confirmation page and the merchant should close the tab and return to the partner portal.
     AuthenticationError:
       x-error: true
       type: object
@@ -257,62 +191,6 @@ components:
           type: string
           example: The [exp] is in the past; the JWT is expired
           default: The [exp] is in the past; the JWT is expired
-    ValidationFieldError:
-      x-error: true
-      title: ValidationFieldError
-      type: object
-      description: One or more request values couldn't be validated.
-      required:
-      - code
-      - message
-      - field_errors
-      properties:
-        code:
-          type: string
-          enum:
-          - validation_error
-        message:
-          type: string
-          description: One or more request values couldn't be validated.
-          example: One or more request values couldn't be validated.
-        field_errors:
-          type: array
-          description: The list of fields whose values couldn't be validated. See more [error examples](https://developer.doordash.com/en-US/docs/drive/reference/errors)
-          items:
-            $ref: '#/components/schemas/FieldError'
-          readOnly: true
-    RequestRateLimitedError:
-      x-error: true
-      type: object
-      description: Request was rate limited.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - request_rate_limited
-        message:
-          type: string
-          example: Request was rate limited. You may be calling the API too much in a short time.
-    AuthorizationError:
-      x-error: true
-      type: object
-      description: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - authorization_error
-          default: authorization_error
-        message:
-          type: string
-          example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
-          default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
     ManagedMerchantConnectRequest:
       type: object
       required:
@@ -381,3 +259,125 @@ components:
           enum:
           - en-US
           description: Locale for the merchant onboarding experience
+    ManagedMerchantConnectResponse:
+      type: object
+      properties:
+        managed_merchant_connect_url:
+          type: string
+          format: uri
+          description: Managed Merchant Onboarding URL. The partner must redirect the merchant to this URL where DoorDash hosts the full onboarding flow. After completion, DoorDash displays a confirmation page and the merchant should close the tab and return to the partner portal.
+    ValidationFieldError:
+      x-error: true
+      title: ValidationFieldError
+      type: object
+      description: One or more request values couldn't be validated.
+      required:
+      - code
+      - message
+      - field_errors
+      properties:
+        code:
+          type: string
+          enum:
+          - validation_error
+        message:
+          type: string
+          description: One or more request values couldn't be validated.
+          example: One or more request values couldn't be validated.
+        field_errors:
+          type: array
+          description: The list of fields whose values couldn't be validated. See more [error examples](https://developer.doordash.com/en-US/docs/drive/reference/errors)
+          items:
+            $ref: '#/components/schemas/FieldError'
+          readOnly: true
+    FieldError:
+      title: FieldError
+      type: object
+      description: A field whose value couldn't be validated.
+      required:
+      - field
+      - error
+      properties:
+        field:
+          type: string
+          description: Name of the field whose value couldn't be validated.
+          example: pickup_phone_number
+        error:
+          type: string
+          description: The error that was encountered when validating the field's value.
+          example: Invalid phone number format
+    server_fault:
+      x-error: true
+      type: object
+      description: Internal service failure, please try again later.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - service_fault
+          default: service_fault
+        message:
+          type: string
+          example: Internal service failure, please try again later.
+          default: Internal service failure, please try again later.
+    StoreAlreadyExistsError:
+      x-error: true
+      type: object
+      description: Store with the provided partner_store_id is already onboarded
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - store_already_exists
+          default: store_already_exists
+        message:
+          type: string
+          example: Store with partner_store_id 'shopify_store_456' is already onboarded
+    AuthorizationError:
+      x-error: true
+      type: object
+      description: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authorization_error
+          default: authorization_error
+        message:
+          type: string
+          example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+          default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+    MultiLocationOnboardingIntentResult:
+      type: object
+      properties:
+        location_id:
+          type: string
+          description: Echoes the location_id from the corresponding request
+        code:
+          type: string
+          description: gRPC status code name. "OK" means DoorDash accepted the onboarding intent for this location. No managed_merchant_connect_url is ever returned by this endpoint - onboarding completion for accepted locations is a manual follow-up.
+          example: OK
+        error:
+          type: string
+          description: Present only when code is not "OK"
+    MultiLocationOnboardingIntentRequest:
+      type: object
+      required:
+      - requests
+      properties:
+        requests:
+          type: array
+          minItems: 1
+          maxItems: 100
+          description: One onboarding intent request per store location, submitted as a single batch
+          items:
+            $ref: '#/components/schemas/ManagedMerchantConnectRequest'

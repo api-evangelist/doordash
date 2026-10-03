@@ -124,6 +124,21 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    Customer:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: The customer's first name.
+          example: Acme Pickup Store
+        last_name:
+          type: string
+          description: The customer's last name.
+          example: Acme Pickup Store
+        phone_number:
+          type: string
+          description: The customer's phone number.
+          example: '+15555551234'
     Substitution:
       type: object
       properties:
@@ -143,6 +158,35 @@ components:
           type: integer
           description: The price of the substitute item in cents.
           example: 42
+    OrderItem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique item identifier within the order.
+          example: D-12345
+        name:
+          type: string
+          description: The name of the item.
+          example: Acme Pickup Store
+        quantity:
+          type: integer
+          description: The quantity ordered.
+          minimum: 1
+          example: 1
+        price:
+          type: integer
+          description: The item price in cents.
+          example: 42
+        special_instructions:
+          type: string
+          description: Special instructions for this item.
+          example: Leave at the front desk.
+        options:
+          type: array
+          description: Selected options for the item.
+          items:
+            $ref: '#/components/schemas/OrderItemOption'
     Order:
       type: object
       properties:
@@ -211,6 +255,17 @@ components:
           format: date-time
           description: The estimated time the Dasher will arrive to pick up the order.
           example: '2026-06-02T14:30:00Z'
+    CancelledItem:
+      type: object
+      properties:
+        item_id:
+          type: string
+          description: The ID of the item to cancel.
+          example: D-12345
+        reason:
+          type: string
+          description: The reason for cancellation.
+          example: example
     OrderItemOption:
       type: object
       properties:
@@ -241,21 +296,6 @@ components:
           type: string
           description: A machine-readable error code.
           example: ABC123
-    Customer:
-      type: object
-      properties:
-        first_name:
-          type: string
-          description: The customer's first name.
-          example: Acme Pickup Store
-        last_name:
-          type: string
-          description: The customer's last name.
-          example: Acme Pickup Store
-        phone_number:
-          type: string
-          description: The customer's phone number.
-          example: '+15555551234'
     OrderUpdate:
       type: object
       properties:
@@ -278,46 +318,6 @@ components:
           description: Item substitutions for the order.
           items:
             $ref: '#/components/schemas/Substitution'
-    OrderItem:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique item identifier within the order.
-          example: D-12345
-        name:
-          type: string
-          description: The name of the item.
-          example: Acme Pickup Store
-        quantity:
-          type: integer
-          description: The quantity ordered.
-          minimum: 1
-          example: 1
-        price:
-          type: integer
-          description: The item price in cents.
-          example: 42
-        special_instructions:
-          type: string
-          description: Special instructions for this item.
-          example: Leave at the front desk.
-        options:
-          type: array
-          description: Selected options for the item.
-          items:
-            $ref: '#/components/schemas/OrderItemOption'
-    CancelledItem:
-      type: object
-      properties:
-        item_id:
-          type: string
-          description: The ID of the item to cancel.
-          example: D-12345
-        reason:
-          type: string
-          description: The reason for cancellation.
-          example: example
   parameters:
     OrderId:
       name: order_id

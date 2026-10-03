@@ -52,14 +52,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request.
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    InternalServerError:
-      description: One or more query parameters contained an invalid value.
+    BadRequest:
+      description: Bad request.
       content:
         application/json:
           schema:
