@@ -350,60 +350,27 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 components:
   schemas:
-    Name:
-      description: Resource name.
-      type: string
-    CatalogReportFilter:
-      type: object
-      properties:
-        field:
-          description: Product filter types for catalog reporting.
-          type: string
-          enum:
-          - L1_BRAND
-          - STATUS
-          - SEARCH_TERM
-        terms:
-          type: array
-          items:
-            type: string
-    FileType:
-      description: Report file type.
+    Segment:
+      description: A secondary dimension used to further segment certain types of reports.
       type: string
       enum:
-      - CSV
-    ListReportsResponse:
-      properties:
-        totalCount:
-          type: integer
-        reports:
-          type: array
-          items:
-            $ref: '#/components/schemas/ReportResponse'
-    CategoryProvider:
-      description: Data provider for product category definitions. Only applicable for Category Share reports. Note that Circana is only available to US advertisers.
+      - PLACEMENT
+      - NONE
+    RecordType:
       type: string
       enum:
-      - NIELSEN
-      - CIRCANA
-      example: CIRCANA
+      - CAMPAIGN
+      - ADGROUP
+      - PRODUCT
+      - KEYWORD
+      - PRODUCT_SALES
+      - CATEGORY_SHARE
+      - CATALOG
+      - INTEREST_INSIGHTS
     Date:
       description: A date string in format of yyyy-MM-dd HH:mm:ss
       type: string
       example: '2025-11-01 00:00:00'
-    ReportCampaignType:
-      type: string
-      enum:
-      - SPONSORED_PRODUCTS
-      - SPONSORED_BRAND
-    ReportStatus:
-      type: string
-      enum:
-      - SCHEDULED
-      - PROCESSING
-      - COMPLETED
-      - ERROR
-      example: COMPLETED
     CreateReportRequest:
       required:
       - reportName
@@ -444,6 +411,39 @@ components:
           $ref: '#/components/schemas/ReportCampaignTypes'
         categoryProvider:
           $ref: '#/components/schemas/CategoryProvider'
+    ListReportsResponse:
+      properties:
+        totalCount:
+          type: integer
+        reports:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportResponse'
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    ReportId:
+      description: Unique report identifier.
+      type: string
+    ReportCampaignTypes:
+      description: '- Type of campaigns to include in the report.
+
+        - Only relevant for Marketing reports (when recordType is one of <code>{CAMPAIGN, ADGROUP, PRODUCT, KEYWORD}</code>).
+
+        - Only one campaign type may be specified per report request.
+
+        '
+      type: array
+      maxItems: 1
+      items:
+        $ref: '#/components/schemas/ReportCampaignType'
     DownloadReportResponse:
       required:
       - reportId
@@ -479,33 +479,6 @@ components:
           $ref: '#/components/schemas/ReportCampaignTypes'
         categoryProvider:
           $ref: '#/components/schemas/CategoryProvider'
-    Error:
-      properties:
-        code:
-          description: An enumerated error for machine use.
-          type: string
-          readOnly: true
-        details:
-          description: A human-readable description of the error.
-          type: string
-          readOnly: true
-    Segment:
-      description: A secondary dimension used to further segment certain types of reports.
-      type: string
-      enum:
-      - PLACEMENT
-      - NONE
-    RecordType:
-      type: string
-      enum:
-      - CAMPAIGN
-      - ADGROUP
-      - PRODUCT
-      - KEYWORD
-      - PRODUCT_SALES
-      - CATEGORY_SHARE
-      - CATALOG
-      - INTEREST_INSIGHTS
     TimeGranularity:
       description: '- HOUR (for dayparted reports) is currently in **Beta**.
 
@@ -521,27 +494,34 @@ components:
       - WEEK
       - MONTH
       - NONE
-    CreateReportResponse:
-      required:
-      - reportId
-      properties:
-        reportId:
-          $ref: '#/components/schemas/ReportId'
-    ReportCampaignTypes:
-      description: '- Type of campaigns to include in the report.
-
-        - Only relevant for Marketing reports (when recordType is one of <code>{CAMPAIGN, ADGROUP, PRODUCT, KEYWORD}</code>).
-
-        - Only one campaign type may be specified per report request.
-
-        '
-      type: array
-      maxItems: 1
-      items:
-        $ref: '#/components/schemas/ReportCampaignType'
-    ReportId:
-      description: Unique report identifier.
+    GroupBy:
       type: string
+      enum:
+      - BRAND
+      - VERTICAL
+      - CATEGORY
+      - ITEM
+      - RETAILER
+      - DISH
+    FileType:
+      description: Report file type.
+      type: string
+      enum:
+      - CSV
+    CatalogReportFilter:
+      type: object
+      properties:
+        field:
+          description: Product filter types for catalog reporting.
+          type: string
+          enum:
+          - L1_BRAND
+          - STATUS
+          - SEARCH_TERM
+        terms:
+          type: array
+          items:
+            type: string
     ReportResponse:
       required:
       - reportId
@@ -573,42 +553,36 @@ components:
           $ref: '#/components/schemas/Date'
         categoryProvider:
           $ref: '#/components/schemas/CategoryProvider'
-    GroupBy:
+    CreateReportResponse:
+      required:
+      - reportId
+      properties:
+        reportId:
+          $ref: '#/components/schemas/ReportId'
+    Name:
+      description: Resource name.
+      type: string
+    ReportCampaignType:
       type: string
       enum:
-      - BRAND
-      - VERTICAL
-      - CATEGORY
-      - ITEM
-      - RETAILER
-      - DISH
-  responses:
-    InternalServerError:
-      description: One or more query parameters contained an invalid value.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Unauthorized.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+      - SPONSORED_PRODUCTS
+      - SPONSORED_BRAND
+    CategoryProvider:
+      description: Data provider for product category definitions. Only applicable for Category Share reports. Note that Circana is only available to US advertisers.
+      type: string
+      enum:
+      - NIELSEN
+      - CIRCANA
+      example: CIRCANA
+    ReportStatus:
+      type: string
+      enum:
+      - SCHEDULED
+      - PROCESSING
+      - COMPLETED
+      - ERROR
+      example: COMPLETED
   parameters:
-    startIndex:
-      name: startIndex
-      in: query
-      description: 0-indexed record offset for the result set. Defaults to 0.
-      schema:
-        type: number
-        default: 0
     recordType:
       name: recordType
       in: query
@@ -623,6 +597,32 @@ components:
       required: false
       schema:
         type: number
+    startIndex:
+      name: startIndex
+      in: query
+      description: 0-indexed record offset for the result set. Defaults to 0.
+      schema:
+        type: number
+        default: 0
+  responses:
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     Ads_API_Key_Authentication:
       type: apiKey

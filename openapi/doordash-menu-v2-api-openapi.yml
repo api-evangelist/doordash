@@ -76,10 +76,47 @@ paths:
       deprecated: false
 components:
   schemas:
-    PrimaryMenu:
+    FulfillmentType:
+      type: string
+      enum:
+      - delivery
+      - pickup
+      example: pickup
+    RateLimitedError:
+      x-error: true
+      title: RateLimitedError
       type: object
-      title: PrimaryMenu
-      description: The default menu to be shown on the store page
+      description: Rate limited.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - rate_limit_error
+        message:
+          type: string
+          example: Developer account endpoint rate limit exceeded.
+    IntegrationId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the business, business group or store.
+      example: '987654'
+    SessionId:
+      type: string
+      description: id of the application session
+    Business:
+      type: object
+      title: Business
+      description: Business Info
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        differential_pricing_enabled:
+          type: boolean
     AuthenticationError:
       x-error: true
       type: object
@@ -95,20 +132,6 @@ components:
         message:
           type: string
           example: Request does not contain a JWT.
-    IntegrationId:
-      type: string
-      pattern: ^([1-9][0-9]*)$
-      description: Unique ID for the business, business group or store.
-      example: '987654'
-    IntegrationType:
-      type: string
-      enum:
-      - BUSINESS
-      - BUSINESS_GROUP
-      - STORE
-      example: store
-      default: business
-      description: Type of the integration id
     StoreHeader:
       type: object
       title: StoreHeader
@@ -116,17 +139,6 @@ components:
       properties:
         business:
           $ref: '#/components/schemas/Business'
-    Business:
-      type: object
-      title: Business
-      description: Business Info
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        differential_pricing_enabled:
-          type: boolean
     GetStoreMenuV2Request:
       type: object
       required:
@@ -145,21 +157,32 @@ components:
           $ref: '#/components/schemas/FulfillmentType'
         country_code:
           $ref: '#/components/schemas/CountryCode'
-    FulfillmentType:
-      type: string
-      enum:
-      - delivery
-      - pickup
-      example: pickup
-    GetStoreMenuV2Response:
+    AddressResourceNotFoundError:
+      x-error: true
+      title: AddressResourceNotFoundError
       type: object
-      title: GetStoreMenuV2Response
-      description: Store menu v2
+      description: The response returned when requested resource is not found/available.
+      required:
+      - code
+      - message
       properties:
-        store_header:
-          $ref: '#/components/schemas/StoreHeader'
-        primary_menu:
-          $ref: '#/components/schemas/PrimaryMenu'
+        code:
+          type: string
+          enum:
+          - not_found
+        message:
+          type: string
+          example: Address is not found.
+    StoreId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the store.
+      example: '123'
+    CountryCode:
+      type: string
+      pattern: ^[A-Z]{2}$
+      description: Country code in ISO 3166-1 alpha-2 format
+      example: US
     InternalError:
       x-error: true
       title: InternalError
@@ -176,9 +199,34 @@ components:
         message:
           type: string
           example: Internal Service Error.
-    SessionId:
-      type: string
-      description: id of the application session
+    GetStoreMenuV2Response:
+      type: object
+      title: GetStoreMenuV2Response
+      description: Store menu v2
+      properties:
+        store_header:
+          $ref: '#/components/schemas/StoreHeader'
+        primary_menu:
+          $ref: '#/components/schemas/PrimaryMenu'
+    PrimaryMenu:
+      type: object
+      title: PrimaryMenu
+      description: The default menu to be shown on the store page
+    AuthorizationError:
+      x-error: true
+      type: object
+      description: Authorization error, available credentials don't match requested operation
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authorization_error
+        message:
+          type: string
+          example: You are not authorized to perform this action.
     ValidationFieldError:
       x-error: true
       title: ValidationFieldError
@@ -199,63 +247,15 @@ components:
         errors:
           type: string
           example: Missing business/store id.
-    RateLimitedError:
-      x-error: true
-      title: RateLimitedError
-      type: object
-      description: Rate limited.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - rate_limit_error
-        message:
-          type: string
-          example: Developer account endpoint rate limit exceeded.
-    CountryCode:
+    IntegrationType:
       type: string
-      pattern: ^[A-Z]{2}$
-      description: Country code in ISO 3166-1 alpha-2 format
-      example: US
-    AuthorizationError:
-      x-error: true
-      type: object
-      description: Authorization error, available credentials don't match requested operation
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - authorization_error
-        message:
-          type: string
-          example: You are not authorized to perform this action.
-    StoreId:
-      type: string
-      pattern: ^([1-9][0-9]*)$
-      description: Unique ID for the store.
-      example: '123'
-    AddressResourceNotFoundError:
-      x-error: true
-      title: AddressResourceNotFoundError
-      type: object
-      description: The response returned when requested resource is not found/available.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - not_found
-        message:
-          type: string
-          example: Address is not found.
+      enum:
+      - BUSINESS
+      - BUSINESS_GROUP
+      - STORE
+      example: store
+      default: business
+      description: Type of the integration id
   parameters:
     StoreId:
       name: store_id

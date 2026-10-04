@@ -161,32 +161,6 @@ paths:
       x-codegen-request-body-name: body
 components:
   schemas:
-    TransactionAuthResponse:
-      type: object
-      title: TransactionAuthResponse
-      description: Response for transaction authorization
-      properties:
-        client_txn_context_id:
-          type: string
-          description: Client-supplied context id for this transaction (echoed from request)
-        order_uuid:
-          type: string
-          description: DoorDash order UUID
-        delivery_uuid:
-          type: string
-          description: DoorDash delivery UUID
-        approval_status:
-          type: string
-          description: Overall approval status of the transaction
-          enum:
-          - APPROVED
-          - APPROVED_WITH_CONDITIONS
-          - DENIED
-        audit_results:
-          type: array
-          description: List of audit results explaining why the transaction was approved with conditions or denied; empty when approval_status is APPROVED
-          items:
-            $ref: '#/components/schemas/TransactionAuditResult'
     CardTransactionInfo:
       type: object
       description: Card transaction information
@@ -215,10 +189,10 @@ components:
         card_transaction_status:
           type: string
           description: Status of the card transaction
-    RequestNotProcessError:
+    RequestRateLimitedError:
       x-error: true
       type: object
-      description: Request was not process.
+      description: Request was rate limited.
       required:
       - code
       - message
@@ -229,129 +203,24 @@ components:
           - request_rate_limited
         message:
           type: string
-          example: Request was not process. Request entity may be too large.
-    TransactionAuditResult:
+          example: Request was rate limited. You may be calling the API too much in a short time.
+    AuthorizationError:
+      x-error: true
       type: object
-      description: Audit result for transaction authorization
+      description: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+      required:
+      - code
+      - message
       properties:
-        reason_code:
+        code:
           type: string
-          description: Reason code for audit result
           enum:
-          - INVALID_SCAN_CODE
-          - CHECKOUT_NOT_ACTIVE
-          - UNKNOWN_CHECKOUT_ID
-          - OTHER
-          - TRANSACTION_TOTAL_MISMATCH
+          - authorization_error
+          default: authorization_error
         message:
           type: string
-          description: Detailed message for the audit result
-    TaxInfo:
-      type: object
-      description: Tax information for line items or transaction
-      properties:
-        amount:
-          type: number
-          description: Tax amount in minor units of the specified currency
-        tax_type:
-          type: string
-          description: Type of tax applied
-          enum:
-          - SALES_TAX
-          - VAT
-          - GST
-          - EXCISE_TAX
-          - TAX_ON_FEES
-          - TAX_ON_SUBTOTAL
-          - OTHER
-        tax_type_other:
-          type: string
-          description: Additional details when tax_type is OTHER
-    TransactionContent:
-      type: object
-      description: Transaction details without merchant-supplied transaction identifier
-      required:
-      - total
-      - currency_code
-      properties:
-        total:
-          type: number
-          description: Total transaction amount in minor units of the specified currency
-        currency_code:
-          type: string
-          description: Currency code for the transaction
-          enum:
-          - USD
-          - AUD
-        summary:
-          $ref: '#/components/schemas/TransactionSummary'
-        items:
-          type: array
-          description: List of line items in the transaction
-          items:
-            $ref: '#/components/schemas/TransactionLineItem'
-        discounts:
-          type: array
-          description: Transaction-level discounts
-          items:
-            $ref: '#/components/schemas/DiscountInfo'
-        taxes:
-          type:
-          - array
-          - 'null'
-          description: Transaction-level taxes; omit, use [], or null when not applicable
-          items:
-            $ref: '#/components/schemas/TaxInfo'
-        fees:
-          type: array
-          description: Transaction-level fees
-          items:
-            $ref: '#/components/schemas/FeeInfo'
-        loyalty:
-          type: object
-          description: Loyalty information for transaction
-          properties:
-            member_info:
-              $ref: '#/components/schemas/LoyaltyMemberInfo'
-            points_awarded:
-              type: number
-              description: Points awarded from this transaction
-        tenders:
-          type: array
-          minItems: 1
-          maxItems: 1
-          description: List of payment tenders used in this transaction. Exactly one tender must be provided per transaction; requests with zero or multiple tenders are rejected.
-          items:
-            $ref: '#/components/schemas/Tender'
-    ProgramEligibility:
-      description: Eligibility to items for various programs
-      type: string
-      enum:
-      - SNAP
-      - HSA
-      - FSA
-    TransactionAuthRequest:
-      type: object
-      description: Request to authorize a transaction
-      required:
-      - dd_direct_scan_code
-      - transaction_contents
-      properties:
-        checkout_id:
-          type: string
-          description: DoorDash checkout identifier (optional; authoritative checkout id is parsed from dd_direct_scan_code)
-        client_txn_context_id:
-          type: string
-          description: Client-supplied context id for this transaction; server echoes it back in the response
-        dd_direct_scan_code:
-          type: string
-          description: DoorDash Direct scan code for the transaction
-        transaction_contents:
-          $ref: '#/components/schemas/TransactionContent'
-        client_request_time:
-          type: string
-          format: date-time
-          description: Timestamp when the client initiated the request in ISO8601 format
+          example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+          default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
     Transaction:
       type: object
       title: Transaction
@@ -371,108 +240,32 @@ components:
           type: string
           format: date-time
           description: Timestamp when the transaction occurred in ISO8601 format
-    StoreLocationNotFoundError:
-      x-error: true
+    TransactionAuthResponse:
       type: object
-      description: The store location could not be found.
-      required:
-      - code
-      - message
+      title: TransactionAuthResponse
+      description: Response for transaction authorization
       properties:
-        code:
+        client_txn_context_id:
           type: string
+          description: Client-supplied context id for this transaction (echoed from request)
+        order_uuid:
+          type: string
+          description: DoorDash order UUID
+        delivery_uuid:
+          type: string
+          description: DoorDash delivery UUID
+        approval_status:
+          type: string
+          description: Overall approval status of the transaction
           enum:
-          - unknown_store_location_id
-        message:
-          type: string
-          example: The store location could not be found
-    BatchAddTransactionRequest:
-      type: object
-      description: Request to add multiple transactions
-      properties:
-        transactions:
+          - APPROVED
+          - APPROVED_WITH_CONDITIONS
+          - DENIED
+        audit_results:
           type: array
-          description: List of transactions to add
+          description: List of audit results explaining why the transaction was approved with conditions or denied; empty when approval_status is APPROVED
           items:
-            $ref: '#/components/schemas/Transaction'
-    OtherIdentifier:
-      type: object
-      description: Additional identifiers for items
-      properties:
-        name:
-          type: string
-          description: Identifier name
-        value:
-          type: string
-          description: Identifier value
-    DiscountInfo:
-      type: object
-      description: Discount information for line items or transaction
-      properties:
-        amount:
-          type: number
-          description: Discount amount in minor units of the specified currency
-        discount_type:
-          type: string
-          description: Type of discount applied
-          enum:
-          - MEMBER_SAVINGS
-          - MX_PROMO
-          - CPG_PROMO
-          - OTHER
-        discount_type_other:
-          type: string
-          description: Additional details when discount_type is OTHER
-    AuthenticationError:
-      x-error: true
-      type: object
-      description: 'Authentication error: the token provided with the request doesn''t work for the requested operation'
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - authentication_error
-          default: authentication_error
-        message:
-          type: string
-          example: The [exp] is in the past; the JWT is expired
-          default: The [exp] is in the past; the JWT is expired
-    ConflictError:
-      x-error: true
-      type: object
-      description: The checkout has already been authorized and cannot be authorized again.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - checkout_already_authorized
-        message:
-          type: string
-          example: The checkout has already been authorized and cannot be authorized again.
-    FeeInfo:
-      type: object
-      description: Fee information for transaction
-      properties:
-        fee_amount:
-          type: number
-          description: Fee amount in minor units of the specified currency
-        fee_type:
-          type: string
-          description: Type of fee applied
-          enum:
-          - ECO_FEE
-          - BAG_FEE
-          - BOTTLE_DEPOSIT_FEE
-          - OTHER
-        fee_type_other:
-          type: string
-          description: Additional details when fee_type is OTHER
+            $ref: '#/components/schemas/TransactionAuditResult'
     ValidationFieldError:
       x-error: true
       title: ValidationFieldError
@@ -497,44 +290,50 @@ components:
           items:
             $ref: '#/components/schemas/FieldError'
           readOnly: true
-    TransactionSummary:
-      type:
-      - object
-      - 'null'
-      description: Summary of transaction totals; the property may be omitted, sent as an empty object, or sent as null when not applicable
-      properties:
-        subtotal:
-          type: number
-          description: Subtotal amount in minor units of the specified currency before tax and fees
-        tax:
-          type: number
-          description: Total tax amount in minor units of the specified currency
-        fees:
-          type: number
-          description: Total fees amount in minor units of the specified currency
-        discount:
-          type: number
-          description: Total discount amount in minor units of the specified currency
-    FieldError:
-      title: FieldError
+    FeeInfo:
       type: object
-      description: A field whose value couldn't be validated.
-      required:
-      - field
-      - error
+      description: Fee information for transaction
       properties:
-        field:
+        fee_amount:
+          type: number
+          description: Fee amount in minor units of the specified currency
+        fee_type:
           type: string
-          description: Name of the field whose value couldn't be validated.
-          example: pickup_phone_number
-        error:
+          description: Type of fee applied
+          enum:
+          - ECO_FEE
+          - BAG_FEE
+          - BOTTLE_DEPOSIT_FEE
+          - OTHER
+        fee_type_other:
           type: string
-          description: The error that was encountered when validating the field's value.
-          example: Invalid phone number format
-    AuthorizationError:
+          description: Additional details when fee_type is OTHER
+    TransactionAuthRequest:
+      type: object
+      description: Request to authorize a transaction
+      required:
+      - dd_direct_scan_code
+      - transaction_contents
+      properties:
+        checkout_id:
+          type: string
+          description: DoorDash checkout identifier (optional; authoritative checkout id is parsed from dd_direct_scan_code)
+        client_txn_context_id:
+          type: string
+          description: Client-supplied context id for this transaction; server echoes it back in the response
+        dd_direct_scan_code:
+          type: string
+          description: DoorDash Direct scan code for the transaction
+        transaction_contents:
+          $ref: '#/components/schemas/TransactionContent'
+        client_request_time:
+          type: string
+          format: date-time
+          description: Timestamp when the client initiated the request in ISO8601 format
+    StoreLocationNotFoundError:
       x-error: true
       type: object
-      description: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+      description: The store location could not be found.
       required:
       - code
       - message
@@ -542,16 +341,14 @@ components:
         code:
           type: string
           enum:
-          - authorization_error
-          default: authorization_error
+          - unknown_store_location_id
         message:
           type: string
-          example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
-          default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
-    RequestRateLimitedError:
+          example: The store location could not be found
+    AuthenticationError:
       x-error: true
       type: object
-      description: Request was rate limited.
+      description: 'Authentication error: the token provided with the request doesn''t work for the requested operation'
       required:
       - code
       - message
@@ -559,10 +356,46 @@ components:
         code:
           type: string
           enum:
-          - request_rate_limited
+          - authentication_error
+          default: authentication_error
         message:
           type: string
-          example: Request was rate limited. You may be calling the API too much in a short time.
+          example: The [exp] is in the past; the JWT is expired
+          default: The [exp] is in the past; the JWT is expired
+    LoyaltyMemberInfo:
+      type: object
+      description: Loyalty member information. Mx can utilize this information to apply membership benefits.
+      properties:
+        member_id:
+          type: string
+          description: Loyalty member identifier
+        scan_type:
+          type: string
+          description: Type of scan method used for loyalty
+          enum:
+          - QR_CODE
+          - BARCODE
+          - NA
+        scan_payload:
+          type: string
+          description: Scanned loyalty payload value
+    OtherIdentifier:
+      type: object
+      description: Additional identifiers for items
+      properties:
+        name:
+          type: string
+          description: Identifier name
+        value:
+          type: string
+          description: Identifier value
+    ProgramEligibility:
+      description: Eligibility to items for various programs
+      type: string
+      enum:
+      - SNAP
+      - HSA
+      - FSA
     Tender:
       type: object
       description: Payment tender information. When tender_type is DOORDASH_DIRECT, doordash_direct_scan_code is populated with the scanned barcode or QR code value.
@@ -590,23 +423,6 @@ components:
         doordash_direct_scan_code:
           type: string
           description: Scanned barcode or QR code value when tender_type is DOORDASH_DIRECT
-    LoyaltyMemberInfo:
-      type: object
-      description: Loyalty member information. Mx can utilize this information to apply membership benefits.
-      properties:
-        member_id:
-          type: string
-          description: Loyalty member identifier
-        scan_type:
-          type: string
-          description: Type of scan method used for loyalty
-          enum:
-          - QR_CODE
-          - BARCODE
-          - NA
-        scan_payload:
-          type: string
-          description: Scanned loyalty payload value
     server_fault:
       x-error: true
       type: object
@@ -690,3 +506,187 @@ components:
           description: Tax information for this line item; omit, use [], or null when not applicable
           items:
             $ref: '#/components/schemas/TaxInfo'
+    ConflictError:
+      x-error: true
+      type: object
+      description: The checkout has already been authorized and cannot be authorized again.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - checkout_already_authorized
+        message:
+          type: string
+          example: The checkout has already been authorized and cannot be authorized again.
+    RequestNotProcessError:
+      x-error: true
+      type: object
+      description: Request was not process.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - request_rate_limited
+        message:
+          type: string
+          example: Request was not process. Request entity may be too large.
+    FieldError:
+      title: FieldError
+      type: object
+      description: A field whose value couldn't be validated.
+      required:
+      - field
+      - error
+      properties:
+        field:
+          type: string
+          description: Name of the field whose value couldn't be validated.
+          example: pickup_phone_number
+        error:
+          type: string
+          description: The error that was encountered when validating the field's value.
+          example: Invalid phone number format
+    TaxInfo:
+      type: object
+      description: Tax information for line items or transaction
+      properties:
+        amount:
+          type: number
+          description: Tax amount in minor units of the specified currency
+        tax_type:
+          type: string
+          description: Type of tax applied
+          enum:
+          - SALES_TAX
+          - VAT
+          - GST
+          - EXCISE_TAX
+          - TAX_ON_FEES
+          - TAX_ON_SUBTOTAL
+          - OTHER
+        tax_type_other:
+          type: string
+          description: Additional details when tax_type is OTHER
+    TransactionSummary:
+      type:
+      - object
+      - 'null'
+      description: Summary of transaction totals; the property may be omitted, sent as an empty object, or sent as null when not applicable
+      properties:
+        subtotal:
+          type: number
+          description: Subtotal amount in minor units of the specified currency before tax and fees
+        tax:
+          type: number
+          description: Total tax amount in minor units of the specified currency
+        fees:
+          type: number
+          description: Total fees amount in minor units of the specified currency
+        discount:
+          type: number
+          description: Total discount amount in minor units of the specified currency
+    BatchAddTransactionRequest:
+      type: object
+      description: Request to add multiple transactions
+      properties:
+        transactions:
+          type: array
+          description: List of transactions to add
+          items:
+            $ref: '#/components/schemas/Transaction'
+    TransactionContent:
+      type: object
+      description: Transaction details without merchant-supplied transaction identifier
+      required:
+      - total
+      - currency_code
+      properties:
+        total:
+          type: number
+          description: Total transaction amount in minor units of the specified currency
+        currency_code:
+          type: string
+          description: Currency code for the transaction
+          enum:
+          - USD
+          - AUD
+        summary:
+          $ref: '#/components/schemas/TransactionSummary'
+        items:
+          type: array
+          description: List of line items in the transaction
+          items:
+            $ref: '#/components/schemas/TransactionLineItem'
+        discounts:
+          type: array
+          description: Transaction-level discounts
+          items:
+            $ref: '#/components/schemas/DiscountInfo'
+        taxes:
+          type:
+          - array
+          - 'null'
+          description: Transaction-level taxes; omit, use [], or null when not applicable
+          items:
+            $ref: '#/components/schemas/TaxInfo'
+        fees:
+          type: array
+          description: Transaction-level fees
+          items:
+            $ref: '#/components/schemas/FeeInfo'
+        loyalty:
+          type: object
+          description: Loyalty information for transaction
+          properties:
+            member_info:
+              $ref: '#/components/schemas/LoyaltyMemberInfo'
+            points_awarded:
+              type: number
+              description: Points awarded from this transaction
+        tenders:
+          type: array
+          minItems: 1
+          maxItems: 1
+          description: List of payment tenders used in this transaction. Exactly one tender must be provided per transaction; requests with zero or multiple tenders are rejected.
+          items:
+            $ref: '#/components/schemas/Tender'
+    TransactionAuditResult:
+      type: object
+      description: Audit result for transaction authorization
+      properties:
+        reason_code:
+          type: string
+          description: Reason code for audit result
+          enum:
+          - INVALID_SCAN_CODE
+          - CHECKOUT_NOT_ACTIVE
+          - UNKNOWN_CHECKOUT_ID
+          - OTHER
+          - TRANSACTION_TOTAL_MISMATCH
+        message:
+          type: string
+          description: Detailed message for the audit result
+    DiscountInfo:
+      type: object
+      description: Discount information for line items or transaction
+      properties:
+        amount:
+          type: number
+          description: Discount amount in minor units of the specified currency
+        discount_type:
+          type: string
+          description: Type of discount applied
+          enum:
+          - MEMBER_SAVINGS
+          - MX_PROMO
+          - CPG_PROMO
+          - OTHER
+        discount_type_other:
+          type: string
+          description: Additional details when discount_type is OTHER

@@ -85,6 +85,14 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
+  parameters:
+    MerchantSuppliedId:
+      name: merchant_supplied_id
+      in: path
+      required: true
+      description: The merchant-supplied identifier for the store.
+      schema:
+        type: string
   schemas:
     Error:
       type: object
@@ -117,14 +125,6 @@ components:
               is_available:
                 type: boolean
                 description: Whether the item is available for ordering.
-  parameters:
-    MerchantSuppliedId:
-      name: merchant_supplied_id
-      in: path
-      required: true
-      description: The merchant-supplied identifier for the store.
-      schema:
-        type: string
   securitySchemes:
     bearerAuth:
       type: http

@@ -38,28 +38,6 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 components:
   schemas:
-    CpgResource:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        type:
-          $ref: '#/components/schemas/ResourceType'
-        l1Id:
-          type: string
-        l1name:
-          type: string
-    ResourcesSearchResponse:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/CpgResource'
-        searchAfter:
-          type: string
     ResourceType:
       type: string
       enum:
@@ -76,11 +54,15 @@ components:
           description: A human-readable description of the error.
           type: string
           readOnly: true
-    ClassificationType:
-      type: string
-      enum:
-      - BRAND
-      - CATEGORY
+    ResourcesSearchResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CpgResource'
+        searchAfter:
+          type: string
     ResourcesSearchRequest:
       type: object
       required:
@@ -102,6 +84,24 @@ components:
         limit:
           type: number
           default: 10
+    ClassificationType:
+      type: string
+      enum:
+      - BRAND
+      - CATEGORY
+    CpgResource:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/ResourceType'
+        l1Id:
+          type: string
+        l1name:
+          type: string
   responses:
     Unauthorized:
       description: Unauthorized.
@@ -109,14 +109,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    InternalServerError:
-      description: One or more query parameters contained an invalid value.
+    BadRequest:
+      description: Bad request.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request.
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
       content:
         application/json:
           schema:

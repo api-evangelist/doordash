@@ -348,18 +348,80 @@ paths:
       variables: {}
 components:
   schemas:
-    AddressAutoCompleteDetailsResponse:
-      title: AddressAutoCompleteDetailsResponse
-      description: Details about the address suggestions in the auto-complete response
+    delivery_AddressAutoCompleteInput:
+      title: AddressAutoCompleteInput
+      description: Request body for address auto complete endpoint
       type: object
       properties:
-        results:
-          type: array
-          description: List of address suggestions
-          items:
-            $ref: '#/components/schemas/AddressAutoCompleteResult'
+        input_address:
+          type: string
+          description: Partial address input to search for
+          example: 1600 Amphitheatre
+        location:
+          $ref: '#/components/schemas/Location'
+        search_radius_meter:
+          type: integer
+          description: Search radius in meters from the provided location
+          example: 1000
+          default: 1000
+        max_results:
+          type: integer
+          description: Maximum number of results to return
+          example: 3
+          default: 3
+          minimum: 1
+          maximum: 5
+        country:
+          type: string
+          description: Country code to limit search results
+          example: US
+          pattern: ^[A-Z]{2}$
       required:
-      - results
+      - input_address
+    FieldError:
+      title: FieldError
+      type: object
+      description: A field whose value couldn't be validated.
+      required:
+      - field
+      - error
+      properties:
+        field:
+          type: string
+          description: Name of the field whose value couldn't be validated.
+          example: pickup_phone_number
+        error:
+          type: string
+          description: The error that was encountered when validating the field's value.
+          example: Invalid phone number format
+    DropoffAddress:
+      type: string
+      description: Comma-separated full address, in the order appropriate for your locale.
+      example: 901 Market Street 6th Floor San Francisco, CA 94103
+    AddressAutoCompleteInput:
+      title: AddressAutoCompleteInput
+      description: Request body for address auto complete endpoint
+      allOf:
+      - $ref: '#/components/schemas/delivery_AddressAutoCompleteInput'
+      type: object
+    Location:
+      title: Location
+      type: object
+      description: Near-real-time location of the Dasher.
+      required:
+      - lat
+      - lng
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Latitude of the location.
+          example: 123.1312343
+        lng:
+          type: number
+          format: double
+          description: Longitude of the location.
+          example: -37.2144343
     authentication_error:
       x-error: true
       type: object
@@ -377,6 +439,71 @@ components:
           type: string
           example: The [exp] is in the past; the JWT is expired
           default: The [exp] is in the past; the JWT is expired
+    AddressAutoCompleteResponse:
+      title: AddressAutoCompleteResponse
+      description: Response containing address auto-completion suggestions
+      allOf:
+      - $ref: '#/components/schemas/AddressAutoCompleteDetailsResponse'
+      type: object
+    validation_field_error:
+      x-error: true
+      title: ValidationFieldError
+      type: object
+      description: One or more request values couldn't be validated.
+      required:
+      - code
+      - message
+      - field_errors
+      properties:
+        code:
+          type: string
+          enum:
+          - validation_error
+        message:
+          type: string
+          description: One or more request values couldn't be validated.
+          example: One or more request values couldn't be validated.
+        field_errors:
+          type: array
+          description: The list of fields whose values couldn't be validated. See more [error examples](https://developer.doordash.com/en-US/docs/drive/reference/errors)
+          items:
+            $ref: '#/components/schemas/FieldError'
+          readOnly: true
+      components:
+        schemas:
+          FieldError:
+            title: FieldError
+            type: object
+            description: A field whose value couldn't be validated.
+            required:
+            - field
+            - error
+            properties:
+              field:
+                type: string
+                description: Name of the field whose value couldn't be validated.
+                example: pickup_phone_number
+              error:
+                type: string
+                description: The error that was encountered when validating the field's value.
+                example: Invalid phone number format
+    server_fault:
+      x-error: true
+      type: object
+      description: Internal service failure, please try again later.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - service_fault
+          default: service_fault
+        message:
+          type: string
+          example: Internal service failure, please try again later.
+          default: Internal service failure, please try again later.
     AddressAutoCompleteResult:
       title: AddressAutoCompleteResult
       description: Individual address suggestion result
@@ -430,82 +557,6 @@ components:
       - city
       - state
       - zip_code
-    DropoffAddress:
-      type: string
-      description: Comma-separated full address, in the order appropriate for your locale.
-      example: 901 Market Street 6th Floor San Francisco, CA 94103
-    AddressAutoCompleteInput:
-      title: AddressAutoCompleteInput
-      description: Request body for address auto complete endpoint
-      allOf:
-      - $ref: '#/components/schemas/delivery_AddressAutoCompleteInput'
-      type: object
-    AddressAutoCompleteResponse:
-      title: AddressAutoCompleteResponse
-      description: Response containing address auto-completion suggestions
-      allOf:
-      - $ref: '#/components/schemas/AddressAutoCompleteDetailsResponse'
-      type: object
-    validation_field_error:
-      x-error: true
-      title: ValidationFieldError
-      type: object
-      description: One or more request values couldn't be validated.
-      required:
-      - code
-      - message
-      - field_errors
-      properties:
-        code:
-          type: string
-          enum:
-          - validation_error
-        message:
-          type: string
-          description: One or more request values couldn't be validated.
-          example: One or more request values couldn't be validated.
-        field_errors:
-          type: array
-          description: The list of fields whose values couldn't be validated. See more [error examples](https://developer.doordash.com/en-US/docs/drive/reference/errors)
-          items:
-            $ref: '#/components/schemas/FieldError'
-          readOnly: true
-      components:
-        schemas:
-          FieldError:
-            title: FieldError
-            type: object
-            description: A field whose value couldn't be validated.
-            required:
-            - field
-            - error
-            properties:
-              field:
-                type: string
-                description: Name of the field whose value couldn't be validated.
-                example: pickup_phone_number
-              error:
-                type: string
-                description: The error that was encountered when validating the field's value.
-                example: Invalid phone number format
-    Location:
-      title: Location
-      type: object
-      description: Near-real-time location of the Dasher.
-      required:
-      - lat
-      - lng
-      properties:
-        lat:
-          type: number
-          format: double
-          description: Latitude of the location.
-          example: 123.1312343
-        lng:
-          type: number
-          format: double
-          description: Longitude of the location.
-          example: -37.2144343
     authorization_error:
       x-error: true
       type: object
@@ -523,172 +574,23 @@ components:
           type: string
           example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
           default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
-    server_fault:
-      x-error: true
-      type: object
-      description: Internal service failure, please try again later.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - service_fault
-          default: service_fault
-        message:
-          type: string
-          example: Internal service failure, please try again later.
-          default: Internal service failure, please try again later.
-    FieldError:
-      title: FieldError
-      type: object
-      description: A field whose value couldn't be validated.
-      required:
-      - field
-      - error
-      properties:
-        field:
-          type: string
-          description: Name of the field whose value couldn't be validated.
-          example: pickup_phone_number
-        error:
-          type: string
-          description: The error that was encountered when validating the field's value.
-          example: Invalid phone number format
-    delivery_AddressAutoCompleteInput:
-      title: AddressAutoCompleteInput
-      description: Request body for address auto complete endpoint
+    AddressAutoCompleteDetailsResponse:
+      title: AddressAutoCompleteDetailsResponse
+      description: Details about the address suggestions in the auto-complete response
       type: object
       properties:
-        input_address:
-          type: string
-          description: Partial address input to search for
-          example: 1600 Amphitheatre
-        location:
-          $ref: '#/components/schemas/Location'
-        search_radius_meter:
-          type: integer
-          description: Search radius in meters from the provided location
-          example: 1000
-          default: 1000
-        max_results:
-          type: integer
-          description: Maximum number of results to return
-          example: 3
-          default: 3
-          minimum: 1
-          maximum: 5
-        country:
-          type: string
-          description: Country code to limit search results
-          example: US
-          pattern: ^[A-Z]{2}$
+        results:
+          type: array
+          description: List of address suggestions
+          items:
+            $ref: '#/components/schemas/AddressAutoCompleteResult'
       required:
-      - input_address
-    IntegrationType:
+      - results
+    IntegrationId:
       type: string
-      enum:
-      - BUSINESS
-      - BUSINESS_GROUP
-      - STORE
-      example: store
-      default: business
-      description: Type of the integration id
-    ReverseGeocodeResponse:
-      type: object
-      title: ReverseGeocodeResponse
-      description: List of addresses closest to the given location
-      required:
-      - addresses
-      properties:
-        addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/AddressDetails'
-    InternalError:
-      x-error: true
-      title: InternalError
-      type: object
-      description: Internal errors that occur during the api call.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - internal_service_error
-        message:
-          type: string
-          example: Internal Service Error.
-    AutocompleteSuggestionsResponse:
-      type: object
-      title: AutocompleteSuggestionsResponse
-      description: List of suggested addresses based on the input
-      required:
-      - suggestions
-      properties:
-        suggestions:
-          type: array
-          items:
-            $ref: '#/components/schemas/AutocompleteSuggestion'
-    AutocompleteSuggestion:
-      type: object
-      properties:
-        source_place_id:
-          type: string
-          description: Source place id
-          example: ChIJQdd29XuAhYARlLzH0JbNTyQ
-        formatted_address:
-          type: string
-          description: Short displayable address
-          example: 303 2nd Street, San Francisco, CA, USA
-        formatted_address_segmented:
-          type: array
-          description: Address segmented into two strings
-          example:
-          - 303 2nd Street
-          - San Francisco, CA, USA
-          items:
-            type: string
-    AddressResourceNotFoundError:
-      x-error: true
-      title: AddressResourceNotFoundError
-      type: object
-      description: The response returned when requested resource is not found/available.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - not_found
-        message:
-          type: string
-          example: Address is not found.
-    RateLimitedError:
-      x-error: true
-      title: RateLimitedError
-      type: object
-      description: Rate limited.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - rate_limit_error
-        message:
-          type: string
-          example: Developer account endpoint rate limit exceeded.
-    Language:
-      type: string
-      pattern: ^[a-z]{2}$
-      description: Language code in ISO 639-1 format
-      example: en
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the business, business group or store.
+      example: '987654'
     AddressDetails:
       type: object
       properties:
@@ -720,12 +622,54 @@ components:
       type: string
       pattern: ^(\+|-)?(?:90(?:(?:\.0{1,7})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,7})?))$
       example: -32.1234537
-    CountryCode:
-      type: string
-      pattern: ^[A-Z]{2}$
-      description: Country code in ISO 3166-1 alpha-2 format
-      example: US
-    AuthenticationError:
+    AutocompleteSuggestion:
+      type: object
+      properties:
+        source_place_id:
+          type: string
+          description: Source place id
+          example: ChIJQdd29XuAhYARlLzH0JbNTyQ
+        formatted_address:
+          type: string
+          description: Short displayable address
+          example: 303 2nd Street, San Francisco, CA, USA
+        formatted_address_segmented:
+          type: array
+          description: Address segmented into two strings
+          example:
+          - 303 2nd Street
+          - San Francisco, CA, USA
+          items:
+            type: string
+    GetOrCreateAddressRequest:
+      type: object
+      required:
+      - integration_id
+      - integration_type
+      - formatted_address
+      properties:
+        integration_id:
+          $ref: '#/components/schemas/IntegrationId'
+        integration_type:
+          $ref: '#/components/schemas/IntegrationType'
+        formatted_address:
+          type: string
+          description: Short displayable address
+          example: 303 2nd Street, San Francisco, CA, USA
+        country_code:
+          $ref: '#/components/schemas/CountryCode'
+    ReverseGeocodeResponse:
+      type: object
+      title: ReverseGeocodeResponse
+      description: List of addresses closest to the given location
+      required:
+      - addresses
+      properties:
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressDetails'
+    AuthorizationError:
       x-error: true
       type: object
       description: Authorization error, available credentials don't match requested operation
@@ -736,10 +680,19 @@ components:
         code:
           type: string
           enum:
-          - authentication_error
+          - authorization_error
         message:
           type: string
-          example: Request does not contain a JWT.
+          example: You are not authorized to perform this action.
+    Longitude:
+      type: string
+      pattern: ^(\+|-)?(?:180(?:(?:\.0{1,7})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,7})?))$
+      example: -156.1234538
+    CountryCode:
+      type: string
+      pattern: ^[A-Z]{2}$
+      description: Country code in ISO 3166-1 alpha-2 format
+      example: US
     ValidationFieldError:
       x-error: true
       title: ValidationFieldError
@@ -760,11 +713,6 @@ components:
         errors:
           type: string
           example: Missing business/store id.
-    IntegrationId:
-      type: string
-      pattern: ^([1-9][0-9]*)$
-      description: Unique ID for the business, business group or store.
-      example: '987654'
     AddressDetailsResponse:
       type: object
       title: AddressDetailsResponse
@@ -774,7 +722,7 @@ components:
       properties:
         address:
           $ref: '#/components/schemas/AddressDetails'
-    AuthorizationError:
+    AuthenticationError:
       x-error: true
       type: object
       description: Authorization error, available credentials don't match requested operation
@@ -785,51 +733,84 @@ components:
         code:
           type: string
           enum:
-          - authorization_error
+          - authentication_error
         message:
           type: string
-          example: You are not authorized to perform this action.
-    GetOrCreateAddressRequest:
-      type: object
-      required:
-      - integration_id
-      - integration_type
-      - formatted_address
-      properties:
-        integration_id:
-          $ref: '#/components/schemas/IntegrationId'
-        integration_type:
-          $ref: '#/components/schemas/IntegrationType'
-        formatted_address:
-          type: string
-          description: Short displayable address
-          example: 303 2nd Street, San Francisco, CA, USA
-        country_code:
-          $ref: '#/components/schemas/CountryCode'
-    Longitude:
-      type: string
-      pattern: ^(\+|-)?(?:180(?:(?:\.0{1,7})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,7})?))$
-      example: -156.1234538
-  parameters:
+          example: Request does not contain a JWT.
     Language:
-      name: language
-      in: query
-      description: ISO 639-1 language code
-      schema:
-        $ref: '#/components/schemas/Language'
-    CountryCode:
-      name: country_code
-      in: query
-      description: ISO 3166-1 alpha-2 country code
-      schema:
-        $ref: '#/components/schemas/CountryCode'
-    IntegrationId:
-      name: integration_id
-      in: query
-      description: business id, business group id or store id
-      required: true
-      schema:
-        $ref: '#/components/schemas/IntegrationId'
+      type: string
+      pattern: ^[a-z]{2}$
+      description: Language code in ISO 639-1 format
+      example: en
+    AutocompleteSuggestionsResponse:
+      type: object
+      title: AutocompleteSuggestionsResponse
+      description: List of suggested addresses based on the input
+      required:
+      - suggestions
+      properties:
+        suggestions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AutocompleteSuggestion'
+    AddressResourceNotFoundError:
+      x-error: true
+      title: AddressResourceNotFoundError
+      type: object
+      description: The response returned when requested resource is not found/available.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - not_found
+        message:
+          type: string
+          example: Address is not found.
+    InternalError:
+      x-error: true
+      title: InternalError
+      type: object
+      description: Internal errors that occur during the api call.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - internal_service_error
+        message:
+          type: string
+          example: Internal Service Error.
+    RateLimitedError:
+      x-error: true
+      title: RateLimitedError
+      type: object
+      description: Rate limited.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - rate_limit_error
+        message:
+          type: string
+          example: Developer account endpoint rate limit exceeded.
+    IntegrationType:
+      type: string
+      enum:
+      - BUSINESS
+      - BUSINESS_GROUP
+      - STORE
+      example: store
+      default: business
+      description: Type of the integration id
+  parameters:
     Longitude:
       name: lon
       in: query
@@ -850,6 +831,25 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/Latitude'
+    Language:
+      name: language
+      in: query
+      description: ISO 639-1 language code
+      schema:
+        $ref: '#/components/schemas/Language'
+    IntegrationId:
+      name: integration_id
+      in: query
+      description: business id, business group id or store id
+      required: true
+      schema:
+        $ref: '#/components/schemas/IntegrationId'
+    CountryCode:
+      name: country_code
+      in: query
+      description: ISO 3166-1 alpha-2 country code
+      schema:
+        $ref: '#/components/schemas/CountryCode'
   securitySchemes:
     BearerAuth:
       type: http

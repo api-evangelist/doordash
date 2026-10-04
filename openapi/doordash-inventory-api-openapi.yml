@@ -191,6 +191,32 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    ItemError:
+      type: object
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: The item identifier that had an error.
+          example: D-12345
+        message:
+          type: string
+          description: The error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
     StoreItemsResponse:
       type: object
       properties:
@@ -207,6 +233,16 @@ components:
           description: Any errors encountered during processing.
           items:
             $ref: '#/components/schemas/ItemError'
+    StoreItemsRequest:
+      type: object
+      required:
+      - items
+      properties:
+        items:
+          type: array
+          description: The store-level item inventory and pricing data.
+          items:
+            $ref: '#/components/schemas/StoreItem'
     StoreItem:
       type: object
       required:
@@ -237,42 +273,6 @@ components:
           type: string
           description: The shelf location of the item in the store.
           example: example
-    ItemError:
-      type: object
-      properties:
-        merchant_supplied_id:
-          type: string
-          description: The item identifier that had an error.
-          example: D-12345
-        message:
-          type: string
-          description: The error message.
-          example: example
-        code:
-          type: string
-          description: A machine-readable error code.
-          example: ABC123
-    StoreItemsRequest:
-      type: object
-      required:
-      - items
-      properties:
-        items:
-          type: array
-          description: The store-level item inventory and pricing data.
-          items:
-            $ref: '#/components/schemas/StoreItem'
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: A human-readable error message.
-          example: example
-        code:
-          type: string
-          description: A machine-readable error code.
-          example: ABC123
   parameters:
     StoreLocationId:
       name: store_location_id

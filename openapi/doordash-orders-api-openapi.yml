@@ -158,6 +158,17 @@ components:
           type: integer
           description: The price of the substitute item in cents.
           example: 42
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
     OrderItem:
       type: object
       properties:
@@ -266,36 +277,6 @@ components:
           type: string
           description: The reason for cancellation.
           example: example
-    OrderItemOption:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique option identifier.
-          example: D-12345
-        name:
-          type: string
-          description: The option name.
-          example: Acme Pickup Store
-        quantity:
-          type: integer
-          description: The quantity of this option.
-          example: 42
-        price:
-          type: integer
-          description: The option price in cents.
-          example: 42
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: A human-readable error message.
-          example: example
-        code:
-          type: string
-          description: A machine-readable error code.
-          example: ABC123
     OrderUpdate:
       type: object
       properties:
@@ -318,6 +299,25 @@ components:
           description: Item substitutions for the order.
           items:
             $ref: '#/components/schemas/Substitution'
+    OrderItemOption:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique option identifier.
+          example: D-12345
+        name:
+          type: string
+          description: The option name.
+          example: Acme Pickup Store
+        quantity:
+          type: integer
+          description: The quantity of this option.
+          example: 42
+        price:
+          type: integer
+          description: The option price in cents.
+          example: 42
   parameters:
     OrderId:
       name: order_id

@@ -158,10 +158,10 @@ paths:
               $ref: '#/components/schemas/Promotion'
 components:
   schemas:
-    RequestRateLimitedError:
+    RequestNotProcessError:
       x-error: true
       type: object
-      description: Request was rate limited.
+      description: Request was not process.
       required:
       - code
       - message
@@ -172,7 +172,7 @@ components:
           - request_rate_limited
         message:
           type: string
-          example: Request was rate limited. You may be calling the API too much in a short time.
+          example: Request was not process. Request entity may be too large.
     AsyncOperationResponse:
       type: object
       properties:
@@ -188,6 +188,22 @@ components:
           - PARTIAL_SUCCESS
         message:
           type: string
+    FieldError:
+      title: FieldError
+      type: object
+      description: A field whose value couldn't be validated.
+      required:
+      - field
+      - error
+      properties:
+        field:
+          type: string
+          description: Name of the field whose value couldn't be validated.
+          example: pickup_phone_number
+        error:
+          type: string
+          description: The error that was encountered when validating the field's value.
+          example: Invalid phone number format
     AuthenticationError:
       x-error: true
       type: object
@@ -279,10 +295,10 @@ components:
           type: string
           format: yyyy-MM-ddTHH:mm:ssXXX
           description: required, end time of the promotion with local timezone https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#ISO_ZONED_DATE_TIME
-    RequestNotProcessError:
+    RequestRateLimitedError:
       x-error: true
       type: object
-      description: Request was not process.
+      description: Request was rate limited.
       required:
       - code
       - message
@@ -293,7 +309,56 @@ components:
           - request_rate_limited
         message:
           type: string
-          example: Request was not process. Request entity may be too large.
+          example: Request was rate limited. You may be calling the API too much in a short time.
+    server_fault:
+      x-error: true
+      type: object
+      description: Internal service failure, please try again later.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - service_fault
+          default: service_fault
+        message:
+          type: string
+          example: Internal service failure, please try again later.
+          default: Internal service failure, please try again later.
+    NotFoundError:
+      x-error: true
+      type: object
+      description: Request entity was not found.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - unknown_business_id
+        message:
+          type: string
+          example: Entity was not found
+    AuthorizationError:
+      x-error: true
+      type: object
+      description: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authorization_error
+          default: authorization_error
+        message:
+          type: string
+          example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+          default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
     ValidationFieldError:
       x-error: true
       title: ValidationFieldError
@@ -318,68 +383,3 @@ components:
           items:
             $ref: '#/components/schemas/FieldError'
           readOnly: true
-    NotFoundError:
-      x-error: true
-      type: object
-      description: Request entity was not found.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - unknown_business_id
-        message:
-          type: string
-          example: Entity was not found
-    FieldError:
-      title: FieldError
-      type: object
-      description: A field whose value couldn't be validated.
-      required:
-      - field
-      - error
-      properties:
-        field:
-          type: string
-          description: Name of the field whose value couldn't be validated.
-          example: pickup_phone_number
-        error:
-          type: string
-          description: The error that was encountered when validating the field's value.
-          example: Invalid phone number format
-    server_fault:
-      x-error: true
-      type: object
-      description: Internal service failure, please try again later.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - service_fault
-          default: service_fault
-        message:
-          type: string
-          example: Internal service failure, please try again later.
-          default: Internal service failure, please try again later.
-    AuthorizationError:
-      x-error: true
-      type: object
-      description: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - authorization_error
-          default: authorization_error
-        message:
-          type: string
-          example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
-          default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'

@@ -72,34 +72,18 @@ paths:
         '500':
           description: Internal Server Error
 components:
-  parameters:
-    IntegrationId:
-      name: integration_id
-      in: query
-      description: business id, business group id or store id
-      required: true
-      schema:
-        $ref: '#/components/schemas/IntegrationId'
-    AppPlatform:
-      name: app_platform
-      in: query
-      description: operating system like android or ios.
-      required: true
-      schema:
-        $ref: '#/components/schemas/AppPlatform'
-    IntegrationType:
-      name: integration_type
-      in: query
-      description: business id, business group id or store id
-      schema:
-        $ref: '#/components/schemas/IntegrationType'
-    OptionalIntegrationId:
-      name: integration_id
-      in: query
-      description: business id, business group id or store id
-      schema:
-        $ref: '#/components/schemas/IntegrationId'
   schemas:
+    HowRewardsWorkSection:
+      type: object
+      properties:
+        title:
+          type: string
+          description: title of the section
+          example: You can earn on our DoorDash store by linking your DoorDash account.
+        icon:
+          type: string
+          description: icon to use as a bullet point for the section
+          example: logo/doordash
     GetStorefrontMinimumApplicationVersionResponse:
       type: object
       title: GetStorefrontMinimumApplicationVersionResponse
@@ -111,6 +95,11 @@ components:
           type: string
           description: minimum version of the app.
           example: '1234'
+    IntegrationId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the business, business group or store.
+      example: '987654'
     GetStorefrontAppMetadataResponse:
       type: object
       title: GetStorefrontAppMetadataResponse
@@ -200,17 +189,6 @@ components:
           type: boolean
           description: whether card linking is enabled or not.
           example: true
-    HowRewardsWorkSection:
-      type: object
-      properties:
-        title:
-          type: string
-          description: title of the section
-          example: You can earn on our DoorDash store by linking your DoorDash account.
-        icon:
-          type: string
-          description: icon to use as a bullet point for the section
-          example: logo/doordash
     SupportedAccountType:
       type: string
       enum:
@@ -219,6 +197,17 @@ components:
       - EXTERNAL_ACCOUNT
       example: SF_ACCOUNT
       description: what kind of account it is for logged in user.
+    AppPlatform:
+      type: string
+      enum:
+      - android
+      - ios
+      example: android
+      description: operating system of the application.
+    QRCodeEnabled:
+      type: boolean
+      description: if true, return then the mx is enabled show qr code option.
+      default: false
     IntegrationType:
       type: string
       enum:
@@ -228,22 +217,33 @@ components:
       example: store
       default: business
       description: Type of the integration id
-    AppPlatform:
-      type: string
-      enum:
-      - android
-      - ios
-      example: android
-      description: operating system of the application.
+  parameters:
     IntegrationId:
-      type: string
-      pattern: ^([1-9][0-9]*)$
-      description: Unique ID for the business, business group or store.
-      example: '987654'
-    QRCodeEnabled:
-      type: boolean
-      description: if true, return then the mx is enabled show qr code option.
-      default: false
+      name: integration_id
+      in: query
+      description: business id, business group id or store id
+      required: true
+      schema:
+        $ref: '#/components/schemas/IntegrationId'
+    OptionalIntegrationId:
+      name: integration_id
+      in: query
+      description: business id, business group id or store id
+      schema:
+        $ref: '#/components/schemas/IntegrationId'
+    IntegrationType:
+      name: integration_type
+      in: query
+      description: business id, business group id or store id
+      schema:
+        $ref: '#/components/schemas/IntegrationType'
+    AppPlatform:
+      name: app_platform
+      in: query
+      description: operating system like android or ios.
+      required: true
+      schema:
+        $ref: '#/components/schemas/AppPlatform'
   securitySchemes:
     BearerAuth:
       type: http

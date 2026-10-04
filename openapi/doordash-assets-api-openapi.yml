@@ -135,42 +135,23 @@ paths:
       operationId: postAdsApiV1AssetsByAssetIdRegister
       x-operation-id-source: derived
 components:
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Unauthorized.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    InternalServerError:
-      description: One or more query parameters contained an invalid value.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    AssetState:
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    AssetType:
       type: string
       enum:
-      - PENDING_REGISTRATION
-      - REGISTERED
-      - ACTIVE
-      - INVALID
-      - ERROR
-      - ARCHIVED
-      description: Current state of the asset
+      - IMAGE
+      - VIDEO
+      description: Type of the asset
     Asset:
       type: object
       required:
@@ -202,22 +183,41 @@ components:
         cdnUrl:
           type: string
           description: CDN URL of the asset
-    AssetType:
+    AssetState:
       type: string
       enum:
-      - IMAGE
-      - VIDEO
-      description: Type of the asset
-    Error:
-      properties:
-        code:
-          description: An enumerated error for machine use.
-          type: string
-          readOnly: true
-        details:
-          description: A human-readable description of the error.
-          type: string
-          readOnly: true
+      - PENDING_REGISTRATION
+      - REGISTERED
+      - ACTIVE
+      - INVALID
+      - ERROR
+      - ARCHIVED
+      description: Current state of the asset
+  responses:
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     Ads_API_Key_Authentication:
       type: apiKey

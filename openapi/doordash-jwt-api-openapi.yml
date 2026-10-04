@@ -82,6 +82,27 @@ paths:
       deprecated: false
 components:
   schemas:
+    RateLimitedError:
+      x-error: true
+      title: RateLimitedError
+      type: object
+      description: Rate limited.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - rate_limit_error
+        message:
+          type: string
+          example: Developer account endpoint rate limit exceeded.
+    IntegrationId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the business, business group or store.
+      example: '987654'
     AuthenticationError:
       x-error: true
       type: object
@@ -97,6 +118,28 @@ components:
         message:
           type: string
           example: Request does not contain a JWT.
+    StorefrontCreateJWTRequest:
+      type: object
+      required:
+      - integration_id
+      properties:
+        integration_id:
+          $ref: '#/components/schemas/IntegrationId'
+        integration_type:
+          $ref: '#/components/schemas/IntegrationType'
+    StorefrontCreateJWTResponse:
+      type: object
+      required:
+      - jwt
+      - expires_in
+      properties:
+        jwt:
+          type: string
+          description: jwt
+        expires_in:
+          type: number
+          format: integer
+          description: minutes after which generated jwt will expire.
     StoreResourceNotFoundError:
       x-error: true
       title: StoreResourceNotFoundError
@@ -113,24 +156,6 @@ components:
         message:
           type: string
           example: Store is inactive/invalid.
-    StorefrontCreateJWTRequest:
-      type: object
-      required:
-      - integration_id
-      properties:
-        integration_id:
-          $ref: '#/components/schemas/IntegrationId'
-        integration_type:
-          $ref: '#/components/schemas/IntegrationType'
-    IntegrationType:
-      type: string
-      enum:
-      - BUSINESS
-      - BUSINESS_GROUP
-      - STORE
-      example: store
-      default: business
-      description: Type of the integration id
     InternalError:
       x-error: true
       title: InternalError
@@ -147,24 +172,21 @@ components:
         message:
           type: string
           example: Internal Service Error.
-    IntegrationId:
-      type: string
-      pattern: ^([1-9][0-9]*)$
-      description: Unique ID for the business, business group or store.
-      example: '987654'
-    StorefrontCreateJWTResponse:
+    AuthorizationError:
+      x-error: true
       type: object
+      description: Authorization error, available credentials don't match requested operation
       required:
-      - jwt
-      - expires_in
+      - code
+      - message
       properties:
-        jwt:
+        code:
           type: string
-          description: jwt
-        expires_in:
-          type: number
-          format: integer
-          description: minutes after which generated jwt will expire.
+          enum:
+          - authorization_error
+        message:
+          type: string
+          example: You are not authorized to perform this action.
     ValidationFieldError:
       x-error: true
       title: ValidationFieldError
@@ -185,37 +207,15 @@ components:
         errors:
           type: string
           example: Missing business/store id.
-    RateLimitedError:
-      x-error: true
-      title: RateLimitedError
-      type: object
-      description: Rate limited.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - rate_limit_error
-        message:
-          type: string
-          example: Developer account endpoint rate limit exceeded.
-    AuthorizationError:
-      x-error: true
-      type: object
-      description: Authorization error, available credentials don't match requested operation
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - authorization_error
-        message:
-          type: string
-          example: You are not authorized to perform this action.
+    IntegrationType:
+      type: string
+      enum:
+      - BUSINESS
+      - BUSINESS_GROUP
+      - STORE
+      example: store
+      default: business
+      description: Type of the integration id
   securitySchemes:
     BearerAuth:
       type: http

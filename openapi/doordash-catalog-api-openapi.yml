@@ -218,6 +218,79 @@ paths:
       - bearerAuth: []
 components:
   schemas:
+    ProductIdType:
+      description: Product ID type
+      type: string
+      enum:
+      - GTIN_14
+      - UPC
+      - DD_SIC
+    StartDate:
+      description: Start date for the resource to go live. The format of the date is yyyy-MM-dd HH:mm:ss.
+      type: string
+      example: '2025-11-01 00:00:00'
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    CodeDescription:
+      description: A human-readable description of the code.
+      type: string
+    MonetaryFieldsExtended:
+      required:
+      - unitAmount
+      - currency
+      - displayString
+      - decimalPlaces
+      - symbol
+      - symbolPlacement
+      - sign
+      properties:
+        unitAmount:
+          description: Integer representing a monetary value in cents.
+          type: number
+        currency:
+          description: Monetary value currency
+          type: string
+          enum:
+          - USD
+        displayString:
+          description: Monetary value formatted for display
+          type: string
+        decimalPlaces:
+          description: Monetary value currency decimal places
+          type: number
+        symbol:
+          description: Monetary value symbol
+          type: string
+        symbolPlacement:
+          description: Monetary value symbol placement
+          type: string
+          enum:
+          - left
+          - right
+        sign:
+          description: True indicates the monetary value is positive. False indicates the monetary value is negative.
+          type: boolean
+    StatusRead:
+      description: Current resource state.
+      type: string
+      enum:
+      - INCOMPLETE
+      - IN_REVIEW
+      - SCHEDULED
+      - ACTIVE
+      - PAUSED
+      - ENDED
+      - DRAFT
+      - REJECTED
+      - CANCELLED
     CampaignResponse:
       required:
       - campaignId
@@ -260,9 +333,6 @@ components:
           $ref: '#/components/schemas/PlacementType'
         permission:
           $ref: '#/components/schemas/Permission'
-    Name:
-      description: Resource name.
-      type: string
     Permission:
       required:
       - isReadOnly
@@ -274,6 +344,13 @@ components:
         message:
           description: Description of the campaign permission
           type: string
+    EndDate:
+      description: End date for the resource to stop running. The format of the date is yyyy-MM-dd HH:mm:ss.
+      type: string
+      example: '2025-12-01 00:00:00'
+    Code:
+      description: An enumerated success or error code for machine use.
+      type: string
     CatalogValidationResponse:
       required:
       - idType
@@ -307,33 +384,29 @@ components:
           type: array
           items:
             type: string
-    PacingStrategy:
-      description: Controls how the budget is distributed over the campaign duration.
+    ProductId:
+      description: Unique product identifier based on product ID type.
       type: string
-      enum:
-      - DEMAND
-      - UNSPECIFIED
-      x-enumDescriptions:
-        DEMAND: Spend more of the budget when traffic is high, and less when traffic is low.
-        UNSPECIFIED: Specify to use the default pacing strategy.
     CampaignId:
       description: Unique campaign identifier.
       type: string
-    ProductIdType:
-      description: Product ID type
+    StatusDescription:
+      description: Description of the resource is in current state.
+      type: string
+    PlacementType:
+      description: Specifies how all ad groups for the campaign will specify placement type details.
       type: string
       enum:
-      - GTIN_14
-      - UPC
-      - DD_SIC
+      - AUTOMATIC
+      - MANUAL
+    Name:
+      description: Resource name.
+      type: string
     CampaignType:
       description: The advertising product managed by this campaign.
       type: string
       enum:
       - SPONSORED_PRODUCTS
-    Code:
-      description: An enumerated success or error code for machine use.
-      type: string
     BudgetRead:
       required:
       - daily
@@ -351,91 +424,49 @@ components:
             description: A lifetime budget for the campaign
         pacingStrategy:
           $ref: '#/components/schemas/PacingStrategy'
-    Error:
-      properties:
-        code:
-          description: An enumerated error for machine use.
-          type: string
-          readOnly: true
-        details:
-          description: A human-readable description of the error.
-          type: string
-          readOnly: true
-    StatusDescription:
-      description: Description of the resource is in current state.
-      type: string
-    CodeDescription:
-      description: A human-readable description of the code.
-      type: string
-    StatusRead:
-      description: Current resource state.
+    PacingStrategy:
+      description: Controls how the budget is distributed over the campaign duration.
       type: string
       enum:
-      - INCOMPLETE
-      - IN_REVIEW
-      - SCHEDULED
-      - ACTIVE
-      - PAUSED
-      - ENDED
-      - DRAFT
-      - REJECTED
-      - CANCELLED
-    EndDate:
-      description: End date for the resource to stop running. The format of the date is yyyy-MM-dd HH:mm:ss.
-      type: string
-      example: '2025-12-01 00:00:00'
-    PlacementType:
-      description: Specifies how all ad groups for the campaign will specify placement type details.
-      type: string
-      enum:
-      - AUTOMATIC
-      - MANUAL
-    StartDate:
-      description: Start date for the resource to go live. The format of the date is yyyy-MM-dd HH:mm:ss.
-      type: string
-      example: '2025-11-01 00:00:00'
+      - DEMAND
+      - UNSPECIFIED
+      x-enumDescriptions:
+        DEMAND: Spend more of the budget when traffic is high, and less when traffic is low.
+        UNSPECIFIED: Specify to use the default pacing strategy.
     Description:
       description: Resource description.
       type: string
-    ProductId:
-      description: Unique product identifier based on product ID type.
-      type: string
-    MonetaryFieldsExtended:
-      required:
-      - unitAmount
-      - currency
-      - displayString
-      - decimalPlaces
-      - symbol
-      - symbolPlacement
-      - sign
+    CatalogItemsResponse:
+      type: object
       properties:
-        unitAmount:
-          description: Integer representing a monetary value in cents.
-          type: number
-        currency:
-          description: Monetary value currency
+        status:
           type: string
-          enum:
-          - USD
-        displayString:
-          description: Monetary value formatted for display
+          description: The processing status of the request.
+          example: active
+        items_processed:
+          type: integer
+          description: The number of items processed.
+          example: 42
+        errors:
+          type: array
+          description: Any errors encountered during processing.
+          items:
+            $ref: '#/components/schemas/ItemError'
+    ItemError:
+      type: object
+      properties:
+        merchant_supplied_id:
           type: string
-        decimalPlaces:
-          description: Monetary value currency decimal places
-          type: number
-        symbol:
-          description: Monetary value symbol
+          description: The item identifier that had an error.
+          example: D-12345
+        message:
           type: string
-        symbolPlacement:
-          description: Monetary value symbol placement
+          description: The error message.
+          example: example
+        code:
           type: string
-          enum:
-          - left
-          - right
-        sign:
-          description: True indicates the monetary value is positive. False indicates the monetary value is negative.
-          type: boolean
+          description: A machine-readable error code.
+          example: ABC123
     CatalogItem:
       type: object
       required:
@@ -492,6 +523,16 @@ components:
           type: boolean
           description: Whether the item contains alcohol.
           example: true
+    CatalogItemsRequest:
+      type: object
+      required:
+      - items
+      properties:
+        items:
+          type: array
+          description: The items to add or update in the catalog.
+          items:
+            $ref: '#/components/schemas/CatalogItem'
     Error_2:
       type: object
       properties:
@@ -503,47 +544,6 @@ components:
           type: string
           description: A machine-readable error code.
           example: ABC123
-    ItemError:
-      type: object
-      properties:
-        merchant_supplied_id:
-          type: string
-          description: The item identifier that had an error.
-          example: D-12345
-        message:
-          type: string
-          description: The error message.
-          example: example
-        code:
-          type: string
-          description: A machine-readable error code.
-          example: ABC123
-    CatalogItemsRequest:
-      type: object
-      required:
-      - items
-      properties:
-        items:
-          type: array
-          description: The items to add or update in the catalog.
-          items:
-            $ref: '#/components/schemas/CatalogItem'
-    CatalogItemsResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          description: The processing status of the request.
-          example: active
-        items_processed:
-          type: integer
-          description: The number of items processed.
-          example: 42
-        errors:
-          type: array
-          description: Any errors encountered during processing.
-          items:
-            $ref: '#/components/schemas/ItemError'
   responses:
     InternalServerError:
       description: One or more query parameters contained an invalid value.
@@ -551,14 +551,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Unauthorized.
+    BadRequest:
+      description: Bad request.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request.
+    Unauthorized:
+      description: Unauthorized.
       content:
         application/json:
           schema:

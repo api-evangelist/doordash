@@ -185,21 +185,40 @@ components:
           - completed
           - failed
           example: received
-    MenuRequest:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+    MenuOption:
       type: object
       required:
-      - store_id
-      - categories
+      - id
+      - name
+      - price
       properties:
-        store_id:
+        id:
           type: string
-          description: The merchant-supplied store identifier.
+          description: The unique identifier for this option.
           example: D-12345
-        categories:
-          type: array
-          description: The menu categories containing items.
-          items:
-            $ref: '#/components/schemas/MenuCategory'
+        name:
+          type: string
+          description: The display name of the option.
+          example: Acme Pickup Store
+        price:
+          type: integer
+          description: The additional price for this option in cents.
+          example: 42
+        is_active:
+          type: boolean
+          description: Whether the option is currently available.
+          example: true
     OptionGroup:
       type: object
       required:
@@ -230,40 +249,21 @@ components:
           description: The available options in this group.
           items:
             $ref: '#/components/schemas/MenuOption'
-    MenuOption:
+    MenuRequest:
       type: object
       required:
-      - id
-      - name
-      - price
+      - store_id
+      - categories
       properties:
-        id:
+        store_id:
           type: string
-          description: The unique identifier for this option.
+          description: The merchant-supplied store identifier.
           example: D-12345
-        name:
-          type: string
-          description: The display name of the option.
-          example: Acme Pickup Store
-        price:
-          type: integer
-          description: The additional price for this option in cents.
-          example: 42
-        is_active:
-          type: boolean
-          description: Whether the option is currently available.
-          example: true
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: A human-readable error message.
-          example: example
-        code:
-          type: string
-          description: A machine-readable error code.
-          example: ABC123
+        categories:
+          type: array
+          description: The menu categories containing items.
+          items:
+            $ref: '#/components/schemas/MenuCategory'
     MenuItem:
       type: object
       required:

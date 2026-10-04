@@ -140,39 +140,22 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    ReportRequest:
+    ReportRequestResponse:
       type: object
-      required:
-      - report_type
-      - start_date
-      - end_date
       properties:
-        report_type:
+        report_id:
           type: string
-          description: The type of report to generate.
+          description: The unique identifier for the report request. Use this to check status and retrieve the download link.
+          example: D-12345
+        status:
+          type: string
+          description: The current processing status of the report.
           enum:
-          - financial
-          - operations
-          - menu
-          - feedback
-          example: financial
-        start_date:
-          type: string
-          format: date
-          description: The start date for the report period in YYYY-MM-DD format.
-          example: '2026-06-02'
-        end_date:
-          type: string
-          format: date
-          description: The end date for the report period in YYYY-MM-DD format.
-          example: '2026-06-02'
-        store_ids:
-          type: array
-          description: Optional list of store IDs to filter the report by specific stores.
-          items:
-            type: string
-          example:
-          - example
+          - PENDING
+          - PROCESSING
+          - SUCCEEDED
+          - FAILED
+          example: PENDING
     Error:
       type: object
       properties:
@@ -224,22 +207,39 @@ components:
           format: date-time
           description: When the report generation was completed. Only present when status is SUCCEEDED.
           example: '2026-06-02T14:30:00Z'
-    ReportRequestResponse:
+    ReportRequest:
       type: object
+      required:
+      - report_type
+      - start_date
+      - end_date
       properties:
-        report_id:
+        report_type:
           type: string
-          description: The unique identifier for the report request. Use this to check status and retrieve the download link.
-          example: D-12345
-        status:
-          type: string
-          description: The current processing status of the report.
+          description: The type of report to generate.
           enum:
-          - PENDING
-          - PROCESSING
-          - SUCCEEDED
-          - FAILED
-          example: PENDING
+          - financial
+          - operations
+          - menu
+          - feedback
+          example: financial
+        start_date:
+          type: string
+          format: date
+          description: The start date for the report period in YYYY-MM-DD format.
+          example: '2026-06-02'
+        end_date:
+          type: string
+          format: date
+          description: The end date for the report period in YYYY-MM-DD format.
+          example: '2026-06-02'
+        store_ids:
+          type: array
+          description: Optional list of store IDs to filter the report by specific stores.
+          items:
+            type: string
+          example:
+          - example
   parameters:
     ReportId:
       name: report_id

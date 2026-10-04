@@ -72,6 +72,45 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 components:
   schemas:
+    Placement:
+      required:
+      - type
+      properties:
+        type:
+          description: Specifies an ad group surface
+          type: string
+          enum:
+          - SEARCH
+          - CATEGORIES
+          - COLLECTION
+          - DOUBLEDASH
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    RecommendedKeywordsStatusResponse:
+      required:
+      - recommendedKeywords
+      properties:
+        recommendedKeywords:
+          type: object
+          properties:
+            SEARCH:
+              type: array
+              items:
+                $ref: '#/components/schemas/KeywordStatus'
+          required:
+          - SEARCH
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/KeywordStatus'
     ProductIdType:
       description: Product ID type
       type: string
@@ -96,36 +135,6 @@ components:
             type: array
             items:
               type: string
-    KeywordStatus:
-      properties:
-        keyword:
-          type: string
-        status:
-          type: string
-          enum:
-          - NEW
-    Placement:
-      required:
-      - type
-      properties:
-        type:
-          description: Specifies an ad group surface
-          type: string
-          enum:
-          - SEARCH
-          - CATEGORIES
-          - COLLECTION
-          - DOUBLEDASH
-    Error:
-      properties:
-        code:
-          description: An enumerated error for machine use.
-          type: string
-          readOnly: true
-        details:
-          description: A human-readable description of the error.
-          type: string
-          readOnly: true
     GetRecommendedKeywordsRequest:
       required:
       - placements
@@ -145,26 +154,17 @@ components:
                 $ref: '#/components/schemas/ProductIdType'
               productId:
                 $ref: '#/components/schemas/ProductId'
+    KeywordStatus:
+      properties:
+        keyword:
+          type: string
+        status:
+          type: string
+          enum:
+          - NEW
     ProductId:
       description: Unique product identifier based on product ID type.
       type: string
-    RecommendedKeywordsStatusResponse:
-      required:
-      - recommendedKeywords
-      properties:
-        recommendedKeywords:
-          type: object
-          properties:
-            SEARCH:
-              type: array
-              items:
-                $ref: '#/components/schemas/KeywordStatus'
-          required:
-          - SEARCH
-          additionalProperties:
-            type: array
-            items:
-              $ref: '#/components/schemas/KeywordStatus'
   responses:
     Unauthorized:
       description: Unauthorized.
@@ -172,14 +172,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    InternalServerError:
-      description: One or more query parameters contained an invalid value.
+    BadRequest:
+      description: Bad request.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request.
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
       content:
         application/json:
           schema:

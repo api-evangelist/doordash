@@ -146,16 +146,10 @@ paths:
       deprecated: false
 components:
   schemas:
-    ProductTrait:
-      type: string
-      enum:
-      - ALCOHOL
-      - MEDICATION
-      - WEIGHTED
-    RequestNotProcessError:
+    RequestRateLimitedError:
       x-error: true
       type: object
-      description: Request was not process.
+      description: Request was rate limited.
       required:
       - code
       - message
@@ -166,47 +160,7 @@ components:
           - request_rate_limited
         message:
           type: string
-          example: Request was not process. Request entity may be too large.
-    BatchAddOrUpdateItemRequest:
-      type: object
-      properties:
-        scope:
-          type: object
-          properties:
-            business_ids:
-              type: array
-              items:
-                type: string
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Item'
-    ProgramEligibility:
-      description: Eligibility to items for various programs
-      type: string
-      enum:
-      - SNAP
-      - HSA
-      - FSA
-    MultiSelectString:
-      type: object
-      properties:
-        multi_select_string:
-          type: array
-          items:
-            type: string
-    ProductAttributes:
-      type: object
-      properties:
-        attribute_name:
-          type: string
-          description: attribute name
-        attribute_value:
-          description: attribute value
-          oneOf:
-          - $ref: '#/components/schemas/SingleSelectBool'
-          - $ref: '#/components/schemas/MultiSelectString'
-          - $ref: '#/components/schemas/MultiSelectDouble'
+          example: Request was rate limited. You may be calling the API too much in a short time.
     Item:
       title: Item
       description: Item to be managed by doordash. Should be unique across stores within business.
@@ -328,43 +282,18 @@ components:
           description: 'product_attributes allow us to infer everything about an item necessary for customers to shop, dasher to fulfill, merchants to merchandise, and advertisers to advertise. See supported full attribute list: https://developer.doordash.com/en-US/docs/marketplace/retail/catalog_management/supported_attribute'
           items:
             $ref: '#/components/schemas/ProductAttributes'
-    AsyncOperationResponse:
-      type: object
-      properties:
-        operation_id:
-          type: string
-        operation_status:
-          type: string
-          enum:
-          - QUEUED
-          - IN_PROGRESS
-          - SUCCESS
-          - FAILED
-          - PARTIAL_SUCCESS
-        message:
-          type: string
     SingleSelectBool:
       type: object
       properties:
         single_select_bool:
           type: boolean
-    AuthenticationError:
-      x-error: true
+    MultiSelectString:
       type: object
-      description: 'Authentication error: the token provided with the request doesn''t work for the requested operation'
-      required:
-      - code
-      - message
       properties:
-        code:
-          type: string
-          enum:
-          - authentication_error
-          default: authentication_error
-        message:
-          type: string
-          example: The [exp] is in the past; the JWT is expired
-          default: The [exp] is in the past; the JWT is expired
+        multi_select_string:
+          type: array
+          items:
+            type: string
     Category:
       type: object
       properties:
@@ -372,46 +301,6 @@ components:
           type: string
         sub_category:
           $ref: '#/components/schemas/Category'
-    ValidationFieldError:
-      x-error: true
-      title: ValidationFieldError
-      type: object
-      description: One or more request values couldn't be validated.
-      required:
-      - code
-      - message
-      - field_errors
-      properties:
-        code:
-          type: string
-          enum:
-          - validation_error
-        message:
-          type: string
-          description: One or more request values couldn't be validated.
-          example: One or more request values couldn't be validated.
-        field_errors:
-          type: array
-          description: The list of fields whose values couldn't be validated. See more [error examples](https://developer.doordash.com/en-US/docs/drive/reference/errors)
-          items:
-            $ref: '#/components/schemas/FieldError'
-          readOnly: true
-    FieldError:
-      title: FieldError
-      type: object
-      description: A field whose value couldn't be validated.
-      required:
-      - field
-      - error
-      properties:
-        field:
-          type: string
-          description: Name of the field whose value couldn't be validated.
-          example: pickup_phone_number
-        error:
-          type: string
-          description: The error that was encountered when validating the field's value.
-          example: Invalid phone number format
     AuthorizationError:
       x-error: true
       type: object
@@ -429,29 +318,21 @@ components:
           type: string
           example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
           default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
-    MultiSelectDouble:
+    AsyncOperationResponse:
       type: object
       properties:
-        multi_select_double:
-          type: array
-          description: array of double
-          items:
-            type: number
-    RequestRateLimitedError:
-      x-error: true
-      type: object
-      description: Request was rate limited.
-      required:
-      - code
-      - message
-      properties:
-        code:
+        operation_id:
+          type: string
+        operation_status:
           type: string
           enum:
-          - request_rate_limited
+          - QUEUED
+          - IN_PROGRESS
+          - SUCCESS
+          - FAILED
+          - PARTIAL_SUCCESS
         message:
           type: string
-          example: Request was rate limited. You may be calling the API too much in a short time.
     SizeInfo:
       type: object
       properties:
@@ -530,10 +411,42 @@ components:
               type: string
               description: Unit of measurement only
               example: g
-    NotFoundError:
+    MultiSelectDouble:
+      type: object
+      properties:
+        multi_select_double:
+          type: array
+          description: array of double
+          items:
+            type: number
+    ValidationFieldError:
+      x-error: true
+      title: ValidationFieldError
+      type: object
+      description: One or more request values couldn't be validated.
+      required:
+      - code
+      - message
+      - field_errors
+      properties:
+        code:
+          type: string
+          enum:
+          - validation_error
+        message:
+          type: string
+          description: One or more request values couldn't be validated.
+          example: One or more request values couldn't be validated.
+        field_errors:
+          type: array
+          description: The list of fields whose values couldn't be validated. See more [error examples](https://developer.doordash.com/en-US/docs/drive/reference/errors)
+          items:
+            $ref: '#/components/schemas/FieldError'
+          readOnly: true
+    AuthenticationError:
       x-error: true
       type: object
-      description: Request entity was not found.
+      description: 'Authentication error: the token provided with the request doesn''t work for the requested operation'
       required:
       - code
       - message
@@ -541,10 +454,12 @@ components:
         code:
           type: string
           enum:
-          - unknown_business_id
+          - authentication_error
+          default: authentication_error
         message:
           type: string
-          example: Entity was not found
+          example: The [exp] is in the past; the JWT is expired
+          default: The [exp] is in the past; the JWT is expired
     server_fault:
       x-error: true
       type: object
@@ -562,3 +477,88 @@ components:
           type: string
           example: Internal service failure, please try again later.
           default: Internal service failure, please try again later.
+    ProgramEligibility:
+      description: Eligibility to items for various programs
+      type: string
+      enum:
+      - SNAP
+      - HSA
+      - FSA
+    ProductTrait:
+      type: string
+      enum:
+      - ALCOHOL
+      - MEDICATION
+      - WEIGHTED
+    RequestNotProcessError:
+      x-error: true
+      type: object
+      description: Request was not process.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - request_rate_limited
+        message:
+          type: string
+          example: Request was not process. Request entity may be too large.
+    FieldError:
+      title: FieldError
+      type: object
+      description: A field whose value couldn't be validated.
+      required:
+      - field
+      - error
+      properties:
+        field:
+          type: string
+          description: Name of the field whose value couldn't be validated.
+          example: pickup_phone_number
+        error:
+          type: string
+          description: The error that was encountered when validating the field's value.
+          example: Invalid phone number format
+    NotFoundError:
+      x-error: true
+      type: object
+      description: Request entity was not found.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - unknown_business_id
+        message:
+          type: string
+          example: Entity was not found
+    BatchAddOrUpdateItemRequest:
+      type: object
+      properties:
+        scope:
+          type: object
+          properties:
+            business_ids:
+              type: array
+              items:
+                type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+    ProductAttributes:
+      type: object
+      properties:
+        attribute_name:
+          type: string
+          description: attribute name
+        attribute_value:
+          description: attribute value
+          oneOf:
+          - $ref: '#/components/schemas/SingleSelectBool'
+          - $ref: '#/components/schemas/MultiSelectString'
+          - $ref: '#/components/schemas/MultiSelectDouble'

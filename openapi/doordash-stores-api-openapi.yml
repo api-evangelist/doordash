@@ -448,23 +448,6 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    MenuDetails:
-      type: object
-      properties:
-        store_id:
-          type: string
-          description: The merchant-supplied store identifier.
-          example: D-12345
-        categories:
-          type: array
-          description: The menu categories.
-          items:
-            $ref: '#/components/schemas/MenuCategory'
-        last_updated:
-          type: string
-          format: date-time
-          description: When the menu was last updated.
-          example: '2026-06-02T14:30:00Z'
     StoreStatusUpdate:
       type: object
       required:
@@ -482,82 +465,23 @@ components:
           type: string
           description: The reason for the status change.
           example: example
-    OptionGroup:
+    MenuDetails:
       type: object
-      required:
-      - id
-      - name
-      - options
       properties:
-        id:
+        store_id:
           type: string
-          description: The unique identifier for this option group.
+          description: The merchant-supplied store identifier.
           example: D-12345
-        name:
-          type: string
-          description: The display name of the option group.
-          example: Acme Pickup Store
-        min_selections:
-          type: integer
-          description: The minimum number of options that must be selected.
-          minimum: 0
-          example: 0
-        max_selections:
-          type: integer
-          description: The maximum number of options that can be selected.
-          minimum: 1
-          example: 1
-        options:
+        categories:
           type: array
-          description: The available options in this group.
+          description: The menu categories.
           items:
-            $ref: '#/components/schemas/MenuOption'
-    StoreRequest:
-      type: object
-      required:
-      - external_store_id
-      - name
-      - address
-      properties:
-        external_store_id:
+            $ref: '#/components/schemas/MenuCategory'
+        last_updated:
           type: string
-          description: A unique external identifier for the store.
-          example: D-12345
-        name:
-          type: string
-          description: The name of the store.
-          example: Acme Pickup Store
-        phone_number:
-          type: string
-          description: The phone number for the store.
-          example: '+15555551234'
-        address:
-          type: string
-          description: The full street address of the store.
-          example: 901 Market St, San Francisco, CA 94105
-    Store:
-      type: object
-      properties:
-        external_business_id:
-          type: string
-          description: The external business ID this store belongs to.
-          example: D-12345
-        external_store_id:
-          type: string
-          description: The unique external identifier for the store.
-          example: D-12345
-        name:
-          type: string
-          description: The name of the store.
-          example: Acme Pickup Store
-        phone_number:
-          type: string
-          description: The phone number for the store.
-          example: '+15555551234'
-        address:
-          type: string
-          description: The full street address of the store.
-          example: 901 Market St, San Francisco, CA 94105
+          format: date-time
+          description: When the menu was last updated.
+          example: '2026-06-02T14:30:00Z'
     Error_3:
       type: object
       properties:
@@ -615,6 +539,82 @@ components:
           type: boolean
           description: Whether the option is currently available.
           example: true
+    Store:
+      type: object
+      properties:
+        external_business_id:
+          type: string
+          description: The external business ID this store belongs to.
+          example: D-12345
+        external_store_id:
+          type: string
+          description: The unique external identifier for the store.
+          example: D-12345
+        name:
+          type: string
+          description: The name of the store.
+          example: Acme Pickup Store
+        phone_number:
+          type: string
+          description: The phone number for the store.
+          example: '+15555551234'
+        address:
+          type: string
+          description: The full street address of the store.
+          example: 901 Market St, San Francisco, CA 94105
+    OptionGroup:
+      type: object
+      required:
+      - id
+      - name
+      - options
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this option group.
+          example: D-12345
+        name:
+          type: string
+          description: The display name of the option group.
+          example: Acme Pickup Store
+        min_selections:
+          type: integer
+          description: The minimum number of options that must be selected.
+          minimum: 0
+          example: 0
+        max_selections:
+          type: integer
+          description: The maximum number of options that can be selected.
+          minimum: 1
+          example: 1
+        options:
+          type: array
+          description: The available options in this group.
+          items:
+            $ref: '#/components/schemas/MenuOption'
+    StoreRequest:
+      type: object
+      required:
+      - external_store_id
+      - name
+      - address
+      properties:
+        external_store_id:
+          type: string
+          description: A unique external identifier for the store.
+          example: D-12345
+        name:
+          type: string
+          description: The name of the store.
+          example: Acme Pickup Store
+        phone_number:
+          type: string
+          description: The phone number for the store.
+          example: '+15555551234'
+        address:
+          type: string
+          description: The full street address of the store.
+          example: 901 Market St, San Francisco, CA 94105
     MenuItem:
       type: object
       required:
@@ -656,6 +656,34 @@ components:
           description: Option groups (modifiers) for this item.
           items:
             $ref: '#/components/schemas/OptionGroup'
+    MenuCategory:
+      type: object
+      required:
+      - id
+      - name
+      - items
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this category.
+          example: D-12345
+        name:
+          type: string
+          description: The display name of the category.
+          example: Acme Pickup Store
+        description:
+          type: string
+          description: A description of the category.
+          example: Leave at the front desk.
+        sort_id:
+          type: integer
+          description: The sort order for this category.
+          example: 42
+        items:
+          type: array
+          description: The items in this category.
+          items:
+            $ref: '#/components/schemas/MenuItem'
     StoreDetails:
       type: object
       properties:
@@ -687,40 +715,12 @@ components:
           - closed
           - temporarily_closed
           example: open
-    MenuCategory:
-      type: object
-      required:
-      - id
-      - name
-      - items
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this category.
-          example: D-12345
-        name:
-          type: string
-          description: The display name of the category.
-          example: Acme Pickup Store
-        description:
-          type: string
-          description: A description of the category.
-          example: Leave at the front desk.
-        sort_id:
-          type: integer
-          description: The sort order for this category.
-          example: 42
-        items:
-          type: array
-          description: The items in this category.
-          items:
-            $ref: '#/components/schemas/MenuItem'
   parameters:
-    ExternalStoreId:
-      name: external_store_id
+    ExternalBusinessId:
+      name: external_business_id
       in: path
       required: true
-      description: The unique external identifier for the store.
+      description: The unique external identifier for the business.
       schema:
         type: string
     MerchantSuppliedId:
@@ -730,11 +730,11 @@ components:
       description: The merchant-supplied identifier for the store.
       schema:
         type: string
-    ExternalBusinessId:
-      name: external_business_id
+    ExternalStoreId:
+      name: external_store_id
       in: path
       required: true
-      description: The unique external identifier for the business.
+      description: The unique external identifier for the store.
       schema:
         type: string
   securitySchemes:

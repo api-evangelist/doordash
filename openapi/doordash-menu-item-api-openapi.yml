@@ -72,6 +72,28 @@ paths:
       deprecated: false
 components:
   schemas:
+    FulfillmentType:
+      type: string
+      enum:
+      - delivery
+      - pickup
+      example: pickup
+    RateLimitedError:
+      x-error: true
+      title: RateLimitedError
+      type: object
+      description: Rate limited.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - rate_limit_error
+        message:
+          type: string
+          example: Developer account endpoint rate limit exceeded.
     GetStoreMenuItemRequest:
       type: object
       required:
@@ -109,25 +131,19 @@ components:
         message:
           type: string
           example: Request does not contain a JWT.
+    SessionId:
+      type: string
+      description: id of the application session
     IntegrationId:
       type: string
       pattern: ^([1-9][0-9]*)$
       description: Unique ID for the business, business group or store.
       example: '987654'
-    IntegrationType:
-      type: string
-      enum:
-      - BUSINESS
-      - BUSINESS_GROUP
-      - STORE
-      example: store
-      default: business
-      description: Type of the integration id
-    InternalError:
+    AddressResourceNotFoundError:
       x-error: true
-      title: InternalError
+      title: AddressResourceNotFoundError
       type: object
-      description: Internal errors that occur during the api call.
+      description: The response returned when requested resource is not found/available.
       required:
       - code
       - message
@@ -135,19 +151,10 @@ components:
         code:
           type: string
           enum:
-          - internal_service_error
+          - not_found
         message:
           type: string
-          example: Internal Service Error.
-    FulfillmentType:
-      type: string
-      enum:
-      - delivery
-      - pickup
-      example: pickup
-    SessionId:
-      type: string
-      description: id of the application session
+          example: Address is not found.
     ValidationFieldError:
       x-error: true
       title: ValidationFieldError
@@ -168,11 +175,16 @@ components:
         errors:
           type: string
           example: Missing business/store id.
-    RateLimitedError:
+    StoreId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the store.
+      example: '123'
+    InternalError:
       x-error: true
-      title: RateLimitedError
+      title: InternalError
       type: object
-      description: Rate limited.
+      description: Internal errors that occur during the api call.
       required:
       - code
       - message
@@ -180,10 +192,10 @@ components:
         code:
           type: string
           enum:
-          - rate_limit_error
+          - internal_service_error
         message:
           type: string
-          example: Developer account endpoint rate limit exceeded.
+          example: Internal Service Error.
     AuthorizationError:
       x-error: true
       type: object
@@ -199,27 +211,15 @@ components:
         message:
           type: string
           example: You are not authorized to perform this action.
-    StoreId:
+    IntegrationType:
       type: string
-      pattern: ^([1-9][0-9]*)$
-      description: Unique ID for the store.
-      example: '123'
-    AddressResourceNotFoundError:
-      x-error: true
-      title: AddressResourceNotFoundError
-      type: object
-      description: The response returned when requested resource is not found/available.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - not_found
-        message:
-          type: string
-          example: Address is not found.
+      enum:
+      - BUSINESS
+      - BUSINESS_GROUP
+      - STORE
+      example: store
+      default: business
+      description: Type of the integration id
   parameters:
     StoreId:
       name: store_id

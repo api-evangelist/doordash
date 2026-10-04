@@ -150,120 +150,21 @@ paths:
                 $ref: '#/components/schemas/InternalError'
       deprecated: false
 components:
-  parameters:
-    ShouldSendStoreDetails:
-      name: should_send_store_details
-      in: query
-      description: If true, return stores details for each store in the list. The default value is false.
-      schema:
-        $ref: '#/components/schemas/ShouldSendStoreDetails'
-    Limit:
-      name: limit
-      in: query
-      description: Specify the maximum number of items that may be returned for a single request.
-      schema:
-        $ref: '#/components/schemas/Limit'
-    SearchRadius:
-      name: search_radius
-      in: query
-      description: Define the distance in meters within which to return store results. The default value is 1000. Search radius is only applicable to pick ups.
-      schema:
-        $ref: '#/components/schemas/StoreRadius'
-    Longitude:
-      name: lon
-      in: query
-      description: longitude
-      required: true
-      schema:
-        $ref: '#/components/schemas/Longitude'
-    BusinessId:
-      name: business_id
-      in: path
-      description: Business id used for filtering stores
-      required: true
-      schema:
-        $ref: '#/components/schemas/BusinessId'
-    IsPickup:
-      name: is_pickup
-      in: query
-      description: If true, return stores based on store pick up radius. Otherwise, return stores based on delivery radius. The default value is true.
-      schema:
-        $ref: '#/components/schemas/IsPickup'
-    OpenAt:
-      name: open_at
-      in: query
-      description: If specified, only stores that are open for business at the specified time are returned. Possible values is future UTC timestamp in ISO-8601 format within seven days from current time.
-      schema:
-        $ref: '#/components/schemas/OpenAt'
-    BusinessGroupId:
-      name: business_group_id
-      in: path
-      description: Business group id used for filtering stores
-      required: true
-      schema:
-        $ref: '#/components/schemas/BusinessGroupId'
-    Latitude:
-      name: lat
-      in: query
-      description: latitude
-      required: true
-      schema:
-        $ref: '#/components/schemas/Latitude'
   schemas:
-    BusinessResourceNotFoundError:
-      x-error: true
-      title: BusinessResourceNotFoundError
-      type: object
-      description: The response returned when requested resource is not found/available.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - not_found
-        message:
-          type: string
-          example: Business is inactive/invalid.
-    InternalError:
-      x-error: true
-      title: InternalError
-      type: object
-      description: Internal errors that occur during the api call.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - internal_service_error
-        message:
-          type: string
-          example: Internal Service Error.
-    StoreRadius:
-      type: integer
-      default: 1000
-      minimum: 1
-      maximum: 100000
-    StorefrontStoreSpecialHours:
-      type: object
-      properties:
-        date:
-          type: string
-          description: In yyyy-mm-dd format
-          example: '2018-01-12'
-        hours:
-          $ref: '#/components/schemas/StoreHours'
-    OpenAt:
-      type: string
-      pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(.[0-9]{3,})?Z$
-      description: UTC Timestamp in ISO-8601 format, or string "now"
-      example: 2018-08-22T17:20:28Z or 2018-08-22T17:20:28.123Z
-    IsPickup:
+    ShouldSendStoreDetails:
       type: boolean
-      default: true
+      default: false
+    NearByStoresResponse:
+      type: object
+      title: BusinessStoresResponse
+      description: List of stores with basic information.
+      required:
+      - stores
+      properties:
+        stores:
+          type: array
+          items:
+            $ref: '#/components/schemas/NearbyStoreInfo'
     BusinessGroupResourceNotFoundError:
       x-error: true
       title: BusinessResourceNotFoundError
@@ -280,30 +181,6 @@ components:
         message:
           type: string
           example: Business group is inactive/invalid.
-    BusinessGroupId:
-      type: string
-      pattern: ^([1-9][0-9]*)$
-      description: Unique ID for the business.
-      example: '123'
-    RateLimitedError:
-      x-error: true
-      title: RateLimitedError
-      type: object
-      description: Rate limited.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - rate_limit_error
-        message:
-          type: string
-          example: Developer account endpoint rate limit exceeded.
-    ShouldSendStoreDetails:
-      type: boolean
-      default: false
     Latitude:
       type: string
       pattern: ^(\+|-)?(?:90(?:(?:\.0{1,7})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,7})?))$
@@ -335,6 +212,98 @@ components:
           example: 35
         store_details:
           $ref: '#/components/schemas/StoreDetails'
+    AuthorizationError:
+      x-error: true
+      type: object
+      description: Authorization error, available credentials don't match requested operation
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authorization_error
+        message:
+          type: string
+          example: You are not authorized to perform this action.
+    Longitude:
+      type: string
+      pattern: ^(\+|-)?(?:180(?:(?:\.0{1,7})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,7})?))$
+      example: -156.1234538
+    StoreStatus:
+      type: string
+      description: store activation status
+      enum:
+      - open
+      - closed
+      - inactive
+      - paused
+      - deactivated
+      example: open
+    BusinessResourceNotFoundError:
+      x-error: true
+      title: BusinessResourceNotFoundError
+      type: object
+      description: The response returned when requested resource is not found/available.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - not_found
+        message:
+          type: string
+          example: Business is inactive/invalid.
+    BusinessGroupId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the business.
+      example: '123'
+    ValidationFieldError:
+      x-error: true
+      title: ValidationFieldError
+      type: object
+      description: The response returned when validation for field errors are encountered.
+      required:
+      - code
+      - message
+      - field_errors
+      properties:
+        code:
+          type: string
+          enum:
+          - validation_error
+        message:
+          type: string
+          example: Request validation failed.
+        errors:
+          type: string
+          example: Missing business/store id.
+    Limit:
+      type: integer
+      pattern: ^(0|[1-9][0-9]*)$
+      description: Resource results size limit
+      default: 10
+      minimum: 1
+      maximum: 200
+    AuthenticationError:
+      x-error: true
+      type: object
+      description: Authorization error, available credentials don't match requested operation
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authentication_error
+        message:
+          type: string
+          example: Request does not contain a JWT.
     StoreHours:
       type: object
       properties:
@@ -357,10 +326,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/StoreIntervals'
-    AuthenticationError:
+    InternalError:
       x-error: true
+      title: InternalError
       type: object
-      description: Authorization error, available credentials don't match requested operation
+      description: Internal errors that occur during the api call.
       required:
       - code
       - message
@@ -368,75 +338,45 @@ components:
         code:
           type: string
           enum:
-          - authentication_error
+          - internal_service_error
         message:
           type: string
-          example: Request does not contain a JWT.
-    ValidationFieldError:
-      x-error: true
-      title: ValidationFieldError
-      type: object
-      description: The response returned when validation for field errors are encountered.
-      required:
-      - code
-      - message
-      - field_errors
-      properties:
-        code:
-          type: string
-          enum:
-          - validation_error
-        message:
-          type: string
-          example: Request validation failed.
-        errors:
-          type: string
-          example: Missing business/store id.
-    AuthorizationError:
-      x-error: true
-      type: object
-      description: Authorization error, available credentials don't match requested operation
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - authorization_error
-        message:
-          type: string
-          example: You are not authorized to perform this action.
+          example: Internal Service Error.
     BusinessId:
       type: string
       pattern: ^([1-9][0-9]*)$
       description: Unique ID for the business.
       example: '123'
-    NearByStoresResponse:
+    StorefrontStoreSpecialHours:
       type: object
-      title: BusinessStoresResponse
-      description: List of stores with basic information.
-      required:
-      - stores
       properties:
-        stores:
-          type: array
-          items:
-            $ref: '#/components/schemas/NearbyStoreInfo'
-    Longitude:
+        date:
+          type: string
+          description: In yyyy-mm-dd format
+          example: '2018-01-12'
+        hours:
+          $ref: '#/components/schemas/StoreHours'
+    RateLimitedError:
+      x-error: true
+      title: RateLimitedError
+      type: object
+      description: Rate limited.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - rate_limit_error
+        message:
+          type: string
+          example: Developer account endpoint rate limit exceeded.
+    OpenAt:
       type: string
-      pattern: ^(\+|-)?(?:180(?:(?:\.0{1,7})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,7})?))$
-      example: -156.1234538
-    StoreStatus:
-      type: string
-      description: store activation status
-      enum:
-      - open
-      - closed
-      - inactive
-      - paused
-      - deactivated
-      example: open
+      pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(.[0-9]{3,})?Z$
+      description: UTC Timestamp in ISO-8601 format, or string "now"
+      example: 2018-08-22T17:20:28Z or 2018-08-22T17:20:28.123Z
     StoreIntervals:
       type: object
       properties:
@@ -456,30 +396,14 @@ components:
           type: integer
           description: number of seconds since the beginning of the day e.g.3600 means 1am. 39600 means 11 am and 89100 means 12:45 am.
           example: 89100
-    StorefrontStoreHours:
-      type: object
-      properties:
-        monday:
-          $ref: '#/components/schemas/StoreHours'
-        tuesday:
-          $ref: '#/components/schemas/StoreHours'
-        wednesday:
-          $ref: '#/components/schemas/StoreHours'
-        thursday:
-          $ref: '#/components/schemas/StoreHours'
-        friday:
-          $ref: '#/components/schemas/StoreHours'
-        saturday:
-          $ref: '#/components/schemas/StoreHours'
-        sunday:
-          $ref: '#/components/schemas/StoreHours'
-    Limit:
+    IsPickup:
+      type: boolean
+      default: true
+    StoreRadius:
       type: integer
-      pattern: ^(0|[1-9][0-9]*)$
-      description: Resource results size limit
-      default: 10
+      default: 1000
       minimum: 1
-      maximum: 200
+      maximum: 100000
     StoreDetails:
       type: object
       title: StoreDetails
@@ -567,6 +491,82 @@ components:
               description: Whether the store has a drive-thru
               example: false
               default: false
+    StorefrontStoreHours:
+      type: object
+      properties:
+        monday:
+          $ref: '#/components/schemas/StoreHours'
+        tuesday:
+          $ref: '#/components/schemas/StoreHours'
+        wednesday:
+          $ref: '#/components/schemas/StoreHours'
+        thursday:
+          $ref: '#/components/schemas/StoreHours'
+        friday:
+          $ref: '#/components/schemas/StoreHours'
+        saturday:
+          $ref: '#/components/schemas/StoreHours'
+        sunday:
+          $ref: '#/components/schemas/StoreHours'
+  parameters:
+    Longitude:
+      name: lon
+      in: query
+      description: longitude
+      required: true
+      schema:
+        $ref: '#/components/schemas/Longitude'
+    SearchRadius:
+      name: search_radius
+      in: query
+      description: Define the distance in meters within which to return store results. The default value is 1000. Search radius is only applicable to pick ups.
+      schema:
+        $ref: '#/components/schemas/StoreRadius'
+    BusinessGroupId:
+      name: business_group_id
+      in: path
+      description: Business group id used for filtering stores
+      required: true
+      schema:
+        $ref: '#/components/schemas/BusinessGroupId'
+    ShouldSendStoreDetails:
+      name: should_send_store_details
+      in: query
+      description: If true, return stores details for each store in the list. The default value is false.
+      schema:
+        $ref: '#/components/schemas/ShouldSendStoreDetails'
+    BusinessId:
+      name: business_id
+      in: path
+      description: Business id used for filtering stores
+      required: true
+      schema:
+        $ref: '#/components/schemas/BusinessId'
+    IsPickup:
+      name: is_pickup
+      in: query
+      description: If true, return stores based on store pick up radius. Otherwise, return stores based on delivery radius. The default value is true.
+      schema:
+        $ref: '#/components/schemas/IsPickup'
+    Latitude:
+      name: lat
+      in: query
+      description: latitude
+      required: true
+      schema:
+        $ref: '#/components/schemas/Latitude'
+    Limit:
+      name: limit
+      in: query
+      description: Specify the maximum number of items that may be returned for a single request.
+      schema:
+        $ref: '#/components/schemas/Limit'
+    OpenAt:
+      name: open_at
+      in: query
+      description: If specified, only stores that are open for business at the specified time are returned. Possible values is future UTC timestamp in ISO-8601 format within seven days from current time.
+      schema:
+        $ref: '#/components/schemas/OpenAt'
   securitySchemes:
     BearerAuth:
       type: http

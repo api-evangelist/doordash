@@ -143,40 +143,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    BrandHeaderImageCreative:
-      type: object
-      required:
-      - type
-      - title
-      - description
-      - logoContentUrl
-      properties:
-        type:
-          type: string
-          enum:
-          - BRAND_HEADER_IMAGE
-          description: Type of creative
-        title:
-          type: string
-          description: Title of the creative
-        description:
-          type: string
-          description: Description of the creative
-        logoContentUrl:
-          type: string
-          description: URL of the logo content
-        headerImageUrlMobile:
-          type: string
-          description: URL of the header image for mobile
-        headerImageUrlWeb:
-          type: string
-          description: URL of the header image for web
-        headerVideoUrlMobile:
-          type: string
-          description: URL of the header video for mobile
-        headerVideoUrlWeb:
-          type: string
-          description: URL of the header video for web
     BrandLandingPageCreative:
       type: object
       required:
@@ -211,16 +177,6 @@ components:
           items:
             type: string
           description: Array of header image URLs for web
-    Error:
-      properties:
-        code:
-          description: An enumerated error for machine use.
-          type: string
-          readOnly: true
-        details:
-          description: A human-readable description of the error.
-          type: string
-          readOnly: true
     BrandCreative:
       type: object
       required:
@@ -243,6 +199,50 @@ components:
         logoContentUrl:
           type: string
           description: URL of the logo content
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    BrandHeaderImageCreative:
+      type: object
+      required:
+      - type
+      - title
+      - description
+      - logoContentUrl
+      properties:
+        type:
+          type: string
+          enum:
+          - BRAND_HEADER_IMAGE
+          description: Type of creative
+        title:
+          type: string
+          description: Title of the creative
+        description:
+          type: string
+          description: Description of the creative
+        logoContentUrl:
+          type: string
+          description: URL of the logo content
+        headerImageUrlMobile:
+          type: string
+          description: URL of the header image for mobile
+        headerImageUrlWeb:
+          type: string
+          description: URL of the header image for web
+        headerVideoUrlMobile:
+          type: string
+          description: URL of the header video for mobile
+        headerVideoUrlWeb:
+          type: string
+          description: URL of the header video for web
   parameters:
     searchAfter:
       name: searchAfter
@@ -259,14 +259,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    InternalServerError:
-      description: One or more query parameters contained an invalid value.
+    BadRequest:
+      description: Bad request.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request.
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
       content:
         application/json:
           schema:
