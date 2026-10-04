@@ -856,6 +856,8 @@ apis:
   humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
   baseURL: https://openapi.doordash.com/drive/v2
   tags:
+  - Data Exchange
+  tags_raw:
   - Dataexchange
   properties:
   - type: OpenAPI
@@ -946,6 +948,8 @@ apis:
   humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
   baseURL: https://openapi.doordash.com/drive/v2
   tags:
+  - HTTP
+  tags_raw:
   - 'Https:'
   properties:
   - type: OpenAPI
@@ -1156,6 +1160,8 @@ apis:
   humanURL: https://developer.doordash.com/en-US/docs/drive/overview/about_drive/
   baseURL: https://openapi.doordash.com/drive/v2
   tags:
+  - Menus
+  tags_raw:
   - Menu
   properties:
   - type: OpenAPI
