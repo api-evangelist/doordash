@@ -135,3 +135,36 @@ plans:
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - metered
+  - subscription
+  units:
+  - object
+  plans:
+  - name: Drive Sandbox
+    access: freemium
+    model: subscription
+    model_how: derived
+    units:
+    - object
+    periods:
+    - year
+  - name: Drive (current)
+    access: other
+    model: metered
+    model_how: stated
+    units:
+    - other
+    periods:
+    - per-use
+  - name: Drive (classic)
+    access: other
+    model: metered
+    model_how: stated
+    units:
+    - other
+    periods:
+    - per-use
