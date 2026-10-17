@@ -430,21 +430,32 @@ paths:
     - url: https://openapi.doordash.com/marketplace
 components:
   schemas:
-    ItemActivation:
+    DishInfo:
       type: object
-      required:
-      - merchant_supplied_id
-      - is_active
       properties:
-        merchant_supplied_id:
-          type: string
-        is_active:
-          type: boolean
-    NestedL2ItemExtraOption:
+        nutritional_info:
+          $ref: '#/components/schemas/NutritionalInfo'
+        classification_info:
+          $ref: '#/components/schemas/ClassificationInfo'
+    DayIndex:
+      type: string
+      enum:
+      - MON
+      - TUE
+      - WED
+      - THU
+      - FRI
+      - SAT
+      - SUN
+      example: MON
+    ItemActivationDeactivationRequest:
+      type: array
+      items:
+        $ref: '#/components/schemas/ItemActivation'
+    NestedL2ItemExtra:
       type: object
       required:
       - name
-      - price
       properties:
         name:
           type: string
@@ -457,32 +468,56 @@ components:
         active:
           type: boolean
           default: true
-        price:
-          type: integer
-        base_price:
-          type: integer
-        default:
-          type: boolean
         sort_id:
           type: integer
-        tax_rate:
-          type: string
-        tax_category:
-          type: string
-        item_extra_option_special_hours:
+        min_num_options:
+          type: integer
+        max_num_options:
+          type: integer
+        num_free_options:
+          type: integer
+        min_option_choice_quantity:
+          type: integer
+        max_option_choice_quantity:
+          type: integer
+        min_aggregate_options_quantity:
+          type: integer
+        max_aggregate_options_quantity:
+          type: integer
+        options:
           type: array
           items:
-            $ref: '#/components/schemas/ItemSpecialHour'
-        operation_context:
+            $ref: '#/components/schemas/NestedL2ItemExtraOption'
+    MenuCreateUpdateRequest:
+      type: object
+      required:
+      - store
+      - open_hours
+      - special_hours
+      properties:
+        reference:
+          type: string
+        store:
+          type: object
+          $ref: '#/components/schemas/Store'
+        open_hours:
           type: array
           items:
-            type: string
-        quantity_info:
+            $ref: '#/components/schemas/StoreOpenHour'
+        special_hours:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoreSpecialHour'
+        menu:
           type: object
-          $ref: '#/components/schemas/QuantityInfo'
-        dish_info:
-          type: object
-          $ref: '#/components/schemas/DishInfo'
+          $ref: '#/components/schemas/Menu'
+    QuantityInfo:
+      type: object
+      properties:
+        default_quantity:
+          type: integer
+        charge_above:
+          type: integer
     NestedItemExtraOption:
       type: object
       required:
@@ -531,6 +566,217 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/NestedL2ItemExtra'
+    ItemExtraOption:
+      type: object
+      required:
+      - name
+      - price
+      properties:
+        name:
+          type: string
+          description: the given name of this instance
+        merchant_supplied_id:
+          type: string
+          description: ID as it's stored in your system
+        active:
+          type: boolean
+          default: true
+        price:
+          type: integer
+        base_price:
+          type: integer
+        default:
+          type: boolean
+        sort_id:
+          type: integer
+        tax_rate:
+          type: string
+        tax_category:
+          type: string
+        item_extra_option_special_hours:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemSpecialHour'
+        operation_context:
+          type: array
+          description: Not yet available
+          items:
+            type: string
+        quantity_info:
+          type: object
+          $ref: '#/components/schemas/QuantityInfo'
+        dish_info:
+          type: object
+          $ref: '#/components/schemas/DishInfo'
+        extras:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedItemExtra'
+    StoreMenuDetails:
+      type: object
+      properties:
+        provider_name:
+          type: string
+          description: Provider name
+          example: square
+        merchant_supplied_id:
+          type: string
+          description: Partner specified ID for the store
+          example: 1dfa934a-190c-43a9-b2e0-449e5b8cccde
+        menu:
+          type: array
+          description: Active menus
+          items:
+            $ref: '#/components/schemas/MenuDetails'
+    MenuDetails:
+      type: object
+      properties:
+        menu_id:
+          type: string
+          description: Menu identifier
+        name:
+          type: string
+          description: Menu name
+        subtitle:
+          type: string
+          description: Menu subtitle
+        is_active:
+          type: boolean
+          description: Menu is active
+        is_pos_menu:
+          type: boolean
+          description: Menu was created via POS
+        latest_menu_update:
+          type: object
+          description: Latest menu update
+          properties:
+            created_at:
+              type: string
+              format: date-time
+              description: Time of latest menu update
+            status:
+              type: string
+              enum:
+              - PENDING
+              - SUCCESS
+              - FAILURE
+              description: Status of latest menu update
+        last_successful_menu_update_at:
+          type: string
+          format: date-time
+          description: Time of last successful menu update
+        url:
+          type: string
+          description: Menu preview URL
+        open_hours:
+          type: array
+          description: Menu hours
+          items:
+            $ref: '#/components/schemas/StoreOpenHour'
+        special_hours:
+          type: array
+          description: Menu special hours
+          items:
+            $ref: '#/components/schemas/StoreSpecialHour'
+    ClassificationInfo:
+      type: object
+      properties:
+        has_side:
+          type: boolean
+        is_hot:
+          type: boolean
+        is_entree:
+          type: boolean
+        has_alcoholic_items:
+          type: boolean
+        service_types:
+          type: array
+          items:
+            type: string
+        classification_tags:
+          type: array
+          items:
+            type: string
+            enum:
+            - TAG_KEY_DIETARY_VEGETARIAN
+            - TAG_KEY_DIETARY_VEGAN
+            - TAG_KEY_DIETARY_GLUTEN_FREE
+    StoreSpecialHour:
+      type: object
+      properties:
+        date:
+          type: string
+          example: '2021-12-11'
+        closed:
+          type: boolean
+          description: Indicates if store is closed or opened at this special hour
+          example: true
+        start_time:
+          type: string
+          description: Start time in format HH:MM:SS
+          example: '13:00:00'
+        end_time:
+          type: string
+          description: End time in format HH:MM:SS
+          example: '18:00:00'
+    NestedItemExtra:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: the given name of this instance
+        description:
+          type: string
+        merchant_supplied_id:
+          type: string
+          description: ID as it's stored in your system
+        active:
+          type: boolean
+          default: true
+        sort_id:
+          type: integer
+        min_num_options:
+          type: integer
+        max_num_options:
+          type: integer
+        num_free_options:
+          type: integer
+        min_option_choice_quantity:
+          type: integer
+        max_option_choice_quantity:
+          type: integer
+        min_aggregate_options_quantity:
+          type: integer
+        max_aggregate_options_quantity:
+          type: integer
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/NestedItemExtraOption'
+    MenuCategory:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: the given name of this instance
+        subtitle:
+          type: string
+        merchant_supplied_id:
+          type: string
+          description: ID as it's stored in your system
+        active:
+          type: boolean
+          default: true
+        sort_id:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
     StoreInfoRequest:
       type: object
       properties:
@@ -563,13 +809,203 @@ components:
           description: Current store deactivations
           items:
             $ref: '#/components/schemas/StoreDeactivation'
-    DishInfo:
+    Menu:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          description: the given name of this instance
+          type: string
+        subtitle:
+          type: string
+        merchant_supplied_id:
+          description: ID as it's stored in your system
+          type: string
+        active:
+          type: boolean
+        experience:
+          description: (do not use this field for marketplace integration) optional field used only for Voice experience
+          type: string
+          enum:
+          - voice
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/MenuCategory'
+    NestedL2ItemExtraOption:
+      type: object
+      required:
+      - name
+      - price
+      properties:
+        name:
+          type: string
+          description: the given name of this instance
+        description:
+          type: string
+        merchant_supplied_id:
+          type: string
+          description: ID as it's stored in your system
+        active:
+          type: boolean
+          default: true
+        price:
+          type: integer
+        base_price:
+          type: integer
+        default:
+          type: boolean
+        sort_id:
+          type: integer
+        tax_rate:
+          type: string
+        tax_category:
+          type: string
+        item_extra_option_special_hours:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemSpecialHour'
+        operation_context:
+          type: array
+          items:
+            type: string
+        quantity_info:
+          type: object
+          $ref: '#/components/schemas/QuantityInfo'
+        dish_info:
+          type: object
+          $ref: '#/components/schemas/DishInfo'
+    ItemActivation:
+      type: object
+      required:
+      - merchant_supplied_id
+      - is_active
+      properties:
+        merchant_supplied_id:
+          type: string
+        is_active:
+          type: boolean
+    CalorificInfo:
       type: object
       properties:
-        nutritional_info:
-          $ref: '#/components/schemas/NutritionalInfo'
-        classification_info:
-          $ref: '#/components/schemas/ClassificationInfo'
+        display_type:
+          type: string
+        lower_range:
+          type: integer
+        higher_range:
+          type: integer
+    NutritionalInfo:
+      type: object
+      properties:
+        calorific_info:
+          $ref: '#/components/schemas/CalorificInfo'
+    StoreOpenHour:
+      type: object
+      properties:
+        day_index:
+          type: string
+          enum:
+          - MON
+          - TUE
+          - WED
+          - THU
+          - FRI
+          - SAT
+          - SUN
+          example: MON
+        start_time:
+          type: string
+          description: Start time in format HH:MM:SS
+          example: '13:00:00'
+        end_time:
+          type: string
+          description: End time in format HH:MM:SS
+          example: '18:00:00'
+    ItemSpecialHour:
+      type: object
+      properties:
+        day_index:
+          $ref: '#/components/schemas/DayIndex'
+        start_time:
+          type: string
+          description: Start time in format HH:MM:SS
+          example: '13:00:00'
+        end_time:
+          type: string
+          description: End time in format HH:MM:SS
+          example: '18:00:00'
+        start_date:
+          type: string
+        end_date:
+          type: string
+    StoreDeactivation:
+      type: object
+      properties:
+        reason:
+          type: string
+          description: Reason why the Store was deactivated
+          example: Merchant operational issues
+        notes:
+          type: string
+          description: Notes about the Store deactivation
+          example: store deactivated
+        created_at:
+          type: string
+          format: date-time
+          description: Time of store deactivation request
+          example: '2020-08-14T02:13:56.121734Z'
+        end_time:
+          type: string
+          format: date-time
+          description: End time for a temporal deactivation
+          example: '2021-08-20T07:00:17Z'
+    ItemExtra:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+          description: the given name of this instance
+        merchant_supplied_id:
+          type: string
+          description: ID as it's stored in your system
+        active:
+          type: boolean
+          default: true
+        sort_id:
+          type: integer
+        min_num_options:
+          type: integer
+        max_num_options:
+          type: integer
+        num_free_options:
+          type: integer
+        min_option_choice_quantity:
+          type: integer
+        max_option_choice_quantity:
+          type: integer
+        min_aggregate_options_quantity:
+          type: integer
+        max_aggregate_options_quantity:
+          type: integer
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemExtraOption'
+    Store:
+      type: object
+      required:
+      - merchant_supplied_id
+      - provider_type
+      properties:
+        merchant_supplied_id:
+          type: string
+          example: 1dfa934a-190c-43a9-b2e0-449e5b8cccde
+        provider_type:
+          type: string
+          example: positouch
     Item:
       type: object
       required:
@@ -621,177 +1057,6 @@ components:
         dish_info:
           type: object
           $ref: '#/components/schemas/DishInfo'
-    ItemSpecialHour:
-      type: object
-      properties:
-        day_index:
-          $ref: '#/components/schemas/DayIndex'
-        start_time:
-          type: string
-          description: Start time in format HH:MM:SS
-          example: '13:00:00'
-        end_time:
-          type: string
-          description: End time in format HH:MM:SS
-          example: '18:00:00'
-        start_date:
-          type: string
-        end_date:
-          type: string
-    ItemOptionActivationDeactivationRequest:
-      type: array
-      items:
-        $ref: '#/components/schemas/ItemActivation'
-    CalorificInfo:
-      type: object
-      properties:
-        display_type:
-          type: string
-        lower_range:
-          type: integer
-        higher_range:
-          type: integer
-    StoreMenuDetails:
-      type: object
-      properties:
-        provider_name:
-          type: string
-          description: Provider name
-          example: square
-        merchant_supplied_id:
-          type: string
-          description: Partner specified ID for the store
-          example: 1dfa934a-190c-43a9-b2e0-449e5b8cccde
-        menu:
-          type: array
-          description: Active menus
-          items:
-            $ref: '#/components/schemas/MenuDetails'
-    NutritionalInfo:
-      type: object
-      properties:
-        calorific_info:
-          $ref: '#/components/schemas/CalorificInfo'
-    DayIndex:
-      type: string
-      enum:
-      - MON
-      - TUE
-      - WED
-      - THU
-      - FRI
-      - SAT
-      - SUN
-      example: MON
-    ItemExtra:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: the given name of this instance
-        merchant_supplied_id:
-          type: string
-          description: ID as it's stored in your system
-        active:
-          type: boolean
-          default: true
-        sort_id:
-          type: integer
-        min_num_options:
-          type: integer
-        max_num_options:
-          type: integer
-        num_free_options:
-          type: integer
-        min_option_choice_quantity:
-          type: integer
-        max_option_choice_quantity:
-          type: integer
-        min_aggregate_options_quantity:
-          type: integer
-        max_aggregate_options_quantity:
-          type: integer
-        options:
-          type: array
-          items:
-            $ref: '#/components/schemas/ItemExtraOption'
-    MenuCategory:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: the given name of this instance
-        subtitle:
-          type: string
-        merchant_supplied_id:
-          type: string
-          description: ID as it's stored in your system
-        active:
-          type: boolean
-          default: true
-        sort_id:
-          type: integer
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Item'
-    QuantityInfo:
-      type: object
-      properties:
-        default_quantity:
-          type: integer
-        charge_above:
-          type: integer
-    ItemExtraOption:
-      type: object
-      required:
-      - name
-      - price
-      properties:
-        name:
-          type: string
-          description: the given name of this instance
-        merchant_supplied_id:
-          type: string
-          description: ID as it's stored in your system
-        active:
-          type: boolean
-          default: true
-        price:
-          type: integer
-        base_price:
-          type: integer
-        default:
-          type: boolean
-        sort_id:
-          type: integer
-        tax_rate:
-          type: string
-        tax_category:
-          type: string
-        item_extra_option_special_hours:
-          type: array
-          items:
-            $ref: '#/components/schemas/ItemSpecialHour'
-        operation_context:
-          type: array
-          description: Not yet available
-          items:
-            type: string
-        quantity_info:
-          type: object
-          $ref: '#/components/schemas/QuantityInfo'
-        dish_info:
-          type: object
-          $ref: '#/components/schemas/DishInfo'
-        extras:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedItemExtra'
     StoreStatusRequest:
       type: object
       required:
@@ -817,25 +1082,11 @@ components:
         merchant_supplied_id:
           type: string
           example: 1dfa934a-190c-43a9-b2e0-449e5b8cccde
-    StoreSpecialHour:
-      type: object
-      properties:
-        date:
-          type: string
-          example: '2021-12-11'
-        closed:
-          type: boolean
-          description: Indicates if store is closed or opened at this special hour
-          example: true
-        start_time:
-          type: string
-          description: Start time in format HH:MM:SS
-          example: '13:00:00'
-        end_time:
-          type: string
-          description: End time in format HH:MM:SS
-          example: '18:00:00'
-    StoreDeactivation:
+    ItemOptionActivationDeactivationRequest:
+      type: array
+      items:
+        $ref: '#/components/schemas/ItemActivation'
+    StoreDeactivation_2:
       type: object
       properties:
         reason:
@@ -856,236 +1107,30 @@ components:
           format: date-time
           description: End time for a temporal deactivation
           example: '2021-08-20T07:00:17Z'
-    Store:
+        experience:
+          type: string
+          description: Experience which the store is deactivated for
+          enum:
+          - ANY_EXPERIENCE
+          - DOORDASH
+          - STOREFRONT
+          - VOICE
+          example: ANY_EXPERIENCE
+    ItemAvailability:
       type: object
-      required:
-      - merchant_supplied_id
-      - provider_type
       properties:
         merchant_supplied_id:
           type: string
-          example: 1dfa934a-190c-43a9-b2e0-449e5b8cccde
-        provider_type:
-          type: string
-          example: positouch
-    MenuDetails:
-      type: object
-      properties:
-        menu_id:
-          type: string
-          description: Menu identifier
-        name:
-          type: string
-          description: Menu name
-        subtitle:
-          type: string
-          description: Menu subtitle
         is_active:
           type: boolean
-          description: Menu is active
-        is_pos_menu:
-          type: boolean
-          description: Menu was created via POS
-        latest_menu_update:
-          type: object
-          description: Latest menu update
-          properties:
-            created_at:
-              type: string
-              format: date-time
-              description: Time of latest menu update
-            status:
-              type: string
-              enum:
-              - PENDING
-              - SUCCESS
-              - FAILURE
-              description: Status of latest menu update
-        last_successful_menu_update_at:
-          type: string
-          format: date-time
-          description: Time of last successful menu update
-        url:
-          type: string
-          description: Menu preview URL
-        open_hours:
-          type: array
-          description: Menu hours
-          items:
-            $ref: '#/components/schemas/StoreOpenHour'
-        special_hours:
-          type: array
-          description: Menu special hours
-          items:
-            $ref: '#/components/schemas/StoreSpecialHour'
-    MenuCreateUpdateRequest:
-      type: object
-      required:
-      - store
-      - open_hours
-      - special_hours
-      properties:
-        reference:
-          type: string
-        store:
-          type: object
-          $ref: '#/components/schemas/Store'
-        open_hours:
-          type: array
-          items:
-            $ref: '#/components/schemas/StoreOpenHour'
-        special_hours:
-          type: array
-          items:
-            $ref: '#/components/schemas/StoreSpecialHour'
-        menu:
-          type: object
-          $ref: '#/components/schemas/Menu'
-    NestedL2ItemExtra:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: the given name of this instance
-        description:
-          type: string
-        merchant_supplied_id:
-          type: string
-          description: ID as it's stored in your system
-        active:
-          type: boolean
-          default: true
-        sort_id:
-          type: integer
-        min_num_options:
-          type: integer
-        max_num_options:
-          type: integer
-        num_free_options:
-          type: integer
-        min_option_choice_quantity:
-          type: integer
-        max_option_choice_quantity:
-          type: integer
-        min_aggregate_options_quantity:
-          type: integer
-        max_aggregate_options_quantity:
-          type: integer
-        options:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedL2ItemExtraOption'
-    StoreOpenHour:
-      type: object
-      properties:
-        day_index:
-          type: string
-          enum:
-          - MON
-          - TUE
-          - WED
-          - THU
-          - FRI
-          - SAT
-          - SUN
-          example: MON
         start_time:
           type: string
-          description: Start time in format HH:MM:SS
-          example: '13:00:00'
+          description: Start time in format YYYY-MM-DD HH:MM:SS.
+          example: YYYY-MM-DD HH:MM:SS
         end_time:
           type: string
-          description: End time in format HH:MM:SS
-          example: '18:00:00'
-    ClassificationInfo:
-      type: object
-      properties:
-        has_side:
-          type: boolean
-        is_hot:
-          type: boolean
-        is_entree:
-          type: boolean
-        has_alcoholic_items:
-          type: boolean
-        service_types:
-          type: array
-          items:
-            type: string
-        classification_tags:
-          type: array
-          items:
-            type: string
-            enum:
-            - TAG_KEY_DIETARY_VEGETARIAN
-            - TAG_KEY_DIETARY_VEGAN
-            - TAG_KEY_DIETARY_GLUTEN_FREE
-    Menu:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          description: the given name of this instance
-          type: string
-        subtitle:
-          type: string
-        merchant_supplied_id:
-          description: ID as it's stored in your system
-          type: string
-        active:
-          type: boolean
-        experience:
-          description: (do not use this field for marketplace integration) optional field used only for Voice experience
-          type: string
-          enum:
-          - voice
-        categories:
-          type: array
-          items:
-            $ref: '#/components/schemas/MenuCategory'
-    ItemActivationDeactivationRequest:
-      type: array
-      items:
-        $ref: '#/components/schemas/ItemActivation'
-    NestedItemExtra:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-          description: the given name of this instance
-        description:
-          type: string
-        merchant_supplied_id:
-          type: string
-          description: ID as it's stored in your system
-        active:
-          type: boolean
-          default: true
-        sort_id:
-          type: integer
-        min_num_options:
-          type: integer
-        max_num_options:
-          type: integer
-        num_free_options:
-          type: integer
-        min_option_choice_quantity:
-          type: integer
-        max_option_choice_quantity:
-          type: integer
-        min_aggregate_options_quantity:
-          type: integer
-        max_aggregate_options_quantity:
-          type: integer
-        options:
-          type: array
-          items:
-            $ref: '#/components/schemas/NestedItemExtraOption'
+          description: End time in format YYYY-MM-DD HH:MM:SS.
+          example: YYYY-MM-DD HH:MM:SS
     Item_2:
       type: object
       required:
@@ -1137,21 +1182,6 @@ components:
         dish_info:
           type: object
           $ref: '#/components/schemas/DishInfo'
-    ItemAvailability:
-      type: object
-      properties:
-        merchant_supplied_id:
-          type: string
-        is_active:
-          type: boolean
-        start_time:
-          type: string
-          description: Start time in format YYYY-MM-DD HH:MM:SS.
-          example: YYYY-MM-DD HH:MM:SS
-        end_time:
-          type: string
-          description: End time in format YYYY-MM-DD HH:MM:SS.
-          example: YYYY-MM-DD HH:MM:SS
     StoreStatusRequest_2:
       type: object
       required:
@@ -1186,36 +1216,6 @@ components:
         duration_in_secs:
           type: integer
           description: Duration of the temporary deactivation in seconds. Use with duration_in_hours.
-    StoreDeactivation_2:
-      type: object
-      properties:
-        reason:
-          type: string
-          description: Reason why the Store was deactivated
-          example: Merchant operational issues
-        notes:
-          type: string
-          description: Notes about the Store deactivation
-          example: store deactivated
-        created_at:
-          type: string
-          format: date-time
-          description: Time of store deactivation request
-          example: '2020-08-14T02:13:56.121734Z'
-        end_time:
-          type: string
-          format: date-time
-          description: End time for a temporal deactivation
-          example: '2021-08-20T07:00:17Z'
-        experience:
-          type: string
-          description: Experience which the store is deactivated for
-          enum:
-          - ANY_EXPERIENCE
-          - DOORDASH
-          - STOREFRONT
-          - VOICE
-          example: ANY_EXPERIENCE
   parameters:
     MerchantSupplierId:
       in: path

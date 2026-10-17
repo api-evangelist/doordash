@@ -143,6 +143,50 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    BrandHeaderImageCreative:
+      type: object
+      required:
+      - type
+      - title
+      - description
+      - logoContentUrl
+      properties:
+        type:
+          type: string
+          enum:
+          - BRAND_HEADER_IMAGE
+          description: Type of creative
+        title:
+          type: string
+          description: Title of the creative
+        description:
+          type: string
+          description: Description of the creative
+        logoContentUrl:
+          type: string
+          description: URL of the logo content
+        headerImageUrlMobile:
+          type: string
+          description: URL of the header image for mobile
+        headerImageUrlWeb:
+          type: string
+          description: URL of the header image for web
+        headerVideoUrlMobile:
+          type: string
+          description: URL of the header video for mobile
+        headerVideoUrlWeb:
+          type: string
+          description: URL of the header video for web
     BrandLandingPageCreative:
       type: object
       required:
@@ -199,62 +243,9 @@ components:
         logoContentUrl:
           type: string
           description: URL of the logo content
-    Error:
-      properties:
-        code:
-          description: An enumerated error for machine use.
-          type: string
-          readOnly: true
-        details:
-          description: A human-readable description of the error.
-          type: string
-          readOnly: true
-    BrandHeaderImageCreative:
-      type: object
-      required:
-      - type
-      - title
-      - description
-      - logoContentUrl
-      properties:
-        type:
-          type: string
-          enum:
-          - BRAND_HEADER_IMAGE
-          description: Type of creative
-        title:
-          type: string
-          description: Title of the creative
-        description:
-          type: string
-          description: Description of the creative
-        logoContentUrl:
-          type: string
-          description: URL of the logo content
-        headerImageUrlMobile:
-          type: string
-          description: URL of the header image for mobile
-        headerImageUrlWeb:
-          type: string
-          description: URL of the header image for web
-        headerVideoUrlMobile:
-          type: string
-          description: URL of the header video for mobile
-        headerVideoUrlWeb:
-          type: string
-          description: URL of the header video for web
-  parameters:
-    searchAfter:
-      name: searchAfter
-      in: query
-      description: 'Null when results included all matching resources. Base64 encoded string of the request payload when there are additional resources not included within the current result set.
-
-        '
-      schema:
-        type: string
   responses:
-    Unauthorized:
-      description: Unauthorized.
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
       content:
         application/json:
           schema:
@@ -265,12 +256,21 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    InternalServerError:
-      description: One or more query parameters contained an invalid value.
+    Unauthorized:
+      description: Unauthorized.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  parameters:
+    searchAfter:
+      name: searchAfter
+      in: query
+      description: 'Null when results included all matching resources. Base64 encoded string of the request payload when there are additional resources not included within the current result set.
+
+        '
+      schema:
+        type: string
   securitySchemes:
     Ads_API_Key_Authentication:
       type: apiKey

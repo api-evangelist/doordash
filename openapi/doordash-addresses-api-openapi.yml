@@ -88,29 +88,6 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        field_errors:
-          type: array
-          description: A list of field-level validation errors.
-          items:
-            type: object
-            properties:
-              field:
-                type: string
-                description: The name of the field with the error.
-              error:
-                type: string
-                description: The error message for the field.
-        message:
-          type: string
-          description: A human-readable error message.
-          example: example
-        code:
-          type: string
-          description: A machine-readable error code.
-          example: ABC123
     AddressSuggestion:
       type: object
       properties:
@@ -138,6 +115,29 @@ components:
           type: string
           description: The country code.
           example: US
+    Error:
+      type: object
+      properties:
+        field_errors:
+          type: array
+          description: A list of field-level validation errors.
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: The name of the field with the error.
+              error:
+                type: string
+                description: The error message for the field.
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
   securitySchemes:
     bearerAuth:
       type: http

@@ -82,42 +82,15 @@ paths:
       deprecated: false
 components:
   schemas:
-    RateLimitedError:
-      x-error: true
-      title: RateLimitedError
-      type: object
-      description: Rate limited.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - rate_limit_error
-        message:
-          type: string
-          example: Developer account endpoint rate limit exceeded.
-    IntegrationId:
+    IntegrationType:
       type: string
-      pattern: ^([1-9][0-9]*)$
-      description: Unique ID for the business, business group or store.
-      example: '987654'
-    AuthenticationError:
-      x-error: true
-      type: object
-      description: Authorization error, available credentials don't match requested operation
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - authentication_error
-        message:
-          type: string
-          example: Request does not contain a JWT.
+      enum:
+      - BUSINESS
+      - BUSINESS_GROUP
+      - STORE
+      example: store
+      default: business
+      description: Type of the integration id
     StorefrontCreateJWTRequest:
       type: object
       required:
@@ -127,66 +100,11 @@ components:
           $ref: '#/components/schemas/IntegrationId'
         integration_type:
           $ref: '#/components/schemas/IntegrationType'
-    StorefrontCreateJWTResponse:
-      type: object
-      required:
-      - jwt
-      - expires_in
-      properties:
-        jwt:
-          type: string
-          description: jwt
-        expires_in:
-          type: number
-          format: integer
-          description: minutes after which generated jwt will expire.
-    StoreResourceNotFoundError:
-      x-error: true
-      title: StoreResourceNotFoundError
-      type: object
-      description: The response returned when requested resource is not found/available.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - not_found
-        message:
-          type: string
-          example: Store is inactive/invalid.
-    InternalError:
-      x-error: true
-      title: InternalError
-      type: object
-      description: Internal errors that occur during the api call.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - internal_service_error
-        message:
-          type: string
-          example: Internal Service Error.
-    AuthorizationError:
-      x-error: true
-      type: object
-      description: Authorization error, available credentials don't match requested operation
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - authorization_error
-        message:
-          type: string
-          example: You are not authorized to perform this action.
+    IntegrationId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for the business, business group or store.
+      example: '987654'
     ValidationFieldError:
       x-error: true
       title: ValidationFieldError
@@ -207,15 +125,97 @@ components:
         errors:
           type: string
           example: Missing business/store id.
-    IntegrationType:
-      type: string
-      enum:
-      - BUSINESS
-      - BUSINESS_GROUP
-      - STORE
-      example: store
-      default: business
-      description: Type of the integration id
+    RateLimitedError:
+      x-error: true
+      title: RateLimitedError
+      type: object
+      description: Rate limited.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - rate_limit_error
+        message:
+          type: string
+          example: Developer account endpoint rate limit exceeded.
+    InternalError:
+      x-error: true
+      title: InternalError
+      type: object
+      description: Internal errors that occur during the api call.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - internal_service_error
+        message:
+          type: string
+          example: Internal Service Error.
+    StorefrontCreateJWTResponse:
+      type: object
+      required:
+      - jwt
+      - expires_in
+      properties:
+        jwt:
+          type: string
+          description: jwt
+        expires_in:
+          type: number
+          format: integer
+          description: minutes after which generated jwt will expire.
+    AuthorizationError:
+      x-error: true
+      type: object
+      description: Authorization error, available credentials don't match requested operation
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authorization_error
+        message:
+          type: string
+          example: You are not authorized to perform this action.
+    StoreResourceNotFoundError:
+      x-error: true
+      title: StoreResourceNotFoundError
+      type: object
+      description: The response returned when requested resource is not found/available.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - not_found
+        message:
+          type: string
+          example: Store is inactive/invalid.
+    AuthenticationError:
+      x-error: true
+      type: object
+      description: Authorization error, available credentials don't match requested operation
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authentication_error
+        message:
+          type: string
+          example: Request does not contain a JWT.
   securitySchemes:
     BearerAuth:
       type: http

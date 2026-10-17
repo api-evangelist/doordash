@@ -191,48 +191,6 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    ItemError:
-      type: object
-      properties:
-        merchant_supplied_id:
-          type: string
-          description: The item identifier that had an error.
-          example: D-12345
-        message:
-          type: string
-          description: The error message.
-          example: example
-        code:
-          type: string
-          description: A machine-readable error code.
-          example: ABC123
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: A human-readable error message.
-          example: example
-        code:
-          type: string
-          description: A machine-readable error code.
-          example: ABC123
-    StoreItemsResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          description: The processing status of the request.
-          example: active
-        items_processed:
-          type: integer
-          description: The number of items processed.
-          example: 42
-        errors:
-          type: array
-          description: Any errors encountered during processing.
-          items:
-            $ref: '#/components/schemas/ItemError'
     StoreItemsRequest:
       type: object
       required:
@@ -273,6 +231,48 @@ components:
           type: string
           description: The shelf location of the item in the store.
           example: example
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
+    StoreItemsResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: The processing status of the request.
+          example: active
+        items_processed:
+          type: integer
+          description: The number of items processed.
+          example: 42
+        errors:
+          type: array
+          description: Any errors encountered during processing.
+          items:
+            $ref: '#/components/schemas/ItemError'
+    ItemError:
+      type: object
+      properties:
+        merchant_supplied_id:
+          type: string
+          description: The item identifier that had an error.
+          example: D-12345
+        message:
+          type: string
+          description: The error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
   parameters:
     StoreLocationId:
       name: store_location_id

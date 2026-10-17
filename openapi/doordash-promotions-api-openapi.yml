@@ -189,21 +189,6 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    ItemError:
-      type: object
-      properties:
-        merchant_supplied_id:
-          type: string
-          description: The item identifier that had an error.
-          example: D-12345
-        message:
-          type: string
-          description: The error message.
-          example: example
-        code:
-          type: string
-          description: A machine-readable error code.
-          example: ABC123
     Error:
       type: object
       properties:
@@ -215,6 +200,16 @@ components:
           type: string
           description: A machine-readable error code.
           example: ABC123
+    PromotionsRequest:
+      type: object
+      required:
+      - promotions
+      properties:
+        promotions:
+          type: array
+          description: The promotions to add or update.
+          items:
+            $ref: '#/components/schemas/Promotion'
     Promotion:
       type: object
       required:
@@ -243,16 +238,21 @@ components:
           type: string
           description: A description of the promotion.
           example: Leave at the front desk.
-    PromotionsRequest:
+    ItemError:
       type: object
-      required:
-      - promotions
       properties:
-        promotions:
-          type: array
-          description: The promotions to add or update.
-          items:
-            $ref: '#/components/schemas/Promotion'
+        merchant_supplied_id:
+          type: string
+          description: The item identifier that had an error.
+          example: D-12345
+        message:
+          type: string
+          description: The error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
     PromotionsResponse:
       type: object
       properties:

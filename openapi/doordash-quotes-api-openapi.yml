@@ -250,13 +250,6 @@ components:
           format: double
           description: Longitude coordinate.
           example: -122.084
-    AcceptQuoteRequest:
-      type: object
-      properties:
-        tip:
-          type: integer
-          description: Optional tip amount in cents to include with the delivery.
-          example: 42
     Delivery:
       type: object
       properties:
@@ -422,6 +415,13 @@ components:
           format: date-time
           description: The time at which this quote expires, typically 5 minutes after creation.
           example: '2026-06-02T14:30:00Z'
+    AcceptQuoteRequest:
+      type: object
+      properties:
+        tip:
+          type: integer
+          description: Optional tip amount in cents to include with the delivery.
+          example: 42
     QuoteRequest:
       type: object
       required:

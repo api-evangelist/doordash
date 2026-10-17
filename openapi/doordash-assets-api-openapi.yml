@@ -136,22 +136,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    Error:
-      properties:
-        code:
-          description: An enumerated error for machine use.
-          type: string
-          readOnly: true
-        details:
-          description: A human-readable description of the error.
-          type: string
-          readOnly: true
-    AssetType:
-      type: string
-      enum:
-      - IMAGE
-      - VIDEO
-      description: Type of the asset
     Asset:
       type: object
       required:
@@ -183,6 +167,22 @@ components:
         cdnUrl:
           type: string
           description: CDN URL of the asset
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    AssetType:
+      type: string
+      enum:
+      - IMAGE
+      - VIDEO
+      description: Type of the asset
     AssetState:
       type: string
       enum:
@@ -194,8 +194,8 @@ components:
       - ARCHIVED
       description: Current state of the asset
   responses:
-    Unauthorized:
-      description: Unauthorized.
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
       content:
         application/json:
           schema:
@@ -206,14 +206,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    InternalServerError:
-      description: One or more query parameters contained an invalid value.
+    NotFound:
+      description: The requested resource was not found.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
+    Unauthorized:
+      description: Unauthorized.
       content:
         application/json:
           schema:

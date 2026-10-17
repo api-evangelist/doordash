@@ -48,18 +48,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    EstimatedSize:
-      type: object
-      required:
-      - low
-      - high
-      properties:
-        low:
-          type: integer
-          description: Estimated lower bound for audience size
-        high:
-          type: integer
-          description: Estimated upper bound for audience size
     Error:
       properties:
         code:
@@ -90,6 +78,18 @@ components:
         description:
           type: string
           description: Description for the label
+    EstimatedSize:
+      type: object
+      required:
+      - low
+      - high
+      properties:
+        low:
+          type: integer
+          description: Estimated lower bound for audience size
+        high:
+          type: integer
+          description: Estimated upper bound for audience size
     TargetingFilters:
       type: object
       required:
@@ -118,8 +118,8 @@ components:
           items:
             type: string
   responses:
-    Unauthorized:
-      description: Unauthorized.
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
       content:
         application/json:
           schema:
@@ -130,8 +130,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    InternalServerError:
-      description: One or more query parameters contained an invalid value.
+    Unauthorized:
+      description: Unauthorized.
       content:
         application/json:
           schema:

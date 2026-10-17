@@ -228,16 +228,10 @@ paths:
       deprecated: false
 components:
   schemas:
-    OptionPriceInfo:
-      type: object
-      properties:
-        base_price:
-          description: base price in cents. For example, 12.99$ should be specified as 1299
-          type: number
-    RequestRateLimitedError:
+    server_fault:
       x-error: true
       type: object
-      description: Request was rate limited.
+      description: Internal service failure, please try again later.
       required:
       - code
       - message
@@ -245,10 +239,12 @@ components:
         code:
           type: string
           enum:
-          - request_rate_limited
+          - service_fault
+          default: service_fault
         message:
           type: string
-          example: Request was rate limited. You may be calling the API too much in a short time.
+          example: Internal service failure, please try again later.
+          default: Internal service failure, please try again later.
     Option:
       type: object
       properties:
@@ -284,10 +280,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Extra'
-    AuthorizationError:
+    RequestNotProcessError:
       x-error: true
       type: object
-      description: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+      description: Request was not process.
       required:
       - code
       - message
@@ -295,50 +291,10 @@ components:
         code:
           type: string
           enum:
-          - authorization_error
-          default: authorization_error
+          - request_rate_limited
         message:
           type: string
-          example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
-          default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
-    StoreItem:
-      properties:
-        merchant_supplied_item_id:
-          type: string
-        item_availability:
-          type: string
-          enum:
-          - ACTIVE
-          - INACTIVE
-        balance_on_hand:
-          type: integer
-        funding_source:
-          type: string
-          enum:
-          - MERCHANT
-          - CPG
-        last_sold_datetime:
-          type: string
-          description: DateTime in ISO8601 format of when the item was last sold at the store.
-        price_info:
-          $ref: '#/components/schemas/PriceInfo'
-        location:
-          $ref: '#/components/schemas/ItemLocation'
-        item_special_hours:
-          type: array
-          description: Special hours on when item will be available
-          items:
-            $ref: '#/components/schemas/TimeBlock'
-        program_eligibility:
-          type: array
-          description: Program eligibility of the item
-          items:
-            $ref: '#/components/schemas/ProgramEligibility'
-        extras:
-          type: array
-          items:
-            $ref: '#/components/schemas/Extra'
-      type: object
+          example: Request was not process. Request entity may be too large.
     AsyncOperationResponse:
       type: object
       properties:
@@ -381,197 +337,44 @@ components:
         sale_price_per_measurement_unit:
           description: sale price in cents per measurement unit(kg, lb) in cents for weighted items
           type: number
-    UpdateItemsInBusinessRequest:
-      type: object
-      required:
-      - items
+    StoreItem:
       properties:
-        items:
-          type: array
-          description: Items whose business-level attributes should be updated across every live store in the business.
-          items:
-            $ref: '#/components/schemas/StoreItem'
-    ValidationFieldError:
-      x-error: true
-      title: ValidationFieldError
-      type: object
-      description: One or more request values couldn't be validated.
-      required:
-      - code
-      - message
-      - field_errors
-      properties:
-        code:
+        merchant_supplied_item_id:
+          type: string
+        item_availability:
           type: string
           enum:
-          - validation_error
-        message:
-          type: string
-          description: One or more request values couldn't be validated.
-          example: One or more request values couldn't be validated.
-        field_errors:
-          type: array
-          description: The list of fields whose values couldn't be validated. See more [error examples](https://developer.doordash.com/en-US/docs/drive/reference/errors)
-          items:
-            $ref: '#/components/schemas/FieldError'
-          readOnly: true
-    AuthenticationError:
-      x-error: true
-      type: object
-      description: 'Authentication error: the token provided with the request doesn''t work for the requested operation'
-      required:
-      - code
-      - message
-      properties:
-        code:
+          - ACTIVE
+          - INACTIVE
+        balance_on_hand:
+          type: integer
+        funding_source:
           type: string
           enum:
-          - authentication_error
-          default: authentication_error
-        message:
+          - MERCHANT
+          - CPG
+        last_sold_datetime:
           type: string
-          example: The [exp] is in the past; the JWT is expired
-          default: The [exp] is in the past; the JWT is expired
-    ItemLocation:
-      type: object
-      description: Default location of an item in the store across business. Can be specified at store level for any store specific customizations.
-      properties:
-        aisle:
-          type: string
-        zone:
-          type: string
-        shelf:
-          type: string
-        side:
-          type: string
-        additional_details:
-          type: string
-        coordinates:
-          type: object
-          properties:
-            x:
-              type: integer
-            y:
-              type: integer
-        raw_text:
-          description: Raw text is the unparsed raw data that comes from merchants.
-          type: string
-        section:
-          description: Section is where the item is located at.
-          type: string
-    BatchAddOrUpdateStoreItemRequest:
-      type: object
-      properties:
-        meta:
-          type: object
-          description: Only need this information when you use paginated pull workflow
-          properties:
-            current_page:
-              type: integer
-              description: optional
-            page_size:
-              type: integer
-              description: optional
-            total_page:
-              type: integer
-              description: required
-        items:
+          description: DateTime in ISO8601 format of when the item was last sold at the store.
+        price_info:
+          $ref: '#/components/schemas/PriceInfo'
+        location:
+          $ref: '#/components/schemas/ItemLocation'
+        item_special_hours:
+          type: array
+          description: Special hours on when item will be available
+          items:
+            $ref: '#/components/schemas/TimeBlock'
+        program_eligibility:
+          type: array
+          description: Program eligibility of the item
+          items:
+            $ref: '#/components/schemas/ProgramEligibility'
+        extras:
           type: array
           items:
-            $ref: '#/components/schemas/StoreItem'
-    ProgramEligibility:
-      description: Eligibility to items for various programs
-      type: string
-      enum:
-      - SNAP
-      - HSA
-      - FSA
-    server_fault:
-      x-error: true
+            $ref: '#/components/schemas/Extra'
       type: object
-      description: Internal service failure, please try again later.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - service_fault
-          default: service_fault
-        message:
-          type: string
-          example: Internal service failure, please try again later.
-          default: Internal service failure, please try again later.
-    TimeBlock:
-      type: object
-      properties:
-        day_index:
-          type: string
-          enum:
-          - MON
-          - TUE
-          - WED
-          - THU
-          - FRI
-          - SAT
-          - SUN
-        start_time:
-          type: string
-          format: HH:MM:SS
-        end_time:
-          type: string
-          format: HH:MM:SS
-        start_date:
-          type: string
-        end_date:
-          type: string
-    RequestNotProcessError:
-      x-error: true
-      type: object
-      description: Request was not process.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - request_rate_limited
-        message:
-          type: string
-          example: Request was not process. Request entity may be too large.
-    FieldError:
-      title: FieldError
-      type: object
-      description: A field whose value couldn't be validated.
-      required:
-      - field
-      - error
-      properties:
-        field:
-          type: string
-          description: Name of the field whose value couldn't be validated.
-          example: pickup_phone_number
-        error:
-          type: string
-          description: The error that was encountered when validating the field's value.
-          example: Invalid phone number format
-    NotFoundError:
-      x-error: true
-      type: object
-      description: Request entity was not found.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - unknown_business_id
-        message:
-          type: string
-          example: Entity was not found
     Extra:
       type: object
       properties:
@@ -618,3 +421,200 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Option'
+    ProgramEligibility:
+      description: Eligibility to items for various programs
+      type: string
+      enum:
+      - SNAP
+      - HSA
+      - FSA
+    OptionPriceInfo:
+      type: object
+      properties:
+        base_price:
+          description: base price in cents. For example, 12.99$ should be specified as 1299
+          type: number
+    ValidationFieldError:
+      x-error: true
+      title: ValidationFieldError
+      type: object
+      description: One or more request values couldn't be validated.
+      required:
+      - code
+      - message
+      - field_errors
+      properties:
+        code:
+          type: string
+          enum:
+          - validation_error
+        message:
+          type: string
+          description: One or more request values couldn't be validated.
+          example: One or more request values couldn't be validated.
+        field_errors:
+          type: array
+          description: The list of fields whose values couldn't be validated. See more [error examples](https://developer.doordash.com/en-US/docs/drive/reference/errors)
+          items:
+            $ref: '#/components/schemas/FieldError'
+          readOnly: true
+    RequestRateLimitedError:
+      x-error: true
+      type: object
+      description: Request was rate limited.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - request_rate_limited
+        message:
+          type: string
+          example: Request was rate limited. You may be calling the API too much in a short time.
+    FieldError:
+      title: FieldError
+      type: object
+      description: A field whose value couldn't be validated.
+      required:
+      - field
+      - error
+      properties:
+        field:
+          type: string
+          description: Name of the field whose value couldn't be validated.
+          example: pickup_phone_number
+        error:
+          type: string
+          description: The error that was encountered when validating the field's value.
+          example: Invalid phone number format
+    TimeBlock:
+      type: object
+      properties:
+        day_index:
+          type: string
+          enum:
+          - MON
+          - TUE
+          - WED
+          - THU
+          - FRI
+          - SAT
+          - SUN
+        start_time:
+          type: string
+          format: HH:MM:SS
+        end_time:
+          type: string
+          format: HH:MM:SS
+        start_date:
+          type: string
+        end_date:
+          type: string
+    AuthenticationError:
+      x-error: true
+      type: object
+      description: 'Authentication error: the token provided with the request doesn''t work for the requested operation'
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authentication_error
+          default: authentication_error
+        message:
+          type: string
+          example: The [exp] is in the past; the JWT is expired
+          default: The [exp] is in the past; the JWT is expired
+    ItemLocation:
+      type: object
+      description: Default location of an item in the store across business. Can be specified at store level for any store specific customizations.
+      properties:
+        aisle:
+          type: string
+        zone:
+          type: string
+        shelf:
+          type: string
+        side:
+          type: string
+        additional_details:
+          type: string
+        coordinates:
+          type: object
+          properties:
+            x:
+              type: integer
+            y:
+              type: integer
+        raw_text:
+          description: Raw text is the unparsed raw data that comes from merchants.
+          type: string
+        section:
+          description: Section is where the item is located at.
+          type: string
+    UpdateItemsInBusinessRequest:
+      type: object
+      required:
+      - items
+      properties:
+        items:
+          type: array
+          description: Items whose business-level attributes should be updated across every live store in the business.
+          items:
+            $ref: '#/components/schemas/StoreItem'
+    NotFoundError:
+      x-error: true
+      type: object
+      description: Request entity was not found.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - unknown_business_id
+        message:
+          type: string
+          example: Entity was not found
+    BatchAddOrUpdateStoreItemRequest:
+      type: object
+      properties:
+        meta:
+          type: object
+          description: Only need this information when you use paginated pull workflow
+          properties:
+            current_page:
+              type: integer
+              description: optional
+            page_size:
+              type: integer
+              description: optional
+            total_page:
+              type: integer
+              description: required
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoreItem'
+    AuthorizationError:
+      x-error: true
+      type: object
+      description: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authorization_error
+          default: authorization_error
+        message:
+          type: string
+          example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+          default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'

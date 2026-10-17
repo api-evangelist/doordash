@@ -140,6 +140,17 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message.
+          example: example
+        code:
+          type: string
+          description: A machine-readable error code.
+          example: ABC123
     ReportRequestResponse:
       type: object
       properties:
@@ -156,17 +167,6 @@ components:
           - SUCCEEDED
           - FAILED
           example: PENDING
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: A human-readable error message.
-          example: example
-        code:
-          type: string
-          description: A machine-readable error code.
-          example: ABC123
     ReportLinkResponse:
       type: object
       properties:

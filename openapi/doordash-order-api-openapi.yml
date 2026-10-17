@@ -171,59 +171,33 @@ paths:
           description: Internal Server Error
 components:
   schemas:
-    Price:
+    LoyaltyUserSessionRequest:
       type: object
-      required:
-      - value
-      - currency
       properties:
-        value:
-          type: integer
-          description: Price of this instance in minor units
-          example: 399
-        currency:
-          type: string
-          description: ISO 4217 - currency codes
-          example: USD
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        integration_id:
+          $ref: '#/components/schemas/IntegrationId'
+        integration_type:
+          $ref: '#/components/schemas/IntegrationType'
+      required:
+      - session_id
+      - integration_id
+      - integration_type
+    IntegrationType:
+      type: string
+      enum:
+      - BUSINESS
+      - BUSINESS_GROUP
+      - STORE
+      example: store
+      default: business
+      description: Type of the integration id
     IntegrationId:
       type: string
       pattern: ^([1-9][0-9]*)$
       description: Unique ID for the business, business group or store.
       example: '987654'
-    Address:
-      type: object
-      properties:
-        address_id:
-          type: string
-          pattern: ^([1-9][0-9]*)$
-          example: '1234567'
-        apartment_number:
-          type: string
-          example: '123'
-      required:
-      - address_id
-    AuthorizationError:
-      x-error: true
-      type: object
-      description: Authorization error, available credentials don't match requested operation
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - authorization_error
-        message:
-          type: string
-          example: You are not authorized to perform this action.
-    StorefrontCreateCartFromOrderSessionResponse:
-      type: object
-      required:
-      - cart_id
-      properties:
-        cart_id:
-          $ref: '#/components/schemas/CartId'
     StoreMenuResourceNotFoundError:
       x-error: true
       title: StoreMenuResourceNotFoundError
@@ -240,6 +214,45 @@ components:
         message:
           type: string
           example: Failed to fetch store menus for store 123.
+    StorefrontCreateCartFromOrderSessionResponse:
+      type: object
+      required:
+      - cart_id
+      properties:
+        cart_id:
+          $ref: '#/components/schemas/CartId'
+    ExternalCartItemExtra:
+      type: object
+      required:
+      - id
+      - quantity
+      - price
+      properties:
+        id:
+          type: string
+          description: The id of this instance
+        quantity:
+          type: integer
+          description: quantity for this item
+        price:
+          $ref: '#/components/schemas/Price'
+        options:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalCartItem'
+    StorefrontOrderSessionResponse:
+      type: object
+      required:
+      - order_session_id
+      - checkout_url
+      properties:
+        order_session_id:
+          type: string
+        checkout_url:
+          type: string
+    CartId:
+      type: string
+      description: id of the cart.
     GetStorefrontOrderHistoryResponse:
       type: object
       title: GetStorefrontOrderHistoryResponse
@@ -251,6 +264,30 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Order'
+    SessionId:
+      type: string
+      description: id of the application session
+    StorefrontCreateCartFromOrderSessionRequest:
+      type: object
+      required:
+      - integration_id
+      - integration_type
+      - order_session_id
+      - consumer_id
+      - session_id
+      properties:
+        integration_id:
+          $ref: '#/components/schemas/IntegrationId'
+        integration_type:
+          $ref: '#/components/schemas/IntegrationType'
+        order_session_id:
+          type: string
+        session_id:
+          $ref: '#/components/schemas/SessionId'
+        consumer_id:
+          $ref: '#/components/schemas/ConsumerId'
+        should_delete_existing_carts:
+          $ref: '#/components/schemas/ShouldDeleteExistingCarts'
     OrderStatus:
       type: string
       enum:
@@ -268,18 +305,34 @@ components:
       - dasher_confirmed_at_consumer
       - order_picked_up
       example: order_placed
-    DeliveryDetails:
+    InternalError:
+      x-error: true
+      title: InternalError
+      type: object
+      description: Internal errors that occur during the api call.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - internal_service_error
+        message:
+          type: string
+          example: Internal Service Error.
+    Address:
       type: object
       properties:
-        address:
-          $ref: '#/components/schemas/Address'
-        delivery_option:
-          $ref: '#/components/schemas/DeliveryOption'
-        delivery_instruction:
+        address_id:
           type: string
-          description: Delivery instructions if any.
+          pattern: ^([1-9][0-9]*)$
+          example: '1234567'
+        apartment_number:
+          type: string
+          example: '123'
       required:
-      - address
+      - address_id
     Order:
       type: object
       required:
@@ -309,12 +362,48 @@ components:
         help_url:
           type: string
           description: help url for this order if available
-    CartId:
+    GetStorefrontOrderStatusRequest:
+      type: object
+      required:
+      - integration_id
+      - integration_type
+      - order_id
+      properties:
+        integration_id:
+          $ref: '#/components/schemas/IntegrationId'
+        integration_type:
+          $ref: '#/components/schemas/IntegrationType'
+        order_id:
+          type: string
+          description: unique id for this order
+    UpdatedAt:
       type: string
-      description: id of the cart.
-    ShouldDeleteExistingCarts:
-      type: boolean
-      default: true
+      pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(.[0-9]{3,})?Z$
+      description: UTC Timestamp in ISO-8601 format
+      example: 2018-08-22T17:20:28Z or 2018-08-22T17:20:28.123Z
+    DeliveryDetails:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/Address'
+        delivery_option:
+          $ref: '#/components/schemas/DeliveryOption'
+        delivery_instruction:
+          type: string
+          description: Delivery instructions if any.
+      required:
+      - address
+    CreatedAt:
+      type: string
+      pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(.[0-9]{3,})?Z$
+      description: UTC Timestamp in ISO-8601 format
+      example: 2018-08-22T17:20:28Z or 2018-08-22T17:20:28.123Z
+    FulfillmentType:
+      type: string
+      enum:
+      - delivery
+      - pickup
+      example: pickup
     ValidationFieldError:
       x-error: true
       title: ValidationFieldError
@@ -335,6 +424,57 @@ components:
         errors:
           type: string
           example: Missing business/store id.
+    DeliveryOption:
+      type: string
+      description: one of two options which user can chose for delivery, leave at my door or hand it to me
+      enum:
+      - hand_it_to_me
+      - leave_at_my_door
+      default: leave_at_my_door
+      example: leave_at_my_door
+    GetStorefrontOrderStatusResponse:
+      type: object
+      title: GetStorefrontOrderStatusResponse
+      description: order status for an order id.
+      required:
+      - order
+      properties:
+        order:
+          $ref: '#/components/schemas/Order'
+    Price:
+      type: object
+      required:
+      - value
+      - currency
+      properties:
+        value:
+          type: integer
+          description: Price of this instance in minor units
+          example: 399
+        currency:
+          type: string
+          description: ISO 4217 - currency codes
+          example: USD
+    AuthenticationError:
+      x-error: true
+      type: object
+      description: Authorization error, available credentials don't match requested operation
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authentication_error
+        message:
+          type: string
+          example: Request does not contain a JWT.
+    ConsumerId:
+      type: string
+      pattern: ^([1-9][0-9]*)$
+      description: Unique ID for a doordash consumer.
+      example: '123'
     StorefrontOrderSessionRequest:
       type: object
       required:
@@ -360,103 +500,6 @@ components:
           pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(.[0-9]{3,})?Z$
           description: UTC Timestamp in ISO-8601 format
           example: 2018-08-22T17:20:28Z or 2018-08-22T17:20:28.123Z
-    ExternalCartItemExtra:
-      type: object
-      required:
-      - id
-      - quantity
-      - price
-      properties:
-        id:
-          type: string
-          description: The id of this instance
-        quantity:
-          type: integer
-          description: quantity for this item
-        price:
-          $ref: '#/components/schemas/Price'
-        options:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalCartItem'
-    ConsumerId:
-      type: string
-      pattern: ^([1-9][0-9]*)$
-      description: Unique ID for a doordash consumer.
-      example: '123'
-    AuthenticationError:
-      x-error: true
-      type: object
-      description: Authorization error, available credentials don't match requested operation
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - authentication_error
-        message:
-          type: string
-          example: Request does not contain a JWT.
-    GetStorefrontOrderStatusResponse:
-      type: object
-      title: GetStorefrontOrderStatusResponse
-      description: order status for an order id.
-      required:
-      - order
-      properties:
-        order:
-          $ref: '#/components/schemas/Order'
-    LoyaltyUserSessionRequest:
-      type: object
-      properties:
-        session_id:
-          $ref: '#/components/schemas/SessionId'
-        integration_id:
-          $ref: '#/components/schemas/IntegrationId'
-        integration_type:
-          $ref: '#/components/schemas/IntegrationType'
-      required:
-      - session_id
-      - integration_id
-      - integration_type
-    InternalError:
-      x-error: true
-      title: InternalError
-      type: object
-      description: Internal errors that occur during the api call.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - internal_service_error
-        message:
-          type: string
-          example: Internal Service Error.
-    UpdatedAt:
-      type: string
-      pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(.[0-9]{3,})?Z$
-      description: UTC Timestamp in ISO-8601 format
-      example: 2018-08-22T17:20:28Z or 2018-08-22T17:20:28.123Z
-    StorefrontOrderSessionResponse:
-      type: object
-      required:
-      - order_session_id
-      - checkout_url
-      properties:
-        order_session_id:
-          type: string
-        checkout_url:
-          type: string
-    CreatedAt:
-      type: string
-      pattern: ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(.[0-9]{3,})?Z$
-      description: UTC Timestamp in ISO-8601 format
-      example: 2018-08-22T17:20:28Z or 2018-08-22T17:20:28.123Z
     RateLimitedError:
       x-error: true
       title: RateLimitedError
@@ -473,67 +516,6 @@ components:
         message:
           type: string
           example: Developer account endpoint rate limit exceeded.
-    IntegrationType:
-      type: string
-      enum:
-      - BUSINESS
-      - BUSINESS_GROUP
-      - STORE
-      example: store
-      default: business
-      description: Type of the integration id
-    FulfillmentType:
-      type: string
-      enum:
-      - delivery
-      - pickup
-      example: pickup
-    StorefrontCreateCartFromOrderSessionRequest:
-      type: object
-      required:
-      - integration_id
-      - integration_type
-      - order_session_id
-      - consumer_id
-      - session_id
-      properties:
-        integration_id:
-          $ref: '#/components/schemas/IntegrationId'
-        integration_type:
-          $ref: '#/components/schemas/IntegrationType'
-        order_session_id:
-          type: string
-        session_id:
-          $ref: '#/components/schemas/SessionId'
-        consumer_id:
-          $ref: '#/components/schemas/ConsumerId'
-        should_delete_existing_carts:
-          $ref: '#/components/schemas/ShouldDeleteExistingCarts'
-    SessionId:
-      type: string
-      description: id of the application session
-    DeliveryOption:
-      type: string
-      description: one of two options which user can chose for delivery, leave at my door or hand it to me
-      enum:
-      - hand_it_to_me
-      - leave_at_my_door
-      default: leave_at_my_door
-      example: leave_at_my_door
-    GetStorefrontOrderStatusRequest:
-      type: object
-      required:
-      - integration_id
-      - integration_type
-      - order_id
-      properties:
-        integration_id:
-          $ref: '#/components/schemas/IntegrationId'
-        integration_type:
-          $ref: '#/components/schemas/IntegrationType'
-        order_id:
-          type: string
-          description: unique id for this order
     ExternalCartItem:
       type: object
       required:
@@ -555,6 +537,24 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ExternalCartItemExtra'
+    AuthorizationError:
+      x-error: true
+      type: object
+      description: Authorization error, available credentials don't match requested operation
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authorization_error
+        message:
+          type: string
+          example: You are not authorized to perform this action.
+    ShouldDeleteExistingCarts:
+      type: boolean
+      default: true
   securitySchemes:
     BearerAuth:
       type: http

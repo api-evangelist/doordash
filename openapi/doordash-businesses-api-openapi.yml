@@ -285,14 +285,6 @@ paths:
         delay: 0
         dispatcher: FALLBACK
 components:
-  parameters:
-    ExternalBusinessId:
-      name: external_business_id
-      in: path
-      required: true
-      description: The unique external identifier for the business.
-      schema:
-        type: string
   schemas:
     BusinessRequest:
       type: object
@@ -350,6 +342,14 @@ components:
           type: string
           description: A description of the business.
           example: Leave at the front desk.
+  parameters:
+    ExternalBusinessId:
+      name: external_business_id
+      in: path
+      required: true
+      description: The unique external identifier for the business.
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       type: http

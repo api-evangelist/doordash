@@ -77,6 +77,124 @@ paths:
                 $ref: '#/components/schemas/server_fault'
 components:
   schemas:
+    PullStoreItemsJobResponse:
+      type: object
+      properties:
+        operation_id:
+          type: string
+        operation_status:
+          type: string
+          enum:
+          - QUEUED
+          - IN_PROGRESS
+          - SUCCESS
+          - FAILED
+          - PARTIAL_SUCCESS
+        message:
+          type: string
+        max_page_size:
+          type: integer
+    server_fault:
+      x-error: true
+      type: object
+      description: Internal service failure, please try again later.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - service_fault
+          default: service_fault
+        message:
+          type: string
+          example: Internal service failure, please try again later.
+          default: Internal service failure, please try again later.
+    RequestRateLimitedError:
+      x-error: true
+      type: object
+      description: Request was rate limited.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - request_rate_limited
+        message:
+          type: string
+          example: Request was rate limited. You may be calling the API too much in a short time.
+    ValidationFieldError:
+      x-error: true
+      title: ValidationFieldError
+      type: object
+      description: One or more request values couldn't be validated.
+      required:
+      - code
+      - message
+      - field_errors
+      properties:
+        code:
+          type: string
+          enum:
+          - validation_error
+        message:
+          type: string
+          description: One or more request values couldn't be validated.
+          example: One or more request values couldn't be validated.
+        field_errors:
+          type: array
+          description: The list of fields whose values couldn't be validated. See more [error examples](https://developer.doordash.com/en-US/docs/drive/reference/errors)
+          items:
+            $ref: '#/components/schemas/FieldError'
+          readOnly: true
+    NotFoundError:
+      x-error: true
+      type: object
+      description: Request entity was not found.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - unknown_business_id
+        message:
+          type: string
+          example: Entity was not found
+    CreateJobRequest:
+      type: object
+      properties:
+        job_type:
+          type: string
+          enum:
+          - PULL_STORE_ITEMS
+          - PULL_STORE_ITEMS_WITH_PAGINATION
+          description: Use PULL_STORE_ITEMS if you can return all items in one pull call for one store, otherwise use PULL_STORE_ITEMS_WITH_PAGINATION which is paginated version pull.
+        job_parameters:
+          type: object
+          additionalProperties:
+            type: string
+    AuthorizationError:
+      x-error: true
+      type: object
+      description: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authorization_error
+          default: authorization_error
+        message:
+          type: string
+          example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+          default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
     RequestNotProcessError:
       x-error: true
       type: object
@@ -125,121 +243,3 @@ components:
           type: string
           example: The [exp] is in the past; the JWT is expired
           default: The [exp] is in the past; the JWT is expired
-    RequestRateLimitedError:
-      x-error: true
-      type: object
-      description: Request was rate limited.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - request_rate_limited
-        message:
-          type: string
-          example: Request was rate limited. You may be calling the API too much in a short time.
-    server_fault:
-      x-error: true
-      type: object
-      description: Internal service failure, please try again later.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - service_fault
-          default: service_fault
-        message:
-          type: string
-          example: Internal service failure, please try again later.
-          default: Internal service failure, please try again later.
-    NotFoundError:
-      x-error: true
-      type: object
-      description: Request entity was not found.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - unknown_business_id
-        message:
-          type: string
-          example: Entity was not found
-    CreateJobRequest:
-      type: object
-      properties:
-        job_type:
-          type: string
-          enum:
-          - PULL_STORE_ITEMS
-          - PULL_STORE_ITEMS_WITH_PAGINATION
-          description: Use PULL_STORE_ITEMS if you can return all items in one pull call for one store, otherwise use PULL_STORE_ITEMS_WITH_PAGINATION which is paginated version pull.
-        job_parameters:
-          type: object
-          additionalProperties:
-            type: string
-    AuthorizationError:
-      x-error: true
-      type: object
-      description: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - authorization_error
-          default: authorization_error
-        message:
-          type: string
-          example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
-          default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
-    ValidationFieldError:
-      x-error: true
-      title: ValidationFieldError
-      type: object
-      description: One or more request values couldn't be validated.
-      required:
-      - code
-      - message
-      - field_errors
-      properties:
-        code:
-          type: string
-          enum:
-          - validation_error
-        message:
-          type: string
-          description: One or more request values couldn't be validated.
-          example: One or more request values couldn't be validated.
-        field_errors:
-          type: array
-          description: The list of fields whose values couldn't be validated. See more [error examples](https://developer.doordash.com/en-US/docs/drive/reference/errors)
-          items:
-            $ref: '#/components/schemas/FieldError'
-          readOnly: true
-    PullStoreItemsJobResponse:
-      type: object
-      properties:
-        operation_id:
-          type: string
-        operation_status:
-          type: string
-          enum:
-          - QUEUED
-          - IN_PROGRESS
-          - SUCCESS
-          - FAILED
-          - PARTIAL_SUCCESS
-        message:
-          type: string
-        max_page_size:
-          type: integer

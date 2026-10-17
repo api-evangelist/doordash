@@ -67,6 +67,51 @@ paths:
       deprecated: false
 components:
   schemas:
+    server_fault:
+      x-error: true
+      type: object
+      description: Internal service failure, please try again later.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - service_fault
+          default: service_fault
+        message:
+          type: string
+          example: Internal service failure, please try again later.
+          default: Internal service failure, please try again later.
+    AuditPeriod:
+      title: AuditPeriod
+      type: object
+      description: An object that specifies the audit period start and end time, if audit is completed on the Merchants side.
+      properties:
+        start_time:
+          $ref: '#/components/schemas/Time'
+        end_time:
+          $ref: '#/components/schemas/Time'
+    DriveSuccessfulAuditedItem:
+      title: DriveSuccessfulAuditedItem
+      type: object
+      description: Drive item that has successfully passed audit or failed audit
+      properties:
+        external_item_id:
+          type: string
+          description: External ID of the item audited
+          example: item-id-1
+        upc_scanned:
+          type: string
+          description: UPC scanned for the audited item
+          example: '1234575757'
+    CheckoutAuditSignalInput:
+      title: CheckoutAuditSignalInput
+      description: Request body for quote accept endpoint
+      allOf:
+      - $ref: '#/components/schemas/delivery_CheckoutAuditSignalInput'
+      type: object
     ExternalDeliveryId:
       type: string
       pattern: /[a-zA-Z0-9-._~]+/
@@ -77,23 +122,21 @@ components:
       description: The count of the items requested for audit
       format: int32
       example: 2
-    authentication_error:
-      x-error: true
+    DriveFailedAuditedItem:
+      title: DriveFailedAuditedItem
       type: object
-      description: 'Authentication error: the token provided with the request doesn''t work for the requested operation'
-      required:
-      - code
-      - message
+      description: Drive item that has successfully passed audit or failed audit
       properties:
-        code:
+        external_item_id:
           type: string
-          enum:
-          - authentication_error
-          default: authentication_error
-        message:
+          description: External ID of the item audited
+          example: item-id-1
+        upc_scanned:
           type: string
-          example: The [exp] is in the past; the JWT is expired
-          default: The [exp] is in the past; the JWT is expired
+          description: UPC scanned for the audited item
+          example: '1234575757'
+        failed_reason:
+          $ref: '#/components/schemas/AuditFailedReason'
     validation_field_error:
       x-error: true
       title: ValidationFieldError
@@ -136,102 +179,6 @@ components:
                 type: string
                 description: The error that was encountered when validating the field's value.
                 example: Invalid phone number format
-    AuditedItemCount:
-      type: integer
-      description: The count of the items that is audited by the Merchant
-      format: int32
-      example: 2
-    IsAuditSuccessful:
-      type: boolean
-      description: Whether the audit for the specified delivery passed or failed.
-      example: 'false'
-    DriveFailedAuditedItem:
-      title: DriveFailedAuditedItem
-      type: object
-      description: Drive item that has successfully passed audit or failed audit
-      properties:
-        external_item_id:
-          type: string
-          description: External ID of the item audited
-          example: item-id-1
-        upc_scanned:
-          type: string
-          description: UPC scanned for the audited item
-          example: '1234575757'
-        failed_reason:
-          $ref: '#/components/schemas/AuditFailedReason'
-    Time:
-      title: TimeDetails
-      description: Time details in ISO-8601 format.
-      type: string
-      example: '2018-08-22T17:20:28Z'
-    DriveSuccessfulAuditedItem:
-      title: DriveSuccessfulAuditedItem
-      type: object
-      description: Drive item that has successfully passed audit or failed audit
-      properties:
-        external_item_id:
-          type: string
-          description: External ID of the item audited
-          example: item-id-1
-        upc_scanned:
-          type: string
-          description: UPC scanned for the audited item
-          example: '1234575757'
-    AuditPeriod:
-      title: AuditPeriod
-      type: object
-      description: An object that specifies the audit period start and end time, if audit is completed on the Merchants side.
-      properties:
-        start_time:
-          $ref: '#/components/schemas/Time'
-        end_time:
-          $ref: '#/components/schemas/Time'
-    CheckoutAuditSignalResponse:
-      title: CheckoutAuditSignalResponse
-      description: Create audit signal status and details.
-      properties:
-        signal_received:
-          $ref: '#/components/schemas/SignalReceived'
-      type: object
-    CheckoutAuditSignalInput:
-      title: CheckoutAuditSignalInput
-      description: Request body for quote accept endpoint
-      allOf:
-      - $ref: '#/components/schemas/delivery_CheckoutAuditSignalInput'
-      type: object
-    AuditFailedReason:
-      type: string
-      description: An enum that specifies the reason why the item failed audit."
-      enum:
-      - scan_mismatch
-      - item_expired
-      example: scan_mismatch
-    CheckoutAuditStatus:
-      type: string
-      description: An enum that specifies the overal audit status of the order. Must be sent for failed_audit_items and not successful_audit_items."
-      enum:
-      - passed
-      - failed
-      - skipped
-      example: passed
-    server_fault:
-      x-error: true
-      type: object
-      description: Internal service failure, please try again later.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - service_fault
-          default: service_fault
-        message:
-          type: string
-          example: Internal service failure, please try again later.
-          default: Internal service failure, please try again later.
     delivery_CheckoutAuditSignalInput:
       title: CheckoutAuditSignalInput
       description: Request body for quote accept endpoint
@@ -261,6 +208,32 @@ components:
           $ref: '#/components/schemas/CheckoutAuditStatus'
       required:
       - external_delivery_id
+    Time:
+      title: TimeDetails
+      description: Time details in ISO-8601 format.
+      type: string
+      example: '2018-08-22T17:20:28Z'
+    SignalReceived:
+      type: boolean
+      description: Whether the audit for the specified delivery was successfully received.
+      example: 'false'
+    authentication_error:
+      x-error: true
+      type: object
+      description: 'Authentication error: the token provided with the request doesn''t work for the requested operation'
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authentication_error
+          default: authentication_error
+        message:
+          type: string
+          example: The [exp] is in the past; the JWT is expired
+          default: The [exp] is in the past; the JWT is expired
     FieldError:
       title: FieldError
       type: object
@@ -277,10 +250,23 @@ components:
           type: string
           description: The error that was encountered when validating the field's value.
           example: Invalid phone number format
-    SignalReceived:
+    CheckoutAuditStatus:
+      type: string
+      description: An enum that specifies the overal audit status of the order. Must be sent for failed_audit_items and not successful_audit_items."
+      enum:
+      - passed
+      - failed
+      - skipped
+      example: passed
+    IsAuditSuccessful:
       type: boolean
-      description: Whether the audit for the specified delivery was successfully received.
+      description: Whether the audit for the specified delivery passed or failed.
       example: 'false'
+    AuditedItemCount:
+      type: integer
+      description: The count of the items that is audited by the Merchant
+      format: int32
+      example: 2
     authorization_error:
       x-error: true
       type: object
@@ -298,3 +284,17 @@ components:
           type: string
           example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
           default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
+    CheckoutAuditSignalResponse:
+      title: CheckoutAuditSignalResponse
+      description: Create audit signal status and details.
+      properties:
+        signal_received:
+          $ref: '#/components/schemas/SignalReceived'
+      type: object
+    AuditFailedReason:
+      type: string
+      description: An enum that specifies the reason why the item failed audit."
+      enum:
+      - scan_mismatch
+      - item_expired
+      example: scan_mismatch

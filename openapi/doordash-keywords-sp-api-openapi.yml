@@ -84,6 +84,9 @@ components:
           - CATEGORIES
           - COLLECTION
           - DOUBLEDASH
+    ProductId:
+      description: Unique product identifier based on product ID type.
+      type: string
     Error:
       properties:
         code:
@@ -94,47 +97,6 @@ components:
           description: A human-readable description of the error.
           type: string
           readOnly: true
-    RecommendedKeywordsStatusResponse:
-      required:
-      - recommendedKeywords
-      properties:
-        recommendedKeywords:
-          type: object
-          properties:
-            SEARCH:
-              type: array
-              items:
-                $ref: '#/components/schemas/KeywordStatus'
-          required:
-          - SEARCH
-          additionalProperties:
-            type: array
-            items:
-              $ref: '#/components/schemas/KeywordStatus'
-    ProductIdType:
-      description: Product ID type
-      type: string
-      enum:
-      - GTIN_14
-      - UPC
-      - DD_SIC
-    RecommendedKeywordsResponse:
-      required:
-      - recommendedKeywords
-      properties:
-        recommendedKeywords:
-          type: object
-          properties:
-            SEARCH:
-              type: array
-              items:
-                type: string
-          required:
-          - SEARCH
-          additionalProperties:
-            type: array
-            items:
-              type: string
     GetRecommendedKeywordsRequest:
       required:
       - placements
@@ -162,12 +124,50 @@ components:
           type: string
           enum:
           - NEW
-    ProductId:
-      description: Unique product identifier based on product ID type.
+    ProductIdType:
+      description: Product ID type
       type: string
+      enum:
+      - GTIN_14
+      - UPC
+      - DD_SIC
+    RecommendedKeywordsResponse:
+      required:
+      - recommendedKeywords
+      properties:
+        recommendedKeywords:
+          type: object
+          properties:
+            SEARCH:
+              type: array
+              items:
+                type: string
+          required:
+          - SEARCH
+          additionalProperties:
+            type: array
+            items:
+              type: string
+    RecommendedKeywordsStatusResponse:
+      required:
+      - recommendedKeywords
+      properties:
+        recommendedKeywords:
+          type: object
+          properties:
+            SEARCH:
+              type: array
+              items:
+                $ref: '#/components/schemas/KeywordStatus'
+          required:
+          - SEARCH
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/KeywordStatus'
   responses:
-    Unauthorized:
-      description: Unauthorized.
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
       content:
         application/json:
           schema:
@@ -178,8 +178,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    InternalServerError:
-      description: One or more query parameters contained an invalid value.
+    Unauthorized:
+      description: Unauthorized.
       content:
         application/json:
           schema:

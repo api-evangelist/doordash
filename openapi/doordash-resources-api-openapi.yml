@@ -38,12 +38,24 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 components:
   schemas:
-    ResourceType:
+    CpgResource:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/ResourceType'
+        l1Id:
+          type: string
+        l1name:
+          type: string
+    ClassificationType:
       type: string
       enum:
-      - L1_BRAND
-      - L1_CATEGORY
-      - L2_CATEGORY
+      - BRAND
+      - CATEGORY
     Error:
       properties:
         code:
@@ -54,6 +66,12 @@ components:
           description: A human-readable description of the error.
           type: string
           readOnly: true
+    ResourceType:
+      type: string
+      enum:
+      - L1_BRAND
+      - L1_CATEGORY
+      - L2_CATEGORY
     ResourcesSearchResponse:
       type: object
       properties:
@@ -84,27 +102,9 @@ components:
         limit:
           type: number
           default: 10
-    ClassificationType:
-      type: string
-      enum:
-      - BRAND
-      - CATEGORY
-    CpgResource:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        type:
-          $ref: '#/components/schemas/ResourceType'
-        l1Id:
-          type: string
-        l1name:
-          type: string
   responses:
-    Unauthorized:
-      description: Unauthorized.
+    InternalServerError:
+      description: One or more query parameters contained an invalid value.
       content:
         application/json:
           schema:
@@ -115,8 +115,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    InternalServerError:
-      description: One or more query parameters contained an invalid value.
+    Unauthorized:
+      description: Unauthorized.
       content:
         application/json:
           schema:

@@ -146,6 +146,195 @@ paths:
       deprecated: false
 components:
   schemas:
+    server_fault:
+      x-error: true
+      type: object
+      description: Internal service failure, please try again later.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - service_fault
+          default: service_fault
+        message:
+          type: string
+          example: Internal service failure, please try again later.
+          default: Internal service failure, please try again later.
+    MultiSelectString:
+      type: object
+      properties:
+        multi_select_string:
+          type: array
+          items:
+            type: string
+    RequestNotProcessError:
+      x-error: true
+      type: object
+      description: Request was not process.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - request_rate_limited
+        message:
+          type: string
+          example: Request was not process. Request entity may be too large.
+    AsyncOperationResponse:
+      type: object
+      properties:
+        operation_id:
+          type: string
+        operation_status:
+          type: string
+          enum:
+          - QUEUED
+          - IN_PROGRESS
+          - SUCCESS
+          - FAILED
+          - PARTIAL_SUCCESS
+        message:
+          type: string
+    SizeInfo:
+      type: object
+      properties:
+        dimensions:
+          type: object
+          properties:
+            length:
+              type: object
+              properties:
+                value:
+                  type: number
+                unit:
+                  type: string
+                  enum:
+                  - inch
+                  - ft
+                  - cm
+                  - m
+            width:
+              type: object
+              properties:
+                value:
+                  type: number
+                unit:
+                  type: string
+                  enum:
+                  - inch
+                  - ft
+                  - cm
+                  - m
+            height:
+              type: object
+              properties:
+                value:
+                  type: number
+                unit:
+                  type: string
+                  enum:
+                  - inch
+                  - ft
+                  - cm
+                  - m
+        weight:
+          type: object
+          properties:
+            value:
+              type: number
+            unit:
+              type: string
+              enum:
+              - lbs
+              - gm
+              - kg
+              - ea
+              - oz
+        volume:
+          type: object
+          properties:
+            value:
+              type: number
+            unit:
+              type: string
+              enum:
+              - oz
+              - mL
+              - L
+        product_specific_size_definition:
+          type: object
+          description: Product-specific size information with separate numeric value and unit of measurement
+          properties:
+            value:
+              type: string
+              description: Numeric value only
+              example: '400'
+            description:
+              type: string
+              description: Unit of measurement only
+              example: g
+    BatchAddOrUpdateItemRequest:
+      type: object
+      properties:
+        scope:
+          type: object
+          properties:
+            business_ids:
+              type: array
+              items:
+                type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+    SingleSelectBool:
+      type: object
+      properties:
+        single_select_bool:
+          type: boolean
+    ProgramEligibility:
+      description: Eligibility to items for various programs
+      type: string
+      enum:
+      - SNAP
+      - HSA
+      - FSA
+    ValidationFieldError:
+      x-error: true
+      title: ValidationFieldError
+      type: object
+      description: One or more request values couldn't be validated.
+      required:
+      - code
+      - message
+      - field_errors
+      properties:
+        code:
+          type: string
+          enum:
+          - validation_error
+        message:
+          type: string
+          description: One or more request values couldn't be validated.
+          example: One or more request values couldn't be validated.
+        field_errors:
+          type: array
+          description: The list of fields whose values couldn't be validated. See more [error examples](https://developer.doordash.com/en-US/docs/drive/reference/errors)
+          items:
+            $ref: '#/components/schemas/FieldError'
+          readOnly: true
+    Category:
+      type: object
+      properties:
+        name:
+          type: string
+        sub_category:
+          $ref: '#/components/schemas/Category'
     RequestRateLimitedError:
       x-error: true
       type: object
@@ -161,6 +350,68 @@ components:
         message:
           type: string
           example: Request was rate limited. You may be calling the API too much in a short time.
+    FieldError:
+      title: FieldError
+      type: object
+      description: A field whose value couldn't be validated.
+      required:
+      - field
+      - error
+      properties:
+        field:
+          type: string
+          description: Name of the field whose value couldn't be validated.
+          example: pickup_phone_number
+        error:
+          type: string
+          description: The error that was encountered when validating the field's value.
+          example: Invalid phone number format
+    AuthenticationError:
+      x-error: true
+      type: object
+      description: 'Authentication error: the token provided with the request doesn''t work for the requested operation'
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - authentication_error
+          default: authentication_error
+        message:
+          type: string
+          example: The [exp] is in the past; the JWT is expired
+          default: The [exp] is in the past; the JWT is expired
+    MultiSelectDouble:
+      type: object
+      properties:
+        multi_select_double:
+          type: array
+          description: array of double
+          items:
+            type: number
+    ProductTrait:
+      type: string
+      enum:
+      - ALCOHOL
+      - MEDICATION
+      - WEIGHTED
+    NotFoundError:
+      x-error: true
+      type: object
+      description: Request entity was not found.
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: string
+          enum:
+          - unknown_business_id
+        message:
+          type: string
+          example: Entity was not found
     Item:
       title: Item
       description: Item to be managed by doordash. Should be unique across stores within business.
@@ -282,25 +533,6 @@ components:
           description: 'product_attributes allow us to infer everything about an item necessary for customers to shop, dasher to fulfill, merchants to merchandise, and advertisers to advertise. See supported full attribute list: https://developer.doordash.com/en-US/docs/marketplace/retail/catalog_management/supported_attribute'
           items:
             $ref: '#/components/schemas/ProductAttributes'
-    SingleSelectBool:
-      type: object
-      properties:
-        single_select_bool:
-          type: boolean
-    MultiSelectString:
-      type: object
-      properties:
-        multi_select_string:
-          type: array
-          items:
-            type: string
-    Category:
-      type: object
-      properties:
-        name:
-          type: string
-        sub_category:
-          $ref: '#/components/schemas/Category'
     AuthorizationError:
       x-error: true
       type: object
@@ -318,238 +550,6 @@ components:
           type: string
           example: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
           default: 'Authorization error: the credentials provided with the request don''t work for the requested operation'
-    AsyncOperationResponse:
-      type: object
-      properties:
-        operation_id:
-          type: string
-        operation_status:
-          type: string
-          enum:
-          - QUEUED
-          - IN_PROGRESS
-          - SUCCESS
-          - FAILED
-          - PARTIAL_SUCCESS
-        message:
-          type: string
-    SizeInfo:
-      type: object
-      properties:
-        dimensions:
-          type: object
-          properties:
-            length:
-              type: object
-              properties:
-                value:
-                  type: number
-                unit:
-                  type: string
-                  enum:
-                  - inch
-                  - ft
-                  - cm
-                  - m
-            width:
-              type: object
-              properties:
-                value:
-                  type: number
-                unit:
-                  type: string
-                  enum:
-                  - inch
-                  - ft
-                  - cm
-                  - m
-            height:
-              type: object
-              properties:
-                value:
-                  type: number
-                unit:
-                  type: string
-                  enum:
-                  - inch
-                  - ft
-                  - cm
-                  - m
-        weight:
-          type: object
-          properties:
-            value:
-              type: number
-            unit:
-              type: string
-              enum:
-              - lbs
-              - gm
-              - kg
-              - ea
-              - oz
-        volume:
-          type: object
-          properties:
-            value:
-              type: number
-            unit:
-              type: string
-              enum:
-              - oz
-              - mL
-              - L
-        product_specific_size_definition:
-          type: object
-          description: Product-specific size information with separate numeric value and unit of measurement
-          properties:
-            value:
-              type: string
-              description: Numeric value only
-              example: '400'
-            description:
-              type: string
-              description: Unit of measurement only
-              example: g
-    MultiSelectDouble:
-      type: object
-      properties:
-        multi_select_double:
-          type: array
-          description: array of double
-          items:
-            type: number
-    ValidationFieldError:
-      x-error: true
-      title: ValidationFieldError
-      type: object
-      description: One or more request values couldn't be validated.
-      required:
-      - code
-      - message
-      - field_errors
-      properties:
-        code:
-          type: string
-          enum:
-          - validation_error
-        message:
-          type: string
-          description: One or more request values couldn't be validated.
-          example: One or more request values couldn't be validated.
-        field_errors:
-          type: array
-          description: The list of fields whose values couldn't be validated. See more [error examples](https://developer.doordash.com/en-US/docs/drive/reference/errors)
-          items:
-            $ref: '#/components/schemas/FieldError'
-          readOnly: true
-    AuthenticationError:
-      x-error: true
-      type: object
-      description: 'Authentication error: the token provided with the request doesn''t work for the requested operation'
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - authentication_error
-          default: authentication_error
-        message:
-          type: string
-          example: The [exp] is in the past; the JWT is expired
-          default: The [exp] is in the past; the JWT is expired
-    server_fault:
-      x-error: true
-      type: object
-      description: Internal service failure, please try again later.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - service_fault
-          default: service_fault
-        message:
-          type: string
-          example: Internal service failure, please try again later.
-          default: Internal service failure, please try again later.
-    ProgramEligibility:
-      description: Eligibility to items for various programs
-      type: string
-      enum:
-      - SNAP
-      - HSA
-      - FSA
-    ProductTrait:
-      type: string
-      enum:
-      - ALCOHOL
-      - MEDICATION
-      - WEIGHTED
-    RequestNotProcessError:
-      x-error: true
-      type: object
-      description: Request was not process.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - request_rate_limited
-        message:
-          type: string
-          example: Request was not process. Request entity may be too large.
-    FieldError:
-      title: FieldError
-      type: object
-      description: A field whose value couldn't be validated.
-      required:
-      - field
-      - error
-      properties:
-        field:
-          type: string
-          description: Name of the field whose value couldn't be validated.
-          example: pickup_phone_number
-        error:
-          type: string
-          description: The error that was encountered when validating the field's value.
-          example: Invalid phone number format
-    NotFoundError:
-      x-error: true
-      type: object
-      description: Request entity was not found.
-      required:
-      - code
-      - message
-      properties:
-        code:
-          type: string
-          enum:
-          - unknown_business_id
-        message:
-          type: string
-          example: Entity was not found
-    BatchAddOrUpdateItemRequest:
-      type: object
-      properties:
-        scope:
-          type: object
-          properties:
-            business_ids:
-              type: array
-              items:
-                type: string
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/Item'
     ProductAttributes:
       type: object
       properties:

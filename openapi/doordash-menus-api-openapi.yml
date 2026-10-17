@@ -169,33 +169,49 @@ paths:
         dispatcher: FALLBACK
 components:
   schemas:
-    MenuResponse:
+    MenuCategory:
       type: object
+      required:
+      - id
+      - name
+      - items
       properties:
-        menu_id:
+        id:
           type: string
-          description: The unique identifier for the menu request.
+          description: The unique identifier for this category.
           example: D-12345
-        status:
+        name:
           type: string
-          description: The processing status of the menu request.
-          enum:
-          - received
-          - processing
-          - completed
-          - failed
-          example: received
-    Error:
+          description: The display name of the category.
+          example: Acme Pickup Store
+        description:
+          type: string
+          description: A description of the category.
+          example: Leave at the front desk.
+        sort_id:
+          type: integer
+          description: The sort order for this category.
+          example: 42
+        items:
+          type: array
+          description: The items in this category.
+          items:
+            $ref: '#/components/schemas/MenuItem'
+    MenuRequest:
       type: object
+      required:
+      - store_id
+      - categories
       properties:
-        message:
+        store_id:
           type: string
-          description: A human-readable error message.
-          example: example
-        code:
-          type: string
-          description: A machine-readable error code.
-          example: ABC123
+          description: The merchant-supplied store identifier.
+          example: D-12345
+        categories:
+          type: array
+          description: The menu categories containing items.
+          items:
+            $ref: '#/components/schemas/MenuCategory'
     MenuOption:
       type: object
       required:
@@ -219,51 +235,17 @@ components:
           type: boolean
           description: Whether the option is currently available.
           example: true
-    OptionGroup:
+    Error:
       type: object
-      required:
-      - id
-      - name
-      - options
       properties:
-        id:
+        message:
           type: string
-          description: The unique identifier for this option group.
-          example: D-12345
-        name:
+          description: A human-readable error message.
+          example: example
+        code:
           type: string
-          description: The display name of the option group.
-          example: Acme Pickup Store
-        min_selections:
-          type: integer
-          description: The minimum number of options that must be selected.
-          minimum: 0
-          example: 0
-        max_selections:
-          type: integer
-          description: The maximum number of options that can be selected.
-          minimum: 1
-          example: 1
-        options:
-          type: array
-          description: The available options in this group.
-          items:
-            $ref: '#/components/schemas/MenuOption'
-    MenuRequest:
-      type: object
-      required:
-      - store_id
-      - categories
-      properties:
-        store_id:
-          type: string
-          description: The merchant-supplied store identifier.
-          example: D-12345
-        categories:
-          type: array
-          description: The menu categories containing items.
-          items:
-            $ref: '#/components/schemas/MenuCategory'
+          description: A machine-readable error code.
+          example: ABC123
     MenuItem:
       type: object
       required:
@@ -305,34 +287,52 @@ components:
           description: Option groups (modifiers) for this item.
           items:
             $ref: '#/components/schemas/OptionGroup'
-    MenuCategory:
+    OptionGroup:
       type: object
       required:
       - id
       - name
-      - items
+      - options
       properties:
         id:
           type: string
-          description: The unique identifier for this category.
+          description: The unique identifier for this option group.
           example: D-12345
         name:
           type: string
-          description: The display name of the category.
+          description: The display name of the option group.
           example: Acme Pickup Store
-        description:
-          type: string
-          description: A description of the category.
-          example: Leave at the front desk.
-        sort_id:
+        min_selections:
           type: integer
-          description: The sort order for this category.
-          example: 42
-        items:
+          description: The minimum number of options that must be selected.
+          minimum: 0
+          example: 0
+        max_selections:
+          type: integer
+          description: The maximum number of options that can be selected.
+          minimum: 1
+          example: 1
+        options:
           type: array
-          description: The items in this category.
+          description: The available options in this group.
           items:
-            $ref: '#/components/schemas/MenuItem'
+            $ref: '#/components/schemas/MenuOption'
+    MenuResponse:
+      type: object
+      properties:
+        menu_id:
+          type: string
+          description: The unique identifier for the menu request.
+          example: D-12345
+        status:
+          type: string
+          description: The processing status of the menu request.
+          enum:
+          - received
+          - processing
+          - completed
+          - failed
+          example: received
   parameters:
     MenuId:
       name: menu_id

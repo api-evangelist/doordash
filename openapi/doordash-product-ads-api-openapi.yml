@@ -134,28 +134,12 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 components:
   schemas:
-    AdGroupId:
-      description: Unique ad group identifier.
-      type: string
-    ProductIdType:
-      description: Product ID type
-      type: string
-      enum:
-      - GTIN_14
-      - UPC
-      - DD_SIC
-    Error:
-      properties:
-        code:
-          description: An enumerated error for machine use.
-          type: string
-          readOnly: true
-        details:
-          description: A human-readable description of the error.
-          type: string
-          readOnly: true
-    CodeDescription:
-      description: A human-readable description of the code.
+    IsPriority:
+      description: Indicates pinned product for Sponsored Brand campaigns.
+      type: boolean
+      default: false
+    ProductId:
+      description: Unique product identifier based on product ID type.
       type: string
     CreateProductAdRequest:
       required:
@@ -174,12 +158,57 @@ components:
           $ref: '#/components/schemas/ProductId'
         isPriority:
           $ref: '#/components/schemas/IsPriority'
+    ProductIdType:
+      description: Product ID type
+      type: string
+      enum:
+      - GTIN_14
+      - UPC
+      - DD_SIC
     Code:
       description: An enumerated success or error code for machine use.
       type: string
-    ProductId:
-      description: Unique product identifier based on product ID type.
-      type: string
+    Error:
+      properties:
+        code:
+          description: An enumerated error for machine use.
+          type: string
+          readOnly: true
+        details:
+          description: A human-readable description of the error.
+          type: string
+          readOnly: true
+    ProductAdResponse:
+      required:
+      - campaignId
+      - adGroupId
+      - idType
+      - productId
+      - ddSic
+      - upcs
+      - gtin14s
+      properties:
+        campaignId:
+          $ref: '#/components/schemas/CampaignId'
+        adGroupId:
+          $ref: '#/components/schemas/AdGroupId'
+        idType:
+          $ref: '#/components/schemas/ProductIdType'
+        productId:
+          $ref: '#/components/schemas/ProductId'
+        ddSic:
+          description: DoorDash product identifier.
+          type: string
+        isPriority:
+          $ref: '#/components/schemas/IsPriority'
+        upcs:
+          type: array
+          items:
+            type: string
+        gtin14s:
+          type: array
+          items:
+            type: string
     CampaignId:
       description: Unique campaign identifier.
       type: string
@@ -218,42 +247,41 @@ components:
           type: array
           items:
             type: string
-    IsPriority:
-      description: Indicates pinned product for Sponsored Brand campaigns.
-      type: boolean
-      default: false
-    ProductAdResponse:
-      required:
-      - campaignId
-      - adGroupId
-      - idType
-      - productId
-      - ddSic
-      - upcs
-      - gtin14s
-      properties:
-        campaignId:
-          $ref: '#/components/schemas/CampaignId'
-        adGroupId:
-          $ref: '#/components/schemas/AdGroupId'
-        idType:
-          $ref: '#/components/schemas/ProductIdType'
-        productId:
-          $ref: '#/components/schemas/ProductId'
-        ddSic:
-          description: DoorDash product identifier.
-          type: string
-        isPriority:
-          $ref: '#/components/schemas/IsPriority'
-        upcs:
-          type: array
-          items:
-            type: string
-        gtin14s:
-          type: array
-          items:
-            type: string
+    CodeDescription:
+      description: A human-readable description of the code.
+      type: string
+    AdGroupId:
+      description: Unique ad group identifier.
+      type: string
+  parameters:
+    startIndex:
+      name: startIndex
+      in: query
+      description: 0-indexed record offset for the result set. Defaults to 0.
+      schema:
+        type: number
+        default: 0
+    count:
+      name: count
+      in: query
+      description: Number of records to include in the paged response.
+      required: false
+      schema:
+        type: number
+    campaignType:
+      name: campaignType
+      in: path
+      description: Indicates campaign type. 'sp' for Sponsored Products or 'sb' for Sponsored Brand
+      required: true
+      schema:
+        type: string
   responses:
+    BadRequest:
+      description: Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     InternalServerError:
       description: One or more query parameters contained an invalid value.
       content:
@@ -266,8 +294,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    BadRequest:
-      description: Bad request.
+    Unauthorized:
+      description: Unauthorized.
       content:
         application/json:
           schema:
@@ -278,34 +306,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Unauthorized.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-  parameters:
-    campaignType:
-      name: campaignType
-      in: path
-      description: Indicates campaign type. 'sp' for Sponsored Products or 'sb' for Sponsored Brand
-      required: true
-      schema:
-        type: string
-    count:
-      name: count
-      in: query
-      description: Number of records to include in the paged response.
-      required: false
-      schema:
-        type: number
-    startIndex:
-      name: startIndex
-      in: query
-      description: 0-indexed record offset for the result set. Defaults to 0.
-      schema:
-        type: number
-        default: 0
   securitySchemes:
     Ads_API_Key_Authentication:
       type: apiKey
