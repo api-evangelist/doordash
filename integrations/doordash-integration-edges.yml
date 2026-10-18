@@ -44,9 +44,1150 @@ edges:
   detected: '2026-10-14'
   detected_by: mirror-platform-listings.py
   category: Online Ordering
+- partner_name: Toast
+  app: Toast DoorDash integration
+  partner: toast
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: toast
+    display_name: Toast
+    matched_domain: toasttab.com
+    matched_by: domain
+    identity: description 'With Toast's DoorDash integration ...'
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - toast
+    quality_status:
+    - QUALITY_STATUS_PREFERRED
+    maturity_status:
+    - MATURITY_STATUS_ESTABLISHED
+    features_completed: 8
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - AUTO_ACTIVATE_SSIO
+  - CHANNEL_BASED_MENU
+  - DETAILED_ERROR_SPEC
+  - EXPERIENCE_TAGS
+  - INTEGRATED_PROMOS
+  - ITEM_LEVEL_86
+  - ITEM_POLLING
+  - MENU_CONTAINS_ITEM_IMAGE_URL
+  - MENU_CONTAINS_ITEM_LEVEL_BASE_PRICE
+  - MENU_PULL_SUPPORTED
+  - MX_ORDER_CANCEL
+  - RECEIVE_ORDER_CANCELLATION
+  - SSIO_INTEGRATION_ONBOARDING
+  - STAFF_TIPS
+  - STORE_AVAILABILITY_WEBHOOKS
+  - STORE_SPECIAL_HOURS
+  - SUPPORT_ORDER_READY_SIGNAL
+  publisher_verified:
+  - DoorDash Preferred Integration
+- partner_name: Deliverect
+  app: Deliverect DoorDash integration
+  partner: deliverect
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: deliverect
+    display_name: Deliverect
+    matched_domain: deliverect.com
+    matched_by: domain
+    identity: description 'Connect DoorDash to Deliverect ...'
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - deliverect
+    quality_status:
+    - QUALITY_STATUS_PREFERRED
+    maturity_status:
+    - MATURITY_STATUS_ESTABLISHED
+    features_completed: 8
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - AUTO_ACTIVATE_SSIO
+  - CHANNEL_BASED_MENU
+  - DETAILED_ERROR_SPEC
+  - EXPERIENCE_TAGS
+  - INTEGRATED_PROMOS
+  - ITEM_LEVEL_86
+  - ITEM_POLLING
+  - MENU_CONTAINS_ITEM_IMAGE_URL
+  - MENU_CONTAINS_ITEM_LEVEL_BASE_PRICE
+  - MENU_PULL_SUPPORTED
+  - MX_ORDER_CANCEL
+  - ORDER_CONFIRMATION_CONTAINS_PREP_TIME
+  - ORDER_PAYLOAD_SUPPORTS_MERCHANT_FUNDED_PROMO
+  - RECEIVE_ORDER_CANCELLATION
+  - SSIO_INTEGRATION_ONBOARDING
+  - STAFF_TIPS
+  - STORE_AVAILABILITY_WEBHOOKS
+  - STORE_SPECIAL_HOURS
+  - SUPPORT_DASHER_NOTIFICATION_WEBHOOK
+  - SUPPORT_ORDER_READY_SIGNAL
+  publisher_verified:
+  - DoorDash Preferred Integration
+- partner_name: Square
+  app: Square DoorDash integration
+  partner: square
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: square_v2_production
+    display_name: Square
+    matched_domain: squareup.com
+    matched_by: domain
+    identity: description 'Square integrates with DoorDash ...'
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - square_v2_production
+    quality_status:
+    - QUALITY_STATUS_PREFERRED
+    maturity_status:
+    - MATURITY_STATUS_ESTABLISHED
+    features_completed: 8
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - AUTO_ACTIVATE_SSIO
+  - DETAILED_ERROR_SPEC
+  - EXPERIENCE_TAGS
+  - INTEGRATED_PROMOS
+  - ITEM_LEVEL_86
+  - ITEM_POLLING
+  - MENU_CONTAINS_ITEM_IMAGE_URL
+  - MENU_CONTAINS_ITEM_LEVEL_BASE_PRICE
+  - MENU_PULL_SUPPORTED
+  - MX_ORDER_CANCEL
+  - ORDER_CONFIRMATION_CONTAINS_PREP_TIME
+  - ORDER_PAYLOAD_SUPPORTS_MERCHANT_FUNDED_PROMO
+  - RECEIVE_ORDER_CANCELLATION
+  - SSIO_INTEGRATION_ONBOARDING
+  - STAFF_TIPS
+  - STORE_AVAILABILITY_WEBHOOKS
+  - STORE_SPECIAL_HOURS
+  - SUPPORT_DASHER_NOTIFICATION_WEBHOOK
+  - SUPPORT_ORDER_READY_SIGNAL
+  publisher_verified:
+  - DoorDash Preferred Integration
+- partner_name: Chowly
+  app: Chowly DoorDash integration
+  partner: chowly
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: chowly
+    display_name: Chowly
+    matched_domain: chowly.com
+    matched_by: domain
+    identity: description 'Chowly Platform helps ...'
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - chowly
+    quality_status:
+    - QUALITY_STATUS_PREFERRED
+    maturity_status:
+    - MATURITY_STATUS_ESTABLISHED
+    features_completed: 8
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - AUTO_ACTIVATE_SSIO
+  - DETAILED_ERROR_SPEC
+  - INTEGRATED_PROMOS
+  - ITEM_LEVEL_86
+  - ITEM_POLLING
+  - MENU_CONTAINS_ITEM_IMAGE_URL
+  - MENU_CONTAINS_ITEM_LEVEL_BASE_PRICE
+  - MENU_PULL_SUPPORTED
+  - MX_ORDER_CANCEL
+  - ORDER_PAYLOAD_SUPPORTS_MERCHANT_FUNDED_PROMO
+  - POS_PLUGIN
+  - SSIO_INTEGRATION_ONBOARDING
+  - STAFF_TIPS
+  - STORE_AVAILABILITY_WEBHOOKS
+  - STORE_SPECIAL_HOURS
+  - SUPPORT_ORDER_READY_SIGNAL
+  publisher_verified:
+  - DoorDash Preferred Integration
+- partner_name: UrbanPiper
+  app: UrbanPiper DoorDash integration
+  partner: urbanpiper
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: urbanpiper_production
+    display_name: UrbanPiper
+    matched_domain: urbanpiper.com
+    matched_by: domain
+    identity: description 'UrbanPiper's DoorDash integration'
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - urbanpiper_production
+    quality_status:
+    - QUALITY_STATUS_PREFERRED
+    maturity_status:
+    - MATURITY_STATUS_ESTABLISHED
+    features_completed: 8
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - AUTO_ACTIVATE_SSIO
+  - DETAILED_ERROR_SPEC
+  - INTEGRATED_PROMOS
+  - ITEM_LEVEL_86
+  - ITEM_POLLING
+  - MENU_CONTAINS_ITEM_IMAGE_URL
+  - MENU_CONTAINS_ITEM_LEVEL_BASE_PRICE
+  - MENU_PULL_SUPPORTED
+  - MX_ORDER_CANCEL
+  - ORDER_CONFIRMATION_CONTAINS_PREP_TIME
+  - ORDER_PAYLOAD_SUPPORTS_MERCHANT_FUNDED_PROMO
+  - POS_PLUGIN
+  - RECEIVE_ORDER_CANCELLATION
+  - SSIO_INTEGRATION_ONBOARDING
+  - STAFF_TIPS
+  - STORE_AVAILABILITY_WEBHOOKS
+  - STORE_SPECIAL_HOURS
+  - SUPPORT_DASHER_NOTIFICATION_WEBHOOK
+  - SUPPORT_ORDER_READY_SIGNAL
+  publisher_verified:
+  - DoorDash Preferred Integration
+- partner_name: Checkmate
+  app: Checkmate DoorDash integration
+  partner: itsacheckmate
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: checkmate
+    display_name: Checkmate
+    matched_domain: itsacheckmate.com
+    matched_by: domain
+    identity: description 'Checkmate connects your POS to DoorDash'
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - checkmate
+    quality_status:
+    - QUALITY_STATUS_PREFERRED
+    maturity_status:
+    - MATURITY_STATUS_ESTABLISHED
+    features_completed: 8
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - AUTO_ACTIVATE_SSIO
+  - CHANNEL_BASED_MENU
+  - DETAILED_ERROR_SPEC
+  - EXPERIENCE_TAGS
+  - INTEGRATED_PROMOS
+  - ITEM_LEVEL_86
+  - ITEM_POLLING
+  - MENU_CONTAINS_ITEM_IMAGE_URL
+  - MENU_CONTAINS_ITEM_LEVEL_BASE_PRICE
+  - MENU_PULL_SUPPORTED
+  - ORDER_CONFIRMATION_CONTAINS_PREP_TIME
+  - ORDER_PAYLOAD_SUPPORTS_MERCHANT_FUNDED_PROMO
+  - POS_PLUGIN
+  - RECEIVE_ORDER_CANCELLATION
+  - SSIO_INTEGRATION_ONBOARDING
+  - STAFF_TIPS
+  - STORE_AVAILABILITY_WEBHOOKS
+  - STORE_SPECIAL_HOURS
+  - SUPPORT_DASHER_NOTIFICATION_WEBHOOK
+  - SUPPORT_ORDER_READY_SIGNAL
+  publisher_verified:
+  - DoorDash Preferred Integration
+- partner_name: Otter
+  app: Otter DoorDash integration
+  partner: otter
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: otter_production
+    display_name: Otter
+    matched_domain: tryotter.com
+    matched_by: domain
+    identity: description 'Otter is an all-in-one platform ...'
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - otter_production
+    quality_status:
+    - QUALITY_STATUS_PREFERRED
+    maturity_status:
+    - MATURITY_STATUS_ESTABLISHED
+    features_completed: 8
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - AUTO_ACTIVATE_SSIO
+  - DETAILED_ERROR_SPEC
+  - EXPERIENCE_TAGS
+  - INTEGRATED_PROMOS
+  - ITEM_LEVEL_86
+  - ITEM_POLLING
+  - MENU_CONTAINS_ITEM_IMAGE_URL
+  - MENU_CONTAINS_ITEM_LEVEL_BASE_PRICE
+  - MENU_PULL_SUPPORTED
+  - MX_ORDER_CANCEL
+  - ORDER_CONFIRMATION_CONTAINS_PREP_TIME
+  - ORDER_PAYLOAD_SUPPORTS_CUSTOMER_PHONE_NUMBER
+  - ORDER_PAYLOAD_SUPPORTS_MERCHANT_FUNDED_PROMO
+  - POS_PLUGIN
+  - RECEIVE_ORDER_CANCELLATION
+  - SSIO_INTEGRATION_ONBOARDING
+  - STAFF_TIPS
+  - STORE_AVAILABILITY_WEBHOOKS
+  - STORE_SPECIAL_HOURS
+  - SUPPORT_DASHER_NOTIFICATION_WEBHOOK
+  publisher_verified:
+  - DoorDash Preferred Integration
+- partner_name: Shift4
+  app: Shift4 DoorDash integration
+  partner: shift4
+  partner_match: domain+name-among-holders
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: shift4
+    display_name: Shift4
+    matched_domain: shift4.com
+    matched_by: domain+name-among-holders
+    identity: logo shift4-logo.png
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - shift4
+    quality_status:
+    - QUALITY_STATUS_PREFERRED
+    maturity_status:
+    - MATURITY_STATUS_ESTABLISHED
+    features_completed: 8
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - AUTO_ACTIVATE_SSIO
+  - DETAILED_ERROR_SPEC
+  - INTEGRATED_PROMOS
+  - ITEM_LEVEL_86
+  - ITEM_POLLING
+  - MENU_CONTAINS_ITEM_IMAGE_URL
+  - MENU_PULL_SUPPORTED
+  - MX_ORDER_CANCEL
+  - ORDER_CONFIRMATION_CONTAINS_PREP_TIME
+  - ORDER_PAYLOAD_SUPPORTS_MERCHANT_FUNDED_PROMO
+  - RECEIVE_ORDER_CANCELLATION
+  - SSIO_INTEGRATION_ONBOARDING
+  - STAFF_TIPS
+  - STORE_AVAILABILITY_WEBHOOKS
+  - SUPPORT_ORDER_READY_SIGNAL
+  publisher_verified:
+  - DoorDash Preferred Integration
+- partner_name: Olo
+  app: Olo DoorDash integration
+  partner: olo
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: olo_rails
+    display_name: Olo
+    matched_domain: olo.com
+    matched_by: domain
+    identity: logo olo-rails-logo.png (Olo Rails)
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - olo_rails
+    quality_status:
+    - QUALITY_STATUS_CERTIFIED
+    maturity_status:
+    - MATURITY_STATUS_ESTABLISHED
+    features_completed: 7
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - AUTO_ACTIVATE_SSIO
+  - CHANNEL_BASED_MENU
+  - DETAILED_ERROR_SPEC
+  - INTEGRATED_PROMOS
+  - ITEM_LEVEL_86
+  - ITEM_POLLING
+  - MENU_CONTAINS_ITEM_IMAGE_URL
+  - MENU_CONTAINS_ITEM_LEVEL_BASE_PRICE
+  - MENU_PULL_SUPPORTED
+  - MX_ORDER_CANCEL
+  - ORDER_CONFIRMATION_CONTAINS_PREP_TIME
+  - ORDER_PAYLOAD_SUPPORTS_MERCHANT_FUNDED_PROMO
+  - RECEIVE_ORDER_CANCELLATION
+  - SSIO_INTEGRATION_ONBOARDING
+  - STAFF_TIPS
+  - STORE_AVAILABILITY_WEBHOOKS
+  - STORE_SPECIAL_HOURS
+  - SUPPORT_DASHER_NOTIFICATION_WEBHOOK
+  publisher_verified:
+  - DoorDash Certified Integration
+- partner_name: Clover
+  app: Clover DoorDash integration
+  partner: clover
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: clover
+    display_name: Clover
+    matched_domain: clover.com
+    matched_by: domain
+    identity: logo clover-logo.png
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - clover
+    - clover_apac
+    quality_status:
+    - QUALITY_STATUS_AT_RISK_OF_SUSPENSION
+    - QUALITY_STATUS_CERTIFIED
+    maturity_status:
+    - MATURITY_STATUS_EMERGING
+    - MATURITY_STATUS_ESTABLISHED
+    features_completed: 7
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - AUTO_ACTIVATE_SSIO
+  - DETAILED_ERROR_SPEC
+  - EXPERIENCE_TAGS
+  - ITEM_LEVEL_86
+  - ITEM_POLLING
+  - MENU_CONTAINS_ITEM_IMAGE_URL
+  - MENU_PULL_SUPPORTED
+  - SSIO_INTEGRATION_ONBOARDING
+  - STAFF_TIPS
+  - STORE_AVAILABILITY_WEBHOOKS
+  - SUPPORT_ORDER_READY_SIGNAL
+  publisher_verified:
+  - DoorDash Certified Integration
+- partner_name: Tabit
+  app: Tabit DoorDash integration
+  partner: tabit
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: tabit_production
+    display_name: Tabit
+    matched_domain: tabit.cloud
+    matched_by: domain
+    identity: logo tabit_sq.png
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - tabit_production
+    quality_status:
+    - QUALITY_STATUS_CERTIFIED
+    maturity_status:
+    - MATURITY_STATUS_EMERGING
+    features_completed: 6
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - AUTO_ACTIVATE_SSIO
+  - DETAILED_ERROR_SPEC
+  - ITEM_LEVEL_86
+  - MENU_CONTAINS_ITEM_IMAGE_URL
+  - MENU_CONTAINS_ITEM_LEVEL_BASE_PRICE
+  - MENU_PULL_SUPPORTED
+  - MX_ORDER_CANCEL
+  - POS_PLUGIN
+  - RECEIVE_ORDER_CANCELLATION
+  - SSIO_INTEGRATION_ONBOARDING
+  - STORE_AVAILABILITY_WEBHOOKS
+  - STORE_SPECIAL_HOURS
+  - SUPPORT_DASHER_NOTIFICATION_WEBHOOK
+  - SUPPORT_ORDER_READY_SIGNAL
+  publisher_verified:
+  - DoorDash Certified Integration
+- partner_name: SpotOn
+  app: SpotOn DoorDash integration
+  partner: spoton
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: spoton_production
+    display_name: SpotOn
+    matched_domain: spoton.com
+    matched_by: domain
+    identity: description 'SpotOn's DoorDash integration'
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - spoton_production
+    quality_status:
+    - QUALITY_STATUS_CERTIFIED
+    maturity_status:
+    - MATURITY_STATUS_ESTABLISHED
+    features_completed: 6
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - AUTO_ACTIVATE_SSIO
+  - CHANNEL_BASED_MENU
+  - DETAILED_ERROR_SPEC
+  - EXPERIENCE_TAGS
+  - ITEM_LEVEL_86
+  - MENU_CONTAINS_ITEM_IMAGE_URL
+  - MENU_CONTAINS_ITEM_LEVEL_BASE_PRICE
+  - MENU_PULL_SUPPORTED
+  - MX_ORDER_CANCEL
+  - ORDER_CONFIRMATION_CONTAINS_PREP_TIME
+  - RECEIVE_ORDER_CANCELLATION
+  - SSIO_INTEGRATION_ONBOARDING
+  - STAFF_TIPS
+  - STORE_AVAILABILITY_WEBHOOKS
+  - STORE_SPECIAL_HOURS
+  - SUPPORT_ORDER_READY_SIGNAL
+  publisher_verified:
+  - DoorDash Certified Integration
+- partner_name: Oracle Hospitality
+  app: Oracle Hospitality DoorDash integration
+  partner: oracle-hospitality
+  partner_match: domain+name-among-holders
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: oracle_iad
+    display_name: Oracle Hospitality
+    matched_domain: oracle.com
+    matched_by: domain+name-among-holders
+    identity: logo oracle-logo.png; Oracle's restaurant POS (Simphony) is Oracle Hospitality
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - oracle_iad
+    quality_status:
+    - QUALITY_STATUS_CERTIFIED
+    maturity_status:
+    - MATURITY_STATUS_ESTABLISHED
+    features_completed: 5
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - AUTO_ACTIVATE_SSIO
+  - EXPERIENCE_TAGS
+  - ITEM_LEVEL_86
+  - MENU_CONTAINS_ITEM_IMAGE_URL
+  - MENU_PULL_SUPPORTED
+  - ORDER_CONFIRMATION_CONTAINS_PREP_TIME
+  - ORDER_PAYLOAD_SUPPORTS_MERCHANT_FUNDED_PROMO
+  - SSIO_INTEGRATION_ONBOARDING
+  - STORE_SPECIAL_HOURS
+  - SUPPORT_ORDER_READY_SIGNAL
+  publisher_verified:
+  - DoorDash Certified Integration
+- partner_name: TouchBistro
+  app: TouchBistro DoorDash integration
+  partner: touchbistro
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: touchbistro_production
+    display_name: TouchBistro
+    matched_domain: touchbistro.com
+    matched_by: domain
+    identity: logo touchbistro-logo.png
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - touchbistro_production
+    quality_status:
+    - QUALITY_STATUS_CERTIFIED
+    maturity_status:
+    - MATURITY_STATUS_EMERGING
+    features_completed: 5
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - AUTO_ACTIVATE_SSIO
+  - EXPERIENCE_TAGS
+  - ITEM_LEVEL_86
+  - ITEM_POLLING
+  - MENU_CONTAINS_ITEM_IMAGE_URL
+  - MENU_CONTAINS_ITEM_LEVEL_BASE_PRICE
+  - MENU_PULL_SUPPORTED
+  - MX_ORDER_CANCEL
+  - POS_PLUGIN
+  - RECEIVE_ORDER_CANCELLATION
+  - SSIO_INTEGRATION_ONBOARDING
+  - STAFF_TIPS
+  - STORE_AVAILABILITY_WEBHOOKS
+  - STORE_SPECIAL_HOURS
+  publisher_verified:
+  - DoorDash Certified Integration
+- partner_name: Paytronix
+  app: Paytronix DoorDash integration
+  partner: paytronix
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: paytronix_production
+    display_name: Paytronix
+    matched_domain: paytronix.com
+    matched_by: domain
+    identity: logo paytronix-logo.png
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - paytronix_production
+    quality_status:
+    - QUALITY_STATUS_CERTIFIED
+    maturity_status:
+    - MATURITY_STATUS_ESTABLISHED
+    features_completed: 4
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - DETAILED_ERROR_SPEC
+  - ITEM_LEVEL_86
+  - MENU_CONTAINS_ITEM_IMAGE_URL
+  - MENU_CONTAINS_ITEM_LEVEL_BASE_PRICE
+  - MENU_PULL_SUPPORTED
+  - MX_ORDER_CANCEL
+  - ORDER_CONFIRMATION_CONTAINS_PREP_TIME
+  - ORDER_PAYLOAD_SUPPORTS_MERCHANT_FUNDED_PROMO
+  - RECEIVE_ORDER_CANCELLATION
+  - SSIO_INTEGRATION_ONBOARDING
+  - STORE_AVAILABILITY_WEBHOOKS
+  - STORE_SPECIAL_HOURS
+  publisher_verified:
+  - DoorDash Certified Integration
+- partner_name: Popmenu
+  app: Popmenu DoorDash integration
+  partner: popmenu
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: popmenu_production
+    display_name: Popmenu
+    matched_domain: popmenu.com
+    matched_by: domain
+    identity: logo popmenu-logo.png
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - popmenu_production
+    quality_status:
+    - QUALITY_STATUS_CERTIFIED
+    maturity_status:
+    - MATURITY_STATUS_EMERGING
+    features_completed: 4
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - EXPERIENCE_TAGS
+  - ITEM_LEVEL_86
+  - MENU_CONTAINS_ITEM_IMAGE_URL
+  - MENU_PULL_SUPPORTED
+  - MX_ORDER_CANCEL
+  - ORDER_CONFIRMATION_CONTAINS_PREP_TIME
+  - POS_PLUGIN
+  - RECEIVE_ORDER_CANCELLATION
+  - SSIO_INTEGRATION_ONBOARDING
+  - STORE_AVAILABILITY_WEBHOOKS
+  - STORE_SPECIAL_HOURS
+  - SUPPORT_ORDER_READY_SIGNAL
+  publisher_verified:
+  - DoorDash Certified Integration
+- partner_name: Heartland
+  app: Heartland DoorDash integration
+  partner: heartland-payment-systems
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: heartland
+    display_name: Heartland
+    matched_domain: heartland.us
+    matched_by: domain
+    identity: logo heartland-logo.png (Heartland restaurant POS, Global Payments)
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - heartland
+    quality_status:
+    - QUALITY_STATUS_CERTIFIED
+    maturity_status:
+    - MATURITY_STATUS_ESTABLISHED
+    features_completed: 4
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - DETAILED_ERROR_SPEC
+  - ITEM_LEVEL_86
+  - ITEM_POLLING
+  - MENU_CONTAINS_ITEM_IMAGE_URL
+  - MENU_CONTAINS_ITEM_LEVEL_BASE_PRICE
+  - MENU_PULL_SUPPORTED
+  - RECEIVE_ORDER_CANCELLATION
+  - STAFF_TIPS
+  - STORE_AVAILABILITY_WEBHOOKS
+  publisher_verified:
+  - DoorDash Certified Integration
+- partner_name: Owner.com
+  app: Owner.com DoorDash integration
+  partner: owner-com
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: owner_production
+    display_name: Owner.com
+    matched_domain: owner.com
+    matched_by: domain
+    identity: logo owner-sq.png
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - owner_production
+    quality_status:
+    - QUALITY_STATUS_CERTIFIED
+    maturity_status:
+    - MATURITY_STATUS_ESTABLISHED
+    features_completed: 4
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - DETAILED_ERROR_SPEC
+  - MENU_CONTAINS_ITEM_IMAGE_URL
+  - MENU_CONTAINS_ITEM_LEVEL_BASE_PRICE
+  - MENU_PULL_SUPPORTED
+  - MX_ORDER_CANCEL
+  - ORDER_CONFIRMATION_CONTAINS_PREP_TIME
+  - RECEIVE_ORDER_CANCELLATION
+  - SSIO_INTEGRATION_ONBOARDING
+  - STORE_AVAILABILITY_WEBHOOKS
+  - STORE_SPECIAL_HOURS
+  - SUPPORT_DASHER_NOTIFICATION_WEBHOOK
+  - SUPPORT_ORDER_READY_SIGNAL
+  publisher_verified:
+  - DoorDash Certified Integration
+- partner_name: Lavu
+  app: Lavu DoorDash integration
+  partner: lavu
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: lavu_production
+    display_name: Lavu
+    matched_domain: lavu.com
+    matched_by: domain
+    identity: logo lavu-logo.png
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - lavu_production
+    quality_status:
+    - QUALITY_STATUS_CERTIFIED
+    maturity_status:
+    - MATURITY_STATUS_EMERGING
+    features_completed: 3
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - ITEM_LEVEL_86
+  - MENU_CONTAINS_ITEM_IMAGE_URL
+  - MENU_CONTAINS_ITEM_LEVEL_BASE_PRICE
+  - MENU_PULL_SUPPORTED
+  - RECEIVE_ORDER_CANCELLATION
+  - SSIO_INTEGRATION_ONBOARDING
+  - STORE_AVAILABILITY_WEBHOOKS
+  publisher_verified:
+  - DoorDash Certified Integration
+- partner_name: MenuSifu
+  app: MenuSifu DoorDash integration
+  partner: menusifu
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: menusifu_production
+    display_name: MenuSifu
+    matched_domain: menusifu.com
+    matched_by: domain
+    identity: logo menusifu-logo.png
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - menusifu_production
+    quality_status:
+    - QUALITY_STATUS_CERTIFIED
+    maturity_status:
+    - MATURITY_STATUS_EMERGING
+    features_completed: 2
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - EXPERIENCE_TAGS
+  - MENU_CONTAINS_ITEM_IMAGE_URL
+  - MENU_CONTAINS_ITEM_LEVEL_BASE_PRICE
+  - MENU_PULL_SUPPORTED
+  - POS_PLUGIN
+  - RECEIVE_ORDER_CANCELLATION
+  - SSIO_INTEGRATION_ONBOARDING
+  - STAFF_TIPS
+  - STORE_SPECIAL_HOURS
+  publisher_verified:
+  - DoorDash Certified Integration
+- partner_name: Lunchbox
+  app: Lunchbox DoorDash integration
+  partner: lunchbox
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: novadine_v2
+    display_name: Lunchbox
+    matched_domain: lunchbox.io
+    matched_by: domain
+    identity: logo lunchbox-logo.png (Novadine was acquired by Lunchbox)
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - novadine_v2
+    quality_status:
+    - QUALITY_STATUS_CERTIFIED
+    maturity_status:
+    - MATURITY_STATUS_ESTABLISHED
+    features_completed: 2
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - MENU_CONTAINS_ITEM_IMAGE_URL
+  - MENU_CONTAINS_ITEM_LEVEL_BASE_PRICE
+  - MENU_PULL_SUPPORTED
+  - MX_ORDER_CANCEL
+  - ORDER_CONFIRMATION_CONTAINS_PREP_TIME
+  - ORDER_PAYLOAD_SUPPORTS_MERCHANT_FUNDED_PROMO
+  - SSIO_INTEGRATION_ONBOARDING
+  - STORE_AVAILABILITY_WEBHOOKS
+  publisher_verified:
+  - DoorDash Certified Integration
+- partner_name: Ordermark
+  app: Ordermark DoorDash integration
+  partner: ordermark
+  partner_match: domain
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  relationship: platform-app
+  direction: partner-built
+  evidence: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  category: Delivery marketplace integration (POS / middleware)
+  contract_reference:
+    register: DoorDash integration partners (merchants.doordash.com/api/partner-integrations)
+    spec_file: null
+    role: doordash-integration-partner
+    registered_name: ordermark_production
+    display_name: Ordermark
+    matched_domain: ordermark.com
+    matched_by: domain
+    identity: logo ordermark-logo.png
+    identity_source: hand-mapped from DoorDash providerName key + logo / description (labelled provenance step;
+      the register publishes no vendor domain)
+    provider_keys:
+    - ordermark_production
+    quality_status:
+    - QUALITY_STATUS_AT_RISK_OF_SUSPENSION
+    maturity_status:
+    - MATURITY_STATUS_EMERGING
+    features_completed: 1
+    signal_note: one edge per (vendor, DoorDash); quality status = badge (publisher_verified, weight 0); features
+      are context, never counted
+    detected_by: sweep-regulated-retail.py
+    detected: '2026-10-18'
+  detected_by: sweep-regulated-retail.py
+  detected: '2026-10-18'
+  features:
+  - MENU_PULL_SUPPORTED
+  - RECEIVE_ORDER_CANCELLATION
+  - STAFF_TIPS
+  - STORE_AVAILABILITY_WEBHOOKS
+  - STORE_SPECIAL_HOURS
 generated: '2026-10-12'
 method: searched
 checked:
+- https://merchants.doordash.com/api/partner-integrations
 - https://merchants.doordash.com/en-us/integrations
 - olo/integrations/olo-integration-edges.yml
 - toast/integrations/toast-integration-edges.yml
@@ -59,6 +1200,14 @@ marketplace_apps:
   adapter: sweep-restaurant-pos.py:unreadable
   listed: 0
   status: not-machine-readable (no partner list in the HTML or __NEXT_DATA__ (client-fetched))
+- marketplace: own
+  channel: partner-built
+  app: doordash
+  url: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  app_count: 66
+  adapter: sweep-regulated-retail.py:partner-integrations JSON
+  listed: 22
+  note: 66 listings read; only domain-linked vendors are written
 source:
 - olo/integrations/olo-integration-edges.yml
 - toast/integrations/toast-integration-edges.yml
