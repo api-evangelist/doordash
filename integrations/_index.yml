@@ -813,3 +813,64 @@
     detected: '2026-10-18'
   status: not-a-workflow
   arazzo: null
+- slug: doordash-go-module-proxy
+  label: Go module proxy
+  partner_name: Go module proxy
+  category: official SDK (Go)
+  type: register
+  channel: package-registry
+  evidence: https://pkg.go.dev/github.com/doordash-oss/oapi-codegen-dd
+  source: edge
+  relationship: distribution-channel
+  contract_reference:
+    register: Go module proxy (public registry JSON)
+    spec_file: null
+    language: Go
+    packages:
+    - name: github.com/doordash-oss/oapi-codegen-dd
+      version: v1.16.3
+      released: '2024-06-04'
+      released_field: Time
+      lapsed: true
+      page: https://pkg.go.dev/github.com/doordash-oss/oapi-codegen-dd
+      repo_leg: github-org:doordash-oss
+      publisher_leg: org:doordash-oss
+      matched_by: github-org
+    current: false
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  status: not-a-workflow
+  arazzo: null
+- slug: doordash-npm-registry
+  label: npm registry
+  partner: npm
+  partner_name: npm registry
+  category: official SDK (JavaScript/TypeScript)
+  type: register
+  channel: package-registry
+  evidence: https://www.npmjs.com/package/@doordash/sdk
+  source: edge
+  relationship: distribution-channel
+  contract_reference:
+    register: npm registry (public registry JSON)
+    spec_file: null
+    language: JavaScript/TypeScript
+    packages:
+    - name: '@doordash/sdk'
+      version: 0.6.13
+      released: '2024-10-07'
+      released_field: modified
+      lapsed: true
+      page: https://www.npmjs.com/package/@doordash/sdk
+      repo_leg: domain:doordash.com
+      publisher_leg: email:doordash.com
+      matched_by: domain
+    current: false
+    signal_note: 'an official package on the registry: distribution, not an integration; lapsed = no release in
+      24 months'
+    detected_by: sweep-official-sdks.py
+    detected: '2026-10-18'
+  status: not-a-workflow
+  arazzo: null
