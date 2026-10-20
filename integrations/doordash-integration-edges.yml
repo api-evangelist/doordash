@@ -10,40 +10,6 @@ edges:
   detected_by: detect-carrier-edges.py
   first_seen: '2026-10-13'
   matched_by: domain:doordash.com
-- partner_name: Olo (own)
-  partner: olo
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: own
-  evidence: https://www.olo.com/partners/doordash
-  mirror_of: olo/integrations/olo-integration-edges.yml
-  apps:
-  - DoorDash
-  listing_count: 1
-  detected: '2026-10-14'
-  detected_by: mirror-platform-listings.py
-  category: Rails Marketplace
-- partner_name: Toast (own)
-  partner: toast
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: own
-  evidence: https://pos.toasttab.com/partners/directory/doordash
-  mirror_of: toast/integrations/toast-integration-edges.yml
-  apps:
-  - DoorDash
-  listing_count: 1
-  detected: '2026-10-14'
-  detected_by: mirror-platform-listings.py
-  category: Online Ordering
 - partner_name: Toast
   app: Toast DoorDash integration
   partner: toast
@@ -1256,8 +1222,6 @@ checked:
 - https://registry.npmjs.org
 - https://repo1.maven.org/maven2
 - https://rubygems.org/api/v1
-- olo/integrations/olo-integration-edges.yml
-- toast/integrations/toast-integration-edges.yml
 marketplace_apps:
 - marketplace: own
   channel: partner-built
@@ -1276,5 +1240,12 @@ marketplace_apps:
   listed: 22
   note: 66 listings read; only domain-linked vendors are written
 source:
-- olo/integrations/olo-integration-edges.yml
-- toast/integrations/toast-integration-edges.yml
+- https://api.nuget.org/v3
+- https://crates.io/api/v1
+- https://merchants.doordash.com/api/partner-integrations
+- https://merchants.doordash.com/en-us/integrations
+- https://proxy.golang.org
+- https://pypi.org/pypi
+- https://registry.npmjs.org
+- https://repo1.maven.org/maven2
+- https://rubygems.org/api/v1
