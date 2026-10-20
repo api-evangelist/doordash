@@ -1,3 +1,48 @@
+generated: '2026-10-20'
+method: searched
+source:
+- https://api.nuget.org/v3
+- https://crates.io/api/v1
+- https://merchants.doordash.com/api/partner-integrations
+- https://merchants.doordash.com/en-us/integrations
+- https://proxy.golang.org
+- https://pypi.org/pypi
+- https://registry.npmjs.org
+- https://repo1.maven.org/maven2
+- https://rubygems.org/api/v1
+- https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+checked:
+- https://api.nuget.org/v3
+- https://crates.io/api/v1
+- https://merchants.doordash.com/api/partner-integrations
+- https://merchants.doordash.com/en-us/integrations
+- https://proxy.golang.org
+- https://pypi.org/pypi
+- https://registry.npmjs.org
+- https://repo1.maven.org/maven2
+- https://rubygems.org/api/v1
+- https://composio.dev/toolkits/doordash
+- https://monid.ai/tools/doordash
+- https://n8n.io/integrations/doordash/
+- https://zapier.com/apps/doordash/integrations
+summary: null
+marketplace_apps:
+- marketplace: own
+  channel: partner-built
+  app: doordash
+  url: https://merchants.doordash.com/en-us/integrations
+  app_count: null
+  adapter: sweep-restaurant-pos.py:unreadable
+  listed: 0
+  status: not-machine-readable (no partner list in the HTML or __NEXT_DATA__ (client-fetched))
+- marketplace: own
+  channel: partner-built
+  app: doordash
+  url: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
+  app_count: 66
+  adapter: sweep-regulated-retail.py:partner-integrations JSON
+  listed: 22
+  note: 66 listings read; only domain-linked vendors are written
 edges:
 - partner_name: 17track
   partner: 17track
@@ -1210,42 +1255,4 @@ edges:
     detected: '2026-10-18'
   detected_by: sweep-official-sdks.py
   first_seen: '2026-10-18'
-generated: '2026-10-12'
-method: searched
-checked:
-- https://api.nuget.org/v3
-- https://crates.io/api/v1
-- https://merchants.doordash.com/api/partner-integrations
-- https://merchants.doordash.com/en-us/integrations
-- https://proxy.golang.org
-- https://pypi.org/pypi
-- https://registry.npmjs.org
-- https://repo1.maven.org/maven2
-- https://rubygems.org/api/v1
-marketplace_apps:
-- marketplace: own
-  channel: partner-built
-  app: doordash
-  url: https://merchants.doordash.com/en-us/integrations
-  app_count: null
-  adapter: sweep-restaurant-pos.py:unreadable
-  listed: 0
-  status: not-machine-readable (no partner list in the HTML or __NEXT_DATA__ (client-fetched))
-- marketplace: own
-  channel: partner-built
-  app: doordash
-  url: https://merchants.doordash.com/en-us/preferred-integrations/compare-integrations
-  app_count: 66
-  adapter: sweep-regulated-retail.py:partner-integrations JSON
-  listed: 22
-  note: 66 listings read; only domain-linked vendors are written
-source:
-- https://api.nuget.org/v3
-- https://crates.io/api/v1
-- https://merchants.doordash.com/api/partner-integrations
-- https://merchants.doordash.com/en-us/integrations
-- https://proxy.golang.org
-- https://pypi.org/pypi
-- https://registry.npmjs.org
-- https://repo1.maven.org/maven2
-- https://rubygems.org/api/v1
+templates: []
