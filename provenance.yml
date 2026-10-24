@@ -55,11 +55,11 @@ artifacts:
     method: unknown
     evidence: no authorship recorded
   collections/doordash-drive.opencollection.json:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: openapi/doordash-drive
   collections/doordash-drive.postman_collection.json:
-    method: unknown
-    evidence: no authorship recorded
+    method: derived
+    evidence: openapi/doordash-drive
   collections/doordash-inventory-api.opencollection.json:
     method: derived
     evidence: openapi/doordash-inventory-api
@@ -312,6 +312,12 @@ artifacts:
   front-door-ai/2026-09-17.yml:
     method: unknown
     evidence: no authorship recorded
+  integrations/_index.yml:
+    method: generated
+    evidence: carries an API Evangelist house phrase
+  integrations/doordash-integration-edges.yml:
+    method: searched
+    evidence: declared in the artifact
   json-ld/doordash-context.jsonld:
     method: unknown
     evidence: no authorship recorded
@@ -681,127 +687,7 @@ artifacts:
   json-structure/doordash-substitution-structure.json:
     method: unknown
     evidence: no authorship recorded
-  kin/checks-2026-09-24T161608.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T125852.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T133943.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T143147.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T154045.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-26T215308.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T094438.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T103455.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T123021.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T132314.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T140727.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-28T221322.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-29T213958.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-29T230545.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-30T203505.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-30T220315.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-31T223420.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T063623.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T210448.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T222808.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-02T211804.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-02T224043.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-03T161828.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-03T174231.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T062714.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T212454.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T224856.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T055819.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T072335.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T144739.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T195450.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T211839.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T011047.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T211804.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T224210.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-07T200636.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-07T213054.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-08T214843.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-08T232836.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-10T204815.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-10T222408.yml:
+  kin/checks-2026-10-11T110117.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-12T062655.yml:
@@ -885,6 +771,21 @@ artifacts:
   kin/score-2026-09-24T161608.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T210408.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T232841.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T000835.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T024842.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-11T110117.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   lifecycle/doordash-lifecycle.yml:
     method: searched
     evidence: declared in the artifact
@@ -949,43 +850,202 @@ artifacts:
     method: harvested
     evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
       to the provider's source is unverified
+  openapi/doordash-ad-groups-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-address-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/doordash-addresses-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
+  openapi/doordash-app-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-assets-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-audit-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-business-store-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/doordash-businesses-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
+  openapi/doordash-campaigns-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/doordash-catalog-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
+  openapi/doordash-checkoutmanagementendpoints-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-creatives-sb-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-dasherfeedback-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-dataexchange-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/doordash-deliveries-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
+  openapi/doordash-delivery-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-drive-redelivery-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-https-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/doordash-inventory-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
+  openapi/doordash-inventorymanagementendpoints-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-itemmanagementendpoints-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/doordash-items-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
+  openapi/doordash-jobmanagementendpoints-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-jwt-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-keywords-sp-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-loyalty-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-menu-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-menu-endpoints-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-menu-item-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-menu-v2-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/doordash-menus-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
+  openapi/doordash-merchants-retailers-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-newverticalsselfserveintegrationendpoints-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-order-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-order-endpoints-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/doordash-orders-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
+  openapi/doordash-product-ads-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-promotionmanagementendpoints-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/doordash-promotions-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
   openapi/doordash-quotes-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
+  openapi/doordash-refunds-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-report-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/doordash-reports-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
+  openapi/doordash-resources-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-search-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-store-endpoints-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/doordash-storemanagementendpoints-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/doordash-stores-api-openapi.yml:
     method: unknown
     evidence: no authorship recorded
+  openapi/doordash-targeting-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  overlays/doordash-ad-groups-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-address-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-addresses-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
   overlays/doordash-ads-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-app-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-assets-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-audit-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-business-store-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-businesses-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-campaigns-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-catalog-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-checkoutmanagementendpoints-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-creatives-sb-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-dasherfeedback-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-dataexchange-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-deliveries-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-delivery-api-phrasing-overlay.yaml:
     method: generated
     evidence: declared in the artifact
   overlays/doordash-drive-classic-overlay.yaml:
@@ -997,6 +1057,9 @@ artifacts:
   overlays/doordash-drive-overlay.yaml:
     method: generated
     evidence: declared in the artifact
+  overlays/doordash-drive-redelivery-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
   overlays/doordash-drive-redelivery-overlay.yaml:
     method: generated
     evidence: declared in the artifact
@@ -1006,7 +1069,34 @@ artifacts:
   overlays/doordash-external-checkout-overlay.yaml:
     method: generated
     evidence: declared in the artifact
+  overlays/doordash-https-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-inventory-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-inventorymanagementendpoints-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
   overlays/doordash-item-management-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-itemmanagementendpoints-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-items-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-jobmanagementendpoints-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-jwt-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-keywords-sp-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-loyalty-api-phrasing-overlay.yaml:
     method: generated
     evidence: declared in the artifact
   overlays/doordash-marketplace-legacy-overlay.yaml:
@@ -1015,13 +1105,82 @@ artifacts:
   overlays/doordash-marketplace-overlay.yaml:
     method: generated
     evidence: declared in the artifact
+  overlays/doordash-menu-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-menu-endpoints-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-menu-item-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-menu-v2-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-menus-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-merchants-retailers-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-newverticalsselfserveintegrationendpoints-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-order-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-order-endpoints-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-orders-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
   overlays/doordash-parcel-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-product-ads-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-promotionmanagementendpoints-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-promotions-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-quotes-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-refunds-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-report-api-phrasing-overlay.yaml:
     method: generated
     evidence: declared in the artifact
   overlays/doordash-reporting-overlay.yaml:
     method: generated
     evidence: declared in the artifact
+  overlays/doordash-reports-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-resources-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-search-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-store-endpoints-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
   overlays/doordash-storefront-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-storemanagementendpoints-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-stores-api-phrasing-overlay.yaml:
+    method: generated
+    evidence: declared in the artifact
+  overlays/doordash-targeting-api-phrasing-overlay.yaml:
     method: generated
     evidence: declared in the artifact
   packages/doordash-packages.yml:
