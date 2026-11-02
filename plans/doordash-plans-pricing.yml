@@ -1,0 +1,76 @@
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-10-28'
+method: searched
+source: https://developer.doordash.com/en-US/docs/drive/overview/pricing_payment/
+sources:
+- https://developer.doordash.com/en-US/docs/drive/overview/pricing_payment/
+- https://developer.doordash.com/en-US/docs/drive/overview/pricing_payment
+provenance:
+  tool: engine/economics/harvest_pricing.py
+  run: 20261028T120612
+  grounding: every price_text was found verbatim in the fetched page text
+audience: developer-api
+pricing_basis: usage-other
+delivery:
+  delivery: managed
+  method: page
+  read: '2026-10-28'
+published: true
+note: 'Page prices DoorDash Drive API deliveries: distance-based per-delivery fee, charged by credit card
+  at delivery creation; monthly invoice/ACH available on request.'
+plan_count: 3
+currency: USD
+plans:
+- name: Drive API delivery (within 5 miles)
+  price_text: base rate of $9.75
+  price: 9.75
+  currency: USD
+  period: per-use
+  unit: delivery
+  included_quota: Deliveries within 5 miles
+  overage: For deliveries beyond 5 miles, the fee is an additional $0.75 per mile up to a maximum of 15
+    miles
+- name: Tip pass-through discount
+  price_text: discount of $2.75 on the base rate
+  price: 2.75
+  currency: USD
+  period: per-use
+  unit: delivery
+  included_quota: If your application enables the receiver to tip and you pass 100% of the tip to DoorDash
+- name: Return-to-pickup delivery
+  price_text: 60% of the original delivery fee
+  price: 60
+  period: per-use
+  unit: return delivery
+x-canonical:
+  generated: '2026-11-01'
+  vocabulary: engine/economics/plans-canonical.yml
+  models:
+  - hybrid
+  - subscription
+  units: []
+  plans:
+  - name: Drive API delivery (within 5 miles)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
+  - name: Tip pass-through discount
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
+  - name: Return-to-pickup delivery
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
